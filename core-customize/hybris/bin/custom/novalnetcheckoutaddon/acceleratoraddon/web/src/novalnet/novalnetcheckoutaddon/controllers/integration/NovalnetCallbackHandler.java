@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
 import java.util.regex.*;
+import java.util.stream.Collectors;
 import java.math.*;
 
 import org.json.JSONObject;
@@ -109,22 +110,25 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             }
 
             // Set response status as OK
-            response.setStatus(HttpServletResponse.SC_OK);
-            Map<String, String> captureParams = getRequestParameterMap(request);
-            Set<String> keys = captureParams.keySet();
-            StringBuffer jsonParams = new StringBuffer();
-			for(String key: keys){
-				if(!"site".equals(key)) {
-					jsonParams.append(key);
-				}
-			}
+            //~ response.setStatus(HttpServletResponse.SC_OK);
+            //~ Map<String, String> captureParams = getRequestParameterMap(request);
+            //~ Set<String> keys = captureParams.keySet();
+            //~ StringBuffer jsonParams = new StringBuffer();
+			//~ for(String key: keys){
+				//~ if(!"site".equals(key)) {
+					//~ jsonParams.append(key);
+				//~ }
+			//~ }
+			
+			
 			
 			if(jsonParams.length() == 0) {
 				LOG.info("Required params are missing");
                 return false;
 			}
 			
-			JSONObject tomJsonObject = new JSONObject(jsonParams.toString());
+			String postData = request.getReader().lines().collect(Collectors.joining());
+			JSONObject tomJsonObject = new JSONObject(postData);
 			JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
 			JSONObject eventJsonObject = tomJsonObject.getJSONObject("event");
 			JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");

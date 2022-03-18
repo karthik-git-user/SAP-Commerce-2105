@@ -72,8 +72,6 @@ import de.hybris.novalnet.core.model.NovalnetInstantBankTransferPaymentModeModel
 import de.hybris.novalnet.core.model.NovalnetBancontactPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetMultibancoPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetIdealPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetAlipayPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetWechatpayPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetEpsPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetGiropayPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetPrzelewy24PaymentModeModel;
@@ -386,12 +384,6 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         } else if ("novalnetIdeal".equals(paymentMethod)) {
             NovalnetIdealPaymentModeModel novalnetPaymentMethod = (NovalnetIdealPaymentModeModel) paymentModeModel;
             return novalnetPaymentMethod.getNovalnetOrderSuccessStatus();
-        }  else if ("novalnetAlipay".equals(paymentMethod)) {
-            NovalnetAlipayPaymentModeModel novalnetPaymentMethod = (NovalnetAlipayPaymentModeModel) paymentModeModel;
-            return novalnetPaymentMethod.getNovalnetOrderSuccessStatus();
-        }  else if ("novalnetWechatpay".equals(paymentMethod)) {
-            NovalnetWechatpayPaymentModeModel novalnetPaymentMethod = (NovalnetWechatpayPaymentModeModel) paymentModeModel;
-            return novalnetPaymentMethod.getNovalnetOrderSuccessStatus();
         } else if ("novalnetEps".equals(paymentMethod)) {
             NovalnetEpsPaymentModeModel novalnetPaymentMethod = (NovalnetEpsPaymentModeModel) paymentModeModel;
             return novalnetPaymentMethod.getNovalnetOrderSuccessStatus();
@@ -545,12 +537,6 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
             orderModel.setPaymentMode(novalnetPaymentMethod);
         } else if ("novalnetIdeal".equals(currentPayment)) {
             NovalnetIdealPaymentModeModel novalnetPaymentMethod = (NovalnetIdealPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetAlipay".equals(currentPayment)) {
-            NovalnetAlipayPaymentModeModel novalnetPaymentMethod = (NovalnetAlipayPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetWechatpay".equals(currentPayment)) {
-            NovalnetWechatpayPaymentModeModel novalnetPaymentMethod = (NovalnetWechatpayPaymentModeModel) paymentModeModel;
             orderModel.setPaymentMode(novalnetPaymentMethod);
         } else if ("novalnetEps".equals(currentPayment)) {
             NovalnetEpsPaymentModeModel novalnetPaymentMethod = (NovalnetEpsPaymentModeModel) paymentModeModel;
