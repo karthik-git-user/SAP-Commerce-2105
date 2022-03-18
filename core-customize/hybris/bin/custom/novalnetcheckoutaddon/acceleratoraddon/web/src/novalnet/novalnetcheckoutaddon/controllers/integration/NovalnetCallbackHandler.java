@@ -122,10 +122,10 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
 			
 			
 			
-			if(jsonParams.length() == 0) {
-				LOG.info("Required params are missing");
-                return false;
-			}
+			//~ if(jsonParams.length() == 0) {
+				//~ LOG.info("Required params are missing");
+                //~ return false;
+			//~ }
 			
 			String postData = request.getReader().lines().collect(Collectors.joining());
 			JSONObject tomJsonObject = new JSONObject(postData);
@@ -597,16 +597,16 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
         return paymentInfo;
     }
 
-    public static Map<String, String> getRequestParameterMap(final HttpServletRequest request) {
-        final Map<String, String> map = new HashMap<>();
-        final Enumeration myEnum = request.getParameterNames();
-        while (myEnum.hasMoreElements()) {
-            final String paramName = (String) myEnum.nextElement();
-            final String paramValue = request.getParameter(paramName);
-            map.put(paramName, paramValue);
-        }
-        return map;
-    }
+    //~ public static Map<String, String> getRequestParameterMap(final HttpServletRequest request) {
+        //~ final Map<String, String> map = new HashMap<>();
+        //~ final Enumeration myEnum = request.getParameterNames();
+        //~ while (myEnum.hasMoreElements()) {
+            //~ final String paramName = (String) myEnum.nextElement();
+            //~ final String paramValue = request.getParameter(paramName);
+            //~ map.put(paramName, paramValue);
+        //~ }
+        //~ return map;
+    //~ }
 
     /**
      * Get Reference TID
