@@ -627,6 +627,8 @@ public class NovalnetPaymentMethodCheckoutStepController extends AbstractCheckou
         model.addAttribute("novalnetPrepayment", paymentModeService.getPaymentModeForCode("novalnetPrepayment"));
         model.addAttribute("novalnetBarzahlen", paymentModeService.getPaymentModeForCode("novalnetBarzahlen"));
         model.addAttribute("novalnetIdeal", paymentModeService.getPaymentModeForCode("novalnetIdeal"));
+        model.addAttribute("novalnetAlipay", paymentModeService.getPaymentModeForCode("novalnetAlipay"));
+        model.addAttribute("novalnetWechatpay", paymentModeService.getPaymentModeForCode("novalnetWechatpay"));
         model.addAttribute("novalnetGiropay", paymentModeService.getPaymentModeForCode("novalnetGiropay"));
         model.addAttribute("novalnetPrzelewy24", paymentModeService.getPaymentModeForCode("novalnetPrzelewy24"));
         model.addAttribute("novalnetEps", paymentModeService.getPaymentModeForCode("novalnetEps"));

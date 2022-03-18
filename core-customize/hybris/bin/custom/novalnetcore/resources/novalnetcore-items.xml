@@ -532,6 +532,42 @@
                 </attribute>
             </attributes>
         </itemtype>
+        
+        <!-- Novalnet Alipay configuration -->
+        <itemtype code="NovalnetAlipayPaymentMode" extends="StandardPaymentMode" autocreate="true" generate="true">
+            <attributes>
+                <attribute qualifier="novalnetTestMode" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" initial="false" optional="false"/>
+                </attribute>
+                <attribute qualifier="novalnetEndUserInfo" type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" optional="true"/>
+                </attribute>
+                <attribute autocreate="true" qualifier="novalnetOrderSuccessStatus" type="OrderStatus" generate="true">
+                    <persistence type="property" qualifier="novalnetOrderSuccessStatusPK"/>
+                    <modifiers encrypted="false" search="true" optional="true"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+        
+        <!-- Novalnet wechatpay configuration -->
+        <itemtype code="NovalnetWechatpayPaymentMode" extends="StandardPaymentMode" autocreate="true" generate="true">
+            <attributes>
+                <attribute qualifier="novalnetTestMode" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" initial="false" optional="false"/>
+                </attribute>
+                <attribute qualifier="novalnetEndUserInfo" type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" optional="true"/>
+                </attribute>
+                <attribute autocreate="true" qualifier="novalnetOrderSuccessStatus" type="OrderStatus" generate="true">
+                    <persistence type="property" qualifier="novalnetOrderSuccessStatusPK"/>
+                    <modifiers encrypted="false" search="true" optional="true"/>
+                </attribute>
+            </attributes>
+        </itemtype>
 
         <!-- Novalnet eps configuration -->
         <itemtype code="NovalnetEpsPaymentMode" extends="StandardPaymentMode" autocreate="true" generate="true">

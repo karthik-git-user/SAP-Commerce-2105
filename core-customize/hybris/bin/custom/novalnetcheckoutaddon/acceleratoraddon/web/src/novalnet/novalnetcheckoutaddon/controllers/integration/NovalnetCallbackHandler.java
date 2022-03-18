@@ -235,6 +235,8 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             initialPayments.put("PAYPAL", "PAYPAL");
             initialPayments.put("ONLINE_TRANSFER", "ONLINE_TRANSFER");
             initialPayments.put("IDEAL", "IDEAL");
+            initialPayments.put("ALIPAY", "ALIPAY");
+            initialPayments.put("WECHATPAY", "WECHATPAY");
             initialPayments.put("EPS", "EPS");
             initialPayments.put("PAYSAFECARD", "PAYSAFECARD");
             initialPayments.put("GIROPAY", "GIROPAY");
@@ -275,6 +277,8 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             String[] instantBankTransferPaymentTypes = {"ONLINE_TRANSFER", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
             String[] bancontactPaymentTypes = {"BANCONTACT", "REFUND_BY_BANK_TRANSFER_EU"};
             String[] idealPaymentTypes = {"IDEAL", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
+            String[] alipayPaymentTypes = {"ALIPAY", "ALIPAY_REFUND"};
+            String[] wechatpayPaymentTypes = {"WECHATPAY", "WECHATPAY_REFUND "};
             String[] epsPaymentTypes = {"EPS", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
             String[] giropayPaymentTypes = {"GIROPAY", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
             String[] przelewy24PaymentTypes = {"PRZELEWY24", "PRZELEWY24_REFUND"};
@@ -291,6 +295,8 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             paymentTypes.put("novalnetPayPal", payPalPaymentTypes);
             paymentTypes.put("novalnetInstantBankTransfer", instantBankTransferPaymentTypes);
             paymentTypes.put("novalnetIdeal", idealPaymentTypes);
+            paymentTypes.put("novalnetAlipay", alipayPaymentTypes);
+            paymentTypes.put("novalnetWechatpay", wechatpayPaymentTypes);
             paymentTypes.put("novalnetEps", epsPaymentTypes);
             paymentTypes.put("novalnetGiropay", giropayPaymentTypes);
             paymentTypes.put("novalnetPrzelewy24", przelewy24PaymentTypes);

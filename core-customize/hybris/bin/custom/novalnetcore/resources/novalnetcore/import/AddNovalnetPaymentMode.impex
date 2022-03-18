@@ -34,6 +34,12 @@ INSERT_UPDATE NovalnetBancontactPaymentMode;code[unique=true];name[lang=de];name
 INSERT_UPDATE NovalnetIdealPaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code)
 ;novalnetIdeal;iDEAL;iDEAL;Sie werden zu iDEAL weitergeleitet. Um eine erfolgreiche Zahlung zu gewährleisten, darf die Seite nicht geschlossen oder neu geladen werden, bis die Bezahlung abgeschlossen ist;You will be redirected to iDEAL. Please don’t close or refresh the browser until the payment is completed.;false;PaymentInfo;false;COMPLETED
 
+INSERT_UPDATE NovalnetAlipayPaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code)
+;novalnetAlipay;iDEAL;iDEAL;Sie werden zu iDEAL weitergeleitet. Um eine erfolgreiche Zahlung zu gewährleisten, darf die Seite nicht geschlossen oder neu geladen werden, bis die Bezahlung abgeschlossen ist;You will be redirected to iDEAL. Please don’t close or refresh the browser until the payment is completed.;false;PaymentInfo;false;COMPLETED
+
+INSERT_UPDATE NovalnetWechatpayPaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code)
+;novalnetWechatpay;iDEAL;iDEAL;Sie werden zu iDEAL weitergeleitet. Um eine erfolgreiche Zahlung zu gewährleisten, darf die Seite nicht geschlossen oder neu geladen werden, bis die Bezahlung abgeschlossen ist;You will be redirected to iDEAL. Please don’t close or refresh the browser until the payment is completed.;false;PaymentInfo;false;COMPLETED
+
 INSERT_UPDATE NovalnetEpsPaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code)
 ;novalnetEps;eps;eps;Sie werden zu eps weitergeleitet. Um eine erfolgreiche Zahlung zu gewährleisten, darf die Seite nicht geschlossen oder neu geladen werden, bis die Bezahlung abgeschlossen ist;You will be redirected to eps. Please don’t close or refresh the browser until the payment is completed;false;PaymentInfo;false;COMPLETED
 

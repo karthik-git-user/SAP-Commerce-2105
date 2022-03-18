@@ -119,6 +119,8 @@ import de.hybris.novalnet.core.model.NovalnetMultibancoPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetPostFinanceCardPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetPostFinancePaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetIdealPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetAlipayPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetWechatpayPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetEpsPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetGiropayPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetPrzelewy24PaymentModeModel;
@@ -620,6 +622,26 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
             }
+        } else if ("novalnetAlipay".equals(currentPayment)) {
+            NovalnetIdealPaymentModeModel novalnetPaymentMethod = (NovalnetAlipayPaymentModeModel) paymentModeModel;
+
+            // Redirect Flag
+            redirect = true;
+
+            // Check for test mode
+            if (novalnetPaymentMethod.getNovalnetTestMode()) {
+                testMode = 1;
+            }
+        } else if ("novalnetWechatpay".equals(currentPayment)) {
+            NovalnetIdealPaymentModeModel novalnetPaymentMethod = (NovalnetWechatpayPaymentModeModel) paymentModeModel;
+
+            // Redirect Flag
+            redirect = true;
+
+            // Check for test mode
+            if (novalnetPaymentMethod.getNovalnetTestMode()) {
+                testMode = 1;
+            }
         } else if ("novalnetEps".equals(currentPayment)) {
             NovalnetEpsPaymentModeModel novalnetPaymentMethod = (NovalnetEpsPaymentModeModel) paymentModeModel;
 
@@ -1009,6 +1031,8 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
         paymentType.put("novalnetBancontact", "BANCONTACT");
         paymentType.put("novalnetMultibanco", "MULTIBANCO");
         paymentType.put("novalnetIdeal", "IDEAL");
+        paymentType.put("novalnetAlipay", "WECHATPAY");
+        paymentType.put("novalnetWechatpay", "ALIPAY");
         paymentType.put("novalnetEps", "EPS");
         paymentType.put("novalnetGiropay", "GIROPAY");
         paymentType.put("novalnetPrzelewy24", "PRZELEWY24");
