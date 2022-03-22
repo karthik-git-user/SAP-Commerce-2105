@@ -109,6 +109,12 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             }
 
             String postData = request.getReader().lines().collect(Collectors.joining());
+
+            if ("".equals(postData)) {
+                LOG.info("Required params are missing");
+                return false;
+            }
+
             JSONObject tomJsonObject = new JSONObject(postData);
             JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
             JSONObject eventJsonObject = tomJsonObject.getJSONObject("event");
