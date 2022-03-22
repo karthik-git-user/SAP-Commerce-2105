@@ -74,6 +74,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
      * @return Boolean
      */
     public boolean beforeController(HttpServletRequest request, HttpServletResponse response, HandlerMethod handler) throws Exception {
+		LOG.info("========================================hi");
 		
 		String parentTID = "";
 
@@ -108,7 +109,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                 LOG.info("Novalnet webhook received. Unauthorised access from the IP " + callerIp);
                 return false;
             }
-
+LOG.info("========================================hi");
             // Set response status as OK
             //~ response.setStatus(HttpServletResponse.SC_OK);
             //~ Map<String, String> captureParams = getRequestParameterMap(request);
@@ -126,7 +127,8 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
 				//~ LOG.info("Required params are missing");
                 //~ return false;
 			//~ }
-			
+			LOG.info("========================================hi");
+			LOG.info("========================================hi");
 			String postData = request.getReader().lines().collect(Collectors.joining());
 			JSONObject tomJsonObject = new JSONObject(postData);
 			JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
