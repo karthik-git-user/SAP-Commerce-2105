@@ -678,12 +678,12 @@ public class NovalnetPaymentMethodCheckoutStepController extends AbstractCheckou
 
         if (novalnetGuaranteedDirectDebitSepaPaymentMethod.getActive() == true) {
             showOneClickShopping("novalnetGuaranteedDirectDebitSepa", novalnetGuaranteedDirectDebitSepaOneClickCondition, paymentDetailsForm, model);
-            Integer novalnetGuaranteedDirectDebitSepaMinAmount = (novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetMinimumGuaranteeAmount()) ? novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetMinimumGuaranteeAmount() : 999;
+            Integer novalnetGuaranteedDirectDebitSepaMinAmount = (novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetMinimumGuaranteeAmount() != null) ? novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetMinimumGuaranteeAmount() : 999;
             model.addAttribute("novalnetGuaranteedDirectDebitSepaMinAmount", novalnetGuaranteedDirectDebitSepaMinAmount);
         }
         
         if (novalnetGuaranteedInvoicePaymentMethod.getActive() == true) {
-            Integer novalnetGuaranteedInvoiceMinAmount = (novalnetGuaranteedInvoicePaymentMethod.getNovalnetMinimumGuaranteeAmount()) ? novalnetGuaranteedInvoicePaymentMethod.getNovalnetMinimumGuaranteeAmount() : 999;
+            Integer novalnetGuaranteedInvoiceMinAmount = (novalnetGuaranteedInvoicePaymentMethod.getNovalnetMinimumGuaranteeAmount() != null) ? novalnetGuaranteedInvoicePaymentMethod.getNovalnetMinimumGuaranteeAmount() : 999;
             model.addAttribute("novalnetGuaranteedInvoiceMinAmount", novalnetGuaranteedInvoiceMinAmount);
         }
 
