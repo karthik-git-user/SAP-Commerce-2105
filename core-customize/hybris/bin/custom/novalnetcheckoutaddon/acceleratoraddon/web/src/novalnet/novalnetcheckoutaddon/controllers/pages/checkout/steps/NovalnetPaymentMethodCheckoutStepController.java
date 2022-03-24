@@ -627,6 +627,8 @@ public class NovalnetPaymentMethodCheckoutStepController extends AbstractCheckou
         model.addAttribute("novalnetPrepayment", paymentModeService.getPaymentModeForCode("novalnetPrepayment"));
         model.addAttribute("novalnetBarzahlen", paymentModeService.getPaymentModeForCode("novalnetBarzahlen"));
         model.addAttribute("novalnetIdeal", paymentModeService.getPaymentModeForCode("novalnetIdeal"));
+        model.addAttribute("novalnetAlipay", paymentModeService.getPaymentModeForCode("novalnetAlipay"));
+        model.addAttribute("novalnetWechatpay", paymentModeService.getPaymentModeForCode("novalnetWechatpay"));
         model.addAttribute("novalnetGiropay", paymentModeService.getPaymentModeForCode("novalnetGiropay"));
         model.addAttribute("novalnetPrzelewy24", paymentModeService.getPaymentModeForCode("novalnetPrzelewy24"));
         model.addAttribute("novalnetEps", paymentModeService.getPaymentModeForCode("novalnetEps"));
@@ -654,6 +656,7 @@ public class NovalnetPaymentMethodCheckoutStepController extends AbstractCheckou
         model.addAttribute("currency", currency);
         PaymentModeModel paymentNovalnetDirectDebitSepaModeModel = paymentModeService.getPaymentModeForCode("novalnetDirectDebitSepa");
         PaymentModeModel paymentNovalneGuaranteedtDirectDebitSepaModeModel = paymentModeService.getPaymentModeForCode("novalnetGuaranteedDirectDebitSepa");
+        PaymentModeModel paymentNovalnetGuaranteedInvoicePaymentModeModel = paymentModeService.getPaymentModeForCode("novalnetGuaranteedInvoice");
 
         String guestEmail = novalnetFacade.getGuestEmail();
         final String emailAddress = (guestEmail != null) ? guestEmail : JaloSession.getCurrentSession().getUser().getLogin();
@@ -669,11 +672,19 @@ public class NovalnetPaymentMethodCheckoutStepController extends AbstractCheckou
         }
         
         NovalnetGuaranteedDirectDebitSepaPaymentModeModel novalnetGuaranteedDirectDebitSepaPaymentMethod = (NovalnetGuaranteedDirectDebitSepaPaymentModeModel) paymentNovalneGuaranteedtDirectDebitSepaModeModel;
+        NovalnetGuaranteedInvoicePaymentModeModel novalnetGuaranteedInvoicePaymentMethod = (NovalnetGuaranteedInvoicePaymentModeModel) paymentNovalnetGuaranteedInvoicePaymentModeModel;
 
         boolean novalnetGuaranteedDirectDebitSepaOneClickCondition = Boolean.TRUE.equals(novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetOneClickShopping()) && !novalnetFacade.isGuestUser() ? true : false;
 
         if (novalnetGuaranteedDirectDebitSepaPaymentMethod.getActive() == true) {
             showOneClickShopping("novalnetGuaranteedDirectDebitSepa", novalnetGuaranteedDirectDebitSepaOneClickCondition, paymentDetailsForm, model);
+            Integer novalnetGuaranteedDirectDebitSepaMinAmount = (novalnetDirectDebitSepaPaymentMethod.novalnetMinimumGuaranteeAmount()) ? novalnetDirectDebitSepaPaymentMethod.novalnetMinimumGuaranteeAmount() : 0;
+            model.addAttribute("novalnetGuaranteedDirectDebitSepaMinAmount", novalnetGuaranteedDirectDebitSepaMinAmount);
+        }
+        
+        if (novalnetGuaranteedInvoicePaymentMethod.getActive() == true) {
+            Integer novalnetGuaranteedInvoiceMinAmount = (novalnetGuaranteedInvoicePaymentMethod.novalnetMinimumGuaranteeAmount()) ? novalnetGuaranteedInvoicePaymentMethod.novalnetMinimumGuaranteeAmount() : 0;
+            model.addAttribute("novalnetGuaranteedInvoiceMinAmount", novalnetGuaranteedInvoiceMinAmount);
         }
 
         PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode("novalnetCreditCard");
