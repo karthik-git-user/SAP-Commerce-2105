@@ -127,12 +127,12 @@ ACC.novalnetcheckoutaddon = {
 
 
         if((invoiceError == 1 && $('#invoiceforceGuaranteeCheck').length) || (!$('#invoiceGuaranteeCheck').length)) {
-            $('.novalnetInvoice').css('display','block');
+            //~ $('.novalnetInvoice').css('display','block');
             $('.novalnetGuaranteedInvoice').css('display','none');
         }
 
         if((sepaError == 1 && $('#sepaforceGuaranteeCheck').length) || (!$('#sepaGuaranteeCheck').length)) {
-            $('.novalnetSepa').css('display','block');
+            //~ $('.novalnetSepa').css('display','block');
             $('.novalnetGuaranteedDirectDebitSepa').css('display','none');
         }
 
@@ -197,7 +197,7 @@ ACC.novalnetcheckoutaddon = {
     paymentSelectionProcess: function ()
     {
         if($('input:radio[name=selectedPaymentMethodId]') != undefined){
-            $.each([ 'novalnetCreditCard', 'novalnetDirectDebitSepa', 'novalnetInvoice', 'novalnetPrepayment', 'novalnetBarzahlen', 'novalnetPayPal', 'novalnetInstantBankTransfer', 'novalnetIdeal', 'novalnetEps', 'novalnetGiropay', 'novalnetPrzelewy24', 'novalnetGuaranteedDirectDebitSepa', 'novalnetGuaranteedInvoice', 'novalnetPostFinance', 'novalnetPostFinanceCard', 'novalnetMultibanco', 'novalnetBancontact' ], function (index, value) {
+            $.each([ 'novalnetCreditCard', 'novalnetDirectDebitSepa', 'novalnetInvoice', 'novalnetPrepayment', 'novalnetBarzahlen', 'novalnetPayPal', 'novalnetInstantBankTransfer', 'novalnetIdeal', 'novalnetEps', 'novalnetGiropay', 'novalnetPrzelewy24', 'novalnetGuaranteedDirectDebitSepa', 'novalnetGuaranteedInvoice', 'novalnetPostFinance', 'novalnetPostFinanceCard', 'novalnetMultibanco', 'novalnetBancontact', 'novalnetAlipay', 'novalnetWechatpay' ], function (index, value) {
                 $('input:radio[name=selectedPaymentMethodId]:checked').val() == value ? $('#'+ value +'PaymentForm').show() : $('#'+ value +'PaymentForm').hide();
             });
 
