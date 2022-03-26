@@ -141,7 +141,7 @@ ACC.novalnetcheckoutaddon = {
             $('.novalnetGuaranteedInvoice').css('display','none');
         }
         
-        if((invoiceError == 1 || !$('#invoiceGuaranteeCheck').length)&& !$('#invoiceforceGuaranteeCheck').length) {
+        if((sepaError == 1 || !$('#sepaGuaranteeCheck').length)&& !$('#sepaforceGuaranteeCheck').length) {
             $('.novalnetInvoice').css('display','none');
             $('.novalnetGuaranteedInvoice').css('display','none');
         }
