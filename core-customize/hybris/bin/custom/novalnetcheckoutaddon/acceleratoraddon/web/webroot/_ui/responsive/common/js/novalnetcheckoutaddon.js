@@ -126,29 +126,24 @@ ACC.novalnetcheckoutaddon = {
 
 
 
-        if((invoiceError == 1 && $('#invoiceforceGuaranteeCheck').length) || (!$('#invoiceGuaranteeCheck').length)) {
+        if((invoiceError == 1 || !$('#invoiceGuaranteeCheck').length) ) && $('#invoiceforceGuaranteeCheck').length) {
             $('.novalnetInvoice').css('display','block');
             $('.novalnetGuaranteedInvoice').css('display','none');
         }
         
-        if((invoiceError == 1 || !$('#invoiceGuaranteeCheck').length)&& !$('#invoiceforceGuaranteeCheck').length) {
+        if((invoiceError == 1 || !$('#invoiceGuaranteeCheck').length) && !$('#invoiceforceGuaranteeCheck').length) {
             $('.novalnetInvoice').css('display','none');
             $('.novalnetGuaranteedInvoice').css('display','none');
         }
-        
-        if((invoiceError == 1 && $('#invoiceforceGuaranteeCheck').length) || (!$('#invoiceGuaranteeCheck').length)) {
-            $('.novalnetInvoice').css('display','block');
-            $('.novalnetGuaranteedInvoice').css('display','none');
+
+        if((sepaError == 1 || !$('#sepaGuaranteeCheck').length ) && $('#sepaforceGuaranteeCheck').length) {
+            $('.novalnetSepa').css('display','block');
+            $('.novalnetGuaranteedDirectDebitSepa').css('display','none');
         }
         
         if((sepaError == 1 || !$('#sepaGuaranteeCheck').length)&& !$('#sepaforceGuaranteeCheck').length) {
             $('.novalnetInvoice').css('display','none');
             $('.novalnetGuaranteedInvoice').css('display','none');
-        }
-
-        if((sepaError == 1 && $('#sepaforceGuaranteeCheck').length) || (!$('#sepaGuaranteeCheck').length)) {
-            $('.novalnetSepa').css('display','block');
-            $('.novalnetGuaranteedDirectDebitSepa').css('display','none');
         }
 
         // Process hash call.
