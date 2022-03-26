@@ -131,7 +131,7 @@ ACC.novalnetcheckoutaddon = {
             $('.novalnetGuaranteedInvoice').css('display','none');
         }
         
-        if(invoiceError == 1 && !$('#invoiceforceGuaranteeCheck').length) {
+        if((invoiceError == 1 || !$('#invoiceGuaranteeCheck').length)&& !$('#invoiceforceGuaranteeCheck').length) {
             $('.novalnetInvoice').css('display','none');
             $('.novalnetGuaranteedInvoice').css('display','none');
         }
@@ -141,7 +141,7 @@ ACC.novalnetcheckoutaddon = {
             $('.novalnetGuaranteedInvoice').css('display','none');
         }
         
-        if(invoiceError == 1 && !$('#invoiceforceGuaranteeCheck').length) {
+        if((invoiceError == 1 || !$('#invoiceGuaranteeCheck').length)&& !$('#invoiceforceGuaranteeCheck').length) {
             $('.novalnetInvoice').css('display','none');
             $('.novalnetGuaranteedInvoice').css('display','none');
         }
