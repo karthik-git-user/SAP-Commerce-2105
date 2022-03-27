@@ -126,7 +126,7 @@ ACC.novalnetcheckoutaddon = {
 
 
 
-        if((invoiceError == 1 || !$('#invoiceGuaranteeCheck').length) ) && $('#invoiceforceGuaranteeCheck').length) {
+        if((invoiceError == 1 || !$('#invoiceGuaranteeCheck').length) && $('#invoiceforceGuaranteeCheck').length) {
             $('.novalnetInvoice').css('display','block');
             $('.novalnetGuaranteedInvoice').css('display','none');
         }
@@ -141,7 +141,7 @@ ACC.novalnetcheckoutaddon = {
             $('.novalnetGuaranteedDirectDebitSepa').css('display','none');
         }
         
-        if((sepaError == 1 || !$('#sepaGuaranteeCheck').length)&& !$('#sepaforceGuaranteeCheck').length) {
+        if((sepaError == 1 || !$('#sepaGuaranteeCheck').length) && !$('#sepaforceGuaranteeCheck').length) {
             $('.novalnetInvoice').css('display','none');
             $('.novalnetGuaranteedInvoice').css('display','none');
         }
