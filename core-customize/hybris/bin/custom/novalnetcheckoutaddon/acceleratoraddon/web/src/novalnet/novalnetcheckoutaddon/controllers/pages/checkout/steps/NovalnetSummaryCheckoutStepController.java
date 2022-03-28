@@ -664,7 +664,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
                 testMode = 1;
             }
         } else if ("novalnetPrzelewy24".equals(currentPayment)) {
-            NovalnetPostFinanceCardPaymentModeModel novalnetPaymentMethod = (NovalnetPostFinanceCardPaymentModeModel) paymentModeModel;
+            NovalnetPrzelewy24PaymentModeModel novalnetPaymentMethod = (NovalnetPrzelewy24PaymentModeModel) paymentModeModel;
 
             // Redirect Flag
             redirect = true;
