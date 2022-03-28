@@ -177,8 +177,8 @@
                                                 </div>
                                             </div>
                                         </c:if>
-                                        <c:if test="${novalnetGuaranteedDirectDebitSepa.active == true && novalnetGuaranteedDirectDebitSepa.novalnetForceGuarantee == true}">
-                                            <input type="hidden" name="sepaforceGuaranteeCheck" id="sepaforceGuaranteeCheck" value="1">
+                                        <c:if test="${novalnetGuaranteedDirectDebitSepa.active == true}">
+                                            <input type="hidden" name="sepaforceGuaranteeCheck" id="sepaforceGuaranteeCheck" value="${novalnetGuaranteedDirectDebitSepa.novalnetForceGuarantee}">
                                         </c:if>
                                         <c:if test="${novalnetGuaranteedDirectDebitSepa.active == true && orderAmountCent > novalnetGuaranteedDirectDebitSepaMinAmount}">
 
@@ -409,7 +409,7 @@
                                             </div>
                                             </div>
                                         </c:if>
-                                        <c:if test="${novalnetGuaranteedInvoice.active == true && novalnetGuaranteedInvoice.novalnetForceGuarantee == true}">
+                                        <c:if test="${novalnetGuaranteedInvoice.active == true }">
                                                 <input type="hidden" name="invoiceforceGuaranteeCheck" id="invoiceforceGuaranteeCheck" value="1">
                                             </c:if>
                                         <c:if test="${novalnetGuaranteedInvoice.active == true && orderAmountCent >= novalnetGuaranteedInvoiceMinAmount}">
