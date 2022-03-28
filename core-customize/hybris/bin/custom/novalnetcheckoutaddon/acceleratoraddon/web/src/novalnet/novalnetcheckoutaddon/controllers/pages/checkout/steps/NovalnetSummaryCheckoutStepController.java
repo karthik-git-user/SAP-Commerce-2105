@@ -685,6 +685,16 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
             }
+        } else if ("novalnetPrzelewy24".equals(currentPayment)) {
+            NovalnetPostFinanceCardPaymentModeModel novalnetPaymentMethod = (NovalnetPostFinanceCardPaymentModeModel) paymentModeModel;
+
+            // Redirect Flag
+            redirect = true;
+
+            // Check for test mode
+            if (novalnetPaymentMethod.getNovalnetTestMode()) {
+                testMode = 1;
+            }
         }
 
         transactionParameters.put("test_mode", testMode);
