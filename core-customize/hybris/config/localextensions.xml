@@ -140,7 +140,9 @@
 <!--
 	  <extension name= 'customerticketingocc' />
 -->
+<!--
 	  <extension name= 'customerticketingocctests' />
+-->
 	  <extension name= 'ticketsystem' />
 	  <extension name= 'ticketsystembackoffice' />
 	  <extension name= 'datahubadapter' />
