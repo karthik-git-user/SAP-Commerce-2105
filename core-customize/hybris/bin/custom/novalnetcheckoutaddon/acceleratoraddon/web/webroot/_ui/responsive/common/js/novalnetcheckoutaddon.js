@@ -126,7 +126,7 @@ ACC.novalnetcheckoutaddon = {
 
 
 
-        if((invoiceError == 1 || !$('#invoiceGuaranteeCheck').length) && ($('#invoiceforceGuaranteeCheck').length && $('#invoiceforceGuaranteeCheck').val() == "false") {
+        if((invoiceError == 1 || !$('#invoiceGuaranteeCheck').length) && ($('#invoiceforceGuaranteeCheck').length && $('#invoiceforceGuaranteeCheck').val() == "false")) {
             $('.novalnetInvoice').css('display','block');
             $('.novalnetGuaranteedInvoice').css('display','none');
         }
