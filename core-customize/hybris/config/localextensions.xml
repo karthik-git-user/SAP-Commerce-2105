@@ -137,7 +137,9 @@
 	  <extension name= 'customersupportbackoffice' />
 	  <extension name= 'customerticketingaddon' />
 	  <extension name= 'customerticketingfacades' />
+<!--
 	  <extension name= 'customerticketingocc' />
+-->
 	  <extension name= 'customerticketingocctests' />
 	  <extension name= 'ticketsystem' />
 	  <extension name= 'ticketsystembackoffice' />
