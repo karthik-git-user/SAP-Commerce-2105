@@ -123,6 +123,9 @@ ACC.novalnetcheckoutaddon = {
                     invoiceError =1;
             }
         });
+        
+        var hideInvoice = 0;
+        var hidesepa = 0;
 
 
 
@@ -134,6 +137,7 @@ ACC.novalnetcheckoutaddon = {
         if((invoiceError == 1 || !$('#invoiceGuaranteeCheck').length) && ($('#invoiceforceGuaranteeCheck').length && $('#invoiceforceGuaranteeCheck').val() == "false")) {
             $('.novalnetInvoice').css('display','none');
             $('.novalnetGuaranteedInvoice').css('display','none');
+            hideInvoice = 1;
         }
 
         if((sepaError == 1 || !$('#sepaGuaranteeCheck').length ) && ($('#sepaforceGuaranteeCheck').length && $('#sepaforceGuaranteeCheck').val() == "true" ) ) {
@@ -144,7 +148,16 @@ ACC.novalnetcheckoutaddon = {
         if((sepaError == 1 || !$('#sepaGuaranteeCheck').length) && ($('#sepaforceGuaranteeCheck').length && $('#sepaforceGuaranteeCheck').val() == "false")) {
             $('.novalnetSepa').css('display','none');
             $('.novalnetGuaranteedDirectDebitSepa').css('display','none');
+            hidesepa = 1;
         }
+        
+        if(hidesepa == 0) {
+			$('.novalnetSepa').css('display','block');
+		}
+		
+        if(hideInvoice == 0) {
+			$('.novalnetInvoice').css('display','block');
+		}
 
         // Process hash call.
         if($('#novalnetCreditCard').is(":checked")){

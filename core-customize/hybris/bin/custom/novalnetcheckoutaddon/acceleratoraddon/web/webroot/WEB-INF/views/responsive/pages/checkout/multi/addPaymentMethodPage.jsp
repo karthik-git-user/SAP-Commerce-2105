@@ -410,7 +410,7 @@
                                             </div>
                                         </c:if>
                                         <c:if test="${novalnetGuaranteedInvoice.active == true }">
-                                                <input type="hidden" name="invoiceforceGuaranteeCheck" id="invoiceforceGuaranteeCheck" value="1">
+                                                <input type="hidden" name="invoiceforceGuaranteeCheck" id="invoiceforceGuaranteeCheck" value="${novalnetGuaranteedInvoice.novalnetForceGuarantee}">
                                             </c:if>
                                         <c:if test="${novalnetGuaranteedInvoice.active == true && orderAmountCent >= novalnetGuaranteedInvoiceMinAmount}">
                                             <input type="hidden" name="invoiceGuaranteeCheck" id="invoiceGuaranteeCheck" value="1">
