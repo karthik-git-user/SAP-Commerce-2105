@@ -322,6 +322,12 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
             }
+            
+            // Form sepa duedate
+            Integer sepaDueDate = novalnetPaymentMethod.getNovalnetDueDate();
+            if (sepaDueDate != null && sepaDueDate > 2 && sepaDueDate < 14) {
+                transactionParameters.put("due_date", formatDate(sepaDueDate));
+            }
            
             if(novalnetPaymentMethod != null) {
 				onholdOrderAmount = novalnetPaymentMethod.getNovalnetOnholdAmount();
@@ -372,6 +378,12 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
             }
+            
+            Integer guaranteedSepaDueDate = novalnetPaymentMethod.getNovalnetDueDate();
+            if (guaranteedSepaDueDate != null && guaranteedSepaDueDate > 2 && guaranteedSepaDueDate < 14) {
+                transactionParameters.put("due_date", formatDate(guaranteedSepaDueDate));
+            }
+            
             if(novalnetPaymentMethod != null) {
 				onholdOrderAmount = novalnetPaymentMethod.getNovalnetOnholdAmount();
 				if (onholdOrderAmount == null) { 
