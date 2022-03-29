@@ -151,11 +151,11 @@ ACC.novalnetcheckoutaddon = {
             hidesepa = 1;
         }
         
-        if(hidesepa == 0) {
+        if(hidesepa == 0 && ($('.novalnetGuaranteedDirectDebitSepa').css('display') == 'none' || !$('.novalnetGuaranteedDirectDebitSepa').length) ) {
 			$('.novalnetSepa').css('display','block');
 		}
 		
-        if(hideInvoice == 0) {
+        if(hideInvoice == 0 && ($('.novalnetGuaranteedInvoice').css('display') == 'none' || !$('.novalnetGuaranteedInvoice').length)) {
 			$('.novalnetInvoice').css('display','block');
 		}
 
