@@ -109,7 +109,9 @@
 	  <extension name= 'yocctests' />
 -->
 	  <extension name= 'configurablebundleaddon' />
+<!--
 	  <extension name= 'configurablebundlebackoffice' />
+-->
 	  <extension name= 'configurablebundlefacades' />
 	  <extension name= 'configurablebundleocc' />
 	  <extension name= 'configurablebundleocctests' />
