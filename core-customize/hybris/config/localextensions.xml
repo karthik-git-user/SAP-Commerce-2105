@@ -113,8 +113,12 @@
 	  <extension name= 'configurablebundlebackoffice' />
 -->
 	  <extension name= 'configurablebundlefacades' />
+<!--
 	  <extension name= 'configurablebundleocc' />
+-->
+<!--
 	  <extension name= 'configurablebundleocctests' />
+-->
 	  <extension name= 'configurablebundleservices' />
 	  <extension name= 'sapproductconfigb2baddon' />
 	  <extension name= 'sapproductconfigb2bservices' />
