@@ -43,7 +43,9 @@
 	  <extension name= 'b2bpunchout' />
 	  <extension name= 'b2bpunchoutaddon' />
 	  <extension name= 'savedorderforms' />
+<!--
 	  <extension name= 'savedorderformsocc' />
+-->
 	  <extension name= 'secureportaladdon' />
 	  <extension name= 'b2bapprovalprocess' />
 	  <extension name= 'b2bapprovalprocessfacades' />
