@@ -60,7 +60,9 @@
 	  <extension name= 'pcmbackofficesamplesaddon' />
 	  <extension name= 'mediaconversionbackoffice' />
 	  <extension name= 'patchesbackoffice' />
+<!--
 	  <extension name= 'classificationgroupsservices' />
+-->
 	  <extension name= 'pcmbackoffice' />
 	  <extension name= 'backoffice' />
 	  <extension name= 'platformbackoffice' />
