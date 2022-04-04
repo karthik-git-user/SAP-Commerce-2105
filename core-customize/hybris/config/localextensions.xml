@@ -33,7 +33,9 @@
 <!--
 	  <extension name= 'b2bocctests' />
 -->
+<!--
 	  <extension name= 'b2bwebservicescommons' />
+-->
 	  <extension name= 'commerceorgaddon' />
 	  <extension name= 'commerceorgsamplesaddon' />
 	  <extension name= 'powertoolsstore' />
