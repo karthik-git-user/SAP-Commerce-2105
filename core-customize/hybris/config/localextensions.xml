@@ -102,8 +102,12 @@
 <!--
 	  <extension name= 'commercewebservicestests' />
 -->
+<!--
 	  <extension name= 'yocc' />
+-->
+<!--
 	  <extension name= 'yocctests' />
+-->
 	  <extension name= 'configurablebundleaddon' />
 	  <extension name= 'configurablebundlebackoffice' />
 	  <extension name= 'configurablebundlefacades' />
