@@ -98,8 +98,8 @@
     <extension name='merchandisingservices' />
     <extension name='merchandisingservicesbackoffice' />
     <extension name='merchandisingstorefrontsampledataaddon' />
-<!--
 	  <extension name= 'yb2bacceleratorstorefront' />
+<!--
 	  <extension name= 'adaptivesearch' />
 	  <extension name= 'adaptivesearchbackoffice' />
 	  <extension name= 'adaptivesearchfacades' />
