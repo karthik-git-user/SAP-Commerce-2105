@@ -146,7 +146,9 @@
 	  <extension name= 'acceleratorbackoffice' />
 	  <extension name= 'acceleratorcms' />
 	  <extension name= 'acceleratorfacades' />
+<!--
 	  <extension name= 'acceleratorocc' />
+-->
 	  <extension name= 'acceleratorservices' />
 	  <extension name= 'acceleratorstorefrontcommons' />
 	  <extension name= 'addonsupport' />
