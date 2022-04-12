@@ -139,7 +139,9 @@
 	  <extension name= 'consignmenttrackingbackoffice' />
 	  <extension name= 'consignmenttrackingfacades' />
 	  <extension name= 'consignmenttrackingmock' />
+<!--
 	  <extension name= 'consignmenttrackingocc' />
+-->
 	  <extension name= 'consignmenttrackingservices' />
 	  <extension name= 'acceleratorbackoffice' />
 	  <extension name= 'acceleratorcms' />
