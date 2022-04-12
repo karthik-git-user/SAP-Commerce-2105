@@ -220,7 +220,7 @@ ACC.novalnetcheckoutaddon = {
     paymentSelectionProcess: function ()
     {
         if($('input:radio[name=selectedPaymentMethodId]') != undefined){
-            $.each([ 'novalnetCreditCard', 'novalnetDirectDebitSepa', 'novalnetInvoice', 'novalnetPrepayment', 'novalnetBarzahlen', 'novalnetPayPal', 'novalnetInstantBankTransfer', 'novalnetIdeal', 'novalnetEps', 'novalnetGiropay', 'novalnetPrzelewy24', 'novalnetGuaranteedDirectDebitSepa', 'novalnetGuaranteedInvoice', 'novalnetPostFinance', 'novalnetPostFinanceCard', 'novalnetMultibanco', 'novalnetBancontact'], function (index, value) {
+            $.each([ 'novalnetCreditCard', 'novalnetDirectDebitSepa', 'novalnetInvoice', 'novalnetPrepayment', 'novalnetBarzahlen', 'novalnetPayPal', 'novalnetInstantBankTransfer', 'novalnetIdeal', 'novalnetEps', 'novalnetGiropay', 'novalnetPrzelewy24', 'novalnetGuaranteedDirectDebitSepa', 'novalnetGuaranteedInvoice', 'novalnetPostFinance', 'novalnetPostFinanceCard', 'novalnetMultibanco', 'novalnetBancontact', 'novalnetAlipay', 'novalnetWechatpay' ], function (index, value) {
                 $('input:radio[name=selectedPaymentMethodId]:checked').val() == value ? $('#'+ value +'PaymentForm').show() : $('#'+ value +'PaymentForm').hide();
             });
 

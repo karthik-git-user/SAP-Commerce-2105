@@ -675,6 +675,46 @@
                                             </div>
                                         </c:if>
                                         
+                                        <c:if test="${novalnetAlipay.active == true}">
+                                            <div class="novalnet-select-payment">
+                                                    <form:radiobutton path="selectedPaymentMethodId" id="novalnetAlipay" value="novalnetAlipay" label="${novalnetAlipay.name}"/>
+                                                    &nbsp;&nbsp;
+                                                        <img src="${contextPath}/_ui/addons/novalnetcheckoutaddon/responsive/common/images/novalnetAlipay.png" />
+                                                    </a>&nbsp;&nbsp;
+                                            </div>
+                                            <div id="novalnetAlipayPaymentForm" style="display:none;" class="novalnetPaymentForm">
+                                                    <c:if test="${novalnetAlipay.novalnetTestMode == true}">
+                                                        <div id= "testModeText">
+                                                            <spring:theme code="novalnet.testModeText"/><br/>
+                                                        </div></br>
+                                                    </c:if>
+                                                    <c:if test="${novalnetAlipay.novalnetEndUserInfo != null}">
+                                                        ${novalnetAlipay.novalnetEndUserInfo}<br/>
+                                                    </c:if>
+                                                    <div class="description novalnet-info-box">${novalnetAlipay.description}</div><br/>
+                                            </div>
+                                        </c:if>
+                                        
+                                        <c:if test="${novalnetWechatpay.active == true}">
+                                            <div class="novalnet-select-payment">
+                                                    <form:radiobutton path="selectedPaymentMethodId" id="novalnetWechatpay" value="novalnetWechatpay" label="${novalnetWechatpay.name}"/>
+                                                    &nbsp;&nbsp;
+                                                        <img src="${contextPath}/_ui/addons/novalnetcheckoutaddon/responsive/common/images/novalnetWechatpay.png" />
+                                                    </a>&nbsp;&nbsp;
+                                            </div>
+                                            <div id="novalnetWechatpayPaymentForm" style="display:none;" class="novalnetPaymentForm">
+                                                    <c:if test="${novalnetWechatpay.novalnetTestMode == true}">
+                                                        <div id= "testModeText">
+                                                            <spring:theme code="novalnet.testModeText"/><br/>
+                                                        </div></br>
+                                                    </c:if>
+                                                    <c:if test="${novalnetWechatpay.novalnetEndUserInfo != null}">
+                                                        ${novalnetWechatpay.novalnetEndUserInfo}<br/>
+                                                    </c:if>
+                                                    <div class="description novalnet-info-box">${novalnetWechatpay.description}</div><br/>
+                                            </div>
+                                        </c:if>
+                                        
                                         </div>
                                         </c:if>
                                             <p><spring:theme code="checkout.multi.paymentMethod.seeOrderSummaryForMoreInformation"/></p>
