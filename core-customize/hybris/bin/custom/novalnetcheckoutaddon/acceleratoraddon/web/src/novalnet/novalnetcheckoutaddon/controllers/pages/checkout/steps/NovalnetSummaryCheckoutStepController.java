@@ -637,7 +637,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
                 testMode = 1;
             }
         } else if ("novalnetAlipay".equals(currentPayment)) {
-            NovalnetIdealPaymentModeModel novalnetPaymentMethod = (NovalnetAlipayPaymentModeModel) paymentModeModel;
+            NovalnetAlipayPaymentModeModel novalnetPaymentMethod = (NovalnetAlipayPaymentModeModel) paymentModeModel;
 
             // Redirect Flag
             redirect = true;
@@ -647,7 +647,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
                 testMode = 1;
             }
         } else if ("novalnetWechatpay".equals(currentPayment)) {
-            NovalnetIdealPaymentModeModel novalnetPaymentMethod = (NovalnetWechatpayPaymentModeModel) paymentModeModel;
+            NovalnetWechatpayPaymentModeModel novalnetPaymentMethod = (NovalnetWechatpayPaymentModeModel) paymentModeModel;
 
             // Redirect Flag
             redirect = true;
