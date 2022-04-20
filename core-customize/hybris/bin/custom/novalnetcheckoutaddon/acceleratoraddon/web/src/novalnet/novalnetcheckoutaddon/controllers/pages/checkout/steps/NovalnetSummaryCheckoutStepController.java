@@ -1055,8 +1055,8 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
         paymentType.put("novalnetBancontact", "BANCONTACT");
         paymentType.put("novalnetMultibanco", "MULTIBANCO");
         paymentType.put("novalnetIdeal", "IDEAL");
-        paymentType.put("novalnetAlipay", "WECHATPAY");
-        paymentType.put("novalnetWechatpay", "ALIPAY");
+        paymentType.put("novalnetAlipay", "ALIPAY");
+        paymentType.put("novalnetWechatpay", "WECHATPAY");
         paymentType.put("novalnetEps", "EPS");
         paymentType.put("novalnetGiropay", "GIROPAY");
         paymentType.put("novalnetPrzelewy24", "PRZELEWY24");
