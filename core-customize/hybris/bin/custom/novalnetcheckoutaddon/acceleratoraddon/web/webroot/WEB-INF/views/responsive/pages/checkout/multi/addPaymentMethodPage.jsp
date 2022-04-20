@@ -679,7 +679,7 @@
                                             <div class="novalnet-select-payment">
                                                     <form:radiobutton path="selectedPaymentMethodId" id="novalnetAlipay" value="novalnetAlipay" label="${novalnetAlipay.name}"/>
                                                     &nbsp;&nbsp;
-                                                        <img src="${contextPath}/_ui/addons/novalnetcheckoutaddon/responsive/common/images/novalnetAlipay.png" />
+                                                        <img class = "novalnetAlipayImg" src="${contextPath}/_ui/addons/novalnetcheckoutaddon/responsive/common/images/novalnetAlipay.png" />
                                                     </a>&nbsp;&nbsp;
                                             </div>
                                             <div id="novalnetAlipayPaymentForm" style="display:none;" class="novalnetPaymentForm">
@@ -699,7 +699,7 @@
                                             <div class="novalnet-select-payment">
                                                     <form:radiobutton path="selectedPaymentMethodId" id="novalnetWechatpay" value="novalnetWechatpay" label="${novalnetWechatpay.name}"/>
                                                     &nbsp;&nbsp;
-                                                        <img src="${contextPath}/_ui/addons/novalnetcheckoutaddon/responsive/common/images/novalnetWechatpay.png" />
+                                                        <img class = "novalnetWechatpayImg" src="${contextPath}/_ui/addons/novalnetcheckoutaddon/responsive/common/images/novalnetWechatpay.png" />
                                                     </a>&nbsp;&nbsp;
                                             </div>
                                             <div id="novalnetWechatpayPaymentForm" style="display:none;" class="novalnetPaymentForm">
