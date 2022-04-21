@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+<widget-definition id="org.myextension.widgets.mysearch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/widget-definition.xsd">
+
+	<name>novalnet</name>
+	<description>My own search widget.</description>
+	<defaultTitle>Novalnet</defaultTitle>
+	<author>Novalnet</author>
+	<version>0.1</version>
+	<view src="novalnet.zul"/>
+
+</widget-definition>
