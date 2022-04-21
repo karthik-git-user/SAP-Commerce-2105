@@ -409,5 +409,11 @@
             </editorArea:tab>
         </editorArea:editorArea>
     </context>
+    
+	<script language="javascript">
+		<![CDATA[
+			alert();
+		]]>
+	</script>
 
 </config>
