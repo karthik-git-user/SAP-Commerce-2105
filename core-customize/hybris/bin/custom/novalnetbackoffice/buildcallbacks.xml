@@ -137,11 +137,5 @@
 
         </macrodef>
     -->
-    
-    <script language="javascript">
-		<![CDATA[
-			alert();
-		]]>
-	</script>
 
 </project>
