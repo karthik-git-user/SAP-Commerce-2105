@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!--
- Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
--->
-<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/widgets.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
 
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/widgets.xsd">
+
+    <widget-extension widgetId="backofficeMainSlot">
+        <widget id="novalnetbackoffice" widgetDefinitionId="com.hybris.cockpitng.borderlayout" slotId="perspectives"
+            template="false" title="novalnetbackoffice">
+            <widget id="mySearch" widgetDefinitionId="org.novalnetbackoffice.widgets.novalnet" slotId="leftSlot"/>
+        </widget>
+    </widget-extension>
 </widgets>
