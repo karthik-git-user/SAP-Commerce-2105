@@ -316,6 +316,7 @@
     <extension name='novalnetcore' />
     <extension name='novalnetcheckoutaddon' />
     <extension name='novalnetbackoffice' />
-
+    <extension name='novalnetfulfilmentprocess' />
+    
   </extensions>
 </hybrisconfig>
