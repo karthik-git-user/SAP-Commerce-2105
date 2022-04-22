@@ -8,6 +8,8 @@
 	<classpathentry exported="true" kind="src" path="/acceleratorservices" />
 	<classpathentry exported="true" kind="src" path="/ticketsystem" />
 	<classpathentry exported="true" kind="lib" path="resources" />
+	<classpathentry combineaccessrules="false" kind="src" path="/basecommerce"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/yacceleratorordermanagement"/>
 	<classpathentry exported="true" output="eclipsebin/classes" kind="src" path="src" />
 	<classpathentry exported="true" output="eclipsebin/classes" kind="src" path="testsrc" />
 	<classpathentry exported="true" output="eclipsebin/classes" kind="src" path="gensrc" />

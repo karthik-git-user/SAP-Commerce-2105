@@ -11,7 +11,8 @@
                 		
         
         <requires-extension name="ticketsystem"/>
-                		
+        
+        <requires-extension name="yacceleratorordermanagement"/>
         
         <coremodule generated="true" manager="de.hybris.novalnet.fulfilmentprocess.jalo.NovalnetFulfilmentProcessManager" packageroot="de.hybris.novalnet.fulfilmentprocess"/>
                 		
