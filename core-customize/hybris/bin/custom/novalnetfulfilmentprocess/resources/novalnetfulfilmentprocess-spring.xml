@@ -26,6 +26,16 @@
 		<property name="warehouse2ProcessAdapter" ref="warehouse2ProcessAdapter"/>
 		<property name="timeService" ref="timeService"/>
 	</bean>
+	
+	<alias name="novalnetProcessOrderCancellationAction" alias="novalnetProcessOrderCancellationAction"/>
+    <bean id="novalnetProcessOrderCancellationAction" class="de.hybris.novalnet.fulfilmentprocess.actions.order.cancel.NovalnetProcessOrderCancellationAction"
+        parent="processOrderCancellationAction">
+        <property name="orderCancelCallbackService" ref="orderCancelCallbackService"/>
+        <property name="orderCancelService" ref="orderCancelService"/>
+<!--
+        <property name="wirecardPOExecutionService" ref="wirecardPaymentOperationExecution"/>
+-->
+    </bean>
 
 	<alias name="defaultWarehouse2ProcessAdapter" alias="warehouse2ProcessAdapter"/>
 	<bean id="defaultWarehouse2ProcessAdapter" class="de.hybris.novalnet.fulfilmentprocess.warehouse.DefaultWarehouse2ProcessAdapter" >
