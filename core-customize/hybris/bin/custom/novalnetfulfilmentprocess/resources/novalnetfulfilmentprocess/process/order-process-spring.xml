@@ -18,9 +18,11 @@
 		<property name="timeService" ref="timeService"/>
 	</bean>
 
+<!--
 	<bean id="checkOrderAction" class="de.hybris.novalnet.fulfilmentprocess.actions.order.CheckOrderAction"  parent="abstractAction">
 		<property name="checkOrderService" ref="checkOrderService"/>
 	</bean>
+-->
 
 	<bean id="cancelWholeOrderAuthorizationAction" class="de.hybris.novalnet.fulfilmentprocess.actions.order.CancelWholeOrderAuthorizationAction"
             parent="abstractAction">
