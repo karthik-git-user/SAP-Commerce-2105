@@ -14,18 +14,22 @@
 
 	<!-- Listeners -->
 	
+<!--
 	<bean id="pickupConfirmationEventListener" class="de.hybris.novalnet.fulfilmentprocess.listeners.PickupConfirmationEventListener" parent="abstractEventListener">
 		<property name="businessProcessService" ref="businessProcessService"/>
 	</bean>
+-->
 	
 	<!-- Process Adapters -->
 
+<!--
 	<alias name="mockProcess2WarehouseAdapter" alias="process2WarehouseAdapter"/>
 	<bean id="mockProcess2WarehouseAdapter" class="de.hybris.novalnet.fulfilmentprocess.warehouse.MockProcess2WarehouseAdapter" >
 		<property name="modelService" ref="modelService"/>
 		<property name="warehouse2ProcessAdapter" ref="warehouse2ProcessAdapter"/>
 		<property name="timeService" ref="timeService"/>
 	</bean>
+-->
 	
 	<alias name="novalnetProcessOrderCancellationAction" alias="novalnetProcessOrderCancellationAction"/>
     <bean id="novalnetProcessOrderCancellationAction" class="de.hybris.novalnet.fulfilmentprocess.actions.order.cancel.NovalnetProcessOrderCancellationAction"
@@ -37,6 +41,7 @@
 -->
     </bean>
 
+<!--
 	<alias name="defaultWarehouse2ProcessAdapter" alias="warehouse2ProcessAdapter"/>
 	<bean id="defaultWarehouse2ProcessAdapter" class="de.hybris.novalnet.fulfilmentprocess.warehouse.DefaultWarehouse2ProcessAdapter" >
 		<property name="modelService" ref="modelService"/>
@@ -49,9 +54,11 @@
 		</property>
 		<property name="businessProcessService" ref="businessProcessService"/>
 	</bean>
+-->
 	
 	<!-- Process Definitions -->
 
+<!--
 	<bean id="orderProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
 		<property name="resource" value="classpath:/novalnetfulfilmentprocess/process/order-process.xml"/>
 	</bean>
@@ -63,20 +70,30 @@
 	<bean id="returnProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
 		<property name="resource" value="classpath:/novalnetfulfilmentprocess/process/return-process.xml"/>
 	</bean>
+-->
 
 	<!-- Process Actions -->
 
+<!--
 	<import resource="/novalnetfulfilmentprocess/process/order-process-spring.xml"/>
+-->
+<!--
 	<import resource="/novalnetfulfilmentprocess/process/consignment-process-spring.xml"/>
+-->
+<!--
 	<import resource="/novalnetfulfilmentprocess/process/return-process-spring.xml"/>
+-->
 
 	<!-- Order Check Service -->
 	<!-- Performs some basic validation for the order as part of the first stage of the process. -->
 
+<!--
 	<alias name="defaultCheckOrderService" alias="checkOrderService"/>
 	<bean id="defaultCheckOrderService" class="de.hybris.novalnet.fulfilmentprocess.impl.DefaultCheckOrderService" />
+-->
 	
 	<!-- Order Splitting -->
+<!--
 	<alias name="novalnetfulfilmentprocessOrderSplittingService" alias="orderSplittingService"/>
 	<bean id="novalnetfulfilmentprocessOrderSplittingService" parent="defaultOrderSplittingService" >
 		<property name="strategiesList">
@@ -90,9 +107,11 @@
 			</list>
 		</property>
 	</bean>
+-->
 	
 	<!-- Split Strategies -->
 	
+<!--
 	<alias name="defaultSplitByPoS" alias="splitByPoS"/>
 	<bean id="defaultSplitByPoS" class="de.hybris.novalnet.fulfilmentprocess.strategy.impl.SplitByPoS" />
 	
@@ -114,14 +133,17 @@
 		<property name="stockService" ref="stockService"/>
 		<property name="commerceAvailabilityCalculationStrategy" ref="commerceStockLevelCalculationStrategy"/>
 	</bean>
+-->
 	
 	<!--  Jobs -->
 	
+<!--
 	<bean id="cleanUpFraudOrderJob" class="de.hybris.novalnet.fulfilmentprocess.jobs.CleanUpFraudOrderJob"  >
 		<property name="modelService" ref="modelService"/>
 		<property name="flexibleSearchService" ref="flexibleSearchService"/>
 		<property name="businessProcessService" ref="businessProcessService"/>
 		<property name="sessionService" ref="sessionService"/>
 	</bean>
+-->
 
 </beans>
