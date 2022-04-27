@@ -31,7 +31,9 @@
 	</bean>
 -->
 	
+<!--
 	<alias name="novalnetProcessOrderCancellationAction" alias="novalnetProcessOrderCancellationAction"/>
+-->
 <!--
     <bean id="novalnetProcessOrderCancellationAction" class="de.hybris.novalnet.fulfilmentprocess.actions.order.cancel.NovalnetProcessOrderCancellationAction"
         parent="processOrderCancellationAction">
@@ -44,15 +46,6 @@
 <!--
     </bean>
 -->
-    
-    <bean id="novalnetProcessOrderCancellationAction" class="de.hybris.novalnet.fulfilmentprocess.actions.order.cancel.NovalnetProcessOrderCancellationAction" parent="abstractAction">
-        <property name="orderCancelCallbackService" ref="orderCancelCallbackService"/>
-	    <property name="orderCancelService" ref="orderCancelService"/>
-		<property name="calculationService" ref="calculationService" />
-		<property name="impersonationService" ref="impersonationService"/>
-		<property name="promotionsService" ref="promotionsService"/>
-		<property name="timeService" ref="timeService"/>
-    </bean>
 
 <!--
 	<alias name="defaultWarehouse2ProcessAdapter" alias="warehouse2ProcessAdapter"/>
@@ -87,9 +80,7 @@
 
 	<!-- Process Actions -->
 
-<!--
 	<import resource="/novalnetfulfilmentprocess/process/order-process-spring.xml"/>
--->
 <!--
 	<import resource="/novalnetfulfilmentprocess/process/consignment-process-spring.xml"/>
 -->
