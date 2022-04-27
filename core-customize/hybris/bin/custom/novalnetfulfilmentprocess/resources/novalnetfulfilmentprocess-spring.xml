@@ -150,4 +150,14 @@
 	</bean>
 -->
 
+	<alias name="novalnetImmediateCancelRequestExecutor" alias="immediateCancelRequestExecutor"/>
+    <bean id="novalnetImmediateCancelRequestExecutor"
+          class="de.hybris.platform.ordercancel.impl.executors.ImmediateCancelRequestExecutor"
+          scope="prototype">
+        <property name="modelService" ref="modelService"/>
+        <property name="orderCancelRecordsHandler" ref="orderCancelRecordsHandler"/>
+        <property name="completeCancelStatusChangeStrategy" ref="setCancellledStrategy"/>
+        <property name="paymentServiceAdapter" ref="novalnetOrderCancelPaymentServiceAdapter"/>
+    </bean>
+
 </beans>
