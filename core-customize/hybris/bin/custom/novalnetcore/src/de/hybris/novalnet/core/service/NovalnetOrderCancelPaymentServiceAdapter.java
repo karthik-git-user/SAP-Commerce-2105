@@ -54,10 +54,10 @@ public class NovalnetOrderCancelPaymentServiceAdapter implements OrderCancelPaym
         final PaymentTransactionModel transaction = order.getPaymentTransactions().get(0);
 
         //Ignore non-Adyen payments
-        if (!PAYMENT_PROVIDER.equals(transaction.getPaymentProvider())) {
-            LOG.debug("Different Payment provider: " + transaction.getPaymentProvider());
-            return;
-        }
+        //~ if (!PAYMENT_PROVIDER.equals(transaction.getPaymentProvider())) {
+            //~ LOG.debug("Different Payment provider: " + transaction.getPaymentProvider());
+            //~ return;
+        //~ }
 
         if (transaction.getEntries().isEmpty()) {
             LOG.warn("Cannot find auth transaction!");
@@ -75,26 +75,32 @@ public class NovalnetOrderCancelPaymentServiceAdapter implements OrderCancelPaym
     }
 
     public PaymentService getPaymentService() {
+		LOG.info("----------------------------------------");
         return paymentService;
     }
 
     public void setPaymentService(PaymentService paymentService) {
+		LOG.info("----------------------------------------");
         this.paymentService = paymentService;
     }
 
     public ModelService getModelService() {
+		LOG.info("----------------------------------------");
         return modelService;
     }
 
     public void setModelService(ModelService modelService) {
+		LOG.info("----------------------------------------");
         this.modelService = modelService;
     }
 
     public CalculationService getCalculationService() {
+		LOG.info("----------------------------------------");
         return calculationService;
     }
 
     public void setCalculationService(CalculationService calculationService) {
+		LOG.info("----------------------------------------");
         this.calculationService = calculationService;
     }
 }
