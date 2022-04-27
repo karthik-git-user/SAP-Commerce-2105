@@ -32,8 +32,8 @@ public class NovalnetOrderCancelPaymentServiceAdapter implements OrderCancelPaym
     public void recalculateOrderAndModifyPayments(final OrderModel order) {
         LOG.debug("recalculateOrderAndModifyPayments received for order: " + order.getCode() + ":"
                 + order.getTotalPrice() + ":" + order.getStatus().getCode());
-                
-                LOG.info("----------------------------------------");
+                int currentLine = new Throwable().getStackTrace()[0].getLineNumber();
+                LOG.info("----------------------------------------" + currentLine);
 
         try {
             calculationService.recalculate(order);
@@ -75,32 +75,38 @@ public class NovalnetOrderCancelPaymentServiceAdapter implements OrderCancelPaym
     }
 
     public PaymentService getPaymentService() {
-		LOG.info("----------------------------------------");
+		int currentLine = new Throwable().getStackTrace()[0].getLineNumber();
+                LOG.info("----------------------------------------" + currentLine);
         return paymentService;
     }
 
     public void setPaymentService(PaymentService paymentService) {
-		LOG.info("----------------------------------------");
+		int currentLine = new Throwable().getStackTrace()[0].getLineNumber();
+                LOG.info("----------------------------------------" + currentLine);
         this.paymentService = paymentService;
     }
 
     public ModelService getModelService() {
-		LOG.info("----------------------------------------");
+		int currentLine = new Throwable().getStackTrace()[0].getLineNumber();
+                LOG.info("----------------------------------------" + currentLine);
         return modelService;
     }
 
     public void setModelService(ModelService modelService) {
-		LOG.info("----------------------------------------");
+		int currentLine = new Throwable().getStackTrace()[0].getLineNumber();
+                LOG.info("----------------------------------------" + currentLine);
         this.modelService = modelService;
     }
 
     public CalculationService getCalculationService() {
-		LOG.info("----------------------------------------");
+		int currentLine = new Throwable().getStackTrace()[0].getLineNumber();
+                LOG.info("----------------------------------------" + currentLine);
         return calculationService;
     }
 
     public void setCalculationService(CalculationService calculationService) {
-		LOG.info("----------------------------------------");
+		int currentLine = new Throwable().getStackTrace()[0].getLineNumber();
+                LOG.info("----------------------------------------" + currentLine);
         this.calculationService = calculationService;
     }
 }
