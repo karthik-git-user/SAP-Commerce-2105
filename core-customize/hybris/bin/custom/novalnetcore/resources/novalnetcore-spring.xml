@@ -19,15 +19,12 @@
     <import resource="classpath:/novalnetcore/integration/hot-folder-common-spring.xml"/>
     
 	<bean id="novalnetcoreSystemSetup" parent="abstractCoreSystemSetup" class="de.hybris.novalnet.core.setup.NovalnetcoreSystemSetup">
-		
-	<bean id="novalnetOrderCancelPaymentServiceAdapter" class="com.adyen.v6.service.AdyenOrderCancelPaymentServiceAdapter">
+    </bean>
+    <bean id="novalnetOrderCancelPaymentServiceAdapter" class="com.adyen.v6.service.AdyenOrderCancelPaymentServiceAdapter">
         <property name="paymentService" ref="paymentService" />
         <property name="modelService" ref="modelService" />
         <property name="calculationService" ref="calculationService" />
     </bean>
-		
-    </bean>
-    
 
 
 
