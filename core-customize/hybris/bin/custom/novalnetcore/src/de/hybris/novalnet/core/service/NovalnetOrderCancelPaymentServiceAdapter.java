@@ -40,17 +40,27 @@ public class NovalnetOrderCancelPaymentServiceAdapter implements OrderCancelPaym
         } catch (CalculationException e) {
             LOG.error(e);
         }
+        
+        currentLine = new Throwable().getStackTrace()[0].getLineNumber();
+        LOG.info("----------------------------------------" + currentLine);
 
         //Send the cancel request only when the whole order is cancelled
         if (!CANCELLED.getCode().equals(order.getStatus().getCode())) {
             LOG.info("Partial cancellation - do nothing");
             return;
         }
+        
+        currentLine = new Throwable().getStackTrace()[0].getLineNumber();
+        LOG.info("----------------------------------------" + currentLine);
 
         if(order.getPaymentTransactions().isEmpty()) {
             LOG.warn("No transaction found!");
             return;
         }
+        
+        currentLine = new Throwable().getStackTrace()[0].getLineNumber();
+        LOG.info("----------------------------------------" + currentLine);
+        
         final PaymentTransactionModel transaction = order.getPaymentTransactions().get(0);
 
         //Ignore non-Adyen payments
@@ -58,11 +68,16 @@ public class NovalnetOrderCancelPaymentServiceAdapter implements OrderCancelPaym
             //~ LOG.debug("Different Payment provider: " + transaction.getPaymentProvider());
             //~ return;
         //~ }
+        
+        LOG.info("----------------------------------------transaction " + transaction);
 
         if (transaction.getEntries().isEmpty()) {
             LOG.warn("Cannot find auth transaction!");
             return;
         }
+        
+        currentLine = new Throwable().getStackTrace()[0].getLineNumber();
+        LOG.info("----------------------------------------" + currentLine);
 
         PaymentTransactionEntryModel authorizationTransaction = transaction.getEntries().get(0);
 
