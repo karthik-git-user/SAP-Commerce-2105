@@ -332,6 +332,7 @@
 	<extension name='miraklserviceshmc' />
 	<extension name='miraklpromotionshmc' />
 	<extension name='miraklcatalogmanagerhmc' />
+	<extension name='miraklcatalogintegrator' />
 	<extension name='miraklcatalogintegratorhmc' />
 	<extension name='miraklcsbackoffice' /> 
 	<extension name='miraklbackofficeaddon' /> 
