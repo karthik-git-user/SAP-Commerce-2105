@@ -328,11 +328,11 @@
 	<extension name='miraklwebservices' />
 	<extension name='miraklpromotions' />
 	<extension name='miraklmediaconversion' />
-	<extension name='miraklcatalogmanager' />
 	<extension name='miraklsampledataaddon' />
 	<extension name='miraklserviceshmc' />
 	<extension name='miraklpromotionshmc' />
 	<extension name='miraklcatalogmanagerhmc' />
+	<extension name='miraklcatalogintegratorhmc' />
 	<extension name='miraklcsbackoffice' /> 
 	<extension name='miraklbackofficeaddon' /> 
     
