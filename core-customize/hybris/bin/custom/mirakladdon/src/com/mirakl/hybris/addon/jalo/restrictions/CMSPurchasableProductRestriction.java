@@ -23,8 +23,8 @@ public class CMSPurchasableProductRestriction extends GeneratedCMSPurchasablePro
 	}
 
 	@Override
-	public String getDescription(SessionContext ctx) {
-		 return "there is no description";
+	public String getDescription(SessionContext sessionContext) {
+		return "CMSPurchasableProductRestriction";
 	}
 	
 }
