@@ -332,9 +332,7 @@
 -->
 	<extension name='miraklfulfilmentprocess' />    
 	<extension name='miraklwebservices' />
-<!--
 	<extension name='miraklpromotions' />
--->
 	<extension name='miraklmediaconversion' />
 	<extension name='miraklsampledataaddon' />
 <!--
