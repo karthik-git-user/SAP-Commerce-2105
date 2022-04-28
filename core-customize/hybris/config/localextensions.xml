@@ -315,9 +315,11 @@
     <extension name='saporderexchangebackoffice'/>
     <extension name='sapcoreaddon'/>-->
 <!-- novalnet extensions: -->
+<!--
     <extension name='novalnetcore' />
     <extension name='novalnetcheckoutaddon' />
     <extension name='novalnetbackoffice' />
+-->
 <!--
     <extension name='novalnetfulfilmentprocess' />
 -->
