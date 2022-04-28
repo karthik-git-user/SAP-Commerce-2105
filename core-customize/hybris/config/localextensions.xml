@@ -342,6 +342,7 @@
 -->
 	<extension name='miraklcsbackoffice' /> 
 	<extension name='miraklbackofficeaddon' /> 
+	<extension name='miraklchannelsaddon' /> 
     
   </extensions>
 </hybrisconfig>
