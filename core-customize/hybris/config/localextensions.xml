@@ -316,7 +316,25 @@
     <extension name='novalnetcore' />
     <extension name='novalnetcheckoutaddon' />
     <extension name='novalnetbackoffice' />
+<!--
     <extension name='novalnetfulfilmentprocess' />
+-->
+	<!-- mirakl extensions: -->
+	<extension name ='miraklcatalogmanager' />
+	<extension name='mirakladdon' />  
+	<extension name='miraklfacades' />        
+	<extension name='miraklservices' />    
+	<extension name='miraklfulfilmentprocess' />    
+	<extension name='miraklwebservices' />
+	<extension name='miraklpromotions' />
+	<extension name='miraklmediaconversion' />
+	<extension name='miraklcatalogmanager' />
+	<extension name='miraklsampledataaddon' />
+	<extension name='miraklserviceshmc' />
+	<extension name='miraklpromotionshmc' />
+	<extension name='miraklcatalogmanagerhmc' />
+	<extension name='miraklcsbackoffice' /> 
+	<extension name='miraklbackofficeaddon' /> 
     
   </extensions>
 </hybrisconfig>

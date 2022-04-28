@@ -1,0 +1,12 @@
+INSERT_UPDATE Currency ; isocode[unique = true]
+                       ; USD                   
+                       ; EUR                   
+
+INSERT_UPDATE OfferState ; code[unique=true] ; name[lang=en]  
+                         ; 1                 ; Used - Like New
+                         ; 11                ; New            
+
+INSERT_UPDATE Offer ; id[unique=true] ; productCode  ; state(code) ; currency(isocode)[default='USD'] ; deleted[default=false]
+                    ; testOffer1      ; testProduct1 ; 1           ;                                  ;                       
+                    ; testOffer2      ; testProduct2 ; 11          ; EUR                              ;                       
+                    ; testOffer3      ; testProduct2 ; 1           ;                                  ; true                  
