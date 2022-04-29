@@ -52,6 +52,7 @@ public class MiraklExportCatalogJob extends AbstractJobPerformable<MiraklExportC
       postProcessExportCatalogStrategy.postProcess(cronJob, context);
     } catch (Exception e) {
       LOG.error("An error occurred during the catalog export", e);
+      LOG.error("An error occurred during the catalog export" + e.getMessage());
       return new PerformResult(CronJobResult.ERROR, CronJobStatus.FINISHED);
     }
 
