@@ -324,9 +324,7 @@
     <extension name='novalnetfulfilmentprocess' />
 -->
 	<!-- mirakl extensions: -->
-<!--
 	<extension name ='miraklcatalogmanager' />
--->
 	<extension name='mirakladdon' />  
 	<extension name='miraklfacades' />        
 <!--
