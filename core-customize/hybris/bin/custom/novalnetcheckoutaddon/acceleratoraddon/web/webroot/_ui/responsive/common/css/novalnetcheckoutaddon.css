@@ -55,11 +55,3 @@ box-shadow: 0 0 8px 0px rgba(0,0,0,.4);
     z-index: 9999;
     cursor: pointer;
 }
-
-.novalnetAlipayImg {
-	width: 10%;
-}
-
-.novalnetWechatpayImg {
-	width: 10%;
-}

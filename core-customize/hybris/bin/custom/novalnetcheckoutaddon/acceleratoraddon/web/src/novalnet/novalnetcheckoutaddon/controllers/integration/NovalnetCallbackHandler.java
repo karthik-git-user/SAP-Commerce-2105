@@ -57,7 +57,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
 
     @Resource(name = "novalnetFacade")
     NovalnetFacade novalnetFacade;
-    
+
     public static final int TID_LENGTH = 17;
     public static final int REQUEST_IP = 4;
     public static final int DECIMAL_POINT_TO_BE_MOVED = 2;
@@ -74,13 +74,12 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
      * @return Boolean
      */
     public boolean beforeController(HttpServletRequest request, HttpServletResponse response, HandlerMethod handler) throws Exception {
-		
-		String parentTID = "";
+        String parentTID = "";
 
         // Check for callback URL
         if (request.getRequestURL().toString().contains("/novalnet/callback")) {
-			
-			final BaseStoreModel baseStore = novalnetFacade.getBaseStoreModel();
+
+            final BaseStoreModel baseStore = novalnetFacade.getBaseStoreModel();
 
             // NOVALNET IP ADDRESS FROM HOST
             String vendorScriptHostIpAddress = "";
@@ -94,7 +93,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                 LOG.info("Novalnet HOST IP missing");
                 return false;
             }
-            
+
             // Get remote IP address
             String callerIp = request.getHeader("HTTP_X_FORWARDED_FOR");
 
@@ -116,53 +115,52 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                 return false;
             }
 
-	    JSONObject tomJsonObject = new JSONObject(postData);
-	    JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
-	    JSONObject eventJsonObject = tomJsonObject.getJSONObject("event");
-	    JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
-	    JSONObject merchantJsonObject = tomJsonObject.getJSONObject("merchant");
-			
-			
-		String tokenString = eventJsonObject.get("tid").toString() + eventJsonObject.get("type").toString() + resultJsonObject.get(STATUS_LITERAL).toString();
+            JSONObject tomJsonObject = new JSONObject(postData);
+            JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
+            JSONObject eventJsonObject = tomJsonObject.getJSONObject("event");
+            JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
+            JSONObject merchantJsonObject = tomJsonObject.getJSONObject("merchant");
 
-		if ( !"".equals(transactionJsonObject.get(AMOUNT_LITERAL).toString()) ) {
-			tokenString += transactionJsonObject.get(AMOUNT_LITERAL).toString();
-		}
-		if ( !"".equals(transactionJsonObject.get(CURRENCY_LITERAL).toString()) ) {
-			tokenString += transactionJsonObject.get(CURRENCY_LITERAL).toString();
-		}
-		if (!"".equals(baseStore.getNovalnetPaymentAccessKey())) {
-			tokenString += new StringBuilder(baseStore.getNovalnetPaymentAccessKey().trim()).reverse().toString();
-		}
+            String tokenString = eventJsonObject.get("tid").toString() + eventJsonObject.get("type").toString() + resultJsonObject.get(STATUS_LITERAL).toString();
 
-		String createdHash = "";
-		try{
-			MessageDigest digest = MessageDigest.getInstance("SHA-256");
-			byte[] hash = digest.digest(tokenString.getBytes(StandardCharsets.UTF_8));
-			StringBuffer hexString = new StringBuffer();
+            if ( !"".equals(transactionJsonObject.get(AMOUNT_LITERAL).toString()) ) {
+                tokenString += transactionJsonObject.get(AMOUNT_LITERAL).toString();
+            }
+            if ( !"".equals(transactionJsonObject.get(CURRENCY_LITERAL).toString()) ) {
+                tokenString += transactionJsonObject.get(CURRENCY_LITERAL).toString();
+            }
+            if (!"".equals(baseStore.getNovalnetPaymentAccessKey())) {
+                tokenString += new StringBuilder(baseStore.getNovalnetPaymentAccessKey().trim()).reverse().toString();
+            }
 
-				for (int i = 0; i < hash.length; i++) {
-					String hex = Integer.toHexString(0xff & hash[i]);
-					if(hex.length() == 1) {
-						hexString.append('0');
-					}
-					hexString.append(hex);
-				}
-			
-			createdHash =  hexString.toString();
-			} catch(RuntimeException ex) {
-				LOG.error("RuntimeException ", ex);
-			}
+            String createdHash = "";
+            try{
+                MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                byte[] hash = digest.digest(tokenString.getBytes(StandardCharsets.UTF_8));
+                StringBuffer hexString = new StringBuffer();
 
-		if ( !eventJsonObject.get("checksum").toString().equals(createdHash) ) {
-			 displayMessage( "While notifying some data has been changed. The hash check failed");
-			 return false;
-		}
+                    for (int i = 0; i < hash.length; i++) {
+                        String hex = Integer.toHexString(0xff & hash[i]);
+                        if(hex.length() == 1) {
+                            hexString.append('0');
+                        }
+                        hexString.append(hex);
+                    }
+
+                createdHash =  hexString.toString();
+                } catch(RuntimeException ex) {
+                    LOG.error("RuntimeException ", ex);
+                }
+
+            if ( !eventJsonObject.get("checksum").toString().equals(createdHash) ) {
+                 displayMessage( "While notifying some data has been changed. The hash check failed");
+                 return false;
+            }
 
 
             // Get email address for callback notification
             String toEmailAddress = baseStore.getNovalnetVendorscriptToEmailAddress();
-            
+
             Map<String, String> capturePayments = new HashMap<String, String>();
             capturePayments.put("CREDITCARD", "CREDITCARD");
             capturePayments.put("INVOICE", "INVOICE");
@@ -170,7 +168,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             capturePayments.put("DIRECT_DEBIT_SEPA", "DIRECT_DEBIT_SEPA");
             capturePayments.put("GUARANTEED_DIRECT_DEBIT_SEPA", "GUARANTEED_DIRECT_DEBIT_SEPA");
             capturePayments.put("PAYPAL", "PAYPAL");
-            
+
             Map<String, String> cancelPayments = new HashMap<String, String>();
             cancelPayments.put("CREDITCARD", "CREDITCARD");
             cancelPayments.put("INVOICE", "INVOICE");
@@ -178,7 +176,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             cancelPayments.put("DIRECT_DEBIT_SEPA", "DIRECT_DEBIT_SEPA");
             cancelPayments.put("GUARANTEED_DIRECT_DEBIT_SEPA", "GUARANTEED_DIRECT_DEBIT_SEPA");
             cancelPayments.put("PAYPAL", "PAYPAL");
-            
+
             Map<String, String> updatePayments = new HashMap<String, String>();
             updatePayments.put("CREDITCARD", "CREDITCARD");
             updatePayments.put("INVOICE_START", "INVOICE_START");
@@ -191,7 +189,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             updatePayments.put("CASHPAYMENT", "CASHPAYMENT");
             updatePayments.put("POSTFINANCE", "POSTFINANCE");
             updatePayments.put("POSTFINANCE_CARD", "POSTFINANCE_CARD");
-            
+
             Map<String, String> refundPayments = new HashMap<String, String>();
             refundPayments.put("CREDITCARD_BOOKBACK", "CREDITCARD_BOOKBACK");
             refundPayments.put("REFUND_BY_BANK_TRANSFER_EU", "REFUND_BY_BANK_TRANSFER_EU");
@@ -201,7 +199,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             refundPayments.put("POSTFINANCE_REFUND", "POSTFINANCE_REFUND");
             refundPayments.put("GUARANTEED_INVOICE_BOOKBACK", "GUARANTEED_INVOICE_BOOKBACK");
             refundPayments.put("GUARANTEED_SEPA_BOOKBACK", "GUARANTEED_SEPA_BOOKBACK");
-            
+
             Map<String, String> creditPayments = new HashMap<String, String>();
             creditPayments.put("INVOICE_CREDIT", "INVOICE_CREDIT");
             creditPayments.put("CREDIT_ENTRY_CREDITCARD", "CREDIT_ENTRY_CREDITCARD");
@@ -213,7 +211,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             creditPayments.put("ONLINE_TRANSFER_CREDIT", "ONLINE_TRANSFER_CREDIT");
             creditPayments.put("MULTIBANCO_CREDIT", "MULTIBANCO_CREDIT");
             creditPayments.put("CREDIT_ENTRY_DE", "CREDIT_ENTRY_DE");
-            
+
 
             // Type of PAYMENTS available
             Map<String, String> initialPayments = new HashMap<String, String>();
@@ -226,8 +224,6 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             initialPayments.put("PAYPAL", "PAYPAL");
             initialPayments.put("ONLINE_TRANSFER", "ONLINE_TRANSFER");
             initialPayments.put("IDEAL", "IDEAL");
-            initialPayments.put("ALIPAY", "ALIPAY");
-            initialPayments.put("WECHATPAY", "WECHATPAY");
             initialPayments.put("EPS", "EPS");
             initialPayments.put("PAYSAFECARD", "PAYSAFECARD");
             initialPayments.put("GIROPAY", "GIROPAY");
@@ -240,9 +236,9 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             Map<String, String> chargebackPayments = new HashMap<String, String>();
             chargebackPayments.put("RETURN_DEBIT_SEPA", "RETURN_DEBIT_SEPA");
             chargebackPayments.put("REVERSAL", "REVERSAL");
-            chargebackPayments.put("CREDITCARD_CHARGEBACK", "CREDITCARD_CHARGEBACK");         
+            chargebackPayments.put("CREDITCARD_CHARGEBACK", "CREDITCARD_CHARGEBACK");
             chargebackPayments.put("PAYPAL_CHARGEBACK", "PAYPAL_CHARGEBACK");
-            
+
 
             // Type of CREDIT_ENTRY PAYMENT/COLLECTIONS available
             Map<String, String> collectionPayments = new HashMap<String, String>();
@@ -254,7 +250,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             collectionPayments.put("DEBT_COLLECTION_CREDITCARD", "DEBT_COLLECTION_CREDITCARD");
             collectionPayments.put("GUARANTEED_DEBT_COLLECTION", "GUARANTEED_DEBT_COLLECTION");
             collectionPayments.put("CASHPAYMENT_CREDIT", "CASHPAYMENT_CREDIT");
-            
+
             collectionPayments.put("DEBT_COLLECTION_DE", "DEBT_COLLECTION_DE");
 
             // Payment types for each payment method
@@ -268,8 +264,6 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             String[] instantBankTransferPaymentTypes = {"ONLINE_TRANSFER", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
             String[] bancontactPaymentTypes = {"BANCONTACT", "REFUND_BY_BANK_TRANSFER_EU"};
             String[] idealPaymentTypes = {"IDEAL", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
-            String[] alipayPaymentTypes = {"ALIPAY", "ALIPAY_REFUND"};
-            String[] wechatpayPaymentTypes = {"WECHATPAY", "WECHATPAY_REFUND "};
             String[] epsPaymentTypes = {"EPS", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
             String[] giropayPaymentTypes = {"GIROPAY", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
             String[] przelewy24PaymentTypes = {"PRZELEWY24", "PRZELEWY24_REFUND"};
@@ -286,8 +280,6 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             paymentTypes.put("novalnetPayPal", payPalPaymentTypes);
             paymentTypes.put("novalnetInstantBankTransfer", instantBankTransferPaymentTypes);
             paymentTypes.put("novalnetIdeal", idealPaymentTypes);
-            paymentTypes.put("novalnetAlipay", alipayPaymentTypes);
-            paymentTypes.put("novalnetWechatpay", wechatpayPaymentTypes);
             paymentTypes.put("novalnetEps", epsPaymentTypes);
             paymentTypes.put("novalnetGiropay", giropayPaymentTypes);
             paymentTypes.put("novalnetPrzelewy24", przelewy24PaymentTypes);
@@ -318,27 +310,25 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                     return false;
                 }
             }
-			String requestEventype = eventJsonObject.get("type").toString();
-			JSONObject refundRequestPaymentType = new JSONObject();
+            String requestEventype = eventJsonObject.get("type").toString();
+            JSONObject refundRequestPaymentType = new JSONObject();
             String requestPaymentType = transactionJsonObject.get("payment_type").toString();
             if("TRANSACTION_REFUND".equals(requestEventype)) {
-				 refundRequestPaymentType = transactionJsonObject.getJSONObject("refund");
-				 requestPaymentType = refundRequestPaymentType.get("payment_type").toString();
-			}
-            
-            
+                 refundRequestPaymentType = transactionJsonObject.getJSONObject("refund");
+                 requestPaymentType = refundRequestPaymentType.get("payment_type").toString();
+            }
+
+
             if (("TRANSACTION_CAPTURE".equals(requestEventype) && !capturePayments.containsValue(requestPaymentType)) || ("TRANSACTION_UPDATE".equals(requestEventype) && !updatePayments.containsValue(requestPaymentType)) || ("TRANSACTION_REFUND".equals(requestEventype) && !refundPayments.containsValue(refundRequestPaymentType.get("payment_type").toString())) || ("CREDIT".equals(requestEventype) && !creditPayments.containsValue(requestPaymentType)) || ("CHARGEBACK".equals(requestEventype) && !chargebackPayments.containsValue(requestPaymentType)) || ("TRANSACTION_CANCEL".equals(requestEventype) && !cancelPayments.containsValue(requestPaymentType)) ) {
-				displayMessage("Payment type " + requestPaymentType + " is not supported for event type " + requestEventype);
+                displayMessage("Payment type " + requestPaymentType + " is not supported for event type " + requestEventype);
                 return false;
-			}
+            }
 
             // Validate TID paymentdescription
             if ((chargebackPayments.containsValue(requestPaymentType) || collectionPayments.containsValue(requestPaymentType)) && ("".equals(eventJsonObject.get("parent_tid").toString()) || eventJsonObject.get("parent_tid").toString().length() != TID_LENGTH)) {
                 displayMessage("Novalnet webhook received. TID not valid");
                 return false;
             }
-            
-            
 
             String referenceTid = transactionJsonObject.get("tid").toString();
             String[] successStatus = {"CONFIRMED", "PENDING", "ON_HOLD"};
@@ -423,7 +413,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                     if ("CONFIRMED".equals(transactionJsonObject.get(STATUS_LITERAL).toString()) && Arrays.asList(pendingStatus).contains(paymentInfo.get(0).getPaymentGatewayStatus())) {
                         callbackComments = (("75".equals(paymentInfo.get(0).getPaymentGatewayStatus())) && "GUARANTEED_INVOICE".equals(requestPaymentType)) ? "The transaction has been confirmed successfully for the TID:" + transactionJsonObject.get("tid").toString() + "and the due date updated as" + transactionJsonObject.get("due_date").toString() + "This is processed as a guarantee payment" : "The transaction has been confirmed on " + currentDate.toString();
                         String[] invoicePaymentType = {"GUARANTEED_INVOICE", "INVOICE_START"};
-                        
+
                         novalnetFacade.updatePaymentInfo(paymentInfo, transactionJsonObject.get(STATUS_LITERAL).toString());
                         paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
                         novalnetFacade.updateOrderStatus(orderNo, paymentInfoModel);
@@ -440,7 +430,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                             novalnetFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
                             novalnetFacade.updatePaymentInfo(paymentInfo, transactionJsonObject.get(STATUS_LITERAL).toString());
                             paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
-							novalnetFacade.updateOrderStatus(orderNo, paymentInfoModel);
+                            novalnetFacade.updateOrderStatus(orderNo, paymentInfoModel);
                             sendEmail(callbackComments, toEmailAddress);
                             return false;
                         } else if ("CONFIRMED".equals(transactionJsonObject.get(STATUS_LITERAL).toString())) {
@@ -448,7 +438,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                             String[] invoicePaymentType = {"GUARANTEED_INVOICE", "INVOICE_START"};
                             novalnetFacade.updatePaymentInfo(paymentInfo, transactionJsonObject.get(STATUS_LITERAL).toString());
                             paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
-							novalnetFacade.updateOrderStatus(orderNo, paymentInfoModel);
+                            novalnetFacade.updateOrderStatus(orderNo, paymentInfoModel);
                             novalnetFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
                             sendEmail(callbackComments, toEmailAddress);
                             return false;
@@ -491,25 +481,25 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                     // Form callback comments
                     String[] chargeBackPaymentType = {"CREDITCARD_CHARGEBACK", "PAYPAL_CHARGEBACK", "RETURN_DEBIT_SEPA", "REVERSAL"};
                     BigDecimal refundFormattedAmount = new BigDecimal(0);
-                    
-                    if(!Arrays.asList(chargeBackPaymentType).contains(requestPaymentType)) {
-						long refundAmountToBeFormat = Integer.parseInt(refundRequestPaymentType.get(AMOUNT_LITERAL).toString());
 
-					// Format the order amount to currency format
-						refundFormattedAmount = new BigDecimal(refundAmountToBeFormat).movePointLeft(DECIMAL_POINT_TO_BE_MOVED);
-					}
-					
-					String stidMsg = ". The subsequent TID: ";
-					
-					if(Arrays.asList(chargeBackPaymentType).contains(requestPaymentType)) {
-						callbackComments = "Chargeback executed successfully for the TID: " + eventJsonObject.get("parent_tid").toString() + " amount: " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + stidMsg + transactionJsonObject.get("tid").toString();
-					} else if("REVERSAL".equals(requestPaymentType)) {
-						callbackComments = "Chargeback executed for reversal of TID:" + eventJsonObject.get("parent_tid").toString() + " with the amount  " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + stidMsg + transactionJsonObject.get("tid").toString();
-					} else if("RETURN_DEBIT_SEPA".equals(requestPaymentType)) {
-						callbackComments = "Chargeback executed for return debit of TID:" + eventJsonObject.get("parent_tid").toString() + " with the amount  " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + stidMsg + transactionJsonObject.get("tid").toString();
-					} else {
-						callbackComments =  "Refund has been initiated for the TID " + eventJsonObject.get("parent_tid").toString() + " with the amount : " + refundFormattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + ". New TID: " + transactionJsonObject.get("tid").toString();
-					}
+                    if(!Arrays.asList(chargeBackPaymentType).contains(requestPaymentType)) {
+                        long refundAmountToBeFormat = Integer.parseInt(refundRequestPaymentType.get(AMOUNT_LITERAL).toString());
+
+                    // Format the order amount to currency format
+                        refundFormattedAmount = new BigDecimal(refundAmountToBeFormat).movePointLeft(DECIMAL_POINT_TO_BE_MOVED);
+                    }
+
+                    String stidMsg = ". The subsequent TID: ";
+
+                    if(Arrays.asList(chargeBackPaymentType).contains(requestPaymentType)) {
+                        callbackComments = "Chargeback executed successfully for the TID: " + eventJsonObject.get("parent_tid").toString() + " amount: " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + stidMsg + transactionJsonObject.get("tid").toString();
+                    } else if("REVERSAL".equals(requestPaymentType)) {
+                        callbackComments = "Chargeback executed for reversal of TID:" + eventJsonObject.get("parent_tid").toString() + " with the amount  " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + stidMsg + transactionJsonObject.get("tid").toString();
+                    } else if("RETURN_DEBIT_SEPA".equals(requestPaymentType)) {
+                        callbackComments = "Chargeback executed for return debit of TID:" + eventJsonObject.get("parent_tid").toString() + " with the amount  " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + stidMsg + transactionJsonObject.get("tid").toString();
+                    } else {
+                        callbackComments =  "Refund has been initiated for the TID " + eventJsonObject.get("parent_tid").toString() + " with the amount : " + refundFormattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + ". New TID: " + transactionJsonObject.get("tid").toString();
+                    }
 
                     // Update callback comments
                     novalnetFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);

@@ -20,11 +20,7 @@
     
 	<bean id="novalnetcoreSystemSetup" parent="abstractCoreSystemSetup" class="de.hybris.novalnet.core.setup.NovalnetcoreSystemSetup">
     </bean>
-    <bean id="novalnetOrderCancelPaymentServiceAdapter" class="de.hybris.novalnet.core.service.NovalnetOrderCancelPaymentServiceAdapter">
-        <property name="paymentService" ref="paymentService" />
-        <property name="modelService" ref="modelService" />
-        <property name="calculationService" ref="calculationService" />
-    </bean>
+    
 
 
 

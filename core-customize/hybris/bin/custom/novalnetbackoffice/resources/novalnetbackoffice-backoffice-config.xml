@@ -379,41 +379,5 @@
             </editorArea:tab>
         </editorArea:editorArea>
     </context>
-    
-    <context merge-by="type" parent="StandardPaymentMode" type="NovalnetAlipayPaymentMode" component="editor-area">
-        <editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea">
-            <editorArea:tab name="hmc.properties">
-                <editorArea:section name="tab.novalnetpaymentmode.properties">
-                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetTestMode"/>
-                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetEndUserInfo"/>
-                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetOrderSuccessStatus"/>
-                </editorArea:section>
-            </editorArea:tab>
-        </editorArea:editorArea>
-    </context>
-    
-    <context merge-by="type" parent="StandardPaymentMode" type="NovalnetWechatpayPaymentMode" component="editor-area">
-        <editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea">
-            <editorArea:tab name="hmc.properties">
-                <editorArea:section name="tab.novalnetpaymentmode.properties">
-                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetTestMode"/>
-                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetEndUserInfo"/>
-                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetOrderSuccessStatus"/>
-                </editorArea:section>
-            </editorArea:tab>
-        </editorArea:editorArea>
-    </context>
-    
-	<script language="javascript">
-		<![CDATA[
-			alert();
-		]]>
-	</script>
 
 </config>

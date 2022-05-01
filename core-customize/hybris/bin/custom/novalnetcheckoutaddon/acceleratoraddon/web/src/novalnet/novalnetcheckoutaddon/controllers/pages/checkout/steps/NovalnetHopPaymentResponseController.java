@@ -133,7 +133,7 @@ public class NovalnetHopPaymentResponseController extends NovalnetPaymentMethodC
         
         String transactionSecret = getSessionService().getAttribute("txn_secret");
                 
-        if (! "".equals(resultMap.get("checksum").toString()) && ! "".equals(resultMap.get("tid").toString()) && ! "".equals(transactionSecret) && ! "".equals(resultMap.get("status").toString()) && ! "FAILURE".equals(resultMap.get("status").toString())) 
+        if (! "".equals(resultMap.get("checksum").toString()) && ! "".equals(resultMap.get("tid").toString()) && ! "".equals(transactionSecret) && ! "".equals(resultMap.get("status").toString())) 
 		{
 		   String token_string = resultMap.get("tid").toString() + transactionSecret + resultMap.get("status").toString() + new StringBuilder( getSessionService().getAttribute("txn_check") ).reverse().toString();
  
@@ -152,9 +152,9 @@ public class NovalnetHopPaymentResponseController extends NovalnetPaymentMethodC
 		} 
 		else
 		{
-			final String statusMessage = resultMap.get("status_text").toString() != null ? resultMap.get("status_text").toString() : resultMap.get("status_desc").toString();
-			getSessionService().setAttribute("novalnetCheckoutError", statusMessage );
-			return getCheckoutStep().currentStep();
+			  final String statusMessage = "While redirecting some data has been changed. The hash check failed";
+			  getSessionService().setAttribute("novalnetCheckoutError", statusMessage );
+			  return getCheckoutStep().currentStep();
 		}
 
     }
