@@ -47,7 +47,7 @@ public class MiraklAcceleratorCheckoutFacadeTest {
 
   @Before
   public void setUp() {
-    testObj.setDefaultFreeDeliveryModeCode(MIRAKL_DEFAULT_SHIPPING);
+    testObj.setDefaultFreeDeliveryModeCode();
     when(cartFacadeMock.hasSessionCart()).thenReturn(true);
     when(cartServiceMock.getSessionCart()).thenReturn(cartMock);
     when(deliveryServiceMock.getDeliveryModeForCode(MIRAKL_DEFAULT_SHIPPING)).thenReturn(deliveryModeMock);

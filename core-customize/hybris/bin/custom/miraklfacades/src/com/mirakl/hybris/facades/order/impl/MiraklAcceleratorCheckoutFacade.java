@@ -48,6 +48,6 @@ public class MiraklAcceleratorCheckoutFacade extends DefaultAcceleratorCheckoutF
   @Required
   //~ public void setDefaultFreeDeliveryModeCode(String defaultFreeDeliveryModeCode) {
   public void setDefaultFreeDeliveryModeCode() {
-    this.defaultFreeDeliveryModeCode  = "FreeDeliveryModeCode";
+    this.defaultFreeDeliveryModeCode  = "mirakl-default-shipping";
   }
 }
