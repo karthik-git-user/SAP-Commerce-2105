@@ -34,7 +34,9 @@
     <alias name="miraklAcceleratorCheckoutFacade" alias="acceleratorCheckoutFacade" />
     <bean id="miraklAcceleratorCheckoutFacade" class="com.mirakl.hybris.facades.order.impl.MiraklAcceleratorCheckoutFacade"
           parent="defaultAcceleratorCheckoutFacade" >
+<!--
         <property name="defaultFreeDeliveryModeCode" value="FreeDeliveryModeCode"/>
+-->
     </bean>
 
     <alias name="defaultShopFacade" alias="shopFacade"/>

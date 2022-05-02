@@ -36,7 +36,6 @@
         <property name="acceleratorCheckoutService" ref="acceleratorCheckoutService"/>
         <property name="cartService" ref="cartService"/>
         <property name="flexibleSearchService" ref="flexibleSearchService"/>
-        <property name="defaultFreeDeliveryModeCode" value="FreeDeliveryModeCode"/>
     </bean>
 
     <bean id="novalnetcheckoutaddonSampleDataEventListener" parent="abstractGenericAddOnSampleDataEventListener">
