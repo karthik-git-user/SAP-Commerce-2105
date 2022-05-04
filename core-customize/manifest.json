@@ -114,11 +114,6 @@
             "addon":"miraklchannelsaddon",
             "storefront":"yacceleratorstorefront",
             "template":"yacceleratorstorefront"
-        },
-        {
-            "addon":"novalnetcheckoutaddon",
-            "storefront":"yacceleratorstorefront",
-            "template":"yacceleratorstorefront"
         }
     ],
     "properties": [
