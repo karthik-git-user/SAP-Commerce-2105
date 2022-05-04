@@ -100,10 +100,10 @@ import java.net.Inet6Address;
 import java.net.UnknownHostException;
 import java.util.Base64;
 
-import com.mirakl.client.mmp.front.domain.order.create.MiraklCreatedOrders;
-import com.mirakl.client.mmp.front.domain.order.create.MiraklOfferNotShippable;
-import com.mirakl.hybris.core.fulfilment.events.NotShippableOffersEvent;
-import com.mirakl.hybris.core.order.services.MiraklOrderService;
+//~ import com.mirakl.client.mmp.front.domain.order.create.MiraklCreatedOrders;
+//~ import com.mirakl.client.mmp.front.domain.order.create.MiraklOfferNotShippable;
+//~ import com.mirakl.hybris.core.fulfilment.events.NotShippableOffersEvent;
+//~ import com.mirakl.hybris.core.order.services.MiraklOrderService;
 
 /**
  * NovalnetFacade
@@ -495,7 +495,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
 		
 		beforePlaceOrder(cartModel);
 		final OrderModel orderModel = placeOrder(cartModel);
-		MiraklCreatedOrders marketplaceOrders = miraklOrderService.createMarketplaceOrders(orderModel);
+		//~ MiraklCreatedOrders marketplaceOrders = miraklOrderService.createMarketplaceOrders(orderModel);
 		String orderNumber = orderModel.getCode();
 		
 		updateOrderStatus(orderNumber, paymentInfoModel);
