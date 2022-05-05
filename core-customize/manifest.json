@@ -101,17 +101,7 @@
             "template": "yacceleratorstorefront"
         },
         {
-            "addon":"mirakladdon",
-            "storefront":"yacceleratorstorefront",
-            "template":"yacceleratorstorefront"
-        },
-        {
-            "addon":"miraklsampledataaddon",
-            "storefront":"yacceleratorstorefront",
-            "template":"yacceleratorstorefront"
-        },
-        {
-            "addon":"miraklchannelsaddon",
+            "addon":"novalnetcheckoutaddon",
             "storefront":"yacceleratorstorefront",
             "template":"yacceleratorstorefront"
         }
