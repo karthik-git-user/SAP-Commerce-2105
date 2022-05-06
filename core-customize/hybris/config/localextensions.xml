@@ -180,9 +180,7 @@
 	  <extension name= 'warehousingbackoffice' />
 	  <extension name= 'warehousingfacades' />
 	  <extension name= 'warehousingwebservices' />
-<!--
 	  <extension name= 'yacceleratorordermanagement' />
--->
 	  <extension name= 'personalizationcms' />
 	  <extension name= 'personalizationcmsbackoffice' />
 	  <extension name= 'personalizationcmsweb' />
