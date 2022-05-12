@@ -39,7 +39,9 @@
     <extension name='commercefacades' />
     <extension name='commerceservices' />
     <extension name='commerceservicesbackoffice' />
+<!--
     <extension name='commercewebservices' />
+-->
     <extension name='commercewebservicescommons' />
     <extension name='commercewebservicestests' />
     <extension name='yocc' />
