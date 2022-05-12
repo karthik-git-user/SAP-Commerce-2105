@@ -103,8 +103,8 @@
         },
         {
 			"addon":"acceleratorwebservicesaddon",
-			"storefront":"ycommercewebservices",
-			"template":"ycommercewebservices"
+			"storefront":"commercewebservices",
+			"template":"commercewebservices"
 		}
     ],
     "aspects": [
