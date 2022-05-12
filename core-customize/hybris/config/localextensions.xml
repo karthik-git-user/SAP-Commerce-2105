@@ -190,6 +190,7 @@
     <extension name='cloudcommons' />
     <extension name='cloudhotfolder' />-->
     
+<!--
     <extension name='mirakladdon' />  
 	<extension name='miraklfacades' />        
 	<extension name='miraklservices' />    
@@ -203,7 +204,10 @@
 	<extension name='miraklmediaconversion' />
 	<extension name='miraklbackofficeaddon' />
 	<extension name='miraklchannelsaddon' />
-	
+-->
+	<extension name="acceleratorwebservicesaddon" />  
+	<extension name="acceleratorfacades"/>
+	<extension name="ycommercewebservices"/>
 
   </extensions>
 </hybrisconfig>

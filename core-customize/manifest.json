@@ -102,10 +102,10 @@
             "template": "yacceleratorstorefront"
         },
         {
-            "addon": "miraklsampledataaddon",
-            "storefront": "yacceleratorstorefront",
-            "template": "yacceleratorstorefront"
-        }
+			"addon":"acceleratorwebservicesaddon",
+			"storefront":"ycommercewebservices",
+			"template":"ycommercewebservices"
+		}
     ],
     "aspects": [
         {
