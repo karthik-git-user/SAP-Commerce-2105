@@ -179,6 +179,8 @@
     <extension name='cmswebservices' />
     <extension name='webservicescommons' />
     <extension name='ywebservices' />
+    
+    <extension name='novalnetocc' />
 
 <!-- Sample Extensions -->
     <extension name='spartacussampledata' />
