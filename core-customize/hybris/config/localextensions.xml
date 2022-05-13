@@ -48,12 +48,12 @@
     <extension name='configurablebundlebackoffice' />
     <extension name='configurablebundlefacades' />
     <extension name='configurablebundleservices' />
-    <!--<extension name='acceleratorbackoffice' />
+    <extension name='acceleratorbackoffice' />
     <extension name='acceleratorcms' />
     <extension name='acceleratorfacades' />
     <extension name='acceleratorocc' />
     <extension name='acceleratorservices' />
-    <extension name='acceleratorstorefrontcommons' />-->
+    <extension name='acceleratorstorefrontcommons' />
     <extension name='acceleratorocc' />
     <extension name='addonsupport' />
     <extension name='couponbackoffice' />
