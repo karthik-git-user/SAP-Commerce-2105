@@ -180,7 +180,7 @@
     <extension name='webservicescommons' />
     <extension name='ywebservices' />
     
-    <extension name='novalnetoccaddon' />
+    <extension name='novalnetocc' />
     
 
 <!-- Sample Extensions -->
