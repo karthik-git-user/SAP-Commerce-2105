@@ -180,7 +180,8 @@
     <extension name='webservicescommons' />
     <extension name='ywebservices' />
     
-    <extension name='novalnetocc' />
+    <extension name='novalnetoccaddon' />
+    
 
 <!-- Sample Extensions -->
     <extension name='spartacussampledata' />
