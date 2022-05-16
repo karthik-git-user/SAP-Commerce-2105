@@ -208,9 +208,7 @@
 	<extension name='miraklbackofficeaddon' />
 	<extension name='miraklchannelsaddon' />
 -->
-<!--
 	<extension name="acceleratorwebservicesaddon" />  
--->
 	<extension name="acceleratorfacades"/>
 <!--
 	<extension name="ycommercewebservices"/>

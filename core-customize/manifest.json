@@ -100,7 +100,12 @@
             "addon": "personalizationaddon",
             "storefront": "yacceleratorstorefront",
             "template": "yacceleratorstorefront"
-        }
+        },
+        {
+			"addon":"acceleratorwebservicesaddon",
+			"storefront":"commercewebservices",
+			"template":"commercewebservices"
+		}
     ],
     "aspects": [
         {
