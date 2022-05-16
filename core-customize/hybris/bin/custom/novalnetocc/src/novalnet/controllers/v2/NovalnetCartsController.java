@@ -87,7 +87,7 @@ public class NovalnetCartsController
 	public PointOfServiceListWsDTO getConsolidatedPickupLocations(
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_LEVEL) final String fields)
 	{
-		LOG.info("""""test90"""""");
+		LOG.info("test80");
 		final PointOfServiceDataList pointOfServices = new PointOfServiceDataList();
 		pointOfServices.setPointOfServices(acceleratorCheckoutFacade.getConsolidatedPickupOptions());
 		return dataMapper.map(pointOfServices, PointOfServiceListWsDTO.class, fields);
@@ -103,7 +103,7 @@ public class NovalnetCartsController
 			@ApiParam(value = "The name of the store where items will be picked up", required = true) @RequestParam final String storeName,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_LEVEL) final String fields) throws CommerceCartModificationException
 	{
-		LOG.info("""""test105"""""");
+		LOG.info("test106");
 		final CartModificationDataList modifications = new CartModificationDataList();
 		modifications.setCartModificationList(acceleratorCheckoutFacade.consolidateCheckoutCart(storeName));
 		final CartModificationListWsDTO result = dataMapper.map(modifications, CartModificationListWsDTO.class, fields);
@@ -125,7 +125,7 @@ public class NovalnetCartsController
 			@ApiParam(value = "Cart identifier: cart code for logged in user, cart guid for anonymous user, 'current' for the last modified cart", required = true) @PathVariable final String cartId,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_LEVEL) final String fields)
 	{
-		LOG.info("""""test126"""""");
+		LOG.info("test126");
 		final PaymentData paymentData = commerceWebServicesPaymentFacade.beginSopCreateSubscription(responseUrl,
 				buildMerchantCallbackUrl(extendedMerchantCallback, baseSiteId, userId, cartId));
 		final PaymentRequestWsDTO result = dataMapper.map(paymentData, PaymentRequestWsDTO.class, fields);
@@ -170,7 +170,7 @@ public class NovalnetCartsController
 			@ApiIgnore final SopPaymentDetailsWsDTO sopPaymentDetails,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_LEVEL) final String fields)
 	{
-		LOG.info("""""test170"""""");
+		LOG.info("test173");
 		final Errors errors = validate(sopPaymentDetails, "SOP data", sopPaymentDetailsValidator);
 		final PaymentSubscriptionResultData paymentSubscriptionResultData = commerceWebServicesPaymentFacade
 				.completeSopCreateSubscription(getParameterMap(request), sopPaymentDetails.isSavePaymentInfo(),
@@ -267,7 +267,7 @@ public class NovalnetCartsController
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_LEVEL) final String fields,
 			@ApiIgnore final HttpServletResponse response)
 	{
-		LOG.info("""""test266"""""");
+		LOG.info("test270");
 		final PaymentSubscriptionResultData paymentSubscriptionResultData = commerceWebServicesPaymentFacade
 				.getPaymentSubscriptionResult(cartId);
 		if (paymentSubscriptionResultData == null) //still waiting for payment provider response
@@ -287,7 +287,7 @@ public class NovalnetCartsController
 	@ApiBaseSiteIdUserIdAndCartIdParam
 	public void removeSopPaymentResponse(@PathVariable final String cartId)
 	{
-		LOG.info("""""test285"""""");
+		LOG.info("test285");
 		commerceWebServicesPaymentFacade.removePaymentSubscriptionResult(cartId);
 	}
 
