@@ -80,7 +80,7 @@ public class NovalnetCartsController
 
 	@RequestMapping(value = "/{cartId}/novalnet/consolidate", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(nickname = "getConsolidatedPickupLocations", value = "Get consolidated pickup options.", notes =
+	@ApiOperation(nickname = "novalnetgetConsolidatedPickupLocations", value = "Get consolidated pickup options.", notes =
 			"Returns a list of stores that have all the pick-up items in stock.\n\nNote, if there are no stores "
 					+ "that have all the pick up items in stock, or all items are already set to the same pick up location, the response returns an empty list.")
 	@ApiBaseSiteIdUserIdAndCartIdParam
@@ -95,7 +95,7 @@ public class NovalnetCartsController
 
 	@RequestMapping(value = "/{cartId}/novalnet/consolidate", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(nickname = "createConsolidatedPickupLocation", value = "Handles the consolidating pickup locations.", notes =
+	@ApiOperation(nickname = "novalnetcreateConsolidatedPickupLocation", value = "Handles the consolidating pickup locations.", notes =
 			"Specifies one store location where all items will be picked up.\n\nNote, if any of the items are "
 					+ "not available at the specified location, these items are removed from the cart.")
 	@ApiBaseSiteIdUserIdAndCartIdParam
@@ -113,7 +113,7 @@ public class NovalnetCartsController
 	@RequestMapping(value = "/{cartId}/novalnet/payment/sop/request", method = RequestMethod.GET)
 	@ResponseBody
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_GUEST", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	@ApiOperation(nickname = "getSopPaymentRequestDetails", value = "Get information needed for create subscription", notes =
+	@ApiOperation(nickname = "novalnetgetSopPaymentRequestDetails", value = "Get information needed for create subscription", notes =
 			"Returns the necessary information for creating a subscription that contacts the "
 					+ "payment provider directly. This information contains the payment provider URL and a list of parameters that are needed to create the subscription.")
 	public PaymentRequestWsDTO getSopPaymentRequestDetails(@ApiParam(value =
@@ -161,7 +161,7 @@ public class NovalnetCartsController
 	@RequestMapping(value = "/{cartId}/novalnet/payment/sop/response", method = RequestMethod.POST)
 	@ResponseBody
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_GUEST", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	@ApiOperation(nickname = "doHandleSopPaymentResponse", value = "Handles response from payment provider and create payment details", notes =
+	@ApiOperation(nickname = "novalnetdoHandleSopPaymentResponse", value = "Handles response from payment provider and create payment details", notes =
 			"Handles the response from the payment provider and creates payment details."
 					+ "\n\nNote, the “Try it out” button is not enabled for this method (always returns an error) because the Extended Carts Controller handles parameters differently, depending "
 					+ "on which payment provider is used. For more information about this controller, please refer to the “acceleratorwebservicesaddon AddOn” documentation on help.hybris.com.")
@@ -256,7 +256,7 @@ public class NovalnetCartsController
 	@RequestMapping(value = "/{cartId}/novalnet/payment/sop/response", method = RequestMethod.GET)
 	@ResponseBody
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_GUEST", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	@ApiOperation(nickname = "getSopPaymentResponse", value = "Get information about create subscription request results", notes =
+	@ApiOperation(nickname = "novalnetgetSopPaymentResponse", value = "Get information about create subscription request results", notes =
 			"Returns information related to creating subscription request results. "
 					+ "If there is no response from the payment provider, a \"202 Accepted\" status is returned. If the subscription is created successfully, the payment details "
 					+ "are returned. Otherwise, an error response is returned.\n\nNote, the “Try it out” button is not enabled for this method (always returns an error) because "
@@ -283,7 +283,7 @@ public class NovalnetCartsController
 	@RequestMapping(value = "/{cartId}/novalnet/payment/sop/response", method = RequestMethod.DELETE)
 	@ResponseBody
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_GUEST", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	@ApiOperation(nickname = "removeSopPaymentResponse", value = "Deletes payment provider response related to cart.", notes = "Deletes the payment provider response related to the specified cart.")
+	@ApiOperation(nickname = "novalnetremoveSopPaymentResponse", value = "Deletes payment provider response related to cart.", notes = "Deletes the payment provider response related to the specified cart.")
 	@ApiBaseSiteIdUserIdAndCartIdParam
 	public void removeSopPaymentResponse(@PathVariable final String cartId)
 	{
