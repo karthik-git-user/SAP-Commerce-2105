@@ -1,17 +1,14 @@
-/*
- * Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved.
- */
-package novalnet.controllers.v2;
+package de.hybris.platform.acceleratorocc.controllers.v2;
 
 import de.hybris.platform.acceleratorfacades.order.AcceleratorCheckoutFacade;
 import de.hybris.platform.acceleratorfacades.payment.data.PaymentSubscriptionResultData;
 import de.hybris.platform.acceleratorservices.payment.data.PaymentData;
 import de.hybris.platform.acceleratorservices.payment.data.PaymentErrorField;
-import de.hybris.platform.acceleratorwebservicesaddon.exceptions.PaymentProviderException;
-import de.hybris.platform.acceleratorwebservicesaddon.dto.payment.PaymentRequestWsDTO;
-import de.hybris.platform.acceleratorwebservicesaddon.dto.payment.SopPaymentDetailsWsDTO;
-import de.hybris.platform.acceleratorwebservicesaddon.payment.facade.CommerceWebServicesPaymentFacade;
-import de.hybris.platform.acceleratorwebservicesaddon.validator.SopPaymentDetailsValidator;
+import de.hybris.platform.acceleratorocc.exceptions.PaymentProviderException;
+import de.hybris.platform.acceleratorocc.dto.payment.PaymentRequestWsDTO;
+import de.hybris.platform.acceleratorocc.dto.payment.SopPaymentDetailsWsDTO;
+import de.hybris.platform.acceleratorocc.payment.facade.CommerceWebServicesPaymentFacade;
+import de.hybris.platform.acceleratorocc.validator.SopPaymentDetailsValidator;
 import de.hybris.platform.commercefacades.order.CheckoutFacade;
 import de.hybris.platform.commercefacades.order.data.CCPaymentInfoData;
 import de.hybris.platform.commercefacades.storelocator.data.PointOfServiceDataList;
@@ -80,14 +77,14 @@ public class NovalnetCartsController
 
 	@RequestMapping(value = "/{cartId}/novalnet/consolidate", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(nickname = "novalnetgetConsolidatedPickupLocations", value = "Get consolidated pickup options.", notes =
+	@ApiOperation(nickname = "novalnetGetConsolidatedPickupLocations", value = "Get consolidated pickup options.", notes =
 			"Returns a list of stores that have all the pick-up items in stock.\n\nNote, if there are no stores "
 					+ "that have all the pick up items in stock, or all items are already set to the same pick up location, the response returns an empty list.")
 	@ApiBaseSiteIdUserIdAndCartIdParam
 	public PointOfServiceListWsDTO getConsolidatedPickupLocations(
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_LEVEL) final String fields)
 	{
-		LOG.info("test80");
+		LOG.info("+++++++++++++++++++++87++++++++++++++");
 		final PointOfServiceDataList pointOfServices = new PointOfServiceDataList();
 		pointOfServices.setPointOfServices(acceleratorCheckoutFacade.getConsolidatedPickupOptions());
 		return dataMapper.map(pointOfServices, PointOfServiceListWsDTO.class, fields);
@@ -95,7 +92,7 @@ public class NovalnetCartsController
 
 	@RequestMapping(value = "/{cartId}/novalnet/consolidate", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(nickname = "novalnetcreateConsolidatedPickupLocation", value = "Handles the consolidating pickup locations.", notes =
+	@ApiOperation(nickname = "novalnetCreateConsolidatedPickupLocation", value = "Handles the consolidating pickup locations.", notes =
 			"Specifies one store location where all items will be picked up.\n\nNote, if any of the items are "
 					+ "not available at the specified location, these items are removed from the cart.")
 	@ApiBaseSiteIdUserIdAndCartIdParam
@@ -103,7 +100,7 @@ public class NovalnetCartsController
 			@ApiParam(value = "The name of the store where items will be picked up", required = true) @RequestParam final String storeName,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_LEVEL) final String fields) throws CommerceCartModificationException
 	{
-		LOG.info("test106");
+		LOG.info("--------------103==================")
 		final CartModificationDataList modifications = new CartModificationDataList();
 		modifications.setCartModificationList(acceleratorCheckoutFacade.consolidateCheckoutCart(storeName));
 		final CartModificationListWsDTO result = dataMapper.map(modifications, CartModificationListWsDTO.class, fields);
@@ -113,7 +110,7 @@ public class NovalnetCartsController
 	@RequestMapping(value = "/{cartId}/novalnet/payment/sop/request", method = RequestMethod.GET)
 	@ResponseBody
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_GUEST", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	@ApiOperation(nickname = "novalnetgetSopPaymentRequestDetails", value = "Get information needed for create subscription", notes =
+	@ApiOperation(nickname = "novalnetGetSopPaymentRequestDetails", value = "Get information needed for create subscription", notes =
 			"Returns the necessary information for creating a subscription that contacts the "
 					+ "payment provider directly. This information contains the payment provider URL and a list of parameters that are needed to create the subscription.")
 	public PaymentRequestWsDTO getSopPaymentRequestDetails(@ApiParam(value =
@@ -125,7 +122,7 @@ public class NovalnetCartsController
 			@ApiParam(value = "Cart identifier: cart code for logged in user, cart guid for anonymous user, 'current' for the last modified cart", required = true) @PathVariable final String cartId,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_LEVEL) final String fields)
 	{
-		LOG.info("test126");
+		LOG.info("=========125=========");
 		final PaymentData paymentData = commerceWebServicesPaymentFacade.beginSopCreateSubscription(responseUrl,
 				buildMerchantCallbackUrl(extendedMerchantCallback, baseSiteId, userId, cartId));
 		final PaymentRequestWsDTO result = dataMapper.map(paymentData, PaymentRequestWsDTO.class, fields);
@@ -161,16 +158,16 @@ public class NovalnetCartsController
 	@RequestMapping(value = "/{cartId}/novalnet/payment/sop/response", method = RequestMethod.POST)
 	@ResponseBody
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_GUEST", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	@ApiOperation(nickname = "novalnetdoHandleSopPaymentResponse", value = "Handles response from payment provider and create payment details", notes =
+	@ApiOperation(nickname = "novalnetDoHandleSopPaymentResponse", value = "Handles response from payment provider and create payment details", notes =
 			"Handles the response from the payment provider and creates payment details."
 					+ "\n\nNote, the “Try it out” button is not enabled for this method (always returns an error) because the Extended Carts Controller handles parameters differently, depending "
-					+ "on which payment provider is used. For more information about this controller, please refer to the “acceleratorwebservicesaddon AddOn” documentation on help.hybris.com.")
+					+ "on which payment provider is used. For more information about this controller, please refer to the “acceleratorocc AddOn” documentation on help.hybris.com.")
 	@ApiBaseSiteIdUserIdAndCartIdParam
 	public PaymentDetailsWsDTO doHandleSopPaymentResponse(@ApiIgnore final HttpServletRequest request,
 			@ApiIgnore final SopPaymentDetailsWsDTO sopPaymentDetails,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_LEVEL) final String fields)
 	{
-		LOG.info("test173");
+		LOG.info("-------------170==============");
 		final Errors errors = validate(sopPaymentDetails, "SOP data", sopPaymentDetailsValidator);
 		final PaymentSubscriptionResultData paymentSubscriptionResultData = commerceWebServicesPaymentFacade
 				.completeSopCreateSubscription(getParameterMap(request), sopPaymentDetails.isSavePaymentInfo(),
@@ -256,18 +253,18 @@ public class NovalnetCartsController
 	@RequestMapping(value = "/{cartId}/novalnet/payment/sop/response", method = RequestMethod.GET)
 	@ResponseBody
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_GUEST", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	@ApiOperation(nickname = "novalnetgetSopPaymentResponse", value = "Get information about create subscription request results", notes =
+	@ApiOperation(nickname = "novalnetGetSopPaymentResponse", value = "Get information about create subscription request results", notes =
 			"Returns information related to creating subscription request results. "
 					+ "If there is no response from the payment provider, a \"202 Accepted\" status is returned. If the subscription is created successfully, the payment details "
 					+ "are returned. Otherwise, an error response is returned.\n\nNote, the “Try it out” button is not enabled for this method (always returns an error) because "
 					+ "the Extended Carts Controller handles parameters differently, depending on which payment provider is used. For more information about this controller, please "
-					+ "refer to the “acceleratorwebservicesaddon AddOn” documentation on help.hybris.com.")
+					+ "refer to the “acceleratorocc AddOn” documentation on help.hybris.com.")
 	@ApiBaseSiteIdUserIdAndCartIdParam
 	public PaymentDetailsWsDTO getSopPaymentResponse(@PathVariable final String cartId,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_LEVEL) final String fields,
 			@ApiIgnore final HttpServletResponse response)
 	{
-		LOG.info("test270");
+		LOG.info("Base store 267");
 		final PaymentSubscriptionResultData paymentSubscriptionResultData = commerceWebServicesPaymentFacade
 				.getPaymentSubscriptionResult(cartId);
 		if (paymentSubscriptionResultData == null) //still waiting for payment provider response
@@ -283,11 +280,10 @@ public class NovalnetCartsController
 	@RequestMapping(value = "/{cartId}/novalnet/payment/sop/response", method = RequestMethod.DELETE)
 	@ResponseBody
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_GUEST", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	@ApiOperation(nickname = "novalnetremoveSopPaymentResponse", value = "Deletes payment provider response related to cart.", notes = "Deletes the payment provider response related to the specified cart.")
+	@ApiOperation(nickname = "novalnetRemoveSopPaymentResponse", value = "Deletes payment provider response related to cart.", notes = "Deletes the payment provider response related to the specified cart.")
 	@ApiBaseSiteIdUserIdAndCartIdParam
 	public void removeSopPaymentResponse(@PathVariable final String cartId)
 	{
-		LOG.info("test285");
 		commerceWebServicesPaymentFacade.removePaymentSubscriptionResult(cartId);
 	}
 
