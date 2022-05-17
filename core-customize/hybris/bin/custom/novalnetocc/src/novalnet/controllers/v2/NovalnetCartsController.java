@@ -100,7 +100,7 @@ public class NovalnetCartsController
 			@ApiParam(value = "The name of the store where items will be picked up", required = true) @RequestParam final String storeName,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_LEVEL) final String fields) throws CommerceCartModificationException
 	{
-		LOG.info("--------------103==================")
+		LOG.info("--------------103==================");
 		final CartModificationDataList modifications = new CartModificationDataList();
 		modifications.setCartModificationList(acceleratorCheckoutFacade.consolidateCheckoutCart(storeName));
 		final CartModificationListWsDTO result = dataMapper.map(modifications, CartModificationListWsDTO.class, fields);
