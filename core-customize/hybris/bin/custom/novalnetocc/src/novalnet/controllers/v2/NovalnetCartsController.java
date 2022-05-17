@@ -24,6 +24,8 @@ import de.hybris.platform.webservicescommons.mapping.DataMapper;
 import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdUserIdAndCartIdParam;
 import de.hybris.platform.webservicescommons.swagger.ApiFieldsParam;
 import de.hybris.platform.commercefacades.order.data.CartModificationDataList;
+import de.hybris.platform.core.model.user.AddressModel;
+import de.hybris.platform.core.model.user.CustomerModel;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -97,6 +99,10 @@ public class NovalnetCartsController
 		LOG.info("=========125=========");
 		final PaymentData paymentData = commerceWebServicesPaymentFacade.beginSopCreateSubscription(responseUrl,
 				buildMerchantCallbackUrl(extendedMerchantCallback, baseSiteId, userId, cartId));
+		final CustomerModel customerModel = commerceWebServicesPaymentFacade.getCurrentUserForCheckout();
+		final AddressModel paymentAddress = commerceWebServicesPaymentFacade.getDefaultPaymentAddress(customerModel);
+		LOG.info("========="+paymentAddress+"=========");
+		LOG.info("========="+paymentAddress.getFirstName()+"=========");
 		final PaymentRequestWsDTO result = dataMapper.map(paymentData, PaymentRequestWsDTO.class, fields);
 		return result;
 	}
