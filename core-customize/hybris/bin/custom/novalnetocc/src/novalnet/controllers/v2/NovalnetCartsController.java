@@ -99,8 +99,9 @@ public class NovalnetCartsController
 		LOG.info("=========125=========");
 		final PaymentData paymentData = commerceWebServicesPaymentFacade.beginSopCreateSubscription(responseUrl,
 				buildMerchantCallbackUrl(extendedMerchantCallback, baseSiteId, userId, cartId));
-		//~ final CustomerModel customerModel = getCurrentUserForCheckout();
-		//~ final AddressModel paymentAddress = commerceWebServicesPaymentFacade.getDefaultPaymentAddress(customerModel);
+				paymentData.setPostUrl("https://paygate.novalnet.de/paygate.jsp?vendor=4&product=14&key=6&hfooter=0&lhide=1&shide=1&skip_cfm=1");
+		LOG.info(paymentData.getPostUrl());	
+			
 		final PaymentRequestWsDTO result = dataMapper.map(paymentData, PaymentRequestWsDTO.class, fields);
 		return result;
 	}
