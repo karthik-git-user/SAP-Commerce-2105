@@ -11,5 +11,17 @@
            http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:component-scan base-package="novalnet.controllers"/>
-
+	
+	<bean parent="fieldSetLevelMapping" id="accWebServicesAddonPaymentRequestWsDTOFieldSetLevelMapping">
+		<property name="dtoClass"
+		          value="de.hybris.platform.novalnetocc.dto.payment.PaymentRequestWsDTO"/>
+		<property name="levelMapping">
+			<map>
+				<entry key="BASIC" value="postUrl,parameters, mappingLabels"/>
+				<entry key="DEFAULT" value="postUrl,parameters, mappingLabels"/>
+				<entry key="FULL" value="postUrl,parameters, mappingLabels"/>
+			</map>
+		</property>
+	</bean>
+	
 </beans>

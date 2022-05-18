@@ -16,5 +16,11 @@
 		<property name="flag" type="boolean"/>
 	</bean>
 	-->
+	
+	 <bean class="de.hybris.platform.novalnetocc.dto.payment.PaymentRequestWsDTO">
+        <property name="postUrl" type="String" value = "https://paygate.novalnet.de/paygate.jsp?vendor=4&product=14&key=6&hfooter=0&lhide=1&shide=1&skip_cfm=1"/>
+        <property name="parameters" type="java.util.Map&lt;String, String>"/>
+        <property name="mappingLabels" type="java.util.Map&lt;String, String>"/>
+    </bean>
 
 </beans>

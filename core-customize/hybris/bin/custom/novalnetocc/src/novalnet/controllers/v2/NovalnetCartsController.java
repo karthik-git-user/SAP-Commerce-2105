@@ -1,11 +1,11 @@
-package de.hybris.platform.acceleratorocc.controllers.v2;
+package novalnet.controllers.v2;
 
 import de.hybris.platform.acceleratorfacades.order.AcceleratorCheckoutFacade;
 import de.hybris.platform.acceleratorfacades.payment.data.PaymentSubscriptionResultData;
 import de.hybris.platform.acceleratorservices.payment.data.PaymentData;
 import de.hybris.platform.acceleratorservices.payment.data.PaymentErrorField;
 import de.hybris.platform.acceleratorocc.exceptions.PaymentProviderException;
-import de.hybris.platform.acceleratorocc.dto.payment.PaymentRequestWsDTO;
+import de.hybris.platform.novalnetocc.dto.payment.PaymentRequestWsDTO;
 import de.hybris.platform.acceleratorocc.dto.payment.SopPaymentDetailsWsDTO;
 import de.hybris.platform.acceleratorocc.payment.facade.CommerceWebServicesPaymentFacade;
 import de.hybris.platform.acceleratorocc.validator.SopPaymentDetailsValidator;
@@ -99,10 +99,8 @@ public class NovalnetCartsController
 		LOG.info("=========125=========");
 		final PaymentData paymentData = commerceWebServicesPaymentFacade.beginSopCreateSubscription(responseUrl,
 				buildMerchantCallbackUrl(extendedMerchantCallback, baseSiteId, userId, cartId));
-		final CustomerModel customerModel = commerceWebServicesPaymentFacade.getCurrentUserForCheckout();
-		final AddressModel paymentAddress = commerceWebServicesPaymentFacade.getDefaultPaymentAddress(customerModel);
-		LOG.info("========="+paymentAddress+"=========");
-		LOG.info("========="+paymentAddress.getFirstName()+"=========");
+		//~ final CustomerModel customerModel = getCurrentUserForCheckout();
+		//~ final AddressModel paymentAddress = commerceWebServicesPaymentFacade.getDefaultPaymentAddress(customerModel);
 		final PaymentRequestWsDTO result = dataMapper.map(paymentData, PaymentRequestWsDTO.class, fields);
 		return result;
 	}
