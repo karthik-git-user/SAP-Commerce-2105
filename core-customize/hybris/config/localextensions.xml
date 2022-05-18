@@ -211,6 +211,9 @@
 	<extension name="acceleratorwebservicesaddon" />  
 	<extension name="acceleratorfacades"/>
 	<extension name='novalnetocc' />
+	<extension name='novalnetcore' />
+	<extension name='novalnetcheckoutaddon' />
+	<extension name='novalnetbackoffice' />
 <!--
 	<extension name="ycommercewebservices"/>
 -->

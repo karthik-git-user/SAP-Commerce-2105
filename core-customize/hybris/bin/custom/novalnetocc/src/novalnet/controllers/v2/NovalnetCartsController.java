@@ -26,6 +26,9 @@ import de.hybris.platform.webservicescommons.swagger.ApiFieldsParam;
 import de.hybris.platform.commercefacades.order.data.CartModificationDataList;
 import de.hybris.platform.core.model.user.AddressModel;
 import de.hybris.platform.core.model.user.CustomerModel;
+import de.hybris.platform.store.BaseStoreModel;
+
+import novalnet.novalnetcheckoutaddon.facades.NovalnetFacade;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
