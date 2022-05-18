@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { SpartacusModule } from './spartacus/spartacus.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { NovalnetPaymentsModule } from './novalnet-payments/novalnet-payments.module';
 
 @NgModule({
   declarations: [
