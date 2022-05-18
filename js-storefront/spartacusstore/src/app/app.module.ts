@@ -21,6 +21,7 @@ import { NovalnetPaymentsModule } from './novalnet-payments/novalnet-payments.mo
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     SpartacusModule,
+    NovalnetPaymentsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
