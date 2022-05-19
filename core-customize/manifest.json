@@ -105,7 +105,12 @@
 			"addon":"acceleratorwebservicesaddon",
 			"storefront":"commercewebservices",
 			"template":"commercewebservices"
-		}
+		},
+		{
+            "addon": "novalnetcheckoutaddon",
+            "storefront": "yacceleratorstorefront",
+            "template": "yacceleratorstorefront"
+        }
     ],
     "aspects": [
         {
