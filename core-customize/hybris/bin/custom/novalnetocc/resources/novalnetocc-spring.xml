@@ -17,7 +17,7 @@
     
     <!-- Overwrite Accelerator checkout facade payment action event -->
     <alias name="defaultNovalnetAcceleratorCheckoutFacade" alias="novalnetFacade"/>
-    <bean id="defaultNovalnetAcceleratorCheckoutFacade" class="novalnet.novalnetcheckoutaddon.facades.NovalnetFacade"
+    <bean id="defaultNovalnetAcceleratorCheckoutFacade" class="novalnet.facades.NovalnetFacade"
           parent="acceleratorCheckoutFacade">
         <property name="acceleratorCheckoutService" ref="acceleratorCheckoutService"/>
         <property name="cartService" ref="cartService"/>
