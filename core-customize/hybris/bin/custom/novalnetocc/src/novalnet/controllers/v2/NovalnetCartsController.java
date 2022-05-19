@@ -28,7 +28,7 @@ import de.hybris.platform.core.model.user.AddressModel;
 import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.store.BaseStoreModel;
 
-import novalnet.novalnetcheckoutaddon.facades.NovalnetFacade;
+import novalnet.facades.NovalnetFacade;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;

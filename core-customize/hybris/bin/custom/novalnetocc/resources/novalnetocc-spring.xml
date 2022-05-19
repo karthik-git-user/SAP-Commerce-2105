@@ -14,5 +14,14 @@
            http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:annotation-config/>
+    
+    <!-- Overwrite Accelerator checkout facade payment action event -->
+    <alias name="defaultNovalnetAcceleratorCheckoutFacade" alias="novalnetFacade"/>
+    <bean id="defaultNovalnetAcceleratorCheckoutFacade" class="novalnet.novalnetcheckoutaddon.facades.NovalnetFacade"
+          parent="acceleratorCheckoutFacade">
+        <property name="acceleratorCheckoutService" ref="acceleratorCheckoutService"/>
+        <property name="cartService" ref="cartService"/>
+        <property name="flexibleSearchService" ref="flexibleSearchService"/>
+    </bean>
 
 </beans>
