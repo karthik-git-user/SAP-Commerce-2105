@@ -16,6 +16,7 @@
     <context:annotation-config/>
     
     <!-- Overwrite Accelerator checkout facade payment action event -->
+<!--
     <alias name="defaultNovalnetAcceleratorCheckoutFacade" alias="novalnetOccFacade"/>
     <bean id="defaultNovalnetAcceleratorCheckoutFacade" class="novalnet.facades.NovalnetOccFacade"
           parent="acceleratorCheckoutFacade">
@@ -23,5 +24,6 @@
         <property name="cartService" ref="cartService"/>
         <property name="flexibleSearchService" ref="flexibleSearchService"/>
     </bean>
+-->
 
 </beans>

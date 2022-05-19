@@ -28,7 +28,7 @@ import de.hybris.platform.core.model.user.AddressModel;
 import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.store.BaseStoreModel;
 
-import novalnet.facades.NovalnetOccFacade;
+//~ import novalnet.facades.NovalnetOccFacade;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -105,8 +105,8 @@ public class NovalnetCartsController
 				buildMerchantCallbackUrl(extendedMerchantCallback, baseSiteId, userId, cartId));
 				//~ paymentData.setPostUrl("https://paygate.novalnet.de/paygate.jsp?vendor=4&product=14&key=6&hfooter=0&lhide=1&shide=1&skip_cfm=1");
 		LOG.info(paymentData.getPostUrl());	
-		LOG.info("=========108=========");
-		final BaseStoreModel baseStore = novalnetOccFacade.getBaseStoreModel();
+		//~ LOG.info("=========108=========");
+		//~ final BaseStoreModel baseStore = novalnetOccFacade.getBaseStoreModel();
 		LOG.info(baseStore.getNovalnetPaymentAccessKey().trim());	
 			
 		final PaymentRequestWsDTO result = dataMapper.map(paymentData, PaymentRequestWsDTO.class, fields);
