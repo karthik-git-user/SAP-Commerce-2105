@@ -104,6 +104,9 @@ public class NovalnetCartsController
 				buildMerchantCallbackUrl(extendedMerchantCallback, baseSiteId, userId, cartId));
 				paymentData.setPostUrl("https://paygate.novalnet.de/paygate.jsp?vendor=4&product=14&key=6&hfooter=0&lhide=1&shide=1&skip_cfm=1");
 		LOG.info(paymentData.getPostUrl());	
+		
+		final BaseStoreModel baseStore = novalnetFacade.getBaseStoreModel();
+		LOG.info(baseStore.getNovalnetPaymentAccessKey().trim());	
 			
 		final PaymentRequestWsDTO result = dataMapper.map(paymentData, PaymentRequestWsDTO.class, fields);
 		return result;
