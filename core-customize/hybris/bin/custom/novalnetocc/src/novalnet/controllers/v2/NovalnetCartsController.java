@@ -80,7 +80,8 @@ public class NovalnetCartsController
 	private CheckoutFacade checkoutFacade;
 	@Resource(name = "sopPaymentDetailsValidator")
 	private SopPaymentDetailsValidator sopPaymentDetailsValidator;
-
+	@Resource(name = "novalnetFacade")
+    NovalnetFacade novalnetFacade;
 	
 
 	@RequestMapping(value = "/{cartId}/payment/sop/request", method = RequestMethod.GET)
