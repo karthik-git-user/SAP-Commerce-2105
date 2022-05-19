@@ -103,9 +103,9 @@ import java.util.Base64;
 /**
  * NovalnetFacade
  */
-public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
+public class NovalnetOccFacade extends DefaultAcceleratorCheckoutFacade {
 	
-	 private static final Logger LOGGER = Logger.getLogger(NovalnetFacade.class);
+	 private static final Logger LOGGER = Logger.getLogger(NovalnetOccFacade.class);
 
     @Resource(name = "cartService")
     private CartService cartService;

@@ -9,7 +9,7 @@
  * would be greatly appreciated.
  *
  */
-package novalnet.facades;
+package novalnet.novalnetcheckoutaddon.facades;
 
 import java.lang.*;
 import java.io.*;
@@ -101,11 +101,11 @@ import java.net.UnknownHostException;
 import java.util.Base64;
 
 /**
- * NovalnetOccFacade
+ * NovalnetFacade
  */
-public class NovalnetOccFacade extends DefaultAcceleratorCheckoutFacade {
+public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
 	
-	 private static final Logger LOGGER = Logger.getLogger(NovalnetOccFacade.class);
+	 private static final Logger LOGGER = Logger.getLogger(NovalnetFacade.class);
 
     @Resource(name = "cartService")
     private CartService cartService;
