@@ -10,10 +10,6 @@
             "csr": {
                 "webroot": "dist/spartacusstore/browser/"
             }
-        },
-        {
-            "name": "digital-payments",
-            "path": "spartacusstore"
         }
     ],
     "nodeVersion": "14"
