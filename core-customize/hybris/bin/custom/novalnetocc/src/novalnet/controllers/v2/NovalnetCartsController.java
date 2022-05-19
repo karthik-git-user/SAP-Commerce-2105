@@ -28,7 +28,7 @@ import de.hybris.platform.core.model.user.AddressModel;
 import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.store.BaseStoreModel;
 
-import novalnet.facades.NovalnetFacade;
+import novalnet.facades.NovalnetOccFacade;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -81,7 +81,7 @@ public class NovalnetCartsController
 	@Resource(name = "sopPaymentDetailsValidator")
 	private SopPaymentDetailsValidator sopPaymentDetailsValidator;
 	@Resource(name = "novalnetOccFacade")
-    NovalnetOccFacade novalnetFacade;
+    NovalnetOccFacade novalnetOccFacade;
 	
 
 	@RequestMapping(value = "/{cartId}/payment/sop/request", method = RequestMethod.GET)
