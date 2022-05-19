@@ -101,7 +101,7 @@ import java.net.UnknownHostException;
 import java.util.Base64;
 
 /**
- * NovalnetFacade
+ * NovalnetOccFacade
  */
 public class NovalnetOccFacade extends DefaultAcceleratorCheckoutFacade {
 	
