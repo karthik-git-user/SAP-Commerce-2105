@@ -387,29 +387,29 @@ export class AddCustomPaymentsComponent implements OnInit {
 		 NovalnetUtility.getPanHash();
 		} else {
 			console.log("insubmit");
-			 this.checkoutPaymentService.setPaymentDetails({
-	"id":"8796094300242",
-  "billingAddress": {
-    "country": {
-      "isocode": "DE",
-      "name": "Germany"
-    },
-    "defaultAddress": false,
-    "firstName": "test",
-    "formattedAddress": "feringastr 4, , 85774, unterfohring, Germany",
-    "id": "8796101902359",
-    "lastName": "user",
-    "line1": "feringastr 4",
-    "line2": "",
-    "phone": "",
-    "postalCode": "85774",
-    "shippingAddress": true,
-    "title": "Mr.",
-    "titleCode": "mr",
-    "town": "unterfohring",
-    "visibleInAddressBook": true
-  }
-});
+			 //~ this.checkoutPaymentService.setPaymentDetails({
+	//~ "id":"8796094300242",
+  //~ "billingAddress": {
+    //~ "country": {
+      //~ "isocode": "DE",
+      //~ "name": "Germany"
+    //~ },
+    //~ "defaultAddress": false,
+    //~ "firstName": "test",
+    //~ "formattedAddress": "feringastr 4, , 85774, unterfohring, Germany",
+    //~ "id": "8796101902359",
+    //~ "lastName": "user",
+    //~ "line1": "feringastr 4",
+    //~ "line2": "",
+    //~ "phone": "",
+    //~ "postalCode": "85774",
+    //~ "shippingAddress": true,
+    //~ "title": "Mr.",
+    //~ "titleCode": "mr",
+    //~ "town": "unterfohring",
+    //~ "visibleInAddressBook": true
+  //~ }
+//~ });
 this.checkoutStepService.next(this.activatedRoute);
 			 //~ createPaymentDetails(paymentDetails)
 		}

@@ -80,8 +80,8 @@ public class NovalnetCartsController
 	private CheckoutFacade checkoutFacade;
 	@Resource(name = "sopPaymentDetailsValidator")
 	private SopPaymentDetailsValidator sopPaymentDetailsValidator;
-	@Resource(name = "novalnetFacade")
-    NovalnetFacade novalnetFacade;
+	@Resource(name = "novalnetOccFacade")
+    NovalnetOccFacade novalnetFacade;
 	
 
 	@RequestMapping(value = "/{cartId}/payment/sop/request", method = RequestMethod.GET)
@@ -100,13 +100,13 @@ public class NovalnetCartsController
 			@ApiParam(value = "Cart identifier: cart code for logged in user, cart guid for anonymous user, 'current' for the last modified cart", required = true) @PathVariable final String cartId,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_LEVEL) final String fields)
 	{
-		LOG.info("=========105=========");
+		LOG.info("=========10NovalnetOccFacade5=========");
 		final PaymentData paymentData = commerceWebServicesPaymentFacade.beginSopCreateSubscription(responseUrl,
 				buildMerchantCallbackUrl(extendedMerchantCallback, baseSiteId, userId, cartId));
 				//~ paymentData.setPostUrl("https://paygate.novalnet.de/paygate.jsp?vendor=4&product=14&key=6&hfooter=0&lhide=1&shide=1&skip_cfm=1");
 		LOG.info(paymentData.getPostUrl());	
 		LOG.info("=========108=========");
-		final BaseStoreModel baseStore = novalnetFacade.getBaseStoreModel();
+		final BaseStoreModel baseStore = novalnetOccFacade.getBaseStoreModel();
 		LOG.info(baseStore.getNovalnetPaymentAccessKey().trim());	
 			
 		final PaymentRequestWsDTO result = dataMapper.map(paymentData, PaymentRequestWsDTO.class, fields);
