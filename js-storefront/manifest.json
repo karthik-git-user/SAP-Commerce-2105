@@ -13,7 +13,7 @@
         },
         {
             "name": "digital-payments",
-            "path": "spartacus"
+            "path": "spartacusstore"
         }
     ],
     "nodeVersion": "14"
