@@ -88,8 +88,7 @@ export class AddCustomPaymentsComponent implements OnInit {
         //~ this.goBack = "goBack";
         this.closeForm = new EventEmitter();
         this.setPaymentDetails = new EventEmitter();
-        
-        
+      
         this.countries$ = this.userPaymentService.getAllBillingCountries().pipe(tap((countries) => {
             // If the store is empty fetch countries. This is also used when changing language.
             if (Object.keys(countries).length === 0) {
@@ -148,7 +147,6 @@ export class AddCustomPaymentsComponent implements OnInit {
 
     ngOnInit(): void {
 		
-		
 	}
     
     public loadiframe() {
@@ -168,16 +166,7 @@ export class AddCustomPaymentsComponent implements OnInit {
 						element.click();
 					},
 					on_error: function on_error(data : any) {
-						//~ alert(data['error_message']);
-						//~ document.getElementById("nn_overlay").classList.remove("novalnet-challenge-window-overlay");
-						//~ document.getElementById("novalnet_cc_iframe").classList.remove("novalnet-challenge-window-overlay");
-					},
-					on_show_overlay: function on_show_overlay() {
-						//~ document.getElementById('novalnet_cc_iframe').classList.add("novalnet-challenge-window-overlay");
-					},
-					on_hide_overlay: function on_hide_overlay() {
-						//~ document.getElementById("novalnet_cc_iframe").classList.remove("novalnet-challenge-window-overlay");
-						//~ document.getElementById("nn_overlay").classList.add("novalnet-challenge-window-overlay");
+						alert(data['error_message']);
 					},
 					on_show_captcha: function on_show_captcha() {
 						//~ window.scrollTo(0, 200);
@@ -185,114 +174,67 @@ export class AddCustomPaymentsComponent implements OnInit {
 				},
 				iframe: {
 			 
-				// It is mandatory to pass the Iframe ID here.  Based on which the entire process will took place.
-				id: "novalnet_iframe",
-				
-				// Set to 1 to make you Iframe input container more compact (default - 0)
-				inline: 1,
-				
-				// Add the style (css) here for either the whole Iframe contanier or for particular label/input field
-				style: {
-					// The css for the Iframe container
-					container: "",
+					id: "novalnet_iframe",
 					
-					// The css for the input field of the Iframe container
-					input: "",
+					inline: 1,
 					
-					// The css for the label of the Iframe container
-					label: ""
+					style: {
+						container: "",
+						
+						input: "",
+						
+						label: ""
+					},
+					
+					text: {
+					
+						lang : "EN",
+						
+						error: "Your credit card details are invalid",
+						
+						card_holder : {
+						
+							label: "Card holder name",
+							
+							place_holder: "Name on card",
+							
+							error: "Please enter the valid card holder name"
+						},
+						card_number : {
+						
+							label: "Card number",
+							
+							place_holder: "XXXX XXXX XXXX XXXX",
+							
+							error: "Please enter the valid card number"
+						},
+						expiry_date : {
+							label: "Expiry date",
+							error: "Please enter the valid expiry month / year in the given format"
+						},
+						cvc : {
+							label: "CVC/CVV/CID",
+							place_holder: "XXX",
+							error: "Please enter the valid CVC/CVV/CID"
+						}
+					}
+				},
+			
+				customer: {
+					first_name: "Max",
+					last_name: "Mustermann",
+					email: "test@novalnet.de",
 				},
 				
-				// You can customize the text of the Iframe container here
-				text: {
-				
-					// The End-customers selected language. The Iframe container will be rendered in this Language.
-					lang : "EN",
-					
-					// Basic Error Message
-					error: "Your credit card details are invalid",
-					
-					// You can customize the text for the Card Holder here
-					card_holder : {
-					
-						// You have to give the Customized label text for the Card Holder Container here
-						label: "Card holder name",
-						
-						// You have to give the Customized placeholder text for the Card Holder Container here
-						place_holder: "Name on card",
-						
-						// You have to give the Customized error text for the Card Holder Container here
-						error: "Please enter the valid card holder name"
-					},
-					card_number : {
-					
-						// You have to give the Customized label text for the Card Number Container here
-						label: "Card number",
-						
-						// You have to give the Customized placeholder text for the Card Number Container here
-						place_holder: "XXXX XXXX XXXX XXXX",
-						
-						// You have to give the Customized error text for the Card Number Container here
-						error: "Please enter the valid card number"
-					},
-					expiry_date : {
-					
-						// You have to give the Customized label text for the Expiry Date Container here
-						label: "Expiry date",
-						
-						// You have to give the Customized error text for the Expiry Date Container here
-						error: "Please enter the valid expiry month / year in the given format"
-					},
-					cvc : {
-					
-						// You have to give the Customized label text for the CVC/CVV/CID Container here
-						label: "CVC/CVV/CID",
-						
-						// You have to give the Customized placeholder text for the CVC/CVV/CID Container here
-						place_holder: "XXX",
-						
-						// You have to give the Customized error text for the CVC/CVV/CID Container here
-						error: "Please enter the valid CVC/CVV/CID"
-					}
+				transaction: {
+					amount: 100,
+					currency: "EUR",
+					test_mode: 1,
+					skip_auth: 1
+				},
+				custom: {
+					lang: "EN"
 				}
-			},
-			
-			// Add Customer data
-			customer: {
-			
-				// Your End-customer's First name which will be prefilled in the Card Holder field
-				first_name: "Max",
-				
-				// Your End-customer's Last name which will be prefilled in the Card Holder field
-				last_name: "Mustermann",
-				
-				// Your End-customer's Email ID. 
-				email: "test@novalnet.de",
-				
-				// Your End-customer's billing address.
-				//~ billing:address_data,
-				//~ shipping: shipping_address,
-			},
-			
-			// Add transaction data
-			transaction: {
-			
-				// The payable amount that can be charged for the transaction (in minor units), for eg:- Euro in Eurocents (5,22 EUR = 522).
-				amount: 100,
-				
-				// The three-character currency code as defined in ISO-4217.
-				currency: "EUR",
-				
-				// Set to 1 for the TEST transaction (default - 0).
-				test_mode: 1,
-				
-				skip_auth: 1
-			},
-			custom: {
-				
-				// Shopper's selected language in shop
-				lang: "EN"
-			}
 			};
 			if(!this.iframeloaded) {
 				NovalnetUtility.createCreditCardForm(request_object);
@@ -340,9 +282,11 @@ export class AddCustomPaymentsComponent implements OnInit {
             });
         }
     }
+    
     public close() {
         this.closeForm.emit();
     }
+    
     public back() {
         
     }
@@ -379,42 +323,15 @@ export class AddCustomPaymentsComponent implements OnInit {
     }
     
     public next() {
-		
 		console.log((<HTMLInputElement>document.getElementById('paymentType')).value);
 		console.log((<HTMLInputElement>document.getElementById('pan_hash')).value);
 		if((<HTMLInputElement>document.getElementById('paymentType')).value == 'CreditCard' && (<HTMLInputElement>document.getElementById('pan_hash')).value == "") {
 			console.log("hashcall");
-		 NovalnetUtility.getPanHash();
+			NovalnetUtility.getPanHash();
 		} else {
 			console.log("insubmit");
-			 //~ this.checkoutPaymentService.setPaymentDetails({
-	//~ "id":"8796094300242",
-  //~ "billingAddress": {
-    //~ "country": {
-      //~ "isocode": "DE",
-      //~ "name": "Germany"
-    //~ },
-    //~ "defaultAddress": false,
-    //~ "firstName": "test",
-    //~ "formattedAddress": "feringastr 4, , 85774, unterfohring, Germany",
-    //~ "id": "8796101902359",
-    //~ "lastName": "user",
-    //~ "line1": "feringastr 4",
-    //~ "line2": "",
-    //~ "phone": "",
-    //~ "postalCode": "85774",
-    //~ "shippingAddress": true,
-    //~ "title": "Mr.",
-    //~ "titleCode": "mr",
-    //~ "town": "unterfohring",
-    //~ "visibleInAddressBook": true
-  //~ }
-//~ });
-this.checkoutStepService.next(this.activatedRoute);
-			 //~ createPaymentDetails(paymentDetails)
+			this.checkoutStepService.next(this.activatedRoute);
 		}
-		//~ console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		//~ console.log(this.userPaymentService.getPaymentMethods());
     }
 
   

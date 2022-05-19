@@ -107,7 +107,7 @@
 			"template":"commercewebservices"
 		},
 		{
-            "addon": "novalnetcheckoutaddon",
+            "addon": "sapdigitalpaymentaddon",
             "storefront": "yacceleratorstorefront",
             "template": "yacceleratorstorefront"
         }

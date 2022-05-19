@@ -208,6 +208,12 @@
 	<extension name='miraklbackofficeaddon' />
 	<extension name='miraklchannelsaddon' />
 -->
+	<extension name="sapdigitalpaymentaddon" />  
+	<extension name="sapdigitalpaymentb2baddon" />  
+	<extension name="cissapdigitalpayment" />  
+	<extension name="sapdigitalpaymentbackoffice" />  
+	<extension name="ysapdpordermanagement" />  
+	
 	<extension name="acceleratorwebservicesaddon" />  
 	<extension name="acceleratorfacades"/>
 	<extension name='novalnetocc' />
