@@ -31,6 +31,7 @@ eclipsebin
 # allow only custom extensions
 **/hybris/bin/*
 !**/hybris/bin/custom/
+!**/hybris/bin/modules/
  
 # Folders to ignore at the root of the repository
 **/hybris/roles/
