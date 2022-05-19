@@ -100,12 +100,12 @@ public class NovalnetCartsController
 			@ApiParam(value = "Cart identifier: cart code for logged in user, cart guid for anonymous user, 'current' for the last modified cart", required = true) @PathVariable final String cartId,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_LEVEL) final String fields)
 	{
-		LOG.info("=========125=========");
+		LOG.info("=========105=========");
 		final PaymentData paymentData = commerceWebServicesPaymentFacade.beginSopCreateSubscription(responseUrl,
 				buildMerchantCallbackUrl(extendedMerchantCallback, baseSiteId, userId, cartId));
-				paymentData.setPostUrl("https://paygate.novalnet.de/paygate.jsp?vendor=4&product=14&key=6&hfooter=0&lhide=1&shide=1&skip_cfm=1");
+				//~ paymentData.setPostUrl("https://paygate.novalnet.de/paygate.jsp?vendor=4&product=14&key=6&hfooter=0&lhide=1&shide=1&skip_cfm=1");
 		LOG.info(paymentData.getPostUrl());	
-		
+		LOG.info("=========108=========");
 		final BaseStoreModel baseStore = novalnetFacade.getBaseStoreModel();
 		LOG.info(baseStore.getNovalnetPaymentAccessKey().trim());	
 			
