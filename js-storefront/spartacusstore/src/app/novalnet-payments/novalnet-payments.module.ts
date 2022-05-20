@@ -57,6 +57,5 @@ import { PaymentDetailsFormComponent } from './payment-details-form/payment-deta
   providers: [
     ScriptService, CheckoutDeliveryService
   ]
-  ]
 })
 export class NovalnetPaymentsModule {}
