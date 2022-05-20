@@ -29,7 +29,7 @@ import { PaymentDetailsFormComponent } from './payment-details-form/payment-deta
     CommonModule,
     ConfigModule.withConfig({
       cmsComponents : {
-        ProductSummaryComponent : {
+        CheckoutPaymentDetails : {
           component : PaymentDetailsFormComponent
         }
       }
