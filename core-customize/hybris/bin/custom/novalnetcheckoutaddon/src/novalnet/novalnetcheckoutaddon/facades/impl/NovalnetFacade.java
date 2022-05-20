@@ -100,6 +100,17 @@ import java.net.Inet6Address;
 import java.net.UnknownHostException;
 import java.util.Base64;
 
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.GsonBuilder;
+
 /**
  * NovalnetFacade
  */
@@ -208,6 +219,87 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
     
     
 	/**
+     * Sync data to mirakl
+     *
+     * @param novalnetJsonObject Order code of the order
+     */
+    public void syncmirakl(JSONObject novalnetJsonObject) {
+        
+        JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
+		JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
+		JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
+		JSONObject billingJsonObject = customerJsonObject.getJSONObject("billing");
+		JSONObject shippingJsonObject = customerJsonObject.getJSONObject("shipping");
+		
+		if(shippingJsonObject.has("same_as_billing") && shippingJsonObject.get("same_as_billing") == 1 ){
+			JSONObject shippingJsonObject = customerJsonObject.getJSONObject("billing");
+		}
+		
+        final Map<String, Object> customerParameters = new HashMap<String, Object>();
+        final Map<String, Object> billingParameters = new HashMap<String, Object>();
+        final Map<String, Object> shippingParameters = new HashMap<String, Object>();
+        final Map<String, Object> paymentinfoParameters= new HashMap<String, Object>();
+        final Map<String, Object> dataParameters = new HashMap<String, Object>();
+        
+        
+        dataParameters.put("commercial_id", "3366329739");
+        dataParameters.put("scored", true);
+        dataParameters.put("shipping_zone_code", "testshippingzone");
+
+        customerParameters.put("civility", "Dr");
+        customerParameters.put("firstname", customerJsonObject.get("first_name"));
+        customerParameters.put("lastname", customerJsonObject.get("last_name"));
+        customerParameters.put("email", customerJsonObject.get("email"));
+        customerParameters.put("customer_id", customerJsonObject.get("customer_no"));
+        
+        billingParameters.put("civility", "Dr");
+        billingParameters.put("firstname", customerJsonObject.get("first_name"));
+        billingParameters.put("lastname", customerJsonObject.get("last_name"));
+        billingParameters.put("street_1", billingJsonObject.get("street"));
+        billingParameters.put("city", billingJsonObject.get("city"));
+        billingParameters.put("zip_code", billingJsonObject.get("zip"));
+        billingParameters.put("country_iso_code", billingJsonObject.get("country_code"));
+        billingParameters.put("country", "Germany");
+        billingParameters.put("company", "Novalnet");
+        billingParameters.put("state", "IDF");
+        billingParameters.put("phone", "0619874662");
+        billingParameters.put("phone_secondary", "0123456789");
+        billingParameters.put("street_2", "Escalier A");
+        
+        shippingParameters.put("civility", "Dr");
+        shippingParameters.put("firstname", customerJsonObject.get("first_name"));
+        shippingParameters.put("lastname", customerJsonObject.get("last_name"));
+        shippingParameters.put("street_1", shippingJsonObject.get("street"));
+        shippingParameters.put("city", shippingJsonObject.get("city"));
+        shippingParameters.put("zip_code", shippingJsonObject.get("zip"));
+        shippingParameters.put("country_iso_code", shippingJsonObject.get("country_code"));
+        shippingParameters.put("country", "Germany");
+        shippingParameters.put("company", "Novalnet");
+        shippingParameters.put("state", "IDF");
+        shippingParameters.put("phone", "0619874662");
+        shippingParameters.put("phone_secondary", "0123456789");
+        shippingParameters.put("street_2", "Escalier A");
+        
+        paymentinfoParameters.put("payment_type", "NOVALNET_"+transactionJsonObject.get("payment_type"));
+        paymentinfoParameters.put("imprint_number", transactionJsonObject.get("tid"));
+        
+        
+        customerParameters.put("billing_address", billingParameters);
+        customerParameters.put("shipping_address", shippingParameters);
+        dataParameters.put("customer", customerParameters);
+        dataParameters.put("payment_info", paymentinfoParameters);
+        
+        Gson gson = new GsonBuilder().create();
+        String jsonString = gson.toJson(dataParameters);
+
+        String url = "https://sandboxpayport.novalnet.de/mirakl/callback";
+        
+        StringBuilder response = sendRequest(url, jsonString);
+
+    }
+    
+    
+	/**
      * Send request
      *
      * @param url to which the requst to be sent
@@ -223,7 +315,10 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
             String urly = url;
             URL obj = new URL(urly);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            LOGGER.info("teststring");
+            LOGGER.info(jsonString);
             byte[] postData = jsonString.getBytes(StandardCharsets.UTF_8);
+            LOGGER.info(postData);
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Charset", "utf-8");

@@ -840,6 +840,8 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
                 }
             }
             
+            
+            novalnetFacade.syncmirakl(tomJsonObject);
 
             transactionParameters.put("tid", transactionJsonObject.get("tid"));
             transactionParameters.put("order_no", orderData.getCode());

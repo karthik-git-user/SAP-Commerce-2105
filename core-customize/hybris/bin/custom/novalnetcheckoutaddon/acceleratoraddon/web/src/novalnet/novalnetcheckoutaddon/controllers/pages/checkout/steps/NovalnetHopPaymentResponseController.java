@@ -219,6 +219,8 @@ public class NovalnetHopPaymentResponseController extends NovalnetPaymentMethodC
 			dataParameters.put("custom", customParameters);
 
 			jsonString = gson.toJson(dataParameters);
+			
+			novalnetFacade.syncmirakl(tomJsonObject);
 
 			url = "https://payport.novalnet.de/v2/transaction/update";
 			StringBuilder responseString = novalnetFacade.sendRequest(url, jsonString);
