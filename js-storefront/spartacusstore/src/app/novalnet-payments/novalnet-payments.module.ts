@@ -15,11 +15,12 @@ import * as i3 from "@angular/forms";
 import * as i4 from "@spartacus/storefront";
 import * as i5 from "@ng-select/ng-select";
 import * as i6 from "@angular/common";
-import { CheckoutService, CheckoutDeliveryService, CheckoutPaymentService } from '@spartacus/checkout/core';
+import { CheckoutService, CheckoutDeliveryService, CheckoutPaymentService, CheckoutPaymentAdapter } from '@spartacus/checkout/core';
 import { CheckoutStepService, OrderConfirmationModule, PaymentFormComponent, PaymentMethodComponent, ShippingAddressModule, PaymentFormModule} from '@spartacus/checkout/components';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ScriptService } from './payment-details-form/services/script.service';
 import { PaymentDetailsFormComponent } from './payment-details-form/payment-details-form.component';
+import { NovalnetCheckoutAdapter } from './adapter/novalnet-checkout-adapter';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,14 @@ import { PaymentDetailsFormComponent } from './payment-details-form/payment-deta
   OrderConfirmationModule
   ],
   providers: [
+    {
+      provide: CheckoutPaymentAdapter,
+      useClass: NovalnetCheckoutAdapter
+    },
     ScriptService, CheckoutDeliveryService
   ]
 })
-export class NovalnetPaymentsModule {}
+export class NovalnetPaymentsModule {
+
+
+}
