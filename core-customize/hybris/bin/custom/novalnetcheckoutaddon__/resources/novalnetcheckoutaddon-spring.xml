@@ -41,5 +41,19 @@
     <bean id="novalnetcheckoutaddonSampleDataEventListener" parent="abstractGenericAddOnSampleDataEventListener">
         <property name="extensionName" value="novalnetcheckoutaddon"/>
     </bean>
+    
+<!--
+    <alias name="defaultMiraklOrderService" alias="miraklOrderService"/>
+    <bean id="defaultMiraklOrderService" class="com.mirakl.hybris.core.order.services.impl.DefaultMiraklOrderService">
+        <property name="miraklApi" ref="mmpFrontApiClient"/>
+        <property name="miraklCreateOrderConverter" ref="miraklCreateOrderConverter"/>
+        <property name="jsonMarshallingService" ref="jsonMarshallingService"/>
+        <property name="modelService" ref="modelService"/>
+        <property name="offerService" ref="offerService"/>
+        <property name="miraklPriceService" ref="miraklPriceService"/>
+        <property name="marketplaceConsignmentService" ref="marketplaceConsignmentService"/>
+        <property name="miraklOrderModelConverter" ref="miraklOrderModelConverter"/>
+    </bean>
+-->
 
 </beans>

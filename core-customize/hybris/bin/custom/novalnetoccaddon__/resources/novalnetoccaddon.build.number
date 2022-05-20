@@ -1,0 +1,11 @@
+#Ant properties
+#Tue Apr 05 22:33:51 CEST 2022
+version.api=2105
+vendor=hybris
+group.id=de.hybris.platform
+name=novalnetoccaddon
+description=novalnetoccaddon
+builddate=20220405 2233
+releasedate=20210809 2305
+version=2105.10
+module.name=platform-module
