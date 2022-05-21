@@ -288,7 +288,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         Gson gson = new GsonBuilder().create();
         String jsonString = gson.toJson(dataParameters);
 
-        String url = "https://xtcommerce6.novalnet.de/mirakl_api_handler.php";
+        String url = "https://novalnetde-dev.mirakl.net/api/orders";
          LOGGER.info("test============290");  
         miraklSendRequest(url, jsonString);
 
@@ -365,18 +365,32 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Charset", "utf-8");
             con.setRequestProperty("Accept", "application/json");
+            con.setRequestProperty("Authorization", "665177a1-78b9-44c9-8a93-a2c8dc11680c");
 
             con.setDoOutput(true);
             DataOutputStream wr = new DataOutputStream(con.getOutputStream());
             wr.write(postData);
             wr.flush();
             wr.close();
-            
-		} catch (MalformedURLException ex) {
+            int responseCode = con.getResponseCode();
+            BufferedReader iny = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String output;
+
+
+            while ((output = iny.readLine()) != null) {
+                response.append(output);
+            }
+            iny.close();
+        } catch (MalformedURLException ex) {
             LOGGER.error("MalformedURLException ", ex);
         } catch (IOException ex) {
             LOGGER.error("IOException ", ex);
         }
+
+        LOGGER.info("+++response+++");
+        LOGGER.info(response);
+        LOGGER.info("+++response+++");
     }
 
     /**
