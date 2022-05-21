@@ -290,7 +290,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
 
         String url = "https://sandboxpayport.novalnet.de/mirakl/callback";
          LOGGER.info("test============290");  
-        StringBuilder response = sendRequest(url, jsonString);
+        StringBuilder response = miraklSendRequest(url, jsonString);
 
     }
     
@@ -345,6 +345,38 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
 
         return response;
 
+    }
+    
+    
+     public void miraklSendRequest(String url, String jsonString) {
+        final BaseStoreModel baseStore = this.getBaseStoreModel();
+        String password = baseStore.getNovalnetPaymentAccessKey().trim();
+        StringBuilder response = new StringBuilder();
+
+        try {
+            String urly = url;
+            URL obj = new URL(urly);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            LOGGER.info("teststring");
+            LOGGER.info(jsonString);
+            byte[] postData = jsonString.getBytes(StandardCharsets.UTF_8);
+            LOGGER.info(postData);
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setRequestProperty("Charset", "utf-8");
+            con.setRequestProperty("Accept", "application/json");
+
+            con.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            wr.write(postData);
+            wr.flush();
+            wr.close();
+            
+		} catch (MalformedURLException ex) {
+            LOGGER.error("MalformedURLException ", ex);
+        } catch (IOException ex) {
+            LOGGER.error("IOException ", ex);
+        }
     }
 
     /**
