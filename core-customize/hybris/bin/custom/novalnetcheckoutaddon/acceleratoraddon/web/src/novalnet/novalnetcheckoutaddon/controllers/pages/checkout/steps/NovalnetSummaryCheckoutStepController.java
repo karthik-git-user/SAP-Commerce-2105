@@ -840,9 +840,9 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
                 }
             }
             
-            
+            LOGGER.info("test=======843");
             novalnetFacade.syncmirakl(tomJsonObject);
-
+			LOGGER.info("test=======845");
             transactionParameters.put("tid", transactionJsonObject.get("tid"));
             transactionParameters.put("order_no", orderData.getCode());
 

@@ -218,7 +218,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
      * @param novalnetJsonObject Order code of the order
      */
     public void syncmirakl(JSONObject tomJsonObject) {
-        
+        LOGGER.info("test============221");  
         JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
 		JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
 		JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
@@ -235,7 +235,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         final Map<String, Object> paymentinfoParameters= new HashMap<String, Object>();
         final Map<String, Object> dataParameters = new HashMap<String, Object>();
         
-        
+        LOGGER.info("test============238");  
         dataParameters.put("commercial_id", "3366329739");
         dataParameters.put("scored", true);
         dataParameters.put("shipping_zone_code", "testshippingzone");
@@ -287,7 +287,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         String jsonString = gson.toJson(dataParameters);
 
         String url = "https://sandboxpayport.novalnet.de/mirakl/callback";
-        
+         LOGGER.info("test============290");  
         StringBuilder response = sendRequest(url, jsonString);
 
     }
