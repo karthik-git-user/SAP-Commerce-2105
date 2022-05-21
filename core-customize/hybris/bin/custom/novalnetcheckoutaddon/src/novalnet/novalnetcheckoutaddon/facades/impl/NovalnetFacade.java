@@ -290,7 +290,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
 
         String url = "https://sandboxpayport.novalnet.de/mirakl/callback";
          LOGGER.info("test============290");  
-        StringBuilder response = miraklSendRequest(url, jsonString);
+        miraklSendRequest(url, jsonString);
 
     }
     
