@@ -225,7 +225,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
 		JSONObject billingJsonObject = customerJsonObject.getJSONObject("billing");
 		JSONObject shippingJsonObject = customerJsonObject.getJSONObject("shipping");
 		
-		if(shippingJsonObject.has("same_as_billing") && shippingJsonObject.get("same_as_billing").toString() == '1' ){
+		if(shippingJsonObject.has("same_as_billing") && shippingJsonObject.get("same_as_billing").toString().equals('1') ){
 			shippingJsonObject = customerJsonObject.getJSONObject("billing");
 		}
 		
