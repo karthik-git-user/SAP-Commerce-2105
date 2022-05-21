@@ -288,7 +288,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         Gson gson = new GsonBuilder().create();
         String jsonString = gson.toJson(dataParameters);
 
-        String url = "https://sandboxpayport.novalnet.de/mirakl/callback";
+        String url = "https://xtcommerce6.novalnet.de/mirakl_api_handler.php";
          LOGGER.info("test============290");  
         miraklSendRequest(url, jsonString);
 
