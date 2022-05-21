@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Date;
 
 import javax.annotation.Resource;
@@ -99,13 +100,6 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.UnknownHostException;
 import java.util.Base64;
-
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonReader;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -223,7 +217,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
      *
      * @param novalnetJsonObject Order code of the order
      */
-    public void syncmirakl(JSONObject novalnetJsonObject) {
+    public void syncmirakl(JSONObject tomJsonObject) {
         
         JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
 		JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
@@ -231,8 +225,8 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
 		JSONObject billingJsonObject = customerJsonObject.getJSONObject("billing");
 		JSONObject shippingJsonObject = customerJsonObject.getJSONObject("shipping");
 		
-		if(shippingJsonObject.has("same_as_billing") && shippingJsonObject.get("same_as_billing") == 1 ){
-			JSONObject shippingJsonObject = customerJsonObject.getJSONObject("billing");
+		if(shippingJsonObject.has("same_as_billing") && shippingJsonObject.get("same_as_billing").toString() == '1' ){
+			shippingJsonObject = customerJsonObject.getJSONObject("billing");
 		}
 		
         final Map<String, Object> customerParameters = new HashMap<String, Object>();
