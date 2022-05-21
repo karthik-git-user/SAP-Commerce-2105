@@ -223,10 +223,12 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
 		JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
 		JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
 		JSONObject billingJsonObject = customerJsonObject.getJSONObject("billing");
-		JSONObject shippingJsonObject = customerJsonObject.getJSONObject("shipping");
-		
-		if(shippingJsonObject.has("same_as_billing") && shippingJsonObject.get("same_as_billing").toString().equals('1') ){
-			shippingJsonObject = customerJsonObject.getJSONObject("billing");
+		JSONObject shippingJsonObject = customerJsonObject.getJSONObject("billing");
+		if(customerJsonObject.has("shipping") {
+			shippingJsonObject = customerJsonObject.getJSONObject("shipping");
+			if(shippingJsonObject.has("same_as_billing") && shippingJsonObject.get("same_as_billing").toString().equals('1') ){
+				shippingJsonObject = customerJsonObject.getJSONObject("billing");
+			}
 		}
 		
         final Map<String, Object> customerParameters = new HashMap<String, Object>();
