@@ -290,24 +290,24 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         String jsonString = gson.toJson(dataParameters);
         JSONObject requestJsonObject = new JSONObject(jsonString);
         
-        final Map<String, Object> offerParameters = new HashMap<String, Object>();
-        offerParameters.put("price", "57.00");
-        offerParameters.put("shipping_price", "17.00");
-        offerParameters.put("shipping_type_code", "testshipping1");
-        offerParameters.put("offer_id", "2005");
-        offerParameters.put("offer_price", "57.00");
-        String offerString = gson.toJson(offerParameters); 
-         LOGGER.info("test============300");        
-         LOGGER.info(offerString);        
-         String str1 = offerString.replaceAll("\\\\", "");
-        JSONArray array = new JSONArray();
+        //~ final Map<String, Object> offerParameters = new HashMap<String, Object>();
+        //~ offerParameters.put("price", "57.00");
+        //~ offerParameters.put("shipping_price", "17.00");
+        //~ offerParameters.put("shipping_type_code", "testshipping1");
+        //~ offerParameters.put("offer_id", "2005");
+        //~ offerParameters.put("offer_price", "57.00");
+        //~ String offerString = gson.toJson(offerParameters); 
+         //~ LOGGER.info("test============300");        
+         //~ LOGGER.info(offerString);        
+        //~ JSONArray array = new JSONArray();
+        String str = "{\"shipping_price\":\"17.00\",\"price\":\"57.00\",\"shipping_type_code\":\"testshipping1\",\"offer_id\":\"2005\",\"offer_price\":\"57.00\"}";
+        String str1 = str.replaceAll("\\\\", "");
         array.put(str1);
-        
         requestJsonObject.put("offers", array);
 
         String url = "https://novalnetde-dev.mirakl.net/api/orders";
-         LOGGER.info("test============290");  
-         
+        LOGGER.info("test============290");  
+        
         miraklSendRequest(url, requestJsonObject.toString());
 
     }
