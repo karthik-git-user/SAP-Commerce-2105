@@ -299,7 +299,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         //~ String offerString = gson.toJson(offerParameters); 
          //~ LOGGER.info("test============300");        
          //~ LOGGER.info(offerString);        
-        //~ JSONArray array = new JSONArray();
+        JSONArray array = new JSONArray();
         String str = "{\"shipping_price\":\"17.00\",\"price\":\"57.00\",\"shipping_type_code\":\"testshipping1\",\"offer_id\":\"2005\",\"offer_price\":\"57.00\"}";
         String str1 = str.replaceAll("\\\\", "");
         array.put(str1);
