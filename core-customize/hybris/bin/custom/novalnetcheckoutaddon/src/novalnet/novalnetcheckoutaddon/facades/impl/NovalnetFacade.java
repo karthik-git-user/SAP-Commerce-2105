@@ -296,8 +296,13 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         offerParameters.put("shipping_type_code", "testshipping1");
         offerParameters.put("offer_id", "2005");
         offerParameters.put("offer_price", "57.00");
-        String offerString = gson.toJson(offerParameters);
-        requestJsonObject.put("offers", new JSONArray(offerString));
+        String offerString = gson.toJson(offerParameters); 
+         LOGGER.info("test============300");        
+         LOGGER.info(offerString);        
+        JSONArray array = new JSONArray();
+        array.put(offerString);
+        
+        requestJsonObject.put("offers", array);
 
         String url = "https://novalnetde-dev.mirakl.net/api/orders";
          LOGGER.info("test============290");  
