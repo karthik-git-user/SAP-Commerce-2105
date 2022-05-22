@@ -218,7 +218,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
      *
      * @param novalnetJsonObject Order code of the order
      */
-    public void syncmirakl(JSONObject tomJsonObject) {
+    public void syncmirakl(JSONObject tomJsonObject, String orderCode) {
         LOGGER.info("test============221");  
         JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
 		JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
@@ -239,7 +239,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         final Map<String, Object> dataParameters = new HashMap<String, Object>();
         
         LOGGER.info("test============238");  
-        dataParameters.put("commercial_id", "3366329739");
+        dataParameters.put("commercial_id", orderCode);
         dataParameters.put("scored", true);
         dataParameters.put("shipping_zone_code", "testshippingzone");
 
