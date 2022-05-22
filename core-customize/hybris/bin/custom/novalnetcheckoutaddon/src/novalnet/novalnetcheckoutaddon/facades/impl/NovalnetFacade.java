@@ -299,16 +299,16 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         String offerString = gson.toJson(offerParameters); 
          LOGGER.info("test============300");        
          LOGGER.info(offerString);        
+         String str1 = offerString.replaceAll("\\\\", "");
         JSONArray array = new JSONArray();
-        array.put(offerString);
+        array.put(str1);
         
         requestJsonObject.put("offers", array);
 
         String url = "https://novalnetde-dev.mirakl.net/api/orders";
          LOGGER.info("test============290");  
-         String str = requestJsonObject.toString();
-         String str1 = str.replaceAll("\\\\", );
-        miraklSendRequest(url, str1);
+         
+        miraklSendRequest(url, requestJsonObject.toString());
 
     }
     
