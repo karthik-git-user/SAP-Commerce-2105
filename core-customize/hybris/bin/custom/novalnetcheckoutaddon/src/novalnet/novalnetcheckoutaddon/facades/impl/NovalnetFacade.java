@@ -90,6 +90,7 @@ import java.net.URL;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 import org.json.JSONObject;
+import org.json.JSONArray
 
 import java.net.MalformedURLException;
 
@@ -287,10 +288,20 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         
         Gson gson = new GsonBuilder().create();
         String jsonString = gson.toJson(dataParameters);
+        JSONObject requestJsonObject = new JSONObject(jsonString);
+        
+        final Map<String, Object> offerParameters = new HashMap<String, Object>();
+        offerParameters.put("price", "57.00");
+        offerParameters.put("shipping_price", "17.00");
+        offerParameters.put("shipping_type_code", "testshipping1");
+        offerParameters.put("offer_id", "2005");
+        offerParameters.put("offer_price", "57.00");
+        String offerString = gson.toJson(offerParameters);
+        requestJsonObject.put("offers", new JSONArray(offerString));
 
         String url = "https://novalnetde-dev.mirakl.net/api/orders";
          LOGGER.info("test============290");  
-        miraklSendRequest(url, jsonString);
+        miraklSendRequest(url, requestJsonObject.toString());
 
     }
     
@@ -373,6 +384,9 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
             wr.flush();
             wr.close();
             int responseCode = con.getResponseCode();
+            LOGGER.info("+++response1+++");
+            LOGGER.info("+++response code+++"+responseCode);
+            LOGGER.info("+++response+++");
             BufferedReader iny = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
             String output;
