@@ -90,7 +90,7 @@ import java.net.URL;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 import org.json.JSONObject;
-import org.json.JSONArray
+import org.json.JSONArray;
 
 import java.net.MalformedURLException;
 
