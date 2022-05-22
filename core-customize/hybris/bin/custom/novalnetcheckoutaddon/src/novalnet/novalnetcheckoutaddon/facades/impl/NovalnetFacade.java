@@ -307,7 +307,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         String url = "https://novalnetde-dev.mirakl.net/api/orders";
          LOGGER.info("test============290");  
          String str = requestJsonObject.toString();
-         String str1 = str.replaceAll("\\\\", "");
+         String str1 = str.replaceAll("\\\\", );
         miraklSendRequest(url, str1);
 
     }
