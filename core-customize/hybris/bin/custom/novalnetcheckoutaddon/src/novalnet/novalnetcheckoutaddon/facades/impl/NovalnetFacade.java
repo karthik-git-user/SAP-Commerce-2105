@@ -227,7 +227,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
 		JSONObject shippingJsonObject = customerJsonObject.getJSONObject("billing");
 		if(customerJsonObject.has("shipping")) {
 			shippingJsonObject = customerJsonObject.getJSONObject("shipping");
-			if(shippingJsonObject.has("same_as_billing") && shippingJsonObject.get("same_as_billing").toString().equals('1') ){
+			if(shippingJsonObject.has("same_as_billing") && shippingJsonObject.get("same_as_billing").toString().equals("1") ){
 				shippingJsonObject = customerJsonObject.getJSONObject("billing");
 			}
 		}
@@ -309,7 +309,6 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         //~ LOGGER.info("test============290");  
         
         miraklSendRequest(url, jsonString);
-        miraklSendRequest1(url, jsonString);
 
     }
     
@@ -389,54 +388,6 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
             con.setDoOutput(true);
             DataOutputStream wr = new DataOutputStream(con.getOutputStream());
             wr.write(postData);
-            wr.flush();
-            wr.close();
-            int responseCode = con.getResponseCode();
-            LOGGER.info("+++response1+++");
-            LOGGER.info("+++response code+++"+responseCode);
-            LOGGER.info("+++response+++");
-            BufferedReader iny = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String output;
-
-
-            while ((output = iny.readLine()) != null) {
-                response.append(output);
-            }
-            iny.close();
-        } catch (MalformedURLException ex) {
-            LOGGER.error("MalformedURLException ", ex);
-        } catch (IOException ex) {
-            LOGGER.error("IOException ", ex);
-        }
-
-        LOGGER.info("+++response+++");
-        LOGGER.info(response);
-        LOGGER.info("+++response+++");
-    }
-    
-     public void miraklSendRequest1(String url, String jsonString) {
-        final BaseStoreModel baseStore = this.getBaseStoreModel();
-        String password = baseStore.getNovalnetPaymentAccessKey().trim();
-        StringBuilder response = new StringBuilder();
-
-        try {
-            String urly = url;
-            URL obj = new URL(urly);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            LOGGER.info("teststring");
-            LOGGER.info(jsonString);
-            //~ byte[] postData = jsonString.getBytes(StandardCharsets.UTF_8);
-            LOGGER.info(postData);
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/json");
-            con.setRequestProperty("Charset", "utf-8");
-            con.setRequestProperty("Accept", "application/json");
-            //~ con.setRequestProperty("Authorization", "665177a1-78b9-44c9-8a93-a2c8dc11680c");
-
-            con.setDoOutput(true);
-            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-            wr.write(jsonString);
             wr.flush();
             wr.close();
             int responseCode = con.getResponseCode();
