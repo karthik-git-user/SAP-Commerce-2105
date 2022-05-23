@@ -18,7 +18,7 @@ public class OfferStateFacetValuesComparator implements Comparator<FacetValue> {
    */
   protected static final int LOWEST_OFFER_STATE_PRIORITY = 1000;
 
-  @Value("#{'${mirakl.offers.state.facetpriority}'.split(',')}")
+  @Value("11")
   protected List<String> prioritizedOfferStates;
 
   @Override
