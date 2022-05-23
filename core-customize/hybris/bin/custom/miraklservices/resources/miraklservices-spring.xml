@@ -724,7 +724,7 @@
     <alias name="defaultMiraklCreateConsignmentPopulator" alias="miraklCreateConsignmentPopulator"/>
     <bean id="defaultMiraklCreateConsignmentPopulator" class="com.mirakl.hybris.core.ordersplitting.populators.MiraklCreateConsignmentPopulator">
         <property name="consignmentEntryConverter" ref="miraklCreateConsignmentEntryConverter" />
-        <property name="defaultMarketplaceWarehouseCode" value="${mirakl.warehouse.code}"/>
+        <property name="defaultMarketplaceWarehouseCode" value="marketplace-warehouse"/>
         <property name="warehouseService" ref="warehouseService"/>
     </bean>
 
