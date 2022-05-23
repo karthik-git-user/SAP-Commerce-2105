@@ -180,9 +180,7 @@
 	  <extension name= 'warehousingbackoffice' />
 	  <extension name= 'warehousingfacades' />
 	  <extension name= 'warehousingwebservices' />
-<!--
 	  <extension name= 'yacceleratorordermanagement' />
--->
 	  <extension name= 'personalizationcms' />
 	  <extension name= 'personalizationcmsbackoffice' />
 	  <extension name= 'personalizationcmsweb' />
@@ -323,6 +321,7 @@
 -->
 	<!-- mirakl extensions: -->
 	
+<!--
 	<extension name='mirakladdon' />  
 	<extension name='miraklfacades' />        
 	<extension name='miraklservices' />    
@@ -331,23 +330,28 @@
 	<extension name='miraklpromotions' />
 	<extension name='miraklmediaconversion' />
 	<extension name='miraklsampledataaddon' />
+-->
 <!--
 	<extension name='miraklserviceshmc' />
--->
-<!--
 	<extension name='miraklpromotionshmc' />
 -->
+<!--
 	<extension name ='miraklcatalogmanager' />
 	<extension name ='miraklcatalogintegrator' />
+-->
 <!--
 	<extension name ='miraklcatalogintegratorhmc' />
+-->
+<!--
 	<extension name='miraklcatalogmanagerhmc' />
 -->
+<!--
 	<extension name='miraklcsbackoffice' /> 
 	<extension name='miraklbackofficeaddon' /> 
 	<extension name='miraklchannelsaddon' /> 
 	<extension name='miraklcartmerge' /> 
 	<extension name='mirakltaxconnector' /> 
+-->
     
   </extensions>
 </hybrisconfig>
