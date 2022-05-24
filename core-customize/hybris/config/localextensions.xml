@@ -211,7 +211,8 @@
     <extension name='novalnetfulfilmentprocess' />
 -->
 	<!-- mirakl extensions: -->
-	
+	<extension name="acceleratorwebservicesaddon" />  
+	<extension name="acceleratorfacades"/>
 <!--
 	<extension name='mirakladdon' />  
 	<extension name='miraklfacades' />        
