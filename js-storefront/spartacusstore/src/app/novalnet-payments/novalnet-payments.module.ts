@@ -20,7 +20,7 @@ import { CheckoutStepService, OrderConfirmationModule, PaymentFormComponent, Pay
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ScriptService } from './payment-details-form/services/script.service';
 import { PaymentDetailsFormComponent } from './payment-details-form/payment-details-form.component';
-import { NovalnetCheckoutAdapter } from './adapter/novalnet-checkout-adapter';
+//~ import { NovalnetCheckoutAdapter } from './adapter/novalnet-checkout-adapter';
 
 @NgModule({
   declarations: [
@@ -56,10 +56,10 @@ import { NovalnetCheckoutAdapter } from './adapter/novalnet-checkout-adapter';
   OrderConfirmationModule
   ],
   providers: [
-    {
-      provide: CheckoutPaymentAdapter,
-      useClass: NovalnetCheckoutAdapter
-    },
+    //~ {
+      //~ provide: CheckoutPaymentAdapter,
+      //~ useClass: NovalnetCheckoutAdapter
+    //~ },
     ScriptService, CheckoutDeliveryService
   ]
 })
