@@ -94,12 +94,12 @@ public class DefaultNovalnetCheckoutFacade implements NovalnetCheckoutFacade {
     private OrderFacade orderFacade;
     private CheckoutFacade checkoutFacade;
     //~ private AdyenTransactionService adyenTransactionService;
-    private OrderRepository orderRepository;
+    //~ private OrderRepository orderRepository;
     private CheckoutCustomerStrategy checkoutCustomerStrategy;
     private ModelService modelService;
     private CommonI18NService commonI18NService;
     private KeyGenerator keyGenerator;
-    private PaymentsResponseConverter paymentsResponseConverter;
+    //~ private PaymentsResponseConverter paymentsResponseConverter;
     private PaymentsDetailsResponseConverter paymentsDetailsResponseConverter;
     private FlexibleSearchService flexibleSearchService;
     private Converter<AddressData, AddressModel> addressReverseConverter;
@@ -234,28 +234,6 @@ public class DefaultNovalnetCheckoutFacade implements NovalnetCheckoutFacade {
         //~ return paymentDetailsListWsDTO;
     //~ }
 
-    private List<PaymentDetailsWsDTO> toPaymentDetails(List<RecurringDetail> recurringDetails) {
-        return recurringDetails.stream().map(r -> toPaymentDetail(r)).collect(Collectors.toList());
-    }
-
-    private PaymentDetailsWsDTO toPaymentDetail(RecurringDetail recurringDetail) {
-        PaymentDetailsWsDTO paymentDetailsWsDTO = new PaymentDetailsWsDTO();
-
-        Card card = recurringDetail.getCard();
-
-        if (card == null) {
-            throw new RuntimeException("Card information not found");
-        }
-
-        paymentDetailsWsDTO.setAccountHolderName(card.getHolderName());
-        paymentDetailsWsDTO.setCardNumber("**** **** **** " + card.getNumber());
-        paymentDetailsWsDTO.setExpiryMonth(card.getExpiryMonth());
-        paymentDetailsWsDTO.setExpiryYear(card.getExpiryYear());
-        paymentDetailsWsDTO.setSubscriptionId(recurringDetail.getRecurringDetailReference());
-
-        return paymentDetailsWsDTO;
-    }
-
     
     protected String generateCcPaymentInfoCode(final CartModel cartModel) {
         return cartModel.getCode() + "_" + UUID.randomUUID();
@@ -263,64 +241,6 @@ public class DefaultNovalnetCheckoutFacade implements NovalnetCheckoutFacade {
 
     
 
-    private OrderModel retrievePendingOrder(String orderCode) throws InvalidCartException {
-        if (orderCode == null || orderCode.isEmpty()) {
-            throw new InvalidCartException("Could not retrieve pending order: missing orderCode!");
-        }
-
-        OrderModel orderModel = getOrderRepository().getOrderModel(orderCode);
-        if (orderModel == null) {
-            throw new InvalidCartException("Order '" + orderCode + "' does not exist!");
-        }
-
-        getSessionService().removeAttribute(SESSION_PENDING_ORDER_CODE);
-        getSessionService().removeAttribute(THREEDS2_FINGERPRINT_TOKEN);
-        getSessionService().removeAttribute(THREEDS2_CHALLENGE_TOKEN);
-        getSessionService().removeAttribute(PAYMENT_METHOD);
-
-        return orderModel;
-    }
-
-    private void restoreCartFromOrder(String orderCode) throws CalculationException, InvalidCartException {
-        OrderModel orderModel = getOrderRepository().getOrderModel(orderCode);
-        if (orderModel == null) {
-            LOGGER.error("Could not restore cart to session, order with code '" + orderCode + "' not found!");
-            return;
-        }
-
-        // Get cart from session
-        CartModel cartModel;
-        if(getCartService().hasSessionCart()) {
-            cartModel = getCartService().getSessionCart();
-        }
-        // Or create new cart if no cart in session
-        else {
-            cartModel = getCartFactory().createCart();
-            getCartService().setSessionCart(cartModel);
-        }
-
-        Boolean isAnonymousCheckout = getCheckoutCustomerStrategy().isAnonymousCheckout();
-
-        if(!isAnonymousCheckout && hasUserContextChanged(orderModel, cartModel)) {
-            throw new InvalidCartException("Cart from order '" + orderCode + "' not restored to session, since user or store in session changed.");
-        }
-
-        //Populate cart entries
-        for(AbstractOrderEntryModel entryModel : orderModel.getEntries()) {
-            getCartService().addNewEntry(cartModel, entryModel.getProduct(), entryModel.getQuantity(), entryModel.getUnit());
-        }
-        getModelService().save(cartModel);
-
-        if(!isAnonymousCheckout) {
-            //Populate delivery address and mode
-            AddressData deliveryAddressData = new AddressData();
-            getAddressPopulator().populate(orderModel.getDeliveryAddress().getOriginal(), deliveryAddressData);
-            getCheckoutFacade().setDeliveryAddress(deliveryAddressData);
-            getCheckoutFacade().setDeliveryMode(orderModel.getDeliveryMode().getCode());
-        }
-
-        getCalculationService().calculate(cartModel);
-    }
 
     private boolean hasUserContextChanged(OrderModel orderModel, CartModel cartModel) {
         return !orderModel.getUser().equals(cartModel.getUser())
@@ -376,17 +296,7 @@ public class DefaultNovalnetCheckoutFacade implements NovalnetCheckoutFacade {
         this.checkoutFacade = checkoutFacade;
     }
 
-   
-
-    public OrderRepository getOrderRepository() {
-        return orderRepository;
-    }
-
-    public void setOrderRepository(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
-
-    
+  
 
     public CheckoutCustomerStrategy getCheckoutCustomerStrategy() {
         return checkoutCustomerStrategy;
@@ -420,14 +330,6 @@ public class DefaultNovalnetCheckoutFacade implements NovalnetCheckoutFacade {
 
     public void setKeyGenerator(KeyGenerator keyGenerator) {
         this.keyGenerator = keyGenerator;
-    }
-
-    public PaymentsResponseConverter getPaymentsResponseConverter() {
-        return paymentsResponseConverter;
-    }
-
-    public void setPaymentsResponseConverter(PaymentsResponseConverter paymentsResponseConverter) {
-        this.paymentsResponseConverter = paymentsResponseConverter;
     }
 
     public FlexibleSearchService getFlexibleSearchService() {
@@ -495,13 +397,4 @@ public class DefaultNovalnetCheckoutFacade implements NovalnetCheckoutFacade {
         this.addressPopulator = addressPopulator;
     }
 
-   
-
-    public PaymentsDetailsResponseConverter getPaymentsDetailsResponseConverter() {
-        return paymentsDetailsResponseConverter;
-    }
-
-    public void setPaymentsDetailsResponseConverter(PaymentsDetailsResponseConverter paymentsDetailsResponseConverter) {
-        this.paymentsDetailsResponseConverter = paymentsDetailsResponseConverter;
-    }
 }
