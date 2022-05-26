@@ -216,7 +216,7 @@
 	
 	<extension name="acceleratorwebservicesaddon" />  
 	<extension name="acceleratorfacades"/>
-	<extension name='novalnetocc' />
+	<extension name='novalnetcore' />
 <!--
 	<extension name='novalnetocc' />
 	<extension name='novalnetcore' />
