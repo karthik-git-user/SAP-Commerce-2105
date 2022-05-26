@@ -103,7 +103,6 @@ public class DefaultNovalnetCheckoutFacade implements NovalnetCheckoutFacade {
     private PaymentsDetailsResponseConverter paymentsDetailsResponseConverter;
     private FlexibleSearchService flexibleSearchService;
     private Converter<AddressData, AddressModel> addressReverseConverter;
-    private PosPaymentResponseConverter posPaymentResponseConverter;
     private Converter<CountryModel, CountryData> countryConverter;
     private Converter<OrderModel, OrderData> orderConverter;
     private CartFactory cartFactory;
@@ -453,14 +452,6 @@ public class DefaultNovalnetCheckoutFacade implements NovalnetCheckoutFacade {
 
     public void setI18NFacade(I18NFacade i18NFacade) {
         this.i18NFacade = i18NFacade;
-    }
-
-    public PosPaymentResponseConverter getPosPaymentResponseConverter() {
-        return posPaymentResponseConverter;
-    }
-
-    public void setPosPaymentResponseConverter(PosPaymentResponseConverter posPaymentResponseConverter) {
-        this.posPaymentResponseConverter = posPaymentResponseConverter;
     }
 
     protected Converter<CountryModel, CountryData> getCountryConverter() {
