@@ -21,8 +21,6 @@
 	<bean id="novalnetcoreSystemSetup" parent="abstractCoreSystemSetup" class="de.hybris.novalnet.core.setup.NovalnetcoreSystemSetup">
     </bean>
     
-   
-    
 
 
 
