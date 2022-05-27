@@ -16,11 +16,11 @@
     
 
     <bean class="de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO">
-        <property name="accountHolderName" type="String" />
-        <property name="cardNumber" type="String" />
-        <property name="expiryMonth" type="String" />
-        <property name="expiryYear" type="String" />
-        <property name="defaultPayment" type="Boolean" />
+        <property name="novalnetAccountHolderName" type="String" />
+        <property name="novalnetCardNumber" type="String" />
+        <property name="novalnetExpiryMonth" type="String" />
+        <property name="novalnetExpiryYear" type="String" />
+        <property name="novalnetDefaultPayment" type="Boolean" />
     </bean>
 
 </beans>
