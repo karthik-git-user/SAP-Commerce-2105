@@ -27,6 +27,6 @@ public interface NovalnetCheckoutFacade {
     /**
      * Add payment details to cart
      */
-    PaymentDetailsWsDTO addPaymentDetails(PaymentDetailsWsDTO paymentDetails);
+    PaymentDetailsWsDTO createCartPaymentDetails(PaymentDetailsWsDTO paymentDetails);
 
 }
