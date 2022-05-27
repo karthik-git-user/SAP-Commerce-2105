@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2016 SAP SE
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of SAP
+  ~ Hybris ("Confidential Information"). You shall not disclose such
+  ~ Confidential Information and shall use it only in accordance with the
+  ~ terms of the license agreement you entered into with SAP Hybris.
+  -->
+
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="beans.xsd">
+    
+
+    <bean class="de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO">
+        <property name="accountHolderName" type="String" />
+        <property name="cardNumber" type="String" />
+        <property name="expiryMonth" type="String" />
+        <property name="expiryYear" type="String" />
+        <property name="defaultPayment" type="Boolean" />
+    </bean>
+
+</beans>
