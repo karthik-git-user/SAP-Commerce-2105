@@ -163,7 +163,7 @@ public class DefaultNovalnetCheckoutFacade implements NovalnetCheckoutFacade {
     }
 
     @Override
-    public PaymentDetailsWsDTO addPaymentDetails(PaymentDetailsWsDTO paymentDetails) {
+    public PaymentDetailsWsDTO createCartPaymentDetails(PaymentDetailsWsDTO paymentDetails) {
 		LOGGER.info("++++++++++++++++++test==========================207");
 		LOGGER.info("++++++++++++++++++test==========================168" + paymentDetails);
         CartModel cartModel = cartService.getSessionCart();
