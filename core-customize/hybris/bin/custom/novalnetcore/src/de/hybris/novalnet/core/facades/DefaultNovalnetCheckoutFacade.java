@@ -184,11 +184,11 @@ public class DefaultNovalnetCheckoutFacade implements NovalnetCheckoutFacade {
     
     public NovalnetPaymentInfoModel createPaymentInfo(final CartModel cartModel, PaymentDetailsWsDTO paymentDetails) {
         NovalnetPaymentInfoModel paymentInfoModel = new NovalnetPaymentInfoModel();
-        final UserModel currentUser = getCurrentUserForCheckout();
+        CustomerModel customerModel = getCheckoutCustomerStrategy().getCurrentUserForCheckout();
 		paymentInfoModel.setPaymentEmailAddress("karthik_m@novalnetsolutions.com");
 		paymentInfoModel.setDuplicate(Boolean.FALSE);
 		paymentInfoModel.setSaved(Boolean.TRUE);
-		paymentInfoModel.setUser(currentUser);
+		paymentInfoModel.setUser(customerModel);
 		paymentInfoModel.setPaymentInfo("notes");
 		paymentInfoModel.setOrderHistoryNotes("notes");
 		paymentInfoModel.setPaymentProvider("NovalnetCreditCard");
