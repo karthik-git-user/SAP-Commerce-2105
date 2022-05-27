@@ -189,8 +189,8 @@ public class DefaultNovalnetCheckoutFacade implements NovalnetCheckoutFacade {
 		paymentInfoModel.setDuplicate(Boolean.FALSE);
 		paymentInfoModel.setSaved(Boolean.TRUE);
 		paymentInfoModel.setUser(currentUser);
-		paymentInfoModel.setPaymentInfo('');
-		paymentInfoModel.setOrderHistoryNotes('');
+		paymentInfoModel.setPaymentInfo("notes");
+		paymentInfoModel.setOrderHistoryNotes("notes");
 		paymentInfoModel.setPaymentProvider("NovalnetCreditCard");
 		paymentInfoModel.setPaymentGatewayStatus("Confirmed");
         return paymentInfoModel;
