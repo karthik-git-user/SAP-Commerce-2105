@@ -14,8 +14,7 @@
 
 
         <requires-extension name="acceleratorcms"/>
-
-
+        <requires-extension name="commercefacades"/>
         <requires-extension name="solrserver"/>
 
 
