@@ -165,6 +165,7 @@ public class DefaultNovalnetCheckoutFacade implements NovalnetCheckoutFacade {
     @Override
     public PaymentDetailsWsDTO addPaymentDetails(PaymentDetailsWsDTO paymentDetails) {
 		LOGGER.info("++++++++++++++++++test==========================207");
+		LOGGER.info("++++++++++++++++++test==========================168" + paymentDetails);
         CartModel cartModel = cartService.getSessionCart();
 
         final AddressModel billingAddress = createBillingAddress(paymentDetails);
@@ -181,18 +182,18 @@ public class DefaultNovalnetCheckoutFacade implements NovalnetCheckoutFacade {
         return paymentDetails;
     }
     
-    public PaymentInfoModel createPaymentInfo(final CartModel cartModel, PaymentDetailsWsDTO paymentDetails) {
+    public NovalnetPaymentInfoModel createPaymentInfo(final CartModel cartModel, PaymentDetailsWsDTO paymentDetails) {
         NovalnetPaymentInfoModel paymentInfoModel = new NovalnetPaymentInfoModel();
         final UserModel currentUser = getCurrentUserForCheckout();
-		paymentInfoModel.setPaymentEmailAddress('karthik_m@novalnetsolutions.com');
+		paymentInfoModel.setPaymentEmailAddress("karthik_m@novalnetsolutions.com");
 		paymentInfoModel.setDuplicate(Boolean.FALSE);
 		paymentInfoModel.setSaved(Boolean.TRUE);
 		paymentInfoModel.setUser(currentUser);
 		paymentInfoModel.setPaymentInfo('');
 		paymentInfoModel.setOrderHistoryNotes('');
-		paymentInfoModel.setPaymentProvider('NovalnetCreditCard');
-		paymentInfoModel.setPaymentGatewayStatus('CO=nnfirmed');
-        return paymentInfo;
+		paymentInfoModel.setPaymentProvider("NovalnetCreditCard");
+		paymentInfoModel.setPaymentGatewayStatus("Confirmed");
+        return paymentInfoModel;
     }
 
     private AddressModel createBillingAddress(PaymentDetailsWsDTO paymentDetails) {
