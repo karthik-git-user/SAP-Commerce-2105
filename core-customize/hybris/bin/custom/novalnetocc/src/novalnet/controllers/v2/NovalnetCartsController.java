@@ -297,5 +297,21 @@ public class NovalnetCartsController
 		}
 		return errors;
 	}
+	
+	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_GUEST", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
+	@PutMapping(value = "/{cartId}/paymentdetails")
+	@RequestMappingOverride
+	@ResponseStatus(HttpStatus.OK)
+	@ApiOperation(nickname = "replaceCartPaymentDetails", value = "Sets credit card payment details for the cart.", notes = "Sets credit card payment details for the cart.")
+	@ApiBaseSiteIdUserIdAndCartIdParam
+	public void replaceCartPaymentDetails(
+			@ApiParam(value = "Payment details identifier.", required = true) @RequestParam final String paymentDetailsId)
+			throws InvalidPaymentInfoException
+	{
+		//~ setPaymentDetailsInternal(paymentDetailsId);
+		LOG.info("=========test=========");
+		LOG.info("=========overrided=========");
+		LOG.info("=========314=========");
+	}
 
 }

@@ -221,8 +221,9 @@
 	<extension name='novalnetocc' />
 -->
 	<extension name='novalnetcore' />
-<!--
 	<extension name='novalnetocc' />
+<!--
+	<extension name='novalnetbackoffice' />
 -->
 <!--
 	<extension name='novalnetcheckoutaddon' />
