@@ -19,6 +19,7 @@ import de.hybris.platform.commerceservices.request.mapping.annotation.ApiVersion
 import de.hybris.platform.commercewebservicescommons.dto.order.CartModificationListWsDTO;
 import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO;
 import de.hybris.platform.commercewebservicescommons.dto.store.PointOfServiceListWsDTO;
+import de.hybris.platform.commercewebservices.core.request.support.impl.PaymentProviderRequestSupportedStrategy;
 import de.hybris.platform.webservicescommons.errors.exceptions.WebserviceValidationException;
 import de.hybris.platform.webservicescommons.mapping.DataMapper;
 import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdUserIdAndCartIdParam;
@@ -82,6 +83,8 @@ public class NovalnetCartsController
 	private SopPaymentDetailsValidator sopPaymentDetailsValidator;
 	//~ @Resource(name = "novalnetOccFacade")
     //~ NovalnetOccFacade novalnetOccFacade;
+    @Resource(name = "paymentProviderRequestSupportedStrategy")
+	private PaymentProviderRequestSupportedStrategy paymentProviderRequestSupportedStrategy;
 	
 
 	@RequestMapping(value = "/{cartId}/payment/sop/request", method = RequestMethod.GET)
@@ -299,19 +302,29 @@ public class NovalnetCartsController
 	}
 	
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_GUEST", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	@PutMapping(value = "/{cartId}/paymentdetails")
+	@PostMapping(value = "/{cartId}/paymentdetails", consumes = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
+	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseBody
 	@RequestMappingOverride
-	@ResponseStatus(HttpStatus.OK)
-	@ApiOperation(nickname = "replaceCartPaymentDetails", value = "Sets credit card payment details for the cart.", notes = "Sets credit card payment details for the cart.")
+	@ApiOperation(nickname = "createCartPaymentDetails", value = "Defines and assigns details of a new credit card payment to the cart.", notes = "Defines the details of a new credit card, and assigns this payment option to the cart.")
 	@ApiBaseSiteIdUserIdAndCartIdParam
-	public void replaceCartPaymentDetails(
-			@ApiParam(value = "Payment details identifier.", required = true) @RequestParam final String paymentDetailsId)
-			throws InvalidPaymentInfoException
+	public PaymentDetailsWsDTO createCartPaymentDetails(@ApiParam(value =
+			"Request body parameter that contains details such as the name on the card (accountHolderName), the card number (cardNumber), the card type (cardType.code), "
+					+ "the month of the expiry date (expiryMonth), the year of the expiry date (expiryYear), whether the payment details should be saved (saved), whether the payment details "
+					+ "should be set as default (defaultPaymentInfo), and the billing address (billingAddress.firstName, billingAddress.lastName, billingAddress.titleCode, billingAddress.country.isocode, "
+					+ "billingAddress.line1, billingAddress.line2, billingAddress.town, billingAddress.postalCode, billingAddress.region.isocode)\n\nThe DTO is in XML or .json format.", required = true) @RequestBody final PaymentDetailsWsDTO paymentDetails,
+			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
+			throws InvalidPaymentInfoException, NoCheckoutCartException, UnsupportedRequestException
 	{
-		//~ setPaymentDetailsInternal(paymentDetailsId);
-		LOG.info("=========test=========");
-		LOG.info("=========overrided=========");
-		LOG.info("=========314=========");
+		LOG.info("-------------320==============");
+		LOG.info("-------------test==============");
+		LOG.info("-------------overided==============");
+		paymentProviderRequestSupportedStrategy.checkIfRequestSupported("addPaymentDetails");
+		//~ validatePayment(paymentDetails);
+		CCPaymentInfoData paymentInfoData = getDataMapper().map(paymentDetails, CCPaymentInfoData.class, PAYMENT_MAPPING);
+		paymentInfoData = addPaymentDetailsInternal(paymentInfoData).getPaymentInfo();
+		return dataMapper.map(paymentInfoData, PaymentDetailsWsDTO.class, fields);
 	}
 
 }
