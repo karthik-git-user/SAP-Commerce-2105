@@ -5,6 +5,9 @@ import de.hybris.platform.acceleratorfacades.payment.data.PaymentSubscriptionRes
 import de.hybris.platform.acceleratorservices.payment.data.PaymentData;
 import de.hybris.platform.acceleratorservices.payment.data.PaymentErrorField;
 import de.hybris.platform.acceleratorocc.exceptions.PaymentProviderException;
+import de.hybris.platform.commercewebservices.core.exceptions.InvalidPaymentInfoException;
+import de.hybris.platform.commercewebservices.core.exceptions.NoCheckoutCartException;
+import de.hybris.platform.commercewebservices.core.exceptions.UnsupportedRequestException;
 import de.hybris.platform.novalnetocc.dto.payment.PaymentRequestWsDTO;
 import de.hybris.platform.acceleratorocc.dto.payment.SopPaymentDetailsWsDTO;
 import de.hybris.platform.acceleratorocc.payment.facade.CommerceWebServicesPaymentFacade;
@@ -19,7 +22,7 @@ import de.hybris.platform.commerceservices.request.mapping.annotation.ApiVersion
 import de.hybris.platform.commercewebservicescommons.dto.order.CartModificationListWsDTO;
 import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO;
 import de.hybris.platform.commercewebservicescommons.dto.store.PointOfServiceListWsDTO;
-import de.hybris.platform.commercewebservices.core.request.support.impl.PaymentProviderRequestSupportedStrategy;
+//~ import de.hybris.platform.commercewebservices.core.request.support.impl.PaymentProviderRequestSupportedStrategy;
 import de.hybris.platform.webservicescommons.errors.exceptions.WebserviceValidationException;
 import de.hybris.platform.webservicescommons.mapping.DataMapper;
 import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdUserIdAndCartIdParam;
@@ -48,10 +51,15 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -83,8 +91,8 @@ public class NovalnetCartsController
 	private SopPaymentDetailsValidator sopPaymentDetailsValidator;
 	//~ @Resource(name = "novalnetOccFacade")
     //~ NovalnetOccFacade novalnetOccFacade;
-    @Resource(name = "paymentProviderRequestSupportedStrategy")
-	private PaymentProviderRequestSupportedStrategy paymentProviderRequestSupportedStrategy;
+    //~ @Resource(name = "paymentProviderRequestSupportedStrategy")
+	//~ private PaymentProviderRequestSupportedStrategy paymentProviderRequestSupportedStrategy;
 	
 
 	@RequestMapping(value = "/{cartId}/payment/sop/request", method = RequestMethod.GET)
@@ -110,7 +118,7 @@ public class NovalnetCartsController
 		LOG.info(paymentData.getPostUrl());	
 		//~ LOG.info("=========108=========");
 		//~ final BaseStoreModel baseStore = novalnetOccFacade.getBaseStoreModel();
-		LOG.info(baseStore.getNovalnetPaymentAccessKey().trim());	
+		//~ LOG.info(baseStore.getNovalnetPaymentAccessKey().trim());	
 			
 		final PaymentRequestWsDTO result = dataMapper.map(paymentData, PaymentRequestWsDTO.class, fields);
 		return result;
@@ -320,10 +328,10 @@ public class NovalnetCartsController
 		LOG.info("-------------320==============");
 		LOG.info("-------------test==============");
 		LOG.info("-------------overided==============");
-		paymentProviderRequestSupportedStrategy.checkIfRequestSupported("addPaymentDetails");
+		//~ paymentProviderRequestSupportedStrategy.checkIfRequestSupported("addPaymentDetails");
 		//~ validatePayment(paymentDetails);
-		CCPaymentInfoData paymentInfoData = getDataMapper().map(paymentDetails, CCPaymentInfoData.class, PAYMENT_MAPPING);
-		paymentInfoData = addPaymentDetailsInternal(paymentInfoData).getPaymentInfo();
+		final CCPaymentInfoData paymentInfoData = handlePaymentSubscriptionResultData(paymentSubscriptionResultData, null);
+		//~ paymentInfoData = addPaymentDetailsInternal(paymentInfoData).getPaymentInfo();
 		return dataMapper.map(paymentInfoData, PaymentDetailsWsDTO.class, fields);
 	}
 
