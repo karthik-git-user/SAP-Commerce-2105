@@ -80,7 +80,7 @@ import de.hybris.platform.store.services.BaseStoreService;
 
 
 @Controller
-@RequestMapping(value = "/{baseSiteId}/users/{userId}/carts")
+@RequestMapping(value = "/{baseSiteId}")
 @ApiVersion("v2")
 @Api(tags = "Novalnet Carts")
 public class NovalnetCartsController
