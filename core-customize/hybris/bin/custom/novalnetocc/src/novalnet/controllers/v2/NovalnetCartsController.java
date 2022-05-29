@@ -76,6 +76,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import static de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper.DEFAULT_LEVEL;
 import de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper;
+import de.hybris.platform.store.services.BaseStoreService;
 
 
 @Controller
@@ -102,6 +103,7 @@ public class NovalnetCartsController
 	private SopPaymentDetailsValidator sopPaymentDetailsValidator;
 	@Resource(name = "cartLoaderStrategy")
 	private CartLoaderStrategy cartLoaderStrategy;
+	private BaseStoreService baseStoreService;
 	
 	private static final String PAYMENT_MAPPING = "accountHolderName,cardNumber,cardType,cardTypeData(code),expiryMonth,expiryYear,issueNumber,startMonth,startYear,subscriptionId,defaultPaymentInfo,saved,billingAddress(titleCode,firstName,lastName,line1,line2,town,postalCode,country(isocode),region(isocode),defaultAddress)";
 	protected static final String API_COMPATIBILITY_B2C_CHANNELS = "api.compatibility.b2c.channels";
@@ -341,6 +343,18 @@ public class NovalnetCartsController
 		LOG.info("placeOrder");
 		LOG.info("+++++++++++++++++++335");
 		LOG.info("+++++++++++++++++++335");
+		
+		BaseStoreModel baseStore = baseStoreService.getCurrentBaseStore();
+		LOG.info(baseStore.getNovalnetPaymentAccessKey());
+		LOG.info("+++++++++++++++++++349");
 	}
+	
+	public BaseStoreService getBaseStoreService() {
+        return baseStoreService;
+    }
+
+    public void setBaseStoreService(BaseStoreService baseStoreService) {
+        this.baseStoreService = baseStoreService;
+    }
 
 }
