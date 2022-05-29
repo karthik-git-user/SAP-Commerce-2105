@@ -8,6 +8,7 @@ import de.hybris.platform.acceleratorocc.exceptions.PaymentProviderException;
 import novalnet.controllers.InvalidPaymentInfoException;
 import novalnet.controllers.NoCheckoutCartException;
 import novalnet.controllers.UnsupportedRequestException;
+import de.hybris.platform.order.InvalidCartException;
 import de.hybris.platform.novalnetocc.dto.payment.PaymentRequestWsDTO;
 import de.hybris.platform.commercewebservicescommons.dto.order.OrderWsDTO;
 import de.hybris.platform.acceleratorocc.dto.payment.SopPaymentDetailsWsDTO;
