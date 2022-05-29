@@ -25,11 +25,13 @@ import de.hybris.platform.commercewebservicescommons.dto.order.CartModificationL
 import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO;
 import de.hybris.platform.commercewebservicescommons.dto.store.PointOfServiceListWsDTO;
 import de.hybris.platform.commercewebservicescommons.errors.exceptions.PaymentAuthorizationException;
+import de.hybris.platform.commercewebservicescommons.annotation.SiteChannelRestriction;
 //~ import de.hybris.platform.commercewebservices.core.request.support.impl.PaymentProviderRequestSupportedStrategy;
 import de.hybris.platform.webservicescommons.errors.exceptions.WebserviceValidationException;
 import de.hybris.platform.webservicescommons.mapping.DataMapper;
 import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdUserIdAndCartIdParam;
 import de.hybris.platform.webservicescommons.swagger.ApiFieldsParam;
+import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdAndUserIdParam;
 import de.hybris.platform.commercefacades.order.data.CartModificationDataList;
 import de.hybris.platform.core.model.user.AddressModel;
 import de.hybris.platform.core.model.user.CustomerModel;
@@ -84,11 +86,7 @@ public class NovalnetCartsController
 	private final static Logger LOG = Logger.getLogger(NovalnetCartsController.class);
 	
 	protected static final String DEFAULT_FIELD_SET = FieldSetLevelHelper.DEFAULT_LEVEL;
-	
-	
 
-	@Resource(name = "userFacade")
-	private UserFacade userFacade;
 	@Resource(name = "acceleratorCheckoutFacade")
 	private AcceleratorCheckoutFacade acceleratorCheckoutFacade;
 	@Resource(name = "dataMapper")
