@@ -334,7 +334,7 @@ public class NovalnetCartsController
 	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
 	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
 	@ApiBaseSiteIdAndUserIdParam
-	public OrderWsDTO placeOrder(
+	public void placeOrder(
 			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
@@ -342,20 +342,6 @@ public class NovalnetCartsController
 		LOG.info("placeOrder");
 		LOG.info("+++++++++++++++++++335");
 		LOG.info("+++++++++++++++++++335");
-
-		cartLoaderStrategy.loadCart(cartId);
-
-		//~ validateCartForPlaceOrder();
-
-		//authorize
-		if (!getCheckoutFacade().authorizePayment(null))
-		{
-			throw new PaymentAuthorizationException();
-		}
-
-		//placeorder
-		final OrderData orderData = getCheckoutFacade().placeOrder();
-		return dataMapper.map(orderData, OrderWsDTO.class, fields);
 	}
 
 }
