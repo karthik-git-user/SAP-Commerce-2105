@@ -31,6 +31,8 @@ import de.hybris.platform.commercefacades.order.data.CartModificationDataList;
 import de.hybris.platform.core.model.user.AddressModel;
 import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.store.BaseStoreModel;
+import de.hybris.platform.commercefacades.order.CartFacade;
+import de.hybris.platform.commercefacades.user.UserFacade;
 
 //~ import novalnet.facades.NovalnetOccFacade;
 
@@ -80,7 +82,12 @@ public class NovalnetCartsController
 	private final static Logger LOG = Logger.getLogger(NovalnetCartsController.class);
 	
 	protected static final String DEFAULT_FIELD_SET = FieldSetLevelHelper.DEFAULT_LEVEL;
-
+	
+	
+	@Resource(name = "checkoutFacade")
+	private CheckoutFacade checkoutFacade;
+	@Resource(name = "userFacade")
+	private UserFacade userFacade;
 	@Resource(name = "acceleratorCheckoutFacade")
 	private AcceleratorCheckoutFacade acceleratorCheckoutFacade;
 	@Resource(name = "dataMapper")
