@@ -381,8 +381,8 @@ public class NovalnetCartsController
 		LOG.info(panHash);
 		LOG.info("+++++++++++++++++++335");
 		
-		BaseStoreModel baseStore = baseStoreService.getCurrentBaseStore();
-		LOG.info(baseStore.getNovalnetPaymentAccessKey());
+		//~ BaseStoreModel baseStore = baseStoreService.getCurrentBaseStore();
+		//~ LOG.info(baseStore.getNovalnetPaymentAccessKey());
 		LOG.info("+++++++++++++++++++349");
 		
 		
