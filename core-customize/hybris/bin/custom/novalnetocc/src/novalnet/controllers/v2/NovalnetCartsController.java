@@ -868,6 +868,8 @@ public class NovalnetCartsController
 			//~ url = "https://payport.novalnet.de/v2/authorize";
 		//~ }
         StringBuilder response = sendRequest(url, jsonString);
+        LOG.info(response.toString());
+        LOG.info("++++++++872");
         //~ JSONObject tomJsonObject = new JSONObject(response.toString());
         //~ JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
         //~ JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
@@ -878,8 +880,8 @@ public class NovalnetCartsController
 	}
 	
 	public StringBuilder sendRequest(String url, String jsonString) {
-        final BaseStoreModel baseStore = this.getBaseStoreModel();
-        String password = baseStore.getNovalnetPaymentAccessKey().trim();
+        //~ final BaseStoreModel baseStore = this.getBaseStoreModel();
+        String password = "a87ff679a2f3e71d9181a67b7542122c";
         StringBuilder response = new StringBuilder();
 
         try {
@@ -910,9 +912,9 @@ public class NovalnetCartsController
             }
             iny.close();
         } catch (MalformedURLException ex) {
-            LOGGER.error("MalformedURLException ", ex);
+            LOG.error("MalformedURLException ", ex);
         } catch (IOException ex) {
-            LOGGER.error("IOException ", ex);
+            LOG.error("IOException ", ex);
         }
 
         return response;
