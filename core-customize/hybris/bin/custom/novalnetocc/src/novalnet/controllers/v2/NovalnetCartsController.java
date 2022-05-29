@@ -9,11 +9,13 @@ import novalnet.controllers.InvalidPaymentInfoException;
 import novalnet.controllers.NoCheckoutCartException;
 import novalnet.controllers.UnsupportedRequestException;
 import de.hybris.platform.novalnetocc.dto.payment.PaymentRequestWsDTO;
+import de.hybris.platform.commercewebservicescommons.dto.order.OrderWsDTO;
 import de.hybris.platform.acceleratorocc.dto.payment.SopPaymentDetailsWsDTO;
 import de.hybris.platform.acceleratorocc.payment.facade.CommerceWebServicesPaymentFacade;
 import de.hybris.platform.acceleratorocc.validator.SopPaymentDetailsValidator;
 import de.hybris.platform.commercefacades.order.CheckoutFacade;
 import de.hybris.platform.commercefacades.order.data.CCPaymentInfoData;
+import de.hybris.platform.commercefacades.order.data.OrderData;
 import de.hybris.platform.commercefacades.storelocator.data.PointOfServiceDataList;
 import de.hybris.platform.commercefacades.user.UserFacade;
 import de.hybris.platform.commerceservices.order.CommerceCartModificationException;
@@ -22,6 +24,7 @@ import de.hybris.platform.commerceservices.request.mapping.annotation.ApiVersion
 import de.hybris.platform.commercewebservicescommons.dto.order.CartModificationListWsDTO;
 import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO;
 import de.hybris.platform.commercewebservicescommons.dto.store.PointOfServiceListWsDTO;
+import de.hybris.platform.commercewebservicescommons.errors.exceptions.PaymentAuthorizationException;
 //~ import de.hybris.platform.commercewebservices.core.request.support.impl.PaymentProviderRequestSupportedStrategy;
 import de.hybris.platform.webservicescommons.errors.exceptions.WebserviceValidationException;
 import de.hybris.platform.webservicescommons.mapping.DataMapper;
@@ -32,8 +35,7 @@ import de.hybris.platform.core.model.user.AddressModel;
 import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.store.BaseStoreModel;
 import de.hybris.platform.commercefacades.order.CartFacade;
-import de.hybris.platform.commercefacades.user.UserFacade;
-
+import de.hybris.platform.commercewebservicescommons.strategies.CartLoaderStrategy;
 //~ import novalnet.facades.NovalnetOccFacade;
 
 import javax.annotation.Resource;
@@ -84,8 +86,7 @@ public class NovalnetCartsController
 	protected static final String DEFAULT_FIELD_SET = FieldSetLevelHelper.DEFAULT_LEVEL;
 	
 	
-	@Resource(name = "checkoutFacade")
-	private CheckoutFacade checkoutFacade;
+
 	@Resource(name = "userFacade")
 	private UserFacade userFacade;
 	@Resource(name = "acceleratorCheckoutFacade")
@@ -100,7 +101,11 @@ public class NovalnetCartsController
 	private CheckoutFacade checkoutFacade;
 	@Resource(name = "sopPaymentDetailsValidator")
 	private SopPaymentDetailsValidator sopPaymentDetailsValidator;
+	@Resource(name = "cartLoaderStrategy")
+	private CartLoaderStrategy cartLoaderStrategy;
+	
 	private static final String PAYMENT_MAPPING = "accountHolderName,cardNumber,cardType,cardTypeData(code),expiryMonth,expiryYear,issueNumber,startMonth,startYear,subscriptionId,defaultPaymentInfo,saved,billingAddress(titleCode,firstName,lastName,line1,line2,town,postalCode,country(isocode),region(isocode),defaultAddress)";
+	protected static final String API_COMPATIBILITY_B2C_CHANNELS = "api.compatibility.b2c.channels";
 	//~ @Resource(name = "novalnetOccFacade")
     //~ NovalnetOccFacade novalnetOccFacade;
     //~ @Resource(name = "paymentProviderRequestSupportedStrategy")
@@ -321,30 +326,36 @@ public class NovalnetCartsController
 		return errors;
 	}
 	
-	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_GUEST", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	@PostMapping(value = "/{cartId}/paymentdetails", consumes = { MediaType.APPLICATION_JSON_VALUE,
-			MediaType.APPLICATION_XML_VALUE })
+	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
+	@RequestMapping(value = "/users/{userId}/orders", method = RequestMethod.POST)
+	@RequestMappingOverride
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	@RequestMappingOverride
-	@ApiOperation(nickname = "createCartPaymentDetails", value = "Defines and assigns details of a new credit card payment to the cart.", notes = "Defines the details of a new credit card, and assigns this payment option to the cart.")
-	@ApiBaseSiteIdUserIdAndCartIdParam
-	public PaymentDetailsWsDTO createCartPaymentDetails(@ApiParam(value =
-			"Request body parameter that contains details such as the name on the card (accountHolderName), the card number (cardNumber), the card type (cardType.code), "
-					+ "the month of the expiry date (expiryMonth), the year of the expiry date (expiryYear), whether the payment details should be saved (saved), whether the payment details "
-					+ "should be set as default (defaultPaymentInfo), and the billing address (billingAddress.firstName, billingAddress.lastName, billingAddress.titleCode, billingAddress.country.isocode, "
-					+ "billingAddress.line1, billingAddress.line2, billingAddress.town, billingAddress.postalCode, billingAddress.region.isocode)\n\nThe DTO is in XML or .json format.", required = true) @RequestBody final PaymentDetailsWsDTO paymentDetails,
+	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
+	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
+	@ApiBaseSiteIdAndUserIdParam
+	public OrderWsDTO placeOrder(
+			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
-			throws InvalidPaymentInfoException, NoCheckoutCartException, UnsupportedRequestException
+			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
-		LOG.info("-------------320==============");
-		LOG.info("-------------test==============");
-		LOG.info("-------------overided==============");
-		LOG.info(paymentDetails);
-		LOG.info(fields);
-		CCPaymentInfoData paymentInfoData = dataMapper.map(paymentDetails, CCPaymentInfoData.class, PAYMENT_MAPPING);
-		//~ paymentInfoData = addPaymentDetailsInternal(paymentInfoData).getPaymentInfo();
-		return dataMapper.map(paymentInfoData, PaymentDetailsWsDTO.class, fields);
+		LOG.info("placeOrder");
+		LOG.info("+++++++++++++++++++335");
+		LOG.info("+++++++++++++++++++335");
+
+		cartLoaderStrategy.loadCart(cartId);
+
+		//~ validateCartForPlaceOrder();
+
+		//authorize
+		if (!getCheckoutFacade().authorizePayment(null))
+		{
+			throw new PaymentAuthorizationException();
+		}
+
+		//placeorder
+		final OrderData orderData = getCheckoutFacade().placeOrder();
+		return dataMapper.map(orderData, OrderWsDTO.class, fields);
 	}
 
 }
