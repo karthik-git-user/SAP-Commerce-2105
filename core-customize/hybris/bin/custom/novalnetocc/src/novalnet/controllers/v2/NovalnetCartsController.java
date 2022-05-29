@@ -77,6 +77,8 @@ import static de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper.
 public class NovalnetCartsController
 {
 	private final static Logger LOG = Logger.getLogger(NovalnetCartsController.class);
+	
+	protected static final String DEFAULT_FIELD_SET = FieldSetLevelHelper.DEFAULT_LEVEL;
 
 	@Resource(name = "acceleratorCheckoutFacade")
 	private AcceleratorCheckoutFacade acceleratorCheckoutFacade;
@@ -329,9 +331,11 @@ public class NovalnetCartsController
 		LOG.info("-------------320==============");
 		LOG.info("-------------test==============");
 		LOG.info("-------------overided==============");
+		final PaymentSubscriptionResultData paymentSubscriptionResultData = commerceWebServicesPaymentFacade
+				.getPaymentSubscriptionResult(cartId);
 		//~ paymentProviderRequestSupportedStrategy.checkIfRequestSupported("addPaymentDetails");
 		//~ validatePayment(paymentDetails);
-		final CCPaymentInfoData paymentInfoData = handlePaymentSubscriptionResultData(paymentSubscriptionResultData, null);
+		CCPaymentInfoData paymentInfoData = dataMapper.map(paymentDetails, CCPaymentInfoData.class, PAYMENT_MAPPING);
 		//~ paymentInfoData = addPaymentDetailsInternal(paymentInfoData).getPaymentInfo();
 		return dataMapper.map(paymentInfoData, PaymentDetailsWsDTO.class, fields);
 	}
