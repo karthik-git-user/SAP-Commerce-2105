@@ -334,7 +334,7 @@ public class NovalnetCartsController
 		LOG.info("-------------test==============");
 		LOG.info("-------------overided==============");
 		//~ final PaymentSubscriptionResultData paymentSubscriptionResultData = commerceWebServicesPaymentFacade
-				.getPaymentSubscriptionResult(cartId);
+				//~ .getPaymentSubscriptionResult(cartId);
 		//~ paymentProviderRequestSupportedStrategy.checkIfRequestSupported("addPaymentDetails");
 		//~ validatePayment(paymentDetails);
 		CCPaymentInfoData paymentInfoData = dataMapper.map(paymentDetails, CCPaymentInfoData.class, PAYMENT_MAPPING);
