@@ -68,6 +68,7 @@ import io.swagger.annotations.ApiParam;
 import springfox.documentation.annotations.ApiIgnore;
 
 import static de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper.DEFAULT_LEVEL;
+import de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper;
 
 
 @Controller
@@ -92,6 +93,7 @@ public class NovalnetCartsController
 	private CheckoutFacade checkoutFacade;
 	@Resource(name = "sopPaymentDetailsValidator")
 	private SopPaymentDetailsValidator sopPaymentDetailsValidator;
+	private static final String PAYMENT_MAPPING = "accountHolderName,cardNumber,cardType,cardTypeData(code),expiryMonth,expiryYear,issueNumber,startMonth,startYear,subscriptionId,defaultPaymentInfo,saved,billingAddress(titleCode,firstName,lastName,line1,line2,town,postalCode,country(isocode),region(isocode),defaultAddress)";
 	//~ @Resource(name = "novalnetOccFacade")
     //~ NovalnetOccFacade novalnetOccFacade;
     //~ @Resource(name = "paymentProviderRequestSupportedStrategy")
@@ -331,7 +333,7 @@ public class NovalnetCartsController
 		LOG.info("-------------320==============");
 		LOG.info("-------------test==============");
 		LOG.info("-------------overided==============");
-		final PaymentSubscriptionResultData paymentSubscriptionResultData = commerceWebServicesPaymentFacade
+		//~ final PaymentSubscriptionResultData paymentSubscriptionResultData = commerceWebServicesPaymentFacade
 				.getPaymentSubscriptionResult(cartId);
 		//~ paymentProviderRequestSupportedStrategy.checkIfRequestSupported("addPaymentDetails");
 		//~ validatePayment(paymentDetails);
