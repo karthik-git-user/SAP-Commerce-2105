@@ -333,10 +333,8 @@ public class NovalnetCartsController
 		LOG.info("-------------320==============");
 		LOG.info("-------------test==============");
 		LOG.info("-------------overided==============");
-		//~ final PaymentSubscriptionResultData paymentSubscriptionResultData = commerceWebServicesPaymentFacade
-				//~ .getPaymentSubscriptionResult(cartId);
-		//~ paymentProviderRequestSupportedStrategy.checkIfRequestSupported("addPaymentDetails");
-		//~ validatePayment(paymentDetails);
+		LOG.info(paymentDetails);
+		LOG.info(fields);
 		CCPaymentInfoData paymentInfoData = dataMapper.map(paymentDetails, CCPaymentInfoData.class, PAYMENT_MAPPING);
 		//~ paymentInfoData = addPaymentDetailsInternal(paymentInfoData).getPaymentInfo();
 		return dataMapper.map(paymentInfoData, PaymentDetailsWsDTO.class, fields);
