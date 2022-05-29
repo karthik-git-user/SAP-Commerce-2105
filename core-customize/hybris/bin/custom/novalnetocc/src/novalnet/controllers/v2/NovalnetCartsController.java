@@ -337,11 +337,14 @@ public class NovalnetCartsController
 	@ApiBaseSiteIdAndUserIdParam
 	public void placeOrder(
 			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
+			@ApiParam(value = "credit card hash", required = true) @RequestParam final String panHash,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 		LOG.info("placeOrder");
 		LOG.info("+++++++++++++++++++335");
+		LOG.info("+++++++++++++++++++335");
+		LOG.info(panHash);
 		LOG.info("+++++++++++++++++++335");
 		
 		BaseStoreModel baseStore = baseStoreService.getCurrentBaseStore();
