@@ -44,11 +44,11 @@ import org.springframework.validation.Validator;
 import static de.hybris.platform.commercewebservices.core.constants.YcommercewebservicesConstants.ENUM_VALUES_SEPARATOR;
 
 
-public class BaseCommerceController extends BaseController
+public class NovalnetBaseCommerceController extends BaseController
 {
 	protected static final String API_COMPATIBILITY_B2C_CHANNELS = "api.compatibility.b2c.channels";
 	protected static final String ENTRY = "entry";
-	private static final Logger LOG = LoggerFactory.getLogger(BaseCommerceController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(NovalnetBaseCommerceController.class);
 
 	@Resource(name = "commerceWebServicesCartFacade2")
 	private CartFacade cartFacade;

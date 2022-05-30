@@ -7,6 +7,7 @@ import de.hybris.platform.acceleratorservices.payment.data.PaymentErrorField;
 import de.hybris.platform.acceleratorocc.exceptions.PaymentProviderException;
 import novalnet.controllers.InvalidPaymentInfoException;
 import novalnet.controllers.NoCheckoutCartException;
+import novalnet.controllers.v2.NovalnetBaseCommerceController;
 import novalnet.controllers.UnsupportedRequestException;
 import de.hybris.platform.order.InvalidCartException;
 import de.hybris.platform.novalnetocc.dto.payment.PaymentRequestWsDTO;
@@ -116,7 +117,7 @@ import java.io.*;
 @RequestMapping(value = "/{baseSiteId}")
 @ApiVersion("v2")
 @Api(tags = "Novalnet Carts")
-public class NovalnetCartsController extends BaseCommerceController
+public class NovalnetCartsController extends NovalnetBaseCommerceController
 {
 	private final static Logger LOG = Logger.getLogger(NovalnetCartsController.class);
 	
