@@ -263,10 +263,6 @@ public class NovalnetCartsController
 		final OrderData orderData = getCheckoutFacade().placeOrder();
 		LOG.info("++++++++265");
 		return dataMapper.map(orderData, OrderWsDTO.class, fields);
-        
-        
-        LOG.info("++++++++872");
-		
 	}
 	
 	public StringBuilder sendRequest(String url, String jsonString) {
