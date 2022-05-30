@@ -125,7 +125,7 @@ import de.hybris.platform.order.CartService;
 import de.hybris.platform.order.CalculationService;
 import de.hybris.platform.converters.Populator;
 import de.hybris.platform.servicelayer.i18n.CommonI18NService;
-
+import org.springframework.beans.factory.annotation.Required;
 
 
 @Controller
@@ -163,13 +163,12 @@ public class NovalnetCartsController
 	private CommerceWebServicesPaymentFacade commerceWebServicesPaymentFacade;
 	@Resource(name = "userFacade")
 	private UserFacade userFacade;
-	@Resource(name = "checkoutFacade")
-	private CheckoutFacade checkoutFacade;
+	@Resource(name = "i18NFacade")
+    private I18NFacade i18NFacade;
 	@Resource(name = "sopPaymentDetailsValidator")
 	private SopPaymentDetailsValidator sopPaymentDetailsValidator;
 	@Resource(name = "cartLoaderStrategy")
 	private CartLoaderStrategy cartLoaderStrategy;
-	private BaseStoreService baseStoreService;
 	
 	private static final String PAYMENT_MAPPING = "accountHolderName,cardNumber,cardType,cardTypeData(code),expiryMonth,expiryYear,issueNumber,startMonth,startYear,subscriptionId,defaultPaymentInfo,saved,billingAddress(titleCode,firstName,lastName,line1,line2,town,postalCode,country(isocode),region(isocode),defaultAddress)";
 	protected static final String API_COMPATIBILITY_B2C_CHANNELS = "api.compatibility.b2c.channels";
@@ -263,7 +262,7 @@ public class NovalnetCartsController
         
 		final OrderData orderData = getCheckoutFacade().placeOrder();
 		LOG.info("++++++++265");
-		return getDataMapper().map(orderData, OrderWsDTO.class, fields);
+		return dataMapper.map(orderData, OrderWsDTO.class, fields);
         
         
         LOG.info("++++++++872");
