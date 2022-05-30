@@ -113,7 +113,7 @@ public class NovalnetCartPaymentsController
     private CheckoutCustomerStrategy checkoutCustomerStrategy;
     private ModelService modelService;
     //~ private PaymentsResponseConverter paymentsResponseConverter;
-    private PaymentsDetailsResponseConverter paymentsDetailsResponseConverter;
+    //~ private PaymentsDetailsResponseConverter paymentsDetailsResponseConverter;
     private FlexibleSearchService flexibleSearchService;
     private Converter<AddressData, AddressModel> addressReverseConverter;
     private Converter<CountryModel, CountryData> countryConverter;
