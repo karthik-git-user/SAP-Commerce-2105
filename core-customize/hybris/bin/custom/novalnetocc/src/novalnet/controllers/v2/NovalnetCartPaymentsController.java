@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved.
  */
-package de.hybris.platform.commercewebservices.core.v2.controller;
+package novalnet.controllers.v2;
 
 import de.hybris.platform.commercefacades.order.data.CCPaymentInfoData;
 import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO;
