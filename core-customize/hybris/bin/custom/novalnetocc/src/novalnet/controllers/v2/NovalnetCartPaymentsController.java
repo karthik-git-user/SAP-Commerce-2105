@@ -33,12 +33,68 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-import org.apache.log4j.Logger;
-
-import de.hybris.platform.core.model.user.AddressModel;
-import de.hybris.platform.core.model.order.CartModel;
-
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
+
+
+import de.hybris.platform.commercefacades.i18n.I18NFacade;
+import de.hybris.platform.commercefacades.i18n.comparators.CountryComparator;
+import de.hybris.platform.commercefacades.order.CheckoutFacade;
+import de.hybris.platform.commercefacades.order.OrderFacade;
+import de.hybris.platform.commercefacades.order.data.CartData;
+import de.hybris.platform.commercefacades.order.data.OrderData;
+import de.hybris.platform.commercefacades.user.data.AddressData;
+import de.hybris.platform.commercefacades.user.data.CountryData;
+import de.hybris.platform.commercefacades.user.data.RegionData;
+import de.hybris.platform.commerceservices.strategies.CheckoutCustomerStrategy;
+import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsListWsDTO;
+import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO;
+import de.hybris.platform.converters.Populator;
+import de.hybris.platform.core.enums.OrderStatus;
+import de.hybris.platform.core.model.c2l.CountryModel;
+import de.hybris.platform.core.model.order.AbstractOrderEntryModel;
+import de.hybris.platform.core.model.order.CartModel;
+import de.hybris.platform.core.model.order.OrderModel;
+import de.hybris.platform.core.model.order.payment.PaymentInfoModel;
+import de.hybris.platform.core.model.user.AddressModel;
+import de.hybris.platform.core.model.user.CustomerModel;
+import de.hybris.platform.core.model.user.TitleModel;
+import de.hybris.platform.order.CalculationService;
+import de.hybris.platform.order.CartFactory;
+import de.hybris.platform.order.CartService;
+import de.hybris.platform.order.InvalidCartException;
+import de.hybris.platform.order.exceptions.CalculationException;
+import de.hybris.platform.servicelayer.config.ConfigurationService;
+import de.hybris.platform.servicelayer.dto.converter.Converter;
+import de.hybris.platform.servicelayer.i18n.CommonI18NService;
+import de.hybris.platform.servicelayer.keygenerator.KeyGenerator;
+import de.hybris.platform.servicelayer.model.ModelService;
+import de.hybris.platform.servicelayer.search.FlexibleSearchService;
+import de.hybris.platform.servicelayer.session.SessionService;
+import de.hybris.platform.store.BaseStoreModel;
+import de.hybris.platform.store.services.BaseStoreService;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
+import org.springframework.validation.BindingResult;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -159,27 +215,6 @@ public class NovalnetCartPaymentsController
 
         return billingAddress;
     }
-
-	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_GUEST", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	@PutMapping(value = "/{cartId}/paymentdetails")
-	@ResponseStatus(HttpStatus.OK)
-	@ApiOperation(nickname = "replaceCartPaymentDetails", value = "Sets credit card payment details for the cart.", notes = "Sets credit card payment details for the cart.")
-	@ApiBaseSiteIdUserIdAndCartIdParam
-	public void replaceCartPaymentDetails(
-			@ApiParam(value = "Payment details identifier.", required = true) @RequestParam final String paymentDetailsId)
-			throws InvalidPaymentInfoException
-	{
-		setPaymentDetailsInternal(paymentDetailsId);
-	}
-
-	protected void validatePayment(final PaymentDetailsWsDTO paymentDetails) throws NoCheckoutCartException
-	{
-		if (!getCheckoutFacade().hasCheckoutCart())
-		{
-			throw new NoCheckoutCartException("Cannot add PaymentInfo. There was no checkout cart created yet!");
-		}
-		validate(paymentDetails, "paymentDetails", getPaymentDetailsDTOValidator());
-	}
 	
 	public ModelService getModelService() {
         return modelService;
