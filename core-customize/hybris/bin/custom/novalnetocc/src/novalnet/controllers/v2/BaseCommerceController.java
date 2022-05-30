@@ -26,8 +26,8 @@ import novalnet.controllers.UnsupportedDeliveryModeException;
 import de.hybris.platform.commercewebservices.core.populator.options.PaymentInfoOption;
 import de.hybris.platform.commercewebservices.core.validation.data.CartVoucherValidationData;
 import de.hybris.platform.commercewebservices.core.validation.data.CartVoucherValidationDataList;
-import de.hybris.platform.commercewebservices.core.validator.CartVoucherValidator;
-import de.hybris.platform.commercewebservices.core.validator.PlaceOrderCartValidator;
+import novalnet.validator.CartVoucherValidator;
+import novalnet.validator.PlaceOrderCartValidator;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
