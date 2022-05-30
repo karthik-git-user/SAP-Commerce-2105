@@ -154,19 +154,12 @@ public class NovalnetCartsController
     private Populator<AddressModel, AddressData> addressPopulator;
     private CommonI18NService commonI18NService;
     
-
-	@Resource(name = "acceleratorCheckoutFacade")
-	private AcceleratorCheckoutFacade acceleratorCheckoutFacade;
 	@Resource(name = "dataMapper")
 	private DataMapper dataMapper;
-	@Resource(name = "commerceWebServicesPaymentFacade")
-	private CommerceWebServicesPaymentFacade commerceWebServicesPaymentFacade;
 	@Resource(name = "userFacade")
 	private UserFacade userFacade;
 	@Resource(name = "i18NFacade")
     private I18NFacade i18NFacade;
-	@Resource(name = "sopPaymentDetailsValidator")
-	private SopPaymentDetailsValidator sopPaymentDetailsValidator;
 	@Resource(name = "cartLoaderStrategy")
 	private CartLoaderStrategy cartLoaderStrategy;
 	
