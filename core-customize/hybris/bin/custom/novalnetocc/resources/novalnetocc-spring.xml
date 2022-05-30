@@ -43,6 +43,11 @@
         <property name="flexibleSearchService" ref="flexibleSearchService"/>
     </bean>
     
+    <alias alias="dataMapper" name="defaultDataMapper"/>
+	<bean id="defaultDataMapper" class="de.hybris.platform.webservicescommons.mapping.impl.DefaultDataMapper">
+		<property name="fieldSetBuilder" ref="fieldSetBuilder"/>
+	</bean>
+    
 	<bean id="novalnetCartsController" class="novalnet.controllers.v2.NovalnetCartsController">
         <property name="baseStoreService" ref="baseStoreService"/>
         <property name="sessionService" ref="sessionService"/>
