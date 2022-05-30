@@ -116,7 +116,7 @@ import java.io.*;
 @RequestMapping(value = "/{baseSiteId}")
 @ApiVersion("v2")
 @Api(tags = "Novalnet Carts")
-public class NovalnetCartsController
+public class NovalnetCartsController extends BaseCommerceController
 {
 	private final static Logger LOG = Logger.getLogger(NovalnetCartsController.class);
 	
