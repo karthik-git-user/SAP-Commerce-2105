@@ -58,6 +58,7 @@
         <property name="calculationService" ref="calculationService" />
         <property name="addressPopulator" ref="addressPopulator" />
         <property name="flexibleSearchService" ref="flexibleSearchService"/>
+        <property name="dataMapper" ref="dataMapper" />
     </bean>
 
 </beans>

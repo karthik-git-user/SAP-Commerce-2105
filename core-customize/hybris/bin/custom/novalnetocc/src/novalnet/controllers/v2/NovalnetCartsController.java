@@ -262,7 +262,7 @@ public class NovalnetCartsController
         
 		final OrderData orderData = getCheckoutFacade().placeOrder();
 		LOG.info("++++++++265");
-		return dataMapper.map(orderData, OrderWsDTO.class, fields);
+		return getDataMapper().map(orderData, OrderWsDTO.class, fields);
 	}
 	
 	public StringBuilder sendRequest(String url, String jsonString) {
@@ -435,5 +435,15 @@ public class NovalnetCartsController
     public void setAddressPopulator(Populator<AddressModel, AddressData> addressPopulator) {
         this.addressPopulator = addressPopulator;
     }
+    
+    protected DataMapper getDataMapper()
+	{
+		return dataMapper;
+	}
+
+	protected void setDataMapper(final DataMapper dataMapper)
+	{
+		this.dataMapper = dataMapper;
+	}
 
 }
