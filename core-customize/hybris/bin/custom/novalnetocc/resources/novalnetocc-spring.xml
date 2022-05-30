@@ -26,5 +26,25 @@
     </bean>
 -->
 
+	<bean id="novalnetPaymentCartsController"
+          class="de.hybris.platform.commercewebservices.core.v2.controller.NovalnetCartPaymentsController">
+        <property name="baseStoreService" ref="baseStoreService"/>
+        <property name="sessionService" ref="sessionService"/>
+        <property name="cartService" ref="cartService"/>
+        <property name="orderFacade" ref="orderFacade"/>
+        <property name="checkoutFacade" ref="checkoutFacade"/>
+        <property name="checkoutCustomerStrategy" ref="checkoutCustomerStrategy"/>
+        <property name="modelService" ref="modelService"/>
+        <property name="commonI18NService" ref="commonI18NService"/>
+        <property name="keyGenerator" ref="orderCodeGenerator"/>
+        <property name="paymentsResponseConverter" ref="adyenPaymentsResponseConverter"/>
+        <property name="addressReverseConverter" ref="addressReverseConverter"/>
+        <property name="paymentsDetailsResponseConverter" ref="adyenPaymentsDetailsResponseConverter"/>
+        <property name="orderConverter" ref="orderConverter" />
+        <property name="cartFactory" ref="cartFactory" />
+        <property name="calculationService" ref="calculationService" />
+        <property name="addressPopulator" ref="addressPopulator" />
+        <property name="flexibleSearchService" ref="flexibleSearchService"/>
+    </bean>
 
 </beans>

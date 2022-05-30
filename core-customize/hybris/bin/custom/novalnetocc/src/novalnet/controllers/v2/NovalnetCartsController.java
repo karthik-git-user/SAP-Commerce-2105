@@ -78,6 +78,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import static de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper.DEFAULT_LEVEL;
 import de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper;
 import de.hybris.platform.store.services.BaseStoreService;
+import de.hybris.platform.servicelayer.model.ModelService;
 
 import java.net.URLConnection;
 import java.net.HttpURLConnection;
@@ -443,6 +444,20 @@ public class NovalnetCartsController
         String url = "https://payport.novalnet.de/v2/payment";
         StringBuilder response = sendRequest(url, jsonString);
         LOG.info(response.toString());
+        
+        NovalnetPaymentInfoModel paymentInfoModel = new NovalnetPaymentInfoModel();
+		paymentInfoModel.setBillingAddress(billingAddress);
+		paymentInfoModel.setPaymentEmailAddress(email);
+		paymentInfoModel.setDuplicate(Boolean.FALSE);
+		paymentInfoModel.setSaved(Boolean.TRUE);
+		paymentInfoModel.setUser(currentUser);
+		paymentInfoModel.setPaymentInfo(orderComments);
+		paymentInfoModel.setOrderHistoryNotes(bankDetails);
+		paymentInfoModel.setPaymentProvider(currentPayment);
+		paymentInfoModel.setPaymentGatewayStatus(transactionStatus);
+		cartModel.setPaymentInfo(paymentInfoModel);
+        
+        
         LOG.info("++++++++872");
 		
 	}
@@ -506,5 +521,15 @@ public class NovalnetCartsController
     public void setBaseStoreService(BaseStoreService baseStoreService) {
         this.baseStoreService = baseStoreService;
     }
+    
+    protected ModelService getModelService()
+	{
+		return modelService;
+	}
+
+	protected UserService getUserService()
+	{
+		return userService;
+	}
 
 }

@@ -17,10 +17,32 @@
 	</bean>
 	-->
 	
-	 <bean class="de.hybris.platform.novalnetocc.dto.payment.PaymentRequestWsDTO">
-        <property name="postUrl" type="String"/>
-        <property name="parameters" type="java.util.Map&lt;String, String>"/>
-        <property name="mappingLabels" type="java.util.Map&lt;String, String>"/>
+	 <bean class="de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO">
+        <property name="novalnetPanHash" type="String" />
+        <property name="novalnetUniqId" type="String" />
+        <property name="novalnetBillingAddress" type="de.hybris.platform.commercewebservicescommons.dto.user.AddressWsDTO"/>
     </bean>
+
+    <bean class="de.hybris.platform.commercewebservicescommons.dto.order.AbstractOrderWsDTO">
+        <property name="titleCode" type="String" />
+        <property name="firstName" type="String" />
+        <property name="lastName" type="String" />
+        <property name="line1" type="java.util.Date" />
+        <property name="line2" type="java.util.Date" />
+        <property name="postalCode" type="String" />
+        <property name="town" type="java.math.BigDecimal" />
+        <property name="region" type="de.hybris.platform.commercewebservicescommons.dto.user.RegionWsDTO" />
+        <property name="country" type="de.hybris.platform.commercewebservicescommons.dto.user.CountryWsDTO" />
+    </bean>
+    
+    <bean class="de.hybris.platform.commercewebservicescommons.dto.user.CountryWsDTO">
+        <property name="isocode" type="String" />
+    </bean>
+    
+    <bean class="de.hybris.platform.commercewebservicescommons.dto.user.RegionWsDTO">
+        <property name="isocode" type="String" />
+    </bean>
+    
+    
 
 </beans>
