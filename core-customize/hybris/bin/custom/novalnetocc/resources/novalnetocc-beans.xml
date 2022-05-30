@@ -35,14 +35,6 @@
         <property name="country" type="de.hybris.platform.commercewebservicescommons.dto.user.CountryWsDTO" />
     </bean>
     
-    <bean class="de.hybris.platform.commercewebservicescommons.dto.user.CountryWsDTO">
-        <property name="isocode" type="String" />
-    </bean>
-    
-    <bean class="de.hybris.platform.commercewebservicescommons.dto.user.RegionWsDTO">
-        <property name="isocode" type="String" />
-    </bean>
-    
     
 
 </beans>
