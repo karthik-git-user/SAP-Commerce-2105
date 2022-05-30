@@ -35,7 +35,6 @@
         <property name="checkoutCustomerStrategy" ref="checkoutCustomerStrategy"/>
         <property name="modelService" ref="modelService"/>
         <property name="commonI18NService" ref="commonI18NService"/>
-        <property name="keyGenerator" ref="orderCodeGenerator"/>
         <property name="addressReverseConverter" ref="addressReverseConverter"/>
         <property name="orderConverter" ref="orderConverter" />
         <property name="cartFactory" ref="cartFactory" />
@@ -53,7 +52,6 @@
         <property name="checkoutCustomerStrategy" ref="checkoutCustomerStrategy"/>
         <property name="modelService" ref="modelService"/>
         <property name="commonI18NService" ref="commonI18NService"/>
-        <property name="keyGenerator" ref="orderCodeGenerator"/>
         <property name="addressReverseConverter" ref="addressReverseConverter"/>
         <property name="orderConverter" ref="orderConverter" />
         <property name="cartFactory" ref="cartFactory" />
