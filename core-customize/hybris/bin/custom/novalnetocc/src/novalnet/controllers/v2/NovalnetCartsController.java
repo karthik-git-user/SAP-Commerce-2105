@@ -10,7 +10,7 @@ import novalnet.controllers.NoCheckoutCartException;
 //~ import novalnet.controllers.v2.NovalnetBaseCommerceController;
 import novalnet.controllers.UnsupportedRequestException;
 import de.hybris.platform.order.InvalidCartException;
-import de.hybris.platform.novalnetocc.dto.payment.PaymentRequestWsDTO;
+//~ import de.hybris.platform.novalnetocc.dto.payment.PaymentRequestWsDTO;
 import de.hybris.platform.commercewebservicescommons.dto.order.OrderWsDTO;
 import de.hybris.platform.acceleratorocc.dto.payment.SopPaymentDetailsWsDTO;
 import de.hybris.platform.acceleratorocc.payment.facade.CommerceWebServicesPaymentFacade;
@@ -230,17 +230,17 @@ public class NovalnetCartsController
         StringBuilder response = sendRequest(url, jsonString);
         LOG.info(response.toString());
         
-        NovalnetPaymentInfoModel paymentInfoModel = new NovalnetPaymentInfoModel();
-		paymentInfoModel.setBillingAddress(billingAddress);
-		paymentInfoModel.setPaymentEmailAddress(email);
-		paymentInfoModel.setDuplicate(Boolean.FALSE);
-		paymentInfoModel.setSaved(Boolean.TRUE);
-		paymentInfoModel.setUser(currentUser);
-		paymentInfoModel.setPaymentInfo(orderComments);
-		paymentInfoModel.setOrderHistoryNotes(bankDetails);
-		paymentInfoModel.setPaymentProvider(currentPayment);
-		paymentInfoModel.setPaymentGatewayStatus(transactionStatus);
-		cartModel.setPaymentInfo(paymentInfoModel);
+        //~ NovalnetPaymentInfoModel paymentInfoModel = new NovalnetPaymentInfoModel();
+		//~ paymentInfoModel.setBillingAddress(billingAddress);
+		//~ paymentInfoModel.setPaymentEmailAddress(email);
+		//~ paymentInfoModel.setDuplicate(Boolean.FALSE);
+		//~ paymentInfoModel.setSaved(Boolean.TRUE);
+		//~ paymentInfoModel.setUser(currentUser);
+		//~ paymentInfoModel.setPaymentInfo(orderComments);
+		//~ paymentInfoModel.setOrderHistoryNotes(bankDetails);
+		//~ paymentInfoModel.setPaymentProvider(currentPayment);
+		//~ paymentInfoModel.setPaymentGatewayStatus(transactionStatus);
+		//~ cartModel.setPaymentInfo(paymentInfoModel);
         
         
         LOG.info("++++++++872");
@@ -307,14 +307,14 @@ public class NovalnetCartsController
         this.baseStoreService = baseStoreService;
     }
     
-    protected ModelService getModelService()
-	{
-		return modelService;
-	}
+    //~ protected ModelService getModelService()
+	//~ {
+		//~ return modelService;
+	//~ }
 
-	protected UserService getUserService()
-	{
-		return userService;
-	}
+	//~ protected UserService getUserService()
+	//~ {
+		//~ return userService;
+	//~ }
 
 }

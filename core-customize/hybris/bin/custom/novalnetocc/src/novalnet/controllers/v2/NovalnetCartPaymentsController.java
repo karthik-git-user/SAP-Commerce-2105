@@ -12,7 +12,7 @@ import de.hybris.platform.webservicescommons.swagger.ApiFieldsParam;
 import novalnet.controllers.InvalidPaymentInfoException;
 import novalnet.controllers.NoCheckoutCartException;
 import novalnet.controllers.UnsupportedRequestException;
-import de.hybris.platform.commercewebservices.core.request.support.impl.PaymentProviderRequestSupportedStrategy;
+//~ import de.hybris.platform.commercewebservices.core.request.support.impl.PaymentProviderRequestSupportedStrategy;
 import de.hybris.platform.commerceservices.request.mapping.annotation.RequestMappingOverride;
 
 import javax.annotation.Resource;
@@ -112,7 +112,7 @@ public class NovalnetCartPaymentsController
     private CheckoutFacade checkoutFacade;
     private CheckoutCustomerStrategy checkoutCustomerStrategy;
     private ModelService modelService;
-    private PaymentsResponseConverter paymentsResponseConverter;
+    //~ private PaymentsResponseConverter paymentsResponseConverter;
     private PaymentsDetailsResponseConverter paymentsDetailsResponseConverter;
     private FlexibleSearchService flexibleSearchService;
     private Converter<AddressData, AddressModel> addressReverseConverter;
@@ -122,11 +122,14 @@ public class NovalnetCartPaymentsController
     private CalculationService calculationService;
     private Populator<AddressModel, AddressData> addressPopulator;
     private CommonI18NService commonI18NService;
+    
+    @Resource(name = "i18NFacade")
+    private I18NFacade i18NFacade;
 	
 	private static final String PAYMENT_MAPPING = "accountHolderName,cardNumber,cardType,cardTypeData(code),expiryMonth,expiryYear,issueNumber,startMonth,startYear,subscriptionId,defaultPaymentInfo,saved,billingAddress(titleCode,firstName,lastName,line1,line2,town,postalCode,country(isocode),region(isocode),defaultAddress)";
 
-	@Resource(name = "paymentProviderRequestSupportedStrategy")
-	private PaymentProviderRequestSupportedStrategy paymentProviderRequestSupportedStrategy;
+	//~ @Resource(name = "paymentProviderRequestSupportedStrategy")
+	//~ private PaymentProviderRequestSupportedStrategy paymentProviderRequestSupportedStrategy;
 
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_GUEST", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
 	@PostMapping(value = "/{cartId}/paymentdetails", consumes = { MediaType.APPLICATION_JSON_VALUE,
@@ -141,7 +144,7 @@ public class NovalnetCartPaymentsController
 					+ "the month of the expiry date (expiryMonth), the year of the expiry date (expiryYear), whether the payment details should be saved (saved), whether the payment details "
 					+ "should be set as default (defaultPaymentInfo), and the billing address (billingAddress.firstName, billingAddress.lastName, billingAddress.titleCode, billingAddress.country.isocode, "
 					+ "billingAddress.line1, billingAddress.line2, billingAddress.town, billingAddress.postalCode, billingAddress.region.isocode)\n\nThe DTO is in XML or .json format.", required = true) @RequestBody final PaymentDetailsWsDTO paymentDetails,
-			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
+			@ApiFieldsParam @RequestParam(defaultValue = "Default") final String fields)
 			throws InvalidPaymentInfoException, NoCheckoutCartException, UnsupportedRequestException
 	{
 		LOG.info("+++++++++91++++++++");
