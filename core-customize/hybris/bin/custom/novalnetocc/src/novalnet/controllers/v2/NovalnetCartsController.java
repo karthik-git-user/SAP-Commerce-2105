@@ -429,12 +429,12 @@ public class NovalnetCartsController
         this.addressPopulator = addressPopulator;
     }
     
-    protected DataMapper getDataMapper()
+    public DataMapper getDataMapper()
 	{
 		return dataMapper;
 	}
 
-	protected void setDataMapper(final DataMapper dataMapper)
+	public void setDataMapper(final DataMapper dataMapper)
 	{
 		this.dataMapper = dataMapper;
 	}
