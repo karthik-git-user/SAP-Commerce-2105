@@ -219,30 +219,46 @@ public class NovalnetCartPaymentsController
         return billingAddress;
     }
 	
-	public ModelService getModelService() {
-        return modelService;
+	public BaseStoreService getBaseStoreService() {
+        return baseStoreService;
     }
 
-    public void setModelService(ModelService modelService) {
-        this.modelService = modelService;
-    }
-    
-    public CommonI18NService getCommonI18NService() {
-        return commonI18NService;
+    public void setBaseStoreService(BaseStoreService baseStoreService) {
+        this.baseStoreService = baseStoreService;
     }
 
-    public void setCommonI18NService(CommonI18NService commonI18NService) {
-        this.commonI18NService = commonI18NService;
-    }
-    
-    public FlexibleSearchService getFlexibleSearchService() {
-        return flexibleSearchService;
+    public SessionService getSessionService() {
+        return sessionService;
     }
 
-    public void setFlexibleSearchService(FlexibleSearchService flexibleSearchService) {
-        this.flexibleSearchService = flexibleSearchService;
+    public void setSessionService(SessionService sessionService) {
+        this.sessionService = sessionService;
     }
-    
+
+    public CartService getCartService() {
+        return cartService;
+    }
+
+    public void setCartService(CartService cartService) {
+        this.cartService = cartService;
+    }
+
+    public OrderFacade getOrderFacade() {
+        return orderFacade;
+    }
+
+    public void setOrderFacade(OrderFacade orderFacade) {
+        this.orderFacade = orderFacade;
+    }
+
+    public CheckoutFacade getCheckoutFacade() {
+        return checkoutFacade;
+    }
+
+    public void setCheckoutFacade(CheckoutFacade checkoutFacade) {
+        this.checkoutFacade = checkoutFacade;
+    }
+
     public CheckoutCustomerStrategy getCheckoutCustomerStrategy() {
         return checkoutCustomerStrategy;
     }
@@ -250,15 +266,31 @@ public class NovalnetCartPaymentsController
     public void setCheckoutCustomerStrategy(CheckoutCustomerStrategy checkoutCustomerStrategy) {
         this.checkoutCustomerStrategy = checkoutCustomerStrategy;
     }
-    
-    public I18NFacade getI18NFacade() {
-        return i18NFacade;
+
+    public ModelService getModelService() {
+        return modelService;
     }
 
-    public void setI18NFacade(I18NFacade i18NFacade) {
-        this.i18NFacade = i18NFacade;
+    public void setModelService(ModelService modelService) {
+        this.modelService = modelService;
     }
-    
+
+    public CommonI18NService getCommonI18NService() {
+        return commonI18NService;
+    }
+
+    public void setCommonI18NService(CommonI18NService commonI18NService) {
+        this.commonI18NService = commonI18NService;
+    }
+
+    public FlexibleSearchService getFlexibleSearchService() {
+        return flexibleSearchService;
+    }
+
+    public void setFlexibleSearchService(FlexibleSearchService flexibleSearchService) {
+        this.flexibleSearchService = flexibleSearchService;
+    }
+
     public Converter<AddressData, AddressModel> getAddressReverseConverter() {
         return addressReverseConverter;
     }
@@ -266,4 +298,54 @@ public class NovalnetCartPaymentsController
     public void setAddressReverseConverter(Converter<AddressData, AddressModel> addressReverseConverter) {
         this.addressReverseConverter = addressReverseConverter;
     }
+
+    public I18NFacade getI18NFacade() {
+        return i18NFacade;
+    }
+
+    public void setI18NFacade(I18NFacade i18NFacade) {
+        this.i18NFacade = i18NFacade;
+    }
+
+    protected Converter<CountryModel, CountryData> getCountryConverter() {
+        return countryConverter;
+    }
+
+    @Required
+    public void setCountryConverter(final Converter<CountryModel, CountryData> countryConverter) {
+        this.countryConverter = countryConverter;
+    }
+
+    public Converter<OrderModel, OrderData> getOrderConverter() {
+        return orderConverter;
+    }
+
+    public void setOrderConverter(Converter<OrderModel, OrderData> orderConverter) {
+        this.orderConverter = orderConverter;
+    }
+
+    public CartFactory getCartFactory() {
+        return cartFactory;
+    }
+
+    public void setCartFactory(CartFactory cartFactory) {
+        this.cartFactory = cartFactory;
+    }
+
+    public CalculationService getCalculationService() {
+        return calculationService;
+    }
+
+    public void setCalculationService(CalculationService calculationService) {
+        this.calculationService = calculationService;
+    }
+
+    public Populator<AddressModel, AddressData> getAddressPopulator() {
+        return addressPopulator;
+    }
+
+    public void setAddressPopulator(Populator<AddressModel, AddressData> addressPopulator) {
+        this.addressPopulator = addressPopulator;
+    }
+    
 }

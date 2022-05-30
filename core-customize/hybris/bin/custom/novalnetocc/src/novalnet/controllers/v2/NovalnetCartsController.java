@@ -7,10 +7,8 @@ import de.hybris.platform.acceleratorservices.payment.data.PaymentErrorField;
 import de.hybris.platform.acceleratorocc.exceptions.PaymentProviderException;
 import novalnet.controllers.InvalidPaymentInfoException;
 import novalnet.controllers.NoCheckoutCartException;
-//~ import novalnet.controllers.v2.NovalnetBaseCommerceController;
 import novalnet.controllers.UnsupportedRequestException;
 import de.hybris.platform.order.InvalidCartException;
-//~ import de.hybris.platform.novalnetocc.dto.payment.PaymentRequestWsDTO;
 import de.hybris.platform.commercewebservicescommons.dto.order.OrderWsDTO;
 import de.hybris.platform.acceleratorocc.dto.payment.SopPaymentDetailsWsDTO;
 import de.hybris.platform.acceleratorocc.payment.facade.CommerceWebServicesPaymentFacade;
@@ -28,7 +26,6 @@ import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsD
 import de.hybris.platform.commercewebservicescommons.dto.store.PointOfServiceListWsDTO;
 import de.hybris.platform.commercewebservicescommons.errors.exceptions.PaymentAuthorizationException;
 import de.hybris.platform.commercewebservicescommons.annotation.SiteChannelRestriction;
-//~ import de.hybris.platform.commercewebservices.core.request.support.impl.PaymentProviderRequestSupportedStrategy;
 import de.hybris.platform.webservicescommons.errors.exceptions.WebserviceValidationException;
 import de.hybris.platform.webservicescommons.mapping.DataMapper;
 import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdUserIdAndCartIdParam;
@@ -40,8 +37,6 @@ import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.store.BaseStoreModel;
 import de.hybris.platform.commercefacades.order.CartFacade;
 import de.hybris.platform.commercewebservicescommons.strategies.CartLoaderStrategy;
-//~ import novalnet.facades.NovalnetOccFacade;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -113,6 +108,25 @@ import java.lang.reflect.Type;
 
 import java.io.*;
 
+import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
+import de.hybris.platform.commercefacades.i18n.I18NFacade;
+import de.hybris.platform.commerceservices.strategies.CheckoutCustomerStrategy;
+import de.hybris.platform.servicelayer.session.SessionService;
+import de.hybris.platform.order.CartService;
+import de.hybris.platform.commercefacades.order.OrderFacade;
+import de.hybris.platform.servicelayer.search.FlexibleSearchService;
+import de.hybris.platform.servicelayer.dto.converter.Converter;
+import de.hybris.platform.commercefacades.user.data.AddressData;
+import de.hybris.platform.commercefacades.user.data.CountryData;
+import de.hybris.platform.core.model.c2l.CountryModel;
+import de.hybris.platform.core.model.order.OrderModel;
+import de.hybris.platform.order.CartFactory;
+import de.hybris.platform.order.CartService;
+import de.hybris.platform.order.CalculationService;
+import de.hybris.platform.converters.Populator;
+import de.hybris.platform.servicelayer.i18n.CommonI18NService;
+
+
 
 @Controller
 @RequestMapping(value = "/{baseSiteId}")
@@ -123,6 +137,23 @@ public class NovalnetCartsController
 	private final static Logger LOG = Logger.getLogger(NovalnetCartsController.class);
 	
 	protected static final String DEFAULT_FIELD_SET = FieldSetLevelHelper.DEFAULT_LEVEL;
+	
+	private BaseStoreService baseStoreService;
+    private SessionService sessionService;
+    private CartService cartService;
+    private OrderFacade orderFacade;
+    private CheckoutFacade checkoutFacade;
+    private CheckoutCustomerStrategy checkoutCustomerStrategy;
+    private ModelService modelService;
+    private FlexibleSearchService flexibleSearchService;
+    private Converter<AddressData, AddressModel> addressReverseConverter;
+    private Converter<CountryModel, CountryData> countryConverter;
+    private Converter<OrderModel, OrderData> orderConverter;
+    private CartFactory cartFactory;
+    private CalculationService calculationService;
+    private Populator<AddressModel, AddressData> addressPopulator;
+    private CommonI18NService commonI18NService;
+    
 
 	@Resource(name = "acceleratorCheckoutFacade")
 	private AcceleratorCheckoutFacade acceleratorCheckoutFacade;
@@ -155,7 +186,7 @@ public class NovalnetCartsController
 	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
 	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
 	@ApiBaseSiteIdAndUserIdParam
-	public void placeOrder(
+	public OrderWsDTO placeOrder(
 			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String panHash,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String uniqId,
@@ -230,17 +261,9 @@ public class NovalnetCartsController
         StringBuilder response = sendRequest(url, jsonString);
         LOG.info(response.toString());
         
-        //~ NovalnetPaymentInfoModel paymentInfoModel = new NovalnetPaymentInfoModel();
-		//~ paymentInfoModel.setBillingAddress(billingAddress);
-		//~ paymentInfoModel.setPaymentEmailAddress(email);
-		//~ paymentInfoModel.setDuplicate(Boolean.FALSE);
-		//~ paymentInfoModel.setSaved(Boolean.TRUE);
-		//~ paymentInfoModel.setUser(currentUser);
-		//~ paymentInfoModel.setPaymentInfo(orderComments);
-		//~ paymentInfoModel.setOrderHistoryNotes(bankDetails);
-		//~ paymentInfoModel.setPaymentProvider(currentPayment);
-		//~ paymentInfoModel.setPaymentGatewayStatus(transactionStatus);
-		//~ cartModel.setPaymentInfo(paymentInfoModel);
+		final OrderData orderData = getCheckoutFacade().placeOrder();
+		LOG.info("++++++++265");
+		return getDataMapper().map(orderData, OrderWsDTO.class, fields);
         
         
         LOG.info("++++++++872");
@@ -289,32 +312,133 @@ public class NovalnetCartsController
 
     }
     
-    protected CheckoutFacade getCheckoutFacade()
-	{
-		return checkoutFacade;
-	}
-
-	protected void setCheckoutFacade(final CheckoutFacade checkoutFacade)
-	{
-		this.checkoutFacade = checkoutFacade;
-	}
-	
-	public BaseStoreService getBaseStoreService() {
+    public BaseStoreService getBaseStoreService() {
         return baseStoreService;
     }
 
     public void setBaseStoreService(BaseStoreService baseStoreService) {
         this.baseStoreService = baseStoreService;
     }
-    
-    //~ protected ModelService getModelService()
-	//~ {
-		//~ return modelService;
-	//~ }
 
-	//~ protected UserService getUserService()
-	//~ {
-		//~ return userService;
-	//~ }
+    public SessionService getSessionService() {
+        return sessionService;
+    }
+
+    public void setSessionService(SessionService sessionService) {
+        this.sessionService = sessionService;
+    }
+
+    public CartService getCartService() {
+        return cartService;
+    }
+
+    public void setCartService(CartService cartService) {
+        this.cartService = cartService;
+    }
+
+    public OrderFacade getOrderFacade() {
+        return orderFacade;
+    }
+
+    public void setOrderFacade(OrderFacade orderFacade) {
+        this.orderFacade = orderFacade;
+    }
+
+    public CheckoutFacade getCheckoutFacade() {
+        return checkoutFacade;
+    }
+
+    public void setCheckoutFacade(CheckoutFacade checkoutFacade) {
+        this.checkoutFacade = checkoutFacade;
+    }
+
+    public CheckoutCustomerStrategy getCheckoutCustomerStrategy() {
+        return checkoutCustomerStrategy;
+    }
+
+    public void setCheckoutCustomerStrategy(CheckoutCustomerStrategy checkoutCustomerStrategy) {
+        this.checkoutCustomerStrategy = checkoutCustomerStrategy;
+    }
+
+    public ModelService getModelService() {
+        return modelService;
+    }
+
+    public void setModelService(ModelService modelService) {
+        this.modelService = modelService;
+    }
+
+    public CommonI18NService getCommonI18NService() {
+        return commonI18NService;
+    }
+
+    public void setCommonI18NService(CommonI18NService commonI18NService) {
+        this.commonI18NService = commonI18NService;
+    }
+
+    public FlexibleSearchService getFlexibleSearchService() {
+        return flexibleSearchService;
+    }
+
+    public void setFlexibleSearchService(FlexibleSearchService flexibleSearchService) {
+        this.flexibleSearchService = flexibleSearchService;
+    }
+
+    public Converter<AddressData, AddressModel> getAddressReverseConverter() {
+        return addressReverseConverter;
+    }
+
+    public void setAddressReverseConverter(Converter<AddressData, AddressModel> addressReverseConverter) {
+        this.addressReverseConverter = addressReverseConverter;
+    }
+
+    public I18NFacade getI18NFacade() {
+        return i18NFacade;
+    }
+
+    public void setI18NFacade(I18NFacade i18NFacade) {
+        this.i18NFacade = i18NFacade;
+    }
+
+    protected Converter<CountryModel, CountryData> getCountryConverter() {
+        return countryConverter;
+    }
+
+    @Required
+    public void setCountryConverter(final Converter<CountryModel, CountryData> countryConverter) {
+        this.countryConverter = countryConverter;
+    }
+
+    public Converter<OrderModel, OrderData> getOrderConverter() {
+        return orderConverter;
+    }
+
+    public void setOrderConverter(Converter<OrderModel, OrderData> orderConverter) {
+        this.orderConverter = orderConverter;
+    }
+
+    public CartFactory getCartFactory() {
+        return cartFactory;
+    }
+
+    public void setCartFactory(CartFactory cartFactory) {
+        this.cartFactory = cartFactory;
+    }
+
+    public CalculationService getCalculationService() {
+        return calculationService;
+    }
+
+    public void setCalculationService(CalculationService calculationService) {
+        this.calculationService = calculationService;
+    }
+
+    public Populator<AddressModel, AddressData> getAddressPopulator() {
+        return addressPopulator;
+    }
+
+    public void setAddressPopulator(Populator<AddressModel, AddressData> addressPopulator) {
+        this.addressPopulator = addressPopulator;
+    }
 
 }
