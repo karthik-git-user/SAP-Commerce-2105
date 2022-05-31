@@ -42,7 +42,9 @@
     <extension name='commercewebservices' />
     <extension name='commercewebservicescommons' />
     <extension name='commercewebservicestests' />
+<!--
     <extension name='yocc' />
+-->
     <extension name='yocctests' />
     <extension name='configurablebundleaddon' />
     <extension name='configurablebundlebackoffice' />
