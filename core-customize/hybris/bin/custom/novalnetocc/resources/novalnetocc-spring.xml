@@ -10,58 +10,5 @@
 
     <context:annotation-config/>
     
-	<alias name="defaultNovalnetPaymentController" alias="novalnetPaymentController"/>
-	<bean id="defaultNovalnetPaymentController" class="novalnet.controllers.v2.NovalnetCartPaymentsController">
-        <property name="baseStoreService" ref="baseStoreService"/>
-        <property name="sessionService" ref="sessionService"/>
-        <property name="cartService" ref="cartService"/>
-        <property name="orderFacade" ref="orderFacade"/>
-        <property name="checkoutFacade" ref="checkoutFacade"/>
-        <property name="checkoutCustomerStrategy" ref="checkoutCustomerStrategy"/>
-        <property name="modelService" ref="modelService"/>
-        <property name="commonI18NService" ref="commonI18NService"/>
-        <property name="addressReverseConverter" ref="addressReverseConverter"/>
-        <property name="orderConverter" ref="orderConverter" />
-        <property name="cartFactory" ref="cartFactory" />
-        <property name="calculationService" ref="calculationService" />
-        <property name="addressPopulator" ref="addressPopulator" />
-        <property name="flexibleSearchService" ref="flexibleSearchService"/>
-    </bean>
-    
-    <alias alias="dataMapper" name="defaultDataMapper"/>
-	<bean id="defaultDataMapper" class="de.hybris.platform.webservicescommons.mapping.impl.DefaultDataMapper">
-		<property name="fieldSetBuilder" ref="fieldSetBuilder"/>
-	</bean>
-	
-	<alias alias="fieldSetBuilder" name="defaultFieldSetBuilder"/>
-    <bean id="defaultFieldSetBuilder"
-          class="de.hybris.platform.webservicescommons.mapping.impl.DefaultFieldSetBuilder">
-        <property name="defaultRecurrencyLevel" value="4"/>
-        <property name="defaultMaxFieldSetSize" value="50000"/>
-        <property name="fieldSetLevelHelper" ref="fieldSetLevelHelper"/>
-    </bean>
-
-    <alias alias="fieldSetLevelHelper" name="defaultFieldSetLevelHelper"/>
-    <bean id="defaultFieldSetLevelHelper"
-          class="de.hybris.platform.webservicescommons.mapping.impl.DefaultFieldSetLevelHelper">
-    </bean>
-    
-	<bean id="novalnetCartsController" class="novalnet.controllers.v2.NovalnetCartsController">
-        <property name="baseStoreService" ref="baseStoreService"/>
-        <property name="sessionService" ref="sessionService"/>
-        <property name="cartService" ref="cartService"/>
-        <property name="orderFacade" ref="orderFacade"/>
-        <property name="checkoutFacade" ref="checkoutFacade"/>
-        <property name="checkoutCustomerStrategy" ref="checkoutCustomerStrategy"/>
-        <property name="modelService" ref="modelService"/>
-        <property name="commonI18NService" ref="commonI18NService"/>
-        <property name="addressReverseConverter" ref="addressReverseConverter"/>
-        <property name="orderConverter" ref="orderConverter" />
-        <property name="cartFactory" ref="cartFactory" />
-        <property name="calculationService" ref="calculationService" />
-        <property name="addressPopulator" ref="addressPopulator" />
-        <property name="flexibleSearchService" ref="flexibleSearchService"/>
-        <property name="dataMapper" ref="dataMapper" />
-    </bean>
 
 </beans>
