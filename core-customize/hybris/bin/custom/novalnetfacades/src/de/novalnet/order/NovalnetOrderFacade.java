@@ -250,7 +250,7 @@ public class NovalnetOrderFacade {
         this.addressPopulator = addressPopulator;
     }
     
-    public NovalnetPaymentInfoModel addPaymentDetailsInternal(final NovalnetPaymentInfoModel paymentInfo)
+    public void addPaymentDetailsInternal(final NovalnetPaymentInfoModel paymentInfo)
 	{
 		final CustomerModel currentCustomer = getCurrentUserForCheckout();
 		getCustomerAccountService().setDefaultPaymentInfo(currentCustomer, paymentInfo);
