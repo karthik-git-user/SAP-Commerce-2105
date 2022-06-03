@@ -250,15 +250,15 @@ public class NovalnetOrderFacade {
         this.addressPopulator = addressPopulator;
     }
     
-    public CartData addPaymentDetailsInternal(final NovalnetPaymentInfoModel paymentInfo)
+    public NovalnetPaymentInfoModel addPaymentDetailsInternal(final NovalnetPaymentInfoModel paymentInfo)
 	{
 		final CustomerModel currentCustomer = getCurrentUserForCheckout();
 		getCustomerAccountService().setDefaultPaymentInfo(currentCustomer, paymentInfo);
 		final CartModel cartModel = getCart();
-		final CommerceCheckoutParameter parameter = createCommerceCheckoutParameter(cartModel, true);
-		parameter.setPaymentInfo(paymentInfo);
-		getCommerceCheckoutService().setPaymentInfo(parameter);
-		return cartFacade.getSessionCart();
+		modelService.save(paymentInfo);
+        cartModel.setPaymentInfo(paymentInfo);
+        modelService.save(cartModel);
+        return paymentInfo;
 	}
 	
 	protected CustomerModel getCurrentUserForCheckout()
@@ -321,7 +321,7 @@ public class NovalnetOrderFacade {
 		this.commerceCheckoutService = commerceCheckoutService;
 	}
 	
-	private AddressModel createBillingAddress(PaymentDetailsWsDTO paymentDetails) {
+	public AddressModel createBillingAddress(PaymentDetailsWsDTO paymentDetails) {
         String titleCode = paymentDetails.getBillingAddress().getTitleCode();
         final AddressModel billingAddress = getModelService().create(AddressModel.class);
         if (StringUtils.isNotBlank(titleCode)) {
