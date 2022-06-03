@@ -93,7 +93,7 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.UnknownHostException;
 import java.util.Base64;
-
+import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.annotation.Resource;
@@ -118,6 +118,7 @@ import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 import de.hybris.platform.servicelayer.dto.converter.Converter;
 import de.hybris.platform.commercefacades.user.data.AddressData;
 import de.hybris.platform.commercefacades.user.data.CountryData;
+import de.hybris.platform.commercefacades.order.data.CartData;
 import de.hybris.platform.core.model.c2l.CountryModel;
 import de.hybris.platform.core.model.order.OrderModel;
 import de.hybris.platform.order.CartFactory;
@@ -188,7 +189,6 @@ public class NovalnetOrdersController
 		LOG.info("+++++++++++++++++++335");
 		LOG.info("+++++++++++++++++++335");
 		LOG.info(panHash);
-		LOG.info(getCheckoutFacade());
 		LOG.info("+++++++++++++++++++335");
 		LOG.info("+++++++++++++++++++349");
 		
