@@ -258,7 +258,6 @@ public class NovalnetOrderFacade {
 		modelService.save(paymentInfo);
         cartModel.setPaymentInfo(paymentInfo);
         modelService.save(cartModel);
-        return paymentInfo;
 	}
 	
 	protected CustomerModel getCurrentUserForCheckout()

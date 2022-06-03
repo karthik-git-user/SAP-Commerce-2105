@@ -157,9 +157,9 @@ public class NovalnetCartPaymentsController
 		NovalnetPaymentInfoModel paymentInfo = createPaymentInfo(paymentDetails);
 		paymentInfo.setBillingAddress(billingAddress);
         billingAddress.setOwner(paymentInfo);
-        final NovalnetPaymentInfoModel paymentInfoData = novalnetOrderFacade.addPaymentDetailsInternal(paymentInfo).getPaymentInfo();
+        novalnetOrderFacade.addPaymentDetailsInternal(paymentInfo);
         LOG.info("+++++++++161++++++++");
-        LOG.info(paymentInfoData);
+        LOG.info(paymentInfo);
         LOG.info("+++++++++163++++++++");
 	}
 	
