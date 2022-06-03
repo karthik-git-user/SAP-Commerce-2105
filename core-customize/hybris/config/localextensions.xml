@@ -224,7 +224,7 @@
 -->
 	<extension name='novalnetcore' />
 	<extension name='novalnetocc' />
-	<extension name='novalnetfacade' />
+	<extension name='novalnetfacades' />
 <!--
 	<extension name='novalnetbackoffice' />
 -->
