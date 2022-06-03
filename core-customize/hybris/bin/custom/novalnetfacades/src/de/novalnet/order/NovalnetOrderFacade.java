@@ -4,13 +4,6 @@ import java.util.List;
 
 import de.hybris.platform.commercefacades.order.data.CCPaymentInfoData;
 import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO;
-import de.hybris.platform.webservicescommons.cache.CacheControl;
-import de.hybris.platform.webservicescommons.cache.CacheControlDirective;
-import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdUserIdAndCartIdParam;
-import de.hybris.platform.webservicescommons.swagger.ApiFieldsParam;
-import novalnet.controllers.InvalidPaymentInfoException;
-import novalnet.controllers.NoCheckoutCartException;
-import novalnet.controllers.UnsupportedRequestException;
 import de.hybris.platform.commerceservices.request.mapping.annotation.RequestMappingOverride;
 
 import javax.annotation.Resource;
@@ -33,7 +26,7 @@ import io.swagger.annotations.ApiParam;
 
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
 
-
+import de.hybris.platform.commercefacades.order.CartFacade;
 import de.hybris.platform.commercefacades.i18n.I18NFacade;
 import de.hybris.platform.commercefacades.i18n.comparators.CountryComparator;
 import de.hybris.platform.commercefacades.order.CheckoutFacade;
@@ -45,6 +38,7 @@ import de.hybris.platform.commercefacades.user.data.CountryData;
 import de.hybris.platform.commercefacades.user.data.RegionData;
 import de.hybris.platform.commerceservices.strategies.CheckoutCustomerStrategy;
 import de.hybris.platform.commerceservices.customer.CustomerAccountService;
+import de.hybris.platform.commerceservices.order.CommerceCheckoutService;
 import de.hybris.platform.commerceservices.service.data.CommerceCheckoutParameter;
 import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsListWsDTO;
 import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO;
@@ -107,10 +101,12 @@ public class NovalnetOrderFacade {
     private SessionService sessionService;
     private CartService cartService;
     private OrderFacade orderFacade;
+    private CartFacade cartFacade;
     private CheckoutFacade checkoutFacade;
     private CheckoutCustomerStrategy checkoutCustomerStrategy;
     private ModelService modelService;
     private FlexibleSearchService flexibleSearchService;
+    private CommerceCheckoutService commerceCheckoutService;
     private Converter<AddressData, AddressModel> addressReverseConverter;
     private Converter<CountryModel, CountryData> countryConverter;
     private Converter<OrderModel, OrderData> orderConverter;
@@ -254,13 +250,13 @@ public class NovalnetOrderFacade {
         this.addressPopulator = addressPopulator;
     }
     
-    protected CartData addPaymentDetailsInternal(final NovalnetPaymentInfoModel paymentInfo) throws InvalidPaymentInfoException
+    protected CartData addPaymentDetailsInternal(final NovalnetPaymentInfoModel paymentInfo)
 	{
 		final CustomerModel currentCustomer = getCurrentUserForCheckout();
 		getCustomerAccountService().setDefaultPaymentInfo(currentCustomer, paymentInfo);
 		final CartModel cartModel = getCart();
 		final CommerceCheckoutParameter parameter = createCommerceCheckoutParameter(cartModel, true);
-		parameter.setPaymentInfo(ccPaymentInfoModel);
+		parameter.setPaymentInfo(paymentInfo);
 		getCommerceCheckoutService().setPaymentInfo(parameter);
 		return cartFacade.getSessionCart();
 	}
@@ -289,12 +285,6 @@ public class NovalnetOrderFacade {
 		this.customerAccountService = customerAccountService;
 	}
 	
-	protected <T extends CartService> T getCartService()
-	{
-		return (T) cartService;
-	}
-	
-	@Override
 	public boolean hasCheckoutCart()
 	{
 		return getCartFacade().hasSessionCart();
@@ -303,6 +293,16 @@ public class NovalnetOrderFacade {
 	protected CartModel getCart()
 	{
 		return hasCheckoutCart() ? getCartService().getSessionCart() : null;
+	}
+	
+	protected CartFacade getCartFacade()
+	{
+		return cartFacade;
+	}
+
+	protected void setCartFacade(final CartFacade cartFacade)
+	{
+		this.cartFacade = cartFacade;
 	}
 	
 	protected CartData getSessionCart()

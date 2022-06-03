@@ -33,6 +33,7 @@
         <property name="sessionService" ref="sessionService"/>
         <property name="cartService" ref="cartService"/>
         <property name="orderFacade" ref="orderFacade"/>
+        <property name="cartFacade" ref="cartFacade"/>
         <property name="checkoutFacade" ref="checkoutFacade"/>
         <property name="checkoutCustomerStrategy" ref="checkoutCustomerStrategy"/>
         <property name="modelService" ref="modelService"/>
