@@ -28,7 +28,7 @@
     </bean>
    
     <alias name="defaultNovalnetOrderFacade" alias="novalnetOrderFacade"/>
-	<bean id="defaultNovalnetOrderFacade" class="de.novalnet.order.NovalnetOrderfacade">
+	<bean id="defaultNovalnetOrderFacade" class="de.novalnet.order.NovalnetOrderFacade">
         <property name="baseStoreService" ref="baseStoreService"/>
         <property name="sessionService" ref="sessionService"/>
         <property name="cartService" ref="cartService"/>
