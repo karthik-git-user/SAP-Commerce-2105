@@ -299,7 +299,8 @@ public class NovalnetOrderFacade {
 		return cartFacade;
 	}
 
-	protected void setCartFacade(final CartFacade cartFacade)
+	@Required
+	public void setCartFacade(final CartFacade cartFacade)
 	{
 		this.cartFacade = cartFacade;
 	}
