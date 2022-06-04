@@ -120,10 +120,8 @@ public class NovalnetOrderFacade {
     @Resource(name = "i18NFacade")
     private I18NFacade i18NFacade;
     
-    @Resource(name = "cartLoaderStrategy")
+    @Resource
 	private CartLoaderStrategy cartLoaderStrategy;
-    
-    
 	
 	public BaseStoreService getBaseStoreService() {
         return baseStoreService;
@@ -370,5 +368,15 @@ public class NovalnetOrderFacade {
 
         return billingAddress;
     }
+    
+    public CartLoaderStrategy getCartLoaderStrategy()
+	{
+		return this.cartLoaderStrategy;
+	}
+
+	public void setCartLoaderStrategy(final CartLoaderStrategy cartLoaderStrategy)
+	{
+		this.cartLoaderStrategy = cartLoaderStrategy;
+	}
     
 }

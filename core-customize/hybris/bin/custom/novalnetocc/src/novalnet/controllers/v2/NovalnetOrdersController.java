@@ -184,7 +184,7 @@ public class NovalnetOrdersController
 	{
 		
 		cartLoaderStrategy.loadCart(cartId);
-		final CartData cartData = cartFacade.getCurrentCart();
+		//~ final CartData cartData = cartFacade.getCurrentCart();
 		
 		
 		//~ cartLoaderStrategy.loadCart(cartId);
