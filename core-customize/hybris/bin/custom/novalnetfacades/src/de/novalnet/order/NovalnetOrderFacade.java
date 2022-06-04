@@ -327,7 +327,7 @@ public class NovalnetOrderFacade {
 	
 	public CartData loadCart(final String cartId) {
 		cartLoaderStrategy.loadCart(cartId);
-		final CartData cartData = cartFacade.getCurrentCart();
+		final CartData cartData = getSessionCart();
 		return cartData;
 	}
 	
