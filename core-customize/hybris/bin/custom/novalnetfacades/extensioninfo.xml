@@ -6,6 +6,8 @@
                
       <!-- you should add all required extensions to this list, except platform extensions which are automatically required -->         
       <requires-extension name="acceleratorfacades"/>
+      <requires-extension name="commercefacades"/>
+      <requires-extension name="commercewebservicescommons"/>
       <requires-extension name="validation"/>
 <!--
       <requires-extension name="solrfacetsearchbackoffice"/>
