@@ -183,6 +183,9 @@ public class NovalnetOrdersController
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 		
+		cartLoaderStrategy.loadCart(cartId);
+		final CartData cartData = cartFacade.getCurrentCart();
+		
 		
 		//~ cartLoaderStrategy.loadCart(cartId);
 		LOG.info("placeOrder");
@@ -192,7 +195,7 @@ public class NovalnetOrdersController
 		LOG.info("+++++++++++++++++++335");
 		LOG.info("+++++++++++++++++++349");
 		
-		final CartData cartData = novalnetOrderFacade.getCheckoutFacade().getCheckoutCart();
+		final CartData cartData = novalnetOrderFacade.loadCart(cartId);
 		String totalAmount = formatAmount(String.valueOf(cartData.getTotalPriceWithTax().getValue()));
 		LOG.info(totalAmount);
 		LOG.info("+++++++++++++++++++205");

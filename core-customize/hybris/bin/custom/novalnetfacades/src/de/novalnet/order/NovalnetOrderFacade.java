@@ -37,6 +37,7 @@ import de.hybris.platform.commercefacades.user.data.AddressData;
 import de.hybris.platform.commercefacades.user.data.CountryData;
 import de.hybris.platform.commercefacades.user.data.RegionData;
 import de.hybris.platform.commerceservices.strategies.CheckoutCustomerStrategy;
+import de.hybris.platform.commercewebservicescommons.strategies.CartLoaderStrategy;
 import de.hybris.platform.commerceservices.customer.CustomerAccountService;
 import de.hybris.platform.commerceservices.order.CommerceCheckoutService;
 import de.hybris.platform.commerceservices.service.data.CommerceCheckoutParameter;
@@ -118,6 +119,9 @@ public class NovalnetOrderFacade {
     
     @Resource(name = "i18NFacade")
     private I18NFacade i18NFacade;
+    
+    @Resource(name = "cartLoaderStrategy")
+	private CartLoaderStrategy cartLoaderStrategy;
     
     
 	
@@ -319,6 +323,12 @@ public class NovalnetOrderFacade {
 	public void setCommerceCheckoutService(final CommerceCheckoutService commerceCheckoutService)
 	{
 		this.commerceCheckoutService = commerceCheckoutService;
+	}
+	
+	public CartData loadCart(final String cartId) {
+		cartLoaderStrategy.loadCart(cartId);
+		final CartData cartData = cartFacade.getCurrentCart();
+		return cartData;
 	}
 	
 	public AddressModel createBillingAddress(PaymentDetailsWsDTO paymentDetails) {
