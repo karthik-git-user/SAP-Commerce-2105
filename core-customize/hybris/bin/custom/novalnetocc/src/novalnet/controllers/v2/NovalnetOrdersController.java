@@ -200,8 +200,10 @@ public class NovalnetOrdersController
 		LOG.info(totalAmount);
 		LOG.info("+++++++++++++++++++205");
 		LOG.info("+++++++++++++++++++205");
-		LOG.info("+++++++++++++++++++205");
 		
+		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
+		LOG.info(baseStore.getNovalnetPaymentAccessKey());
+		LOG.info("+++++++++++++++++++206");
 		
 		
 		

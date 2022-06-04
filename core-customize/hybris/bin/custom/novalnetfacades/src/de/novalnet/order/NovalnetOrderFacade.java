@@ -123,7 +123,9 @@ public class NovalnetOrderFacade {
     @Resource(name = "cartLoaderStrategy")
 	private CartLoaderStrategy cartLoaderStrategy;
     
-    
+    public BaseStoreModel getBaseStoreModel() {
+        return getBaseStoreService().getCurrentBaseStore();
+    }
 	
 	public BaseStoreService getBaseStoreService() {
         return baseStoreService;
