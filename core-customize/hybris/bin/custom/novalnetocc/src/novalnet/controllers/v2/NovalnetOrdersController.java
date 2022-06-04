@@ -183,7 +183,7 @@ public class NovalnetOrdersController
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 		
-		cartLoaderStrategy.loadCart(cartId);
+		//~ cartLoaderStrategy.loadCart(cartId);
 		//~ final CartData cartData = cartFacade.getCurrentCart();
 		
 		
