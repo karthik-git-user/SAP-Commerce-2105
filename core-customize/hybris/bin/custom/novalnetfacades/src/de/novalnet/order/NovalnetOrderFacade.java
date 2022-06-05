@@ -288,6 +288,13 @@ public class NovalnetOrderFacade {
 
         return paymentTransactionEntry;
     }
+    
+    private CurrencyModel getCurrencyForIsoCode(final String currencyIsoCode) {
+        CurrencyModel currencyModel = new CurrencyModel();
+        currencyModel.setIsocode(currencyIsoCode);
+        currencyModel = getFlexibleSearchService().getModelByExample(currencyModel);
+        return currencyModel;
+    }
 	
 	protected CustomerModel getCurrentUserForCheckout()
 	{
@@ -359,9 +366,9 @@ public class NovalnetOrderFacade {
 	public AddressModel createBillingAddress() {
         //~ String titleCode = paymentDetails.getBillingAddress().getTitleCode();
         final AddressModel billingAddress = getModelService().create(AddressModel.class);
-        if (StringUtils.isNotBlank(titleCode)) {
+        if (StringUtils.isNotBlank("herr")) {
             final TitleModel title = new TitleModel();
-            title.setCode(titleCode);
+            title.setCode("herr");
             billingAddress.setTitle(getFlexibleSearchService().getModelByExample(title));
         }
         billingAddress.setFirstname("test");
