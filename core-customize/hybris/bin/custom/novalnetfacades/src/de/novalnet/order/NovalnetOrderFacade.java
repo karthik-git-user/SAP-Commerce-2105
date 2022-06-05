@@ -1,6 +1,7 @@
 package de.novalnet.order;
 
 import java.util.List;
+import java.util.Date;
 
 import de.hybris.platform.commercefacades.order.data.CCPaymentInfoData;
 import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO;
@@ -25,7 +26,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
-
+import de.hybris.platform.payment.enums.PaymentTransactionType;
+import de.hybris.platform.payment.dto.TransactionStatus;
+import de.hybris.platform.payment.model.PaymentTransactionEntryModel;
+import de.hybris.platform.payment.model.PaymentTransactionModel;
 import de.hybris.platform.commercefacades.order.CartFacade;
 import de.hybris.platform.commercefacades.i18n.I18NFacade;
 import de.hybris.platform.commercefacades.i18n.comparators.CountryComparator;
@@ -52,6 +56,7 @@ import de.hybris.platform.core.model.order.OrderModel;
 import de.hybris.platform.core.model.order.payment.PaymentInfoModel;
 import de.hybris.platform.core.model.user.AddressModel;
 import de.hybris.platform.core.model.user.CustomerModel;
+import de.hybris.platform.core.model.c2l.CurrencyModel;
 import de.hybris.platform.core.model.user.TitleModel;
 import de.hybris.platform.order.CalculationService;
 import de.hybris.platform.order.CartFactory;
@@ -266,6 +271,24 @@ public class NovalnetOrderFacade {
         modelService.save(cartModel);
 	}
 	
+	public PaymentTransactionEntryModel createTransactionEntry(final String requestId, final CartModel cartModel, final int amount, String backendTransactionComments, String currencyCode) {
+        final PaymentTransactionEntryModel paymentTransactionEntry = getModelService().create(PaymentTransactionEntryModel.class);
+        paymentTransactionEntry.setRequestId(requestId);
+        paymentTransactionEntry.setType(PaymentTransactionType.AUTHORIZATION);
+        paymentTransactionEntry.setTransactionStatus(TransactionStatus.ACCEPTED.name());
+        paymentTransactionEntry.setTransactionStatusDetails(backendTransactionComments);
+        paymentTransactionEntry.setCode(cartModel.getCode());
+
+        final CurrencyModel currency = getCurrencyForIsoCode(currencyCode);
+        paymentTransactionEntry.setCurrency(currency);
+
+        final BigDecimal transactionAmount = BigDecimal.valueOf(amount / 100);
+        paymentTransactionEntry.setAmount(transactionAmount);
+        paymentTransactionEntry.setTime(new Date());
+
+        return paymentTransactionEntry;
+    }
+	
 	protected CustomerModel getCurrentUserForCheckout()
 	{
 		return getCheckoutCustomerStrategy().getCurrentUserForCheckout();
@@ -333,24 +356,24 @@ public class NovalnetOrderFacade {
 		return cartData;
 	}
 	
-	public AddressModel createBillingAddress(PaymentDetailsWsDTO paymentDetails) {
-        String titleCode = paymentDetails.getBillingAddress().getTitleCode();
+	public AddressModel createBillingAddress() {
+        //~ String titleCode = paymentDetails.getBillingAddress().getTitleCode();
         final AddressModel billingAddress = getModelService().create(AddressModel.class);
         if (StringUtils.isNotBlank(titleCode)) {
             final TitleModel title = new TitleModel();
             title.setCode(titleCode);
             billingAddress.setTitle(getFlexibleSearchService().getModelByExample(title));
         }
-        billingAddress.setFirstname(paymentDetails.getBillingAddress().getFirstName());
-        billingAddress.setLastname(paymentDetails.getBillingAddress().getLastName());
-        billingAddress.setLine1(paymentDetails.getBillingAddress().getLine1());
-        billingAddress.setLine2(paymentDetails.getBillingAddress().getLine2());
-        billingAddress.setTown(paymentDetails.getBillingAddress().getTown());
-        billingAddress.setPostalcode(paymentDetails.getBillingAddress().getPostalCode());
-        billingAddress.setCountry(getCommonI18NService().getCountry(paymentDetails.getBillingAddress().getCountry().getIsocode()));
+        billingAddress.setFirstname("test");
+        billingAddress.setLastname("user");
+        billingAddress.setLine1("feringastr 2");
+        billingAddress.setLine2("");
+        billingAddress.setTown("Unterföhring");
+        billingAddress.setPostalcode("85574");
+        billingAddress.setCountry(getCommonI18NService().getCountry("DE"));
 
         final AddressData addressData = new AddressData();
-        addressData.setTitleCode(paymentDetails.getBillingAddress().getTitleCode());
+        addressData.setTitleCode("Mr");
         addressData.setFirstName(billingAddress.getFirstname());
         addressData.setLastName(billingAddress.getLastname());
         addressData.setLine1(billingAddress.getLine1());
@@ -359,14 +382,14 @@ public class NovalnetOrderFacade {
         addressData.setPostalCode(billingAddress.getPostalcode());
         addressData.setBillingAddress(true);
 
-        if (paymentDetails.getBillingAddress().getCountry() != null) {
-            final CountryData countryData = getI18NFacade().getCountryForIsocode(paymentDetails.getBillingAddress().getCountry().getIsocode());
+        //~ if (paymentDetails.getBillingAddress().getCountry() != null) {
+            final CountryData countryData = getI18NFacade().getCountryForIsocode("DE");
             addressData.setCountry(countryData);
-        }
-        if (paymentDetails.getBillingAddress().getRegion().getIsocode() != null) {
-            final RegionData regionData = getI18NFacade().getRegion(paymentDetails.getBillingAddress().getCountry().getIsocode(), paymentDetails.getBillingAddress().getRegion().getIsocode());
+        //~ }
+        //~ if (paymentDetails.getBillingAddress().getRegion().getIsocode() != null) {
+            final RegionData regionData = getI18NFacade().getRegion("DE", "BE");
             addressData.setRegion(regionData);
-        }
+        //~ }
 
         getAddressReverseConverter().convert(addressData, billingAddress);
 

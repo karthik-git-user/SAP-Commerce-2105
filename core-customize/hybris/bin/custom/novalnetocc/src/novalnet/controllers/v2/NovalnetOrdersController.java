@@ -44,6 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.math.BigDecimal;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -109,6 +110,8 @@ import java.lang.reflect.Type;
 import java.io.*;
 
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
+import de.hybris.platform.payment.model.PaymentTransactionEntryModel;
+import de.hybris.platform.payment.model.PaymentTransactionModel;
 import de.hybris.platform.commercefacades.i18n.I18NFacade;
 import de.hybris.platform.commerceservices.strategies.CheckoutCustomerStrategy;
 import de.hybris.platform.servicelayer.session.SessionService;
@@ -197,6 +200,10 @@ public class NovalnetOrdersController
 		
 		final CartData cartData = novalnetOrderFacade.loadCart(cartId);
 		String totalAmount = formatAmount(String.valueOf(cartData.getTotalPriceWithTax().getValue()));
+		String orderAmount = decimalFormat.format(Float.parseFloat(totalAmount));
+		float floatAmount = Float.parseFloat(orderAmount);
+        BigDecimal orderAmountCents = BigDecimal.valueOf(floatAmount).multiply(BigDecimal.valueOf(100));
+        Integer orderAmountCent = orderAmountCents.intValue();
 		LOG.info(totalAmount);
 		LOG.info("+++++++++++++++++++205");
 		LOG.info("+++++++++++++++++++205");
@@ -204,69 +211,110 @@ public class NovalnetOrdersController
 		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
 		LOG.info(baseStore.getNovalnetPaymentAccessKey());
 		LOG.info("+++++++++++++++++++206");
+		final CartModel cartModel = novalnetOrderFacade.getCart();
+		final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
 		
 		
 		
 		
-		
-		
-		//~ final Map<String, Object> transactionParameters = new HashMap<String, Object>();
-        //~ final Map<String, Object> merchantParameters = new HashMap<String, Object>();
-        //~ final Map<String, Object> customerParameters = new HashMap<String, Object>();
-        //~ final Map<String, Object> billingParameters = new HashMap<String, Object>();
-        //~ final Map<String, Object> shippingParameters = new HashMap<String, Object>();
-        //~ final Map<String, Object> customParameters = new HashMap<String, Object>();
-        //~ final Map<String, Object> paymentParameters = new HashMap<String, Object>();
-        //~ final Map<String, Object> dataParameters = new HashMap<String, Object>();
+		final Map<String, Object> transactionParameters = new HashMap<String, Object>();
+        final Map<String, Object> merchantParameters = new HashMap<String, Object>();
+        final Map<String, Object> customerParameters = new HashMap<String, Object>();
+        final Map<String, Object> billingParameters = new HashMap<String, Object>();
+        final Map<String, Object> shippingParameters = new HashMap<String, Object>();
+        final Map<String, Object> customParameters = new HashMap<String, Object>();
+        final Map<String, Object> paymentParameters = new HashMap<String, Object>();
+        final Map<String, Object> dataParameters = new HashMap<String, Object>();
 
-        //~ merchantParameters.put("signature", "n7ibc7ob5t|doU3HJVoym7MQ44qonbobljblnmdli0p|qJEH3gNbeWJfIHah||f7cpn7pc");
-        //~ merchantParameters.put("tariff", "30");
+        merchantParameters.put("signature", "n7ibc7ob5t|doU3HJVoym7MQ44qonbobljblnmdli0p|qJEH3gNbeWJfIHah||f7cpn7pc");
+        merchantParameters.put("tariff", "30");
 
-        //~ customerParameters.put("first_name", "test");
-        //~ customerParameters.put("last_name", "user");
-        //~ customerParameters.put("email", "karthik_m@novalnetsolutions.com");
-        //~ customerParameters.put("customer_no", "2");
-        //~ customerParameters.put("gender", "u");
+        customerParameters.put("first_name", "test");
+        customerParameters.put("last_name", "user");
+        customerParameters.put("email", "karthik_m@novalnetsolutions.com");
+        customerParameters.put("customer_no", "2");
+        customerParameters.put("gender", "u");
 
 
-        //~ billingParameters.put("street", "Feringastr. 4");
-        //~ billingParameters.put("city", "Unterföhring");
-        //~ billingParameters.put("zip","85774");
-        //~ billingParameters.put("country_code", "DE");
+        billingParameters.put("street", "Feringastr. 4");
+        billingParameters.put("city", "Unterföhring");
+        billingParameters.put("zip","85774");
+        billingParameters.put("country_code", "DE");
         
-        //~ shippingParameters.put("same_as_billing", "1");
+        shippingParameters.put("same_as_billing", "1");
 
-        //~ customerParameters.put("billing", billingParameters);
-        //~ customerParameters.put("shipping", shippingParameters);
+        customerParameters.put("billing", billingParameters);
+        customerParameters.put("shipping", shippingParameters);
 
-        //~ transactionParameters.put("payment_type", "CREDITCARD");
-        //~ transactionParameters.put("currency", "EUR");
-        //~ transactionParameters.put("amount", "100");
-        //~ transactionParameters.put("system_name", "SAP Commerce Cloud");
-        //~ transactionParameters.put("system_version", "2105-NN1.0.1");
+        transactionParameters.put("payment_type", "CREDITCARD");
+        transactionParameters.put("currency", "EUR");
+        transactionParameters.put("amount", "100");
+        transactionParameters.put("system_name", "SAP Commerce Cloud");
+        transactionParameters.put("system_version", "2105-NN1.0.1");
         
 
-        //~ customParameters.put("lang", "EN");
+        customParameters.put("lang", "EN");
 
-                //~ paymentParameters.put("pan_hash", panHash);
-                //~ paymentParameters.put("unique_id", uniqId);
-            //~ transactionParameters.put("payment_data", paymentParameters);
+                paymentParameters.put("pan_hash", panHash);
+                paymentParameters.put("unique_id", uniqId);
+            transactionParameters.put("payment_data", paymentParameters);
 
-        //~ dataParameters.put("merchant", merchantParameters);
-        //~ dataParameters.put("customer", customerParameters);
-        //~ dataParameters.put("transaction", transactionParameters);
-        //~ dataParameters.put("custom", customParameters);
+        dataParameters.put("merchant", merchantParameters);
+        dataParameters.put("customer", customerParameters);
+        dataParameters.put("transaction", transactionParameters);
+        dataParameters.put("custom", customParameters);
 
-        //~ Gson gson = new GsonBuilder().create();
-        //~ String jsonString = gson.toJson(dataParameters);
+        Gson gson = new GsonBuilder().create();
+        String jsonString = gson.toJson(dataParameters);
 
-        //~ String password = "a87ff679a2f3e71d9181a67b7542122c";
-        //~ String url = "https://payport.novalnet.de/v2/payment";
-        //~ StringBuilder response = sendRequest(url, jsonString);
-        //~ LOG.info(response.toString());
+        String password = "a87ff679a2f3e71d9181a67b7542122c";
+        String url = "https://payport.novalnet.de/v2/payment";
+        StringBuilder response = sendRequest(url, jsonString);
+        LOG.info(response.toString());
         
-		//~ final OrderData orderData = getCheckoutFacade().placeOrder();
-		//~ LOG.info("++++++++265");
+        
+        
+        AddressModel billingAddress = novalnetOrderFacade.createBillingAddress();
+		//~ billingAddress = addressReverseConverter.convert(addressData, billingAddress);
+		billingAddress.setEmail("karthik_m@novalnetsolutions,com");
+		billingAddress.setOwner(cartModel);
+		
+		NovalnetPaymentInfoModel paymentInfoModel = new NovalnetPaymentInfoModel();
+		paymentInfoModel.setBillingAddress(billingAddress);
+		paymentInfoModel.setPaymentEmailAddress("karthik_m@novalnetsolutions.com");
+		paymentInfoModel.setDuplicate(Boolean.FALSE);
+		paymentInfoModel.setSaved(Boolean.TRUE);
+		paymentInfoModel.setUser(currentUser);
+		paymentInfoModel.setPaymentInfo("TID:");
+		paymentInfoModel.setOrderHistoryNotes("");
+		paymentInfoModel.setPaymentProvider("NovalnetCreditCard");
+		paymentInfoModel.setPaymentGatewayStatus("SUCCESS");
+		cartModel.setPaymentInfo(paymentInfoModel);
+		paymentInfoModel.setCode("");
+		
+		PaymentTransactionEntryModel orderTransactionEntry = null;
+		final List<PaymentTransactionEntryModel> paymentTransactionEntries = new ArrayList<>();
+		orderTransactionEntry = novalnetOrderFacade.createTransactionEntry("56516464646",
+											cartModel, orderAmountCent, "tid: ", "EUR");
+		paymentTransactionEntries.add(orderTransactionEntry);
+
+		// Initiate/ Update PaymentTransactionModel
+		PaymentTransactionModel paymentTransactionModel = new PaymentTransactionModel();
+		paymentTransactionModel.setPaymentProvider("NovalnetCreditCard");
+		paymentTransactionModel.setRequestId("464654646456");
+		paymentTransactionModel.setEntries(paymentTransactionEntries);
+		paymentTransactionModel.setOrder(cartModel);
+		paymentTransactionModel.setInfo(paymentInfoModel);
+
+		// Update the OrderModel
+		cartModel.setPaymentTransactions(Arrays.asList(paymentTransactionModel));
+        
+        
+        
+		final OrderData orderData = novalnetOrderFacade.getCheckoutFacade().placeOrder();
+		LOG.info("++++++++315");
+		LOG.info(orderData.getCode());
+		LOG.info("++++++++316");
 		//~ return getDataMapper().map(orderData, OrderWsDTO.class, fields);
 	}
 	
