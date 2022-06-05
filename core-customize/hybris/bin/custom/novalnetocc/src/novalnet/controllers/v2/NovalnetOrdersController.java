@@ -100,6 +100,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Arrays;
+import java.util.ArrayList;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -111,6 +112,8 @@ import java.io.*;
 
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
 import de.hybris.platform.payment.model.PaymentTransactionEntryModel;
+import de.hybris.platform.core.model.order.CartModel;
+import de.hybris.platform.core.model.user.UserModel;
 import de.hybris.platform.payment.model.PaymentTransactionModel;
 import de.hybris.platform.commercefacades.i18n.I18NFacade;
 import de.hybris.platform.commerceservices.strategies.CheckoutCustomerStrategy;
@@ -132,6 +135,7 @@ import de.hybris.platform.servicelayer.i18n.CommonI18NService;
 import org.springframework.beans.factory.annotation.Required;
 import de.novalnet.order.NovalnetOrderFacade;
 import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 @Controller
 @RequestMapping(value = "/{baseSiteId}")
@@ -200,6 +204,7 @@ public class NovalnetOrdersController
 		
 		final CartData cartData = novalnetOrderFacade.loadCart(cartId);
 		String totalAmount = formatAmount(String.valueOf(cartData.getTotalPriceWithTax().getValue()));
+		DecimalFormat decimalFormat = new DecimalFormat("##.##");
 		String orderAmount = decimalFormat.format(Float.parseFloat(totalAmount));
 		float floatAmount = Float.parseFloat(orderAmount);
         BigDecimal orderAmountCents = BigDecimal.valueOf(floatAmount).multiply(BigDecimal.valueOf(100));

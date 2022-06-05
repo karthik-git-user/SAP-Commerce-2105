@@ -296,7 +296,7 @@ public class NovalnetOrderFacade {
         return currencyModel;
     }
 	
-	protected CustomerModel getCurrentUserForCheckout()
+	public CustomerModel getCurrentUserForCheckout()
 	{
 		return getCheckoutCustomerStrategy().getCurrentUserForCheckout();
 	}
@@ -325,7 +325,7 @@ public class NovalnetOrderFacade {
 		return getCartFacade().hasSessionCart();
 	}
 
-	protected CartModel getCart()
+	public CartModel getCart()
 	{
 		return hasCheckoutCart() ? getCartService().getSessionCart() : null;
 	}
