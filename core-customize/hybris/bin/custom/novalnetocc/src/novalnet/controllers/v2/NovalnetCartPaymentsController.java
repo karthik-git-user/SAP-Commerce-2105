@@ -152,15 +152,15 @@ public class NovalnetCartPaymentsController
 			@ApiFieldsParam @RequestParam(defaultValue = "Default") final String fields)
 			throws InvalidPaymentInfoException, NoCheckoutCartException, UnsupportedRequestException
 	{
-		LOG.info("+++++++++98++++++++");
-		final AddressModel billingAddress = novalnetOrderFacade.createBillingAddress(paymentDetails);
-		NovalnetPaymentInfoModel paymentInfo = createPaymentInfo(paymentDetails);
-		paymentInfo.setBillingAddress(billingAddress);
-        billingAddress.setOwner(paymentInfo);
-        novalnetOrderFacade.addPaymentDetailsInternal(paymentInfo);
-        LOG.info("+++++++++161++++++++");
-        LOG.info(paymentInfo);
-        LOG.info("+++++++++163++++++++");
+		//~ LOG.info("+++++++++98++++++++");
+		//~ final AddressModel billingAddress = novalnetOrderFacade.createBillingAddress(paymentDetails);
+		//~ NovalnetPaymentInfoModel paymentInfo = createPaymentInfo(paymentDetails);
+		//~ paymentInfo.setBillingAddress(billingAddress);
+        //~ billingAddress.setOwner(paymentInfo);
+        //~ novalnetOrderFacade.addPaymentDetailsInternal(paymentInfo);
+        //~ LOG.info("+++++++++161++++++++");
+        //~ LOG.info(paymentInfo);
+        //~ LOG.info("+++++++++163++++++++");
 	}
 	
 	public NovalnetPaymentInfoModel createPaymentInfo(PaymentDetailsWsDTO paymentDetails) {
