@@ -366,11 +366,11 @@ public class NovalnetOrderFacade {
 	public AddressModel createBillingAddress() {
         //~ String titleCode = paymentDetails.getBillingAddress().getTitleCode();
         final AddressModel billingAddress = getModelService().create(AddressModel.class);
-        if (StringUtils.isNotBlank("herr")) {
-            final TitleModel title = new TitleModel();
-            title.setCode("herr");
-            billingAddress.setTitle(getFlexibleSearchService().getModelByExample(title));
-        }
+        //~ if (StringUtils.isNotBlank("herr")) {
+            //~ final TitleModel title = new TitleModel();
+            //~ title.setCode("herr");
+            //~ billingAddress.setTitle(getFlexibleSearchService().getModelByExample(title));
+        //~ }
         billingAddress.setFirstname("test");
         billingAddress.setLastname("user");
         billingAddress.setLine1("feringastr 2");
@@ -380,7 +380,7 @@ public class NovalnetOrderFacade {
         billingAddress.setCountry(getCommonI18NService().getCountry("DE"));
 
         final AddressData addressData = new AddressData();
-        addressData.setTitleCode("Mr");
+        addressData.setTitleCode("mr");
         addressData.setFirstName(billingAddress.getFirstname());
         addressData.setLastName(billingAddress.getLastname());
         addressData.setLine1(billingAddress.getLine1());
