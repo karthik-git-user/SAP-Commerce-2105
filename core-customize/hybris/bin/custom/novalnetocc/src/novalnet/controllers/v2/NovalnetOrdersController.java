@@ -323,7 +323,10 @@ public class NovalnetOrdersController
 
 		// Update the OrderModel
 		cartModel.setPaymentTransactions(Arrays.asList(paymentTransactionModel));
-        
+		PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode("novalnetCreditCard");
+		NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
+        cartModel.setPaymentMode(novalnetPaymentMethod);
+        novalnetOrderFacade.getModelService().saveAll(cartModel, billingAddress);
 		final OrderData orderData = novalnetOrderFacade.getCheckoutFacade().placeOrder();
 		LOG.info("++++++++315");
 		LOG.info(orderData.getCode());
@@ -332,23 +335,15 @@ public class NovalnetOrdersController
 		List<OrderModel> orderInfoModel = getOrderInfoModel(orderNumber);
         OrderModel orderModel = novalnetOrderFacade.getModelService().get(orderInfoModel.get(0).getPk());
 		//~ return getDataMapper().map(orderData, OrderWsDTO.class, fields);
-		
 		paymentInfoModel.setCode(orderNumber);
-		PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode("novalnetCreditCard");
-		NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
-        cartModel.setPaymentMode(novalnetPaymentMethod);
-        
-        novalnetOrderFacade.getModelService().saveAll(paymentInfoModel, cartModel, billingAddress);
-        
+        novalnetOrderFacade.getModelService().saveAll(paymentInfoModel);        
         OrderHistoryEntryModel orderEntry = novalnetOrderFacade.getModelService().create(OrderHistoryEntryModel.class);
 		orderEntry.setTimestamp(new Date());
 		orderEntry.setOrder(orderModel);
 		orderEntry.setDescription("Tid : " + transactionJsonObject.get("tid").toString());
 		orderModel.setPaymentInfo(paymentInfoModel);
-        
         novalnetOrderFacade.getModelService().saveAll(orderModel, orderEntry);
 		updateOrderStatus(orderNumber, paymentInfoModel);
-		
 	}
 	
 	public List<OrderModel> getOrderInfoModel(String orderCode) {
