@@ -363,44 +363,33 @@ public class NovalnetOrderFacade {
 		return cartData;
 	}
 	
-	public AddressModel createBillingAddress() {
-        //~ String titleCode = paymentDetails.getBillingAddress().getTitleCode();
+	public AddressModel createBillingAddress(String addressId) {
+		
         final AddressModel billingAddress = getModelService().create(AddressModel.class);
-        //~ if (StringUtils.isNotBlank("herr")) {
-            //~ final TitleModel title = new TitleModel();
-            //~ title.setCode("herr");
-            //~ billingAddress.setTitle(getFlexibleSearchService().getModelByExample(title));
-        //~ }
-        billingAddress.setFirstname("test");
-        billingAddress.setLastname("user");
-        billingAddress.setLine1("feringastr 2");
+        billingAddress.setFirstname("");
+        billingAddress.setLastname("");
+        billingAddress.setLine1("");
         billingAddress.setLine2("");
-        billingAddress.setTown("Unterföhring");
-        billingAddress.setPostalcode("85574");
-        billingAddress.setCountry(getCommonI18NService().getCountry("DE"));
+        billingAddress.setTown("");
+        billingAddress.setPostalcode("");
+        billingAddress.setCountry("");
 
-        final AddressData addressData = new AddressData();
-        addressData.setTitleCode("mr");
-        addressData.setFirstName(billingAddress.getFirstname());
-        addressData.setLastName(billingAddress.getLastname());
-        addressData.setLine1(billingAddress.getLine1());
-        addressData.setLine2(billingAddress.getLine2());
-        addressData.setTown(billingAddress.getTown());
-        addressData.setPostalCode(billingAddress.getPostalcode());
-        addressData.setBillingAddress(true);
-
-        //~ if (paymentDetails.getBillingAddress().getCountry() != null) {
-            final CountryData countryData = getI18NFacade().getCountryForIsocode("DE");
-            addressData.setCountry(countryData);
-        //~ }
-        //~ if (paymentDetails.getBillingAddress().getRegion().getIsocode() != null) {
-            final RegionData regionData = getI18NFacade().getRegion("DE", "BE");
-            addressData.setRegion(regionData);
-        //~ }
+        final AddressData addressData = getAddressData(addressId)
 
         getAddressReverseConverter().convert(addressData, billingAddress);
 
         return billingAddress;
     }
+    
+    private AddressData getAddressData(final String addressId)
+	{
+		final AddressData addressData = getUserFacade().getAddressForCode(addressId);
+		if (addressData == null)
+		{
+			throw new RequestParameterException(String.format(ADDRESS_DOES_NOT_EXIST, sanitize(addressId)),
+					RequestParameterException.INVALID, OBJECT_NAME_ADDRESS_ID);
+		}
+		return addressData;
+	}
     
 }

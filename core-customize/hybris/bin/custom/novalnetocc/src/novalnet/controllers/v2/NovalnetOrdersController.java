@@ -140,6 +140,7 @@ import de.hybris.platform.order.CartService;
 import de.hybris.platform.order.CalculationService;
 import de.hybris.platform.converters.Populator;
 import de.hybris.platform.servicelayer.i18n.CommonI18NService;
+import de.hybris.platform.jalo.JaloSession;
 import org.springframework.beans.factory.annotation.Required;
 import de.novalnet.order.NovalnetOrderFacade;
 
@@ -198,13 +199,22 @@ public class NovalnetOrdersController
 			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String panHash,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String uniqId,
+			@ApiParam(value = "credit card hash", required = true) @RequestParam final String addressId,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 		
 		//~ cartLoaderStrategy.loadCart(cartId);
 		//~ final CartData cartData = cartFacade.getCurrentCart();
+		final AddressData addressData = novalnetOrderFacade.getAddressData(addressId);
+		LOG.info("+++++++++++++++++++210");
+		LOG.info(addressData.getFirstName());
 		
+		
+		final Locale language = JaloSession.getCurrentSession().getSessionContext().getLocale();
+        final String languageCode = language.toString().toUpperCase();
+		LOG.info("+++++++++++++++++++210");
+		LOG.info(languageCode);
 		
 		//~ cartLoaderStrategy.loadCart(cartId);
 		LOG.info("placeOrder");
@@ -241,8 +251,8 @@ public class NovalnetOrdersController
         final Map<String, Object> paymentParameters = new HashMap<String, Object>();
         final Map<String, Object> dataParameters = new HashMap<String, Object>();
 
-        merchantParameters.put("signature", "n7ibc7ob5t|doU3HJVoym7MQ44qonbobljblnmdli0p|qJEH3gNbeWJfIHah||f7cpn7pc");
-        merchantParameters.put("tariff", "30");
+        merchantParameters.put("signature", baseStore.getNovalnetAPIKey());
+        merchantParameters.put("tariff", baseStore.getNovalnetTariffId());
 
         customerParameters.put("first_name", "test");
         customerParameters.put("last_name", "user");
@@ -279,7 +289,7 @@ public class NovalnetOrdersController
         Gson gson = new GsonBuilder().create();
         String jsonString = gson.toJson(dataParameters);
 
-        String password = "a87ff679a2f3e71d9181a67b7542122c";
+        String password = baseStore.getNovalnetPaymentAccessKey().toString();
         String url = "https://payport.novalnet.de/v2/payment";
         StringBuilder response = sendRequest(url, jsonString);
         JSONObject tomJsonObject = new JSONObject(response.toString());
@@ -302,7 +312,7 @@ public class NovalnetOrdersController
 		paymentInfoModel.setUser(currentUser);
 		paymentInfoModel.setPaymentInfo("TID: "+ transactionJsonObject.get("tid").toString());
 		paymentInfoModel.setOrderHistoryNotes("TID: "+ transactionJsonObject.get("tid").toString());
-		paymentInfoModel.setPaymentProvider("NovalnetCreditCard");
+		paymentInfoModel.setPaymentProvider("novalnetCreditCard");
 		paymentInfoModel.setPaymentGatewayStatus("SUCCESS");
 		cartModel.setPaymentInfo(paymentInfoModel);
 		paymentInfoModel.setCode("");
