@@ -9,6 +9,7 @@ import novalnet.controllers.InvalidPaymentInfoException;
 import novalnet.controllers.NoCheckoutCartException;
 import novalnet.controllers.UnsupportedRequestException;
 import de.hybris.platform.order.InvalidCartException;
+e
 import de.hybris.platform.commercewebservicescommons.dto.order.OrderWsDTO;
 import de.hybris.platform.acceleratorocc.dto.payment.SopPaymentDetailsWsDTO;
 import de.hybris.platform.acceleratorocc.payment.facade.CommerceWebServicesPaymentFacade;
@@ -75,7 +76,7 @@ import static de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper.
 import de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper;
 import de.hybris.platform.store.services.BaseStoreService;
 import de.hybris.platform.servicelayer.model.ModelService;
-
+import de.hybris.platform.servicelayer.search.SearchResult;
 import java.net.URLConnection;
 import java.net.HttpURLConnection;
 import java.io.ObjectOutputStream;
@@ -112,9 +113,14 @@ import java.lang.reflect.Type;
 import java.io.*;
 
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
+import de.hybris.novalnet.core.model.NovalnetCreditCardPaymentModeModel;
+
 import de.hybris.platform.payment.model.PaymentTransactionEntryModel;
+import de.hybris.platform.orderhistory.model.OrderHistoryEntryModel;
 import de.hybris.platform.core.model.order.CartModel;
 import de.hybris.platform.core.model.user.UserModel;
+import de.hybris.platform.core.enums.OrderStatus;
+import de.hybris.platform.core.enums.PaymentStatus;
 import de.hybris.platform.payment.model.PaymentTransactionModel;
 import de.hybris.platform.commercefacades.i18n.I18NFacade;
 import de.hybris.platform.commerceservices.strategies.CheckoutCustomerStrategy;
@@ -219,7 +225,7 @@ public class NovalnetOrdersController
 		LOG.info("+++++++++++++++++++206");
 		final CartModel cartModel = novalnetOrderFacade.getCart();
 		final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
-		
+		final String currency = cartData.getTotalPriceWithTax().getCurrencyIso();
 		
 		
 		
@@ -253,8 +259,8 @@ public class NovalnetOrdersController
         customerParameters.put("shipping", shippingParameters);
 
         transactionParameters.put("payment_type", "CREDITCARD");
-        transactionParameters.put("currency", "EUR");
-        transactionParameters.put("amount", "100");
+        transactionParameters.put("currency", currency);
+        transactionParameters.put("amount", orderAmountCent);
         transactionParameters.put("system_name", "SAP Commerce Cloud");
         transactionParameters.put("system_version", "2105-NN1.0.1");
         
@@ -276,6 +282,9 @@ public class NovalnetOrdersController
         String password = "a87ff679a2f3e71d9181a67b7542122c";
         String url = "https://payport.novalnet.de/v2/payment";
         StringBuilder response = sendRequest(url, jsonString);
+        JSONObject tomJsonObject = new JSONObject(response.toString());
+        JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
+        JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
         LOG.info(response.toString());
         
         
@@ -291,8 +300,8 @@ public class NovalnetOrdersController
 		paymentInfoModel.setDuplicate(Boolean.FALSE);
 		paymentInfoModel.setSaved(Boolean.TRUE);
 		paymentInfoModel.setUser(currentUser);
-		paymentInfoModel.setPaymentInfo("TID:");
-		paymentInfoModel.setOrderHistoryNotes("");
+		paymentInfoModel.setPaymentInfo("TID: "+ transactionJsonObject.get("tid").toString());
+		paymentInfoModel.setOrderHistoryNotes(vs);
 		paymentInfoModel.setPaymentProvider("NovalnetCreditCard");
 		paymentInfoModel.setPaymentGatewayStatus("SUCCESS");
 		cartModel.setPaymentInfo(paymentInfoModel);
@@ -301,13 +310,13 @@ public class NovalnetOrdersController
 		PaymentTransactionEntryModel orderTransactionEntry = null;
 		final List<PaymentTransactionEntryModel> paymentTransactionEntries = new ArrayList<>();
 		orderTransactionEntry = novalnetOrderFacade.createTransactionEntry("56516464646",
-											cartModel, orderAmountCent, "tid: ", "EUR");
+											cartModel, orderAmountCent, "tid: " + transactionJsonObject.get("tid").toString(), "EUR");
 		paymentTransactionEntries.add(orderTransactionEntry);
 
 		// Initiate/ Update PaymentTransactionModel
 		PaymentTransactionModel paymentTransactionModel = new PaymentTransactionModel();
 		paymentTransactionModel.setPaymentProvider("NovalnetCreditCard");
-		paymentTransactionModel.setRequestId("464654646456");
+		paymentTransactionModel.setRequestId(transactionJsonObject.get("tid").toString());
 		paymentTransactionModel.setEntries(paymentTransactionEntries);
 		paymentTransactionModel.setOrder(cartModel);
 		paymentTransactionModel.setInfo(paymentInfoModel);
@@ -320,9 +329,63 @@ public class NovalnetOrdersController
 		final OrderData orderData = novalnetOrderFacade.getCheckoutFacade().placeOrder();
 		LOG.info("++++++++315");
 		LOG.info(orderData.getCode());
+		String orderNumber = orderData.getCode();
 		LOG.info("++++++++316");
 		//~ return getDataMapper().map(orderData, OrderWsDTO.class, fields);
+		
+		paymentInfoModel.setCode(orderNumber);
+		NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
+        cartModel.setPaymentMode(novalnetPaymentMethod);
+        
+        novalnetOrderFacade.getModelService().saveAll(paymentInfoModel, cartModel, billingAddress);
+        
+        OrderHistoryEntryModel orderEntry = this.getModelService().create(OrderHistoryEntryModel.class);
+		orderEntry.setTimestamp(new Date());
+		orderEntry.setOrder(orderModel);
+		orderEntry.setDescription("Tid : " + transactionJsonObject.get("tid").toString());
+		//~ orderModel.setPaymentInfo(paymentInfoModel);
+        
+        novalnetOrderFacade.getModelService().saveAll(orderModel, orderEntry);
+		updateOrderStatus(orderNumber, paymentInfoModel);
+		
 	}
+	
+	public List<OrderModel> getOrderInfoModel(String orderCode) {
+        // Initialize StringBuilder
+        StringBuilder query = new StringBuilder();
+
+        // Select query for fetch OrderModel
+        query.append("SELECT {pk} from {" + OrderModel._TYPECODE + "} where {" + OrderModel.CODE
+                + "} = ?code");
+        FlexibleSearchQuery executeQuery = new FlexibleSearchQuery(query.toString());
+
+        // Add query parameter
+        executeQuery.addQueryParameter("code", orderCode);
+
+        // Execute query
+        SearchResult<OrderModel> result = getFlexibleSearchService().search(executeQuery);
+        return result.getResult();
+    }
+
+	/**
+     * Update order status
+     *
+     * @param orderCode Order code of the order
+     * @param paymentInfoModel payment configurations
+     */
+    public void updateOrderStatus(String orderCode, NovalnetPaymentInfoModel paymentInfoModel) {
+        List<OrderModel> orderInfoModel = getOrderInfoModel(orderCode);
+
+        OrderModel orderModel = this.getModelService().get(orderInfoModel.get(0).getPk());
+        orderModel.setStatus(OrderStatus.COMPLETED);
+	
+		// Update the payment status for completed payments
+		orderModel.setPaymentStatus(PaymentStatus.PAID);
+	
+        
+        novalnetOrderFacade.getModelService().save(orderModel);
+
+    }
 	
 	public StringBuilder sendRequest(String url, String jsonString) {
         //~ final BaseStoreModel baseStore = this.getBaseStoreModel();
