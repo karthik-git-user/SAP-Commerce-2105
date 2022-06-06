@@ -113,7 +113,7 @@ import java.io.*;
 
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
 import de.hybris.novalnet.core.model.NovalnetCreditCardPaymentModeModel;
-
+import de.hybris.platform.core.model.order.payment.PaymentModeModel;
 import de.hybris.platform.payment.model.PaymentTransactionEntryModel;
 import de.hybris.platform.orderhistory.model.OrderHistoryEntryModel;
 import de.hybris.platform.core.model.order.CartModel;
@@ -329,7 +329,7 @@ public class NovalnetOrdersController
 		LOG.info(orderData.getCode());
 		String orderNumber = orderData.getCode();
 		LOG.info("++++++++316");
-		List<OrderModel> orderInfoModel = getOrderInfoModel(orderCode);
+		List<OrderModel> orderInfoModel = getOrderInfoModel(orderNumber);
         OrderModel orderModel = novalnetOrderFacade.getModelService().get(orderInfoModel.get(0).getPk());
 		//~ return getDataMapper().map(orderData, OrderWsDTO.class, fields);
 		
