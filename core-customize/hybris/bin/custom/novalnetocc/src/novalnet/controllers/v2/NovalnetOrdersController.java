@@ -204,6 +204,7 @@ public class NovalnetOrdersController
 			@ApiParam(value = "credit card hash", required = false) @RequestParam final String uniqId,
 			@ApiParam(value = "credit card hash", required = false) @RequestParam final String addressId,
 			@ApiParam(value = "credit card hash", required = false) @RequestParam final String doRedirect,
+			@ApiParam(value = "credit card hash", required = false) @RequestParam final String returnUrl,
 			@ApiParam(value = "credit card hash", required = false) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
@@ -286,11 +287,6 @@ public class NovalnetOrdersController
         dataParameters.put("customer", customerParameters);
         dataParameters.put("transaction", transactionParameters);
         dataParameters.put("custom", customParameters);
-        
-        if ("1".equals(doRedirect)) {
-            transactionParameters.put("return_url", returnUrl);
-            transactionParameters.put("error_return_url", returnUrl);
-        }
 
         Gson gson = new GsonBuilder().create();
         String jsonString = gson.toJson(dataParameters);
@@ -307,15 +303,8 @@ public class NovalnetOrdersController
 			final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
 			LOG.info(statMessage);
 			LOG.info("+++++++++++++++++++306");
-			return;
+			throw new PaymentAuthorizationException();
 		}
-
-        if ("1".equals(doRedirect)) {
-			String redirectURL = resultJsonObject.get("redirect_url").toString();
-			LOG.info(redirectURL);
-			LOG.info("+++++++++++++++++++306");
-			return;
-        }
         
         
         
@@ -584,17 +573,17 @@ public class NovalnetOrdersController
 			final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
 			LOG.info(statMessage);
 			LOG.info("+++++++++++++++++++306");
-			return;
+			throw new PaymentAuthorizationException();
 		}
 
 		final Map<String, Object> responseParameters = new HashMap<String, Object>();
 		String redirectURL = resultJsonObject.get("redirect_url").toString();
 		responseParameters.put("redirect_url", redirectURL);
 		LOG.info(redirectURL);
-		String jsonString = gson.toJson(responseParameters);
+		jsonString = gson.toJson(responseParameters);
 		System.out.println(jsonString);
 		LOG.info("+++++++++++++++++++592");
-		return;
+		//~ return;
 		
 	}
     
