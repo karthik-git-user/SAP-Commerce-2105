@@ -201,23 +201,21 @@ public class NovalnetOrdersController
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String uniqId,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String addressId,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String doRedirect,
+			@ApiParam(value = "credit card hash", required = true) @RequestParam final String returnUrl,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 		
-		//~ cartLoaderStrategy.loadCart(cartId);
-		//~ final CartData cartData = cartFacade.getCurrentCart();
+
 		final AddressData addressData = novalnetOrderFacade.getAddressData(addressId);
 		LOG.info("+++++++++++++++++++210");
 		LOG.info(addressData.getFirstName());
-		
 		
 		final Locale language = JaloSession.getCurrentSession().getSessionContext().getLocale();
         final String languageCode = language.toString().toUpperCase();
 		LOG.info("+++++++++++++++++++210");
 		LOG.info(languageCode);
-		
-		//~ cartLoaderStrategy.loadCart(cartId);
+
 		LOG.info("placeOrder");
 		LOG.info("+++++++++++++++++++335");
 		LOG.info("+++++++++++++++++++335");
@@ -286,6 +284,11 @@ public class NovalnetOrdersController
         dataParameters.put("customer", customerParameters);
         dataParameters.put("transaction", transactionParameters);
         dataParameters.put("custom", customParameters);
+        
+        if ("1".equals(doRedirect)) {
+            transactionParameters.put("return_url", returnUrl);
+            transactionParameters.put("error_return_url", returnUrl);
+        }
 
         Gson gson = new GsonBuilder().create();
         String jsonString = gson.toJson(dataParameters);
@@ -297,6 +300,20 @@ public class NovalnetOrdersController
         JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
         JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
         LOG.info(response.toString());
+        
+        if(!String.valueOf("100").equals(resultJsonObject.get("status_code").toString())) {
+			final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
+			LOG.info(statMessage);
+			LOG.info("+++++++++++++++++++306");
+			return;
+		}
+
+        if ("1".equals(doRedirect)) {
+			String redirectURL = resultJsonObject.get("redirect_url").toString();
+			LOG.info(redirectURL);
+			LOG.info("+++++++++++++++++++306");
+			return;
+        }
         
         
         

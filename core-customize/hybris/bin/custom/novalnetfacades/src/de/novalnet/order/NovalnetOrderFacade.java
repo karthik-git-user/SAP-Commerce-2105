@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import novalnet.controllers.RequestParameterException;
+import de.hybris.platform.commercewebservicescommons.errors.exceptions.RequestParameterException;
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
 import de.hybris.platform.payment.enums.PaymentTransactionType;
 import de.hybris.platform.payment.dto.TransactionStatus;
@@ -379,7 +379,7 @@ public class NovalnetOrderFacade {
         billingAddress.setLine2("");
         billingAddress.setTown("");
         billingAddress.setPostalcode("");
-        billingAddress.setCountry("");
+        billingAddress.setCountry(getCommonI18NService().getCountry("DE"));
 
         final AddressData addressData = getAddressData(addressId);
 
