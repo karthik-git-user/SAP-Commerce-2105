@@ -177,6 +177,9 @@ public class NovalnetOrdersController
 	@Resource(name = "novalnetOrderFacade")
     NovalnetOrderFacade novalnetOrderFacade;
     
+    @Resource(name = "dataMapper")
+	private DataMapper dataMapper;
+    
     @Resource
     private PaymentModeService paymentModeService;
 	
@@ -195,14 +198,13 @@ public class NovalnetOrdersController
 	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
 	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
 	@ApiBaseSiteIdAndUserIdParam
-	public void placeOrder(
+	public OrderWsDTO placeOrder(
 			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
-			@ApiParam(value = "credit card hash", required = true) @RequestParam final String panHash,
-			@ApiParam(value = "credit card hash", required = true) @RequestParam final String uniqId,
-			@ApiParam(value = "credit card hash", required = true) @RequestParam final String addressId,
-			@ApiParam(value = "credit card hash", required = true) @RequestParam final String doRedirect,
-			@ApiParam(value = "credit card hash", required = true) @RequestParam final String returnUrl,
-			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
+			@ApiParam(value = "credit card hash", required = false) @RequestParam final String panHash,
+			@ApiParam(value = "credit card hash", required = false) @RequestParam final String uniqId,
+			@ApiParam(value = "credit card hash", required = false) @RequestParam final String addressId,
+			@ApiParam(value = "credit card hash", required = false) @RequestParam final String doRedirect,
+			@ApiParam(value = "credit card hash", required = false) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 		
@@ -372,6 +374,7 @@ public class NovalnetOrdersController
 		orderModel.setPaymentInfo(paymentInfoModel);
         novalnetOrderFacade.getModelService().saveAll(orderModel, orderEntry);
 		updateOrderStatus(orderNumber, paymentInfoModel);
+		return dataMapper.map(orderData, OrderWsDTO.class, fields);
 	}
 	
 	public List<OrderModel> getOrderInfoModel(String orderCode) {
@@ -465,5 +468,134 @@ public class NovalnetOrdersController
         }
         return amount;
     }
+    
+    @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
+	@RequestMapping(value = "/users/{userId}/novalnet/payment", method = RequestMethod.POST)
+	@RequestMappingOverride
+	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseBody
+	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
+	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
+	@ApiBaseSiteIdAndUserIdParam
+	public void getRedirectURL(
+			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
+			@ApiParam(value = "credit card hash", required = true) @RequestParam final String panHash,
+			@ApiParam(value = "credit card hash", required = true) @RequestParam final String uniqId,
+			@ApiParam(value = "credit card hash", required = true) @RequestParam final String addressId,
+			@ApiParam(value = "credit card hash", required = true) @RequestParam final String returnUrl,
+			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
+			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
+	{
+		final AddressData addressData = novalnetOrderFacade.getAddressData(addressId);
+		LOG.info("+++++++++++++++++++210");
+		LOG.info(addressData.getFirstName());
+		
+		final Locale language = JaloSession.getCurrentSession().getSessionContext().getLocale();
+        final String languageCode = language.toString().toUpperCase();
+		LOG.info("+++++++++++++++++++210");
+		LOG.info(languageCode);
+
+		LOG.info("placeOrder");
+		LOG.info("+++++++++++++++++++335");
+		LOG.info("+++++++++++++++++++335");
+		LOG.info(panHash);
+		LOG.info("+++++++++++++++++++335");
+		LOG.info("+++++++++++++++++++349");
+		
+		final CartData cartData = novalnetOrderFacade.loadCart(cartId);
+		String totalAmount = formatAmount(String.valueOf(cartData.getTotalPriceWithTax().getValue()));
+		DecimalFormat decimalFormat = new DecimalFormat("##.##");
+		String orderAmount = decimalFormat.format(Float.parseFloat(totalAmount));
+		float floatAmount = Float.parseFloat(orderAmount);
+        BigDecimal orderAmountCents = BigDecimal.valueOf(floatAmount).multiply(BigDecimal.valueOf(100));
+        Integer orderAmountCent = orderAmountCents.intValue();
+		LOG.info(totalAmount);
+		LOG.info("+++++++++++++++++++205");
+		LOG.info("+++++++++++++++++++205");
+		
+		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
+		LOG.info(baseStore.getNovalnetPaymentAccessKey());
+		LOG.info("+++++++++++++++++++206");
+		final CartModel cartModel = novalnetOrderFacade.getCart();
+		final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
+		final String currency = cartData.getTotalPriceWithTax().getCurrencyIso();
+		
+		final Map<String, Object> transactionParameters = new HashMap<String, Object>();
+        final Map<String, Object> merchantParameters = new HashMap<String, Object>();
+        final Map<String, Object> customerParameters = new HashMap<String, Object>();
+        final Map<String, Object> billingParameters = new HashMap<String, Object>();
+        final Map<String, Object> shippingParameters = new HashMap<String, Object>();
+        final Map<String, Object> customParameters = new HashMap<String, Object>();
+        final Map<String, Object> paymentParameters = new HashMap<String, Object>();
+        final Map<String, Object> dataParameters = new HashMap<String, Object>();
+
+        merchantParameters.put("signature", baseStore.getNovalnetAPIKey());
+        merchantParameters.put("tariff", baseStore.getNovalnetTariffId());
+
+        customerParameters.put("first_name", addressData.getFirstName());
+        customerParameters.put("last_name", addressData.getLastName());
+        customerParameters.put("email", "karthik_m@novalnetsolutions.com");
+        customerParameters.put("customer_no", "2");
+        customerParameters.put("gender", "u");
+
+        billingParameters.put("street", addressData.getLine1() +" "+ addressData.getLine2());
+        billingParameters.put("city", addressData.getTown());
+        billingParameters.put("zip",addressData.getPostalCode());
+        billingParameters.put("country_code", addressData.getCountry().getIsocode());
+        
+        shippingParameters.put("same_as_billing", "1");
+
+        customerParameters.put("billing", billingParameters);
+        customerParameters.put("shipping", shippingParameters);
+
+        transactionParameters.put("payment_type", "CREDITCARD");
+        transactionParameters.put("currency", currency);
+        transactionParameters.put("amount", orderAmountCent);
+        transactionParameters.put("system_name", "SAP Commerce Cloud");
+        transactionParameters.put("system_version", "2105-NN1.0.1");
+
+        customParameters.put("lang", "EN");
+		paymentParameters.put("pan_hash", panHash);
+		paymentParameters.put("unique_id", uniqId);
+		transactionParameters.put("payment_data", paymentParameters);
+
+        dataParameters.put("merchant", merchantParameters);
+        dataParameters.put("customer", customerParameters);
+        dataParameters.put("transaction", transactionParameters);
+        dataParameters.put("custom", customParameters);
+        
+        
+		transactionParameters.put("return_url", returnUrl);
+		transactionParameters.put("error_return_url", returnUrl);
+        
+
+        Gson gson = new GsonBuilder().create();
+        String jsonString = gson.toJson(dataParameters);
+
+        String password = baseStore.getNovalnetPaymentAccessKey().toString();
+        String url = "https://payport.novalnet.de/v2/payment";
+        StringBuilder response = sendRequest(url, jsonString);
+        JSONObject tomJsonObject = new JSONObject(response.toString());
+        JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
+        JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
+        LOG.info(response.toString());
+        
+        if(!String.valueOf("100").equals(resultJsonObject.get("status_code").toString())) {
+			final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
+			LOG.info(statMessage);
+			LOG.info("+++++++++++++++++++306");
+			return;
+		}
+
+		final Map<String, Object> responseParameters = new HashMap<String, Object>();
+		String redirectURL = resultJsonObject.get("redirect_url").toString();
+		responseParameters.put("redirect_url", redirectURL);
+		LOG.info(redirectURL);
+		String jsonString = gson.toJson(responseParameters);
+		System.out.println(jsonString);
+		LOG.info("+++++++++++++++++++592");
+		return;
+		
+	}
     
 }
