@@ -254,7 +254,7 @@ public class NovalnetOrdersController
         merchantParameters.put("tariff", baseStore.getNovalnetTariffId());
 
         customerParameters.put("first_name", addressData.getFirstName());
-        customerParameters.put("last_name", addressData.getLastname());
+        customerParameters.put("last_name", addressData.getLastName());
         customerParameters.put("email", "karthik_m@novalnetsolutions.com");
         customerParameters.put("customer_no", "2");
         customerParameters.put("gender", "u");
