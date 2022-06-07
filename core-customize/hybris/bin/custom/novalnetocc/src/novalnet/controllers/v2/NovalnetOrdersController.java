@@ -317,7 +317,7 @@ public class NovalnetOrdersController
         
         
         
-        AddressModel billingAddress = novalnetOrderFacade.createBillingAddress();
+        AddressModel billingAddress = novalnetOrderFacade.createBillingAddress(addressId);
 		//~ billingAddress = addressReverseConverter.convert(addressData, billingAddress);
 		billingAddress.setEmail("karthik_m@novalnetsolutions,com");
 		billingAddress.setOwner(cartModel);

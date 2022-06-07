@@ -388,7 +388,7 @@ public class NovalnetOrderFacade {
         return billingAddress;
     }
     
-    private AddressData getAddressData(final String addressId)
+    public AddressData getAddressData(final String addressId)
 	{
 		final AddressData addressData = getUserFacade().getAddressForCode(addressId);
 		if (addressData == null)
