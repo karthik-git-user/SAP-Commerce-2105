@@ -200,6 +200,7 @@ public class NovalnetOrdersController
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String panHash,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String uniqId,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String addressId,
+			@ApiParam(value = "credit card hash", required = true) @RequestParam final String doRedirect,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{

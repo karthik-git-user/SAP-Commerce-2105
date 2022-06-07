@@ -6,7 +6,7 @@ import java.util.Date;
 import de.hybris.platform.commercefacades.order.data.CCPaymentInfoData;
 import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO;
 import de.hybris.platform.commerceservices.request.mapping.annotation.RequestMappingOverride;
-
+import de.hybris.platform.webservicescommons.util.YSanitizer;
 import javax.annotation.Resource;
 
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-
+import novalnet.controllers.RequestParameterException;
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
 import de.hybris.platform.payment.enums.PaymentTransactionType;
 import de.hybris.platform.payment.dto.TransactionStatus;
@@ -34,6 +34,7 @@ import de.hybris.platform.commercefacades.order.CartFacade;
 import de.hybris.platform.commercefacades.i18n.I18NFacade;
 import de.hybris.platform.commercefacades.i18n.comparators.CountryComparator;
 import de.hybris.platform.commercefacades.order.CheckoutFacade;
+import de.hybris.platform.commercefacades.user.UserFacade;
 import de.hybris.platform.commercefacades.order.OrderFacade;
 import de.hybris.platform.commercefacades.order.data.CartData;
 import de.hybris.platform.commercefacades.order.data.OrderData;
@@ -127,6 +128,12 @@ public class NovalnetOrderFacade {
     
     @Resource(name = "cartLoaderStrategy")
 	private CartLoaderStrategy cartLoaderStrategy;
+	
+	@Resource(name = "userFacade")
+	private UserFacade userFacade;
+	
+	public static final String ADDRESS_DOES_NOT_EXIST = "Address with given id: '%s' doesn't exist or belong to another user";
+	private static final String OBJECT_NAME_ADDRESS_ID = "addressId";
     
     public BaseStoreModel getBaseStoreModel() {
         return getBaseStoreService().getCurrentBaseStore();
@@ -374,7 +381,7 @@ public class NovalnetOrderFacade {
         billingAddress.setPostalcode("");
         billingAddress.setCountry("");
 
-        final AddressData addressData = getAddressData(addressId)
+        final AddressData addressData = getAddressData(addressId);
 
         getAddressReverseConverter().convert(addressData, billingAddress);
 
@@ -390,6 +397,16 @@ public class NovalnetOrderFacade {
 					RequestParameterException.INVALID, OBJECT_NAME_ADDRESS_ID);
 		}
 		return addressData;
+	}
+	
+	protected UserFacade getUserFacade()
+	{
+		return userFacade;
+	}
+	
+	protected static String sanitize(final String input)
+	{
+		return YSanitizer.sanitize(input);
 	}
     
 }
