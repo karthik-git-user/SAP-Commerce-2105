@@ -313,9 +313,6 @@ public class NovalnetOrdersController
 			 transactionJsonObject = tomJsonObject.getJSONObject("transaction");
 			LOG.info(response.toString());
 		} else {
-			final Map<String, Object> transactionParameters = new HashMap<String, Object>();
-			final Map<String, Object> dataParameters = new HashMap<String, Object>();
-			final Map<String, Object> customParameters = new HashMap<String, Object>();
 								
 			transactionParameters.put("tid", tid);
 			customParameters.put("lang", languageCode);
@@ -652,7 +649,7 @@ public class NovalnetOrdersController
      * @param novalnetJsonObject Order code of the order
      */
     public void syncmirakl(JSONObject tomJsonObject, String orderCode) {
-        LOGGER.info("test============221");  
+        LOG.info("test============221");  
         JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
 		JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
 		JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
@@ -671,7 +668,7 @@ public class NovalnetOrdersController
         final Map<String, Object> paymentinfoParameters= new HashMap<String, Object>();
         final Map<String, Object> dataParameters = new HashMap<String, Object>();
         
-        LOGGER.info("test============238");  
+        LOG.info("test============238");  
         dataParameters.put("commercial_id", orderCode);
         dataParameters.put("scored", true);
         dataParameters.put("shipping_zone_code", "testshippingzone");
@@ -747,7 +744,7 @@ public class NovalnetOrdersController
     
     
      public void miraklSendRequest(String url, String jsonString) {
-        final BaseStoreModel baseStore = this.getBaseStoreModel();
+        final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
         String password = baseStore.getNovalnetPaymentAccessKey().trim();
         StringBuilder response = new StringBuilder();
 
@@ -755,10 +752,10 @@ public class NovalnetOrdersController
             String urly = url;
             URL obj = new URL(urly);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            LOGGER.info("teststring");
-            LOGGER.info(jsonString);
+            LOG.info("teststring");
+            LOG.info(jsonString);
             byte[] postData = jsonString.getBytes(StandardCharsets.UTF_8);
-            LOGGER.info(postData);
+            LOG.info(postData);
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Charset", "utf-8");
@@ -771,9 +768,9 @@ public class NovalnetOrdersController
             wr.flush();
             wr.close();
             int responseCode = con.getResponseCode();
-            LOGGER.info("+++response1+++");
-            LOGGER.info("+++response code+++"+responseCode);
-            LOGGER.info("+++response+++");
+            LOG.info("+++response1+++");
+            LOG.info("+++response code+++"+responseCode);
+            LOG.info("+++response+++");
             BufferedReader iny = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
             String output;
@@ -784,14 +781,14 @@ public class NovalnetOrdersController
             }
             iny.close();
         } catch (MalformedURLException ex) {
-            LOGGER.error("MalformedURLException ", ex);
+            LOG.error("MalformedURLException ", ex);
         } catch (IOException ex) {
-            LOGGER.error("IOException ", ex);
+            LOG.error("IOException ", ex);
         }
 
-        LOGGER.info("+++response+++");
-        LOGGER.info(response);
-        LOGGER.info("+++response+++");
+        LOG.info("+++response+++");
+        LOG.info(response);
+        LOG.info("+++response+++");
     }
     
 }
