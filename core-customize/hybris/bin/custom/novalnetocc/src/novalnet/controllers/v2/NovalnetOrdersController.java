@@ -204,7 +204,7 @@ public class NovalnetOrdersController
 			@ApiParam(value = "credit card hash", required = false) @RequestParam final String uniqId,
 			@ApiParam(value = "credit card hash", required = false) @RequestParam final String addressId,
 			@ApiParam(value = "credit card hash", required = false) @RequestParam final String tid,
-			@ApiParam(value = "credit card hash", required = false) final String fields)
+			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 		
@@ -241,9 +241,7 @@ public class NovalnetOrdersController
 			final Map<String, Object> paymentParameters = new HashMap<String, Object>();
 			final Map<String, Object> dataParameters = new HashMap<String, Object>();
 		
-		if("".equals(tid) || tid == null) {
-		
-
+		if(!"".equals(tid) || tid != null) {
 			final AddressData addressData = novalnetOrderFacade.getAddressData(addressId);
 			LOG.info("+++++++++++++++++++210");
 			LOG.info(addressData.getFirstName());
@@ -308,7 +306,7 @@ public class NovalnetOrdersController
 			String password = baseStore.getNovalnetPaymentAccessKey().toString();
 			String url = "https://payport.novalnet.de/v2/payment";
 			StringBuilder response = sendRequest(url, jsonString);
-			 tomJsonObject = new JSONObject(response.toString());
+			tomJsonObject = new JSONObject(response.toString());
 			 resultJsonObject = tomJsonObject.getJSONObject("result");
 			 transactionJsonObject = tomJsonObject.getJSONObject("transaction");
 			LOG.info(response.toString());
