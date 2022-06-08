@@ -211,10 +211,10 @@ public class NovalnetOrdersController
 			JSONObject tomJsonObject = new JSONObject();
 			JSONObject resultJsonObject = new JSONObject();
 			JSONObject transactionJsonObject = new JSONObject();
+			final CartData cartData = novalnetOrderFacade.loadCart(cartId);
 			final CartModel cartModel = novalnetOrderFacade.getCart();
 			final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
 			final String currency = cartData.getTotalPriceWithTax().getCurrencyIso();
-			final CartData cartData = novalnetOrderFacade.loadCart(cartId);
 			String totalAmount = formatAmount(String.valueOf(cartData.getTotalPriceWithTax().getValue()));
 			DecimalFormat decimalFormat = new DecimalFormat("##.##");
 			String orderAmount = decimalFormat.format(Float.parseFloat(totalAmount));
@@ -613,8 +613,9 @@ public class NovalnetOrdersController
 		LOG.info(redirectURL);
 		jsonString = gson.toJson(responseParameters);
 		System.out.println(jsonString);
-		return jsonString;
 		LOG.info("+++++++++++++++++++592");
+		return jsonString;
+		
 		//~ return;
 		
 	}
