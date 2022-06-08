@@ -613,6 +613,8 @@ public class NovalnetOrdersController
 
         String password = baseStore.getNovalnetPaymentAccessKey().toString();
         String url = "https://payport.novalnet.de/v2/payment";
+        LOG.info("+++++++++++++++++++616++++++++request");
+        LOG.info(jsonString);
         StringBuilder response = sendRequest(url, jsonString);
         JSONObject tomJsonObject = new JSONObject(response.toString());
         JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
