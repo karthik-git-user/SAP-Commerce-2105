@@ -208,6 +208,27 @@ public class NovalnetOrdersController
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 		
+			JSONObject tomJsonObject = new JSONObject();
+			JSONObject resultJsonObject = new JSONObject();
+			JSONObject transactionJsonObject = new JSONObject();
+			final CartModel cartModel = novalnetOrderFacade.getCart();
+			final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
+			final String currency = cartData.getTotalPriceWithTax().getCurrencyIso();
+			final CartData cartData = novalnetOrderFacade.loadCart(cartId);
+			String totalAmount = formatAmount(String.valueOf(cartData.getTotalPriceWithTax().getValue()));
+			DecimalFormat decimalFormat = new DecimalFormat("##.##");
+			String orderAmount = decimalFormat.format(Float.parseFloat(totalAmount));
+			float floatAmount = Float.parseFloat(orderAmount);
+			BigDecimal orderAmountCents = BigDecimal.valueOf(floatAmount).multiply(BigDecimal.valueOf(100));
+			Integer orderAmountCent = orderAmountCents.intValue();
+			LOG.info(totalAmount);
+			LOG.info("+++++++++++++++++++205");
+			LOG.info("+++++++++++++++++++205");
+			
+			final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
+			LOG.info(baseStore.getNovalnetPaymentAccessKey());
+			LOG.info("+++++++++++++++++++206");
+		
 		if("".equals(tid) || tid == null) {
 		
 
@@ -227,23 +248,9 @@ public class NovalnetOrdersController
 			LOG.info("+++++++++++++++++++335");
 			LOG.info("+++++++++++++++++++349");
 			
-			final CartData cartData = novalnetOrderFacade.loadCart(cartId);
-			String totalAmount = formatAmount(String.valueOf(cartData.getTotalPriceWithTax().getValue()));
-			DecimalFormat decimalFormat = new DecimalFormat("##.##");
-			String orderAmount = decimalFormat.format(Float.parseFloat(totalAmount));
-			float floatAmount = Float.parseFloat(orderAmount);
-			BigDecimal orderAmountCents = BigDecimal.valueOf(floatAmount).multiply(BigDecimal.valueOf(100));
-			Integer orderAmountCent = orderAmountCents.intValue();
-			LOG.info(totalAmount);
-			LOG.info("+++++++++++++++++++205");
-			LOG.info("+++++++++++++++++++205");
 			
-			final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
-			LOG.info(baseStore.getNovalnetPaymentAccessKey());
-			LOG.info("+++++++++++++++++++206");
-			final CartModel cartModel = novalnetOrderFacade.getCart();
-			final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
-			final String currency = cartData.getTotalPriceWithTax().getCurrencyIso();
+			
+			
 			
 			final Map<String, Object> transactionParameters = new HashMap<String, Object>();
 			final Map<String, Object> merchantParameters = new HashMap<String, Object>();
@@ -295,9 +302,9 @@ public class NovalnetOrdersController
 			String password = baseStore.getNovalnetPaymentAccessKey().toString();
 			String url = "https://payport.novalnet.de/v2/payment";
 			StringBuilder response = sendRequest(url, jsonString);
-			JSONObject tomJsonObject = new JSONObject(response.toString());
-			JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
-			JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
+			 tomJsonObject = new JSONObject(response.toString());
+			 resultJsonObject = tomJsonObject.getJSONObject("result");
+			 transactionJsonObject = tomJsonObject.getJSONObject("transaction");
 			LOG.info(response.toString());
 		} else {
 			final Map<String, Object> transactionParameters = new HashMap<String, Object>();
@@ -316,10 +323,10 @@ public class NovalnetOrdersController
 			String url = "https://payport.novalnet.de/v2/transaction/details";
 			StringBuilder response = sendRequest(url, jsonString);
 
-			JSONObject tomJsonObject = new JSONObject(response.toString());
-			JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
-			JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
-			JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
+			 tomJsonObject = new JSONObject(response.toString());
+			 resultJsonObject = tomJsonObject.getJSONObject("result");
+			//~ JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
+			 transactionJsonObject = tomJsonObject.getJSONObject("transaction");
 			
 		}
         
