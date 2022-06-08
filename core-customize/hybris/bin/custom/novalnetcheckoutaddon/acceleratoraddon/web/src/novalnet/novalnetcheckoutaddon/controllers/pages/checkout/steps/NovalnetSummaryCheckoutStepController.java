@@ -822,23 +822,14 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             dataParameters.clear();
             
             final OrderData orderData;
-
-            orderData = novalnetFacade.saveOrderData(orderComments, currentPayment, transactionJsonObject.get("status").toString(), orderAmountCent, transactionJsonObject.getString("currency"), transactionJsonObject.get("tid").toString(), customerJsonObject.getString("email"), addressData, bankDetails);
-
-
+            
             if (("novalnetInvoice".equals(currentPayment) || "novalnetPrepayment".equals(currentPayment))) {
 
                 bankDetails += formPayamentReferenceComments(transactionJsonObject.get("tid").toString(), orderData.getCode());
 
             }
 
-            if ("novalnetDirectDebitSepa".equals(currentPayment) && !novalnetFacade.isGuestUser() && oneClickShopping) {
-                boolean novalnetDirectDebitSepaStorePaymentData = getSessionService().getAttribute("novalnetDirectDebitSepaStorePaymentData");
-                if (novalnetDirectDebitSepaStorePaymentData == true) {
-                    JSONObject paymentDataJsonObject = transactionJsonObject.getJSONObject("payment_data");
-                    
-                }
-            }
+            orderData = novalnetFacade.saveOrderData(orderComments, currentPayment, transactionJsonObject.get("status").toString(), orderAmountCent, transactionJsonObject.getString("currency"), transactionJsonObject.get("tid").toString(), customerJsonObject.getString("email"), addressData, bankDetails);
             
 
             transactionParameters.put("tid", transactionJsonObject.get("tid"));
