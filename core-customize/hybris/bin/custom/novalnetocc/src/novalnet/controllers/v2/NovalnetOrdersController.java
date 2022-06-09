@@ -794,22 +794,54 @@ public class NovalnetOrdersController
     }
     
     
-    //~ @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	//~ @RequestMapping(value = "/users/{userId}/novalnet/payment/config", method = RequestMethod.POST)
-	//~ @RequestMappingOverride
-	//~ @ResponseStatus(HttpStatus.CREATED)
-	//~ @ResponseBody
-	//~ @SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
-	//~ @ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
-	//~ @ApiBaseSiteIdAndUserIdParam
-	//~ public String getPaymentConfig(
-			//~ @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
-			//~ throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
-	//~ {
-		//~ final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
-		//~ NovalnetDirectDebitSepaPaymentModeModel novalnetDirectDebitSepaPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
-		//~ NovalnetPayPalPaymentModeModel novalnetPayPalPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
-		//~ NovalnetCreditCardPaymentModeModel novalnetCreditCardPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
-	//~ }
+    @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
+	@RequestMapping(value = "/users/{userId}/novalnet/payment/config", method = RequestMethod.POST)
+	@RequestMappingOverride
+	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseBody
+	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
+	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
+	@ApiBaseSiteIdAndUserIdParam
+	public JSONObject getPaymentConfig(
+			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
+			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
+	{
+		
+		
+		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
+		PaymentModeModel directDebitSepaPaymentModeModel = paymentModeService.getPaymentModeForCode("novalnetDirectDebitSepa");
+		NovalnetDirectDebitSepaPaymentModeModel novalnetDirectDebitSepaPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) directDebitSepaPaymentModeModel;
+		PaymentModeModel payPalPaymentModeModel = paymentModeService.getPaymentModeForCode("novalnetPayPal");
+		NovalnetPayPalPaymentModeModel novalnetPayPalPaymentMethod = (NovalnetPayPalPaymentModeModel) payPalPaymentModeModel;
+		PaymentModeModel creditCardPaymentModeModel = paymentModeService.getPaymentModeForCode("novalnetCreditCard");
+		NovalnetCreditCardPaymentModeModel novalnetCreditCardPaymentMethod = (NovalnetCreditCardPaymentModeModel) creditCardPaymentModeModel;
+		
+		
+		final Map<String, Object> paymentinfoParameters= new HashMap<String, Object>();
+		final Map<String, Object> sepaPaymentinfoParameters= new HashMap<String, Object>();
+		final Map<String, Object> paypalPaymentinfoParameters= new HashMap<String, Object>();
+		final Map<String, Object> creditcardPaymentinfoParameters= new HashMap<String, Object>();
+        final Map<String, Object> dataParameters = new HashMap<String, Object>();
+        
+        
+        creditcardPaymentinfoParameters.put("active", novalnetCreditCardPaymentMethod.getActive());
+        sepaPaymentinfoParameters.put("active", novalnetDirectDebitSepaPaymentMethod.getActive());
+        paypalPaymentinfoParameters.put("active", novalnetPayPalPaymentMethod.getActive());
+        paymentinfoParameters.put("novalnetCreditCard", novalnetCreditCardPaymentMethod.getActive());
+        paymentinfoParameters.put("novalnetDirectDebitSepa", novalnetDirectDebitSepaPaymentMethod.getActive());
+        paymentinfoParameters.put("novalnetPayPal", novalnetPayPalPaymentMethod.getActive());
+        
+        dataParameters.put("novalnetActivationKey", baseStore.getNovalnetAPIKey());
+        dataParameters.put("novalnetAccessKey", baseStore.getNovalnetPaymentAccessKey());
+        dataParameters.put("novalnetClienKey", baseStore.getNovalnetClientKey());
+        dataParameters.put("novalnetTariff", baseStore.getNovalnetTariffId());
+        
+        Gson gson = new GsonBuilder().create();
+        String jsonString = gson.toJson(dataParameters);
+        JSONObject respondObject = new JSONObject(jsonString);
+        return respondObject;
+	}
+	
+	
     
 }
