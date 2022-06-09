@@ -518,7 +518,7 @@ public class NovalnetOrdersController
 	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
 	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
 	@ApiBaseSiteIdAndUserIdParam
-	public JSONObject getRedirectURL(
+	public String getRedirectURL(
 			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String panHash,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String uniqId,
@@ -636,11 +636,11 @@ public class NovalnetOrdersController
 		LOG.info(redirectURL);
 		jsonString = gson.toJson(responseParameters);
 		//~ System.out.println(jsonString);
-		JSONObject sendObject = new JSONObject(jsonString);
+		//~ JSONObject sendObject = new JSONObject(jsonString);
 		LOG.info("+++++++++++++++++++592");
 		LOG.info(jsonString);
-		LOG.info(sendObject);
-		return sendObject;
+		//~ LOG.info(sendObject);
+		return jsonString;
 	}
 	
 	
@@ -802,7 +802,7 @@ public class NovalnetOrdersController
 	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
 	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
 	@ApiBaseSiteIdAndUserIdParam
-	public JSONObject getPaymentConfig(
+	public String getPaymentConfig(
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
@@ -838,8 +838,8 @@ public class NovalnetOrdersController
         
         Gson gson = new GsonBuilder().create();
         String jsonString = gson.toJson(dataParameters);
-        JSONObject respondObject = new JSONObject(jsonString);
-        return respondObject;
+        //~ JSONObject respondObject = new JSONObject(jsonString);
+        return jsonString;
 	}
 	
 	
