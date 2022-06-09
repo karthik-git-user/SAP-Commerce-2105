@@ -794,22 +794,22 @@ public class NovalnetOrdersController
     }
     
     
-    @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	@RequestMapping(value = "/users/{userId}/novalnet/payment/config", method = RequestMethod.POST)
-	@RequestMappingOverride
-	@ResponseStatus(HttpStatus.CREATED)
-	@ResponseBody
-	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
-	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
-	@ApiBaseSiteIdAndUserIdParam
-	public String getPaymentConfig(
-			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
-			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
-	{
-		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
-		NovalnetDirectDebitSepaPaymentModeModel novalnetDirectDebitSepaPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
-		NovalnetPayPalPaymentModeModel novalnetPayPalPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
-		JSONObject novalnetCreditCardPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
-	}
+    //~ @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
+	//~ @RequestMapping(value = "/users/{userId}/novalnet/payment/config", method = RequestMethod.POST)
+	//~ @RequestMappingOverride
+	//~ @ResponseStatus(HttpStatus.CREATED)
+	//~ @ResponseBody
+	//~ @SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
+	//~ @ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
+	//~ @ApiBaseSiteIdAndUserIdParam
+	//~ public String getPaymentConfig(
+			//~ @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
+			//~ throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
+	//~ {
+		//~ final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
+		//~ NovalnetDirectDebitSepaPaymentModeModel novalnetDirectDebitSepaPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
+		//~ NovalnetPayPalPaymentModeModel novalnetPayPalPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
+		//~ NovalnetCreditCardPaymentModeModel novalnetCreditCardPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
+	//~ }
     
 }
