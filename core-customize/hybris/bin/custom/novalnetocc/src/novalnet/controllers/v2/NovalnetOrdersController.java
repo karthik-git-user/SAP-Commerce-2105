@@ -113,6 +113,8 @@ import java.io.*;
 
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
 import de.hybris.novalnet.core.model.NovalnetCreditCardPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetDirectDebitSepaPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetPayPalPaymentModeModel;
 import de.hybris.platform.core.model.order.payment.PaymentModeModel;
 import de.hybris.platform.payment.model.PaymentTransactionEntryModel;
 import de.hybris.platform.orderhistory.model.OrderHistoryEntryModel;
@@ -516,7 +518,7 @@ public class NovalnetOrdersController
 	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
 	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
 	@ApiBaseSiteIdAndUserIdParam
-	public String getRedirectURL(
+	public JSONObject getRedirectURL(
 			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String panHash,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String uniqId,
@@ -633,12 +635,12 @@ public class NovalnetOrdersController
 		responseParameters.put("redirect_url", redirectURL);
 		LOG.info(redirectURL);
 		jsonString = gson.toJson(responseParameters);
-		System.out.println(jsonString);
+		//~ System.out.println(jsonString);
+		JSONObject sendObject = new JSONObject(jsonString);
 		LOG.info("+++++++++++++++++++592");
-		return jsonString;
-		
-		//~ return;
-		
+		LOG.info(jsonString);
+		LOG.info(sendObject);
+		return sendObject;
 	}
 	
 	
@@ -790,5 +792,24 @@ public class NovalnetOrdersController
         LOG.info(response);
         LOG.info("+++response+++");
     }
+    
+    
+    @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
+	@RequestMapping(value = "/users/{userId}/novalnet/payment/config", method = RequestMethod.POST)
+	@RequestMappingOverride
+	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseBody
+	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
+	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
+	@ApiBaseSiteIdAndUserIdParam
+	public String getPaymentConfig(
+			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
+			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
+	{
+		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
+		NovalnetDirectDebitSepaPaymentModeModel novalnetDirectDebitSepaPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
+		NovalnetPayPalPaymentModeModel novalnetPayPalPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
+		JSONObject novalnetCreditCardPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
+	}
     
 }

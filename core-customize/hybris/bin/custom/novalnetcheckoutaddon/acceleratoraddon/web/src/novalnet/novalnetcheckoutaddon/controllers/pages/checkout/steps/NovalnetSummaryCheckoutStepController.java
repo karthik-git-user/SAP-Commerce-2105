@@ -373,7 +373,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
 
         } else if ("novalnetGuaranteedDirectDebitSepa".equals(currentPayment)) {
 
-            NovalnetGuaranteedDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetGuaranteedDirectDebitSepaPaymentModeModel) paymentModeModel;
+				
 
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
