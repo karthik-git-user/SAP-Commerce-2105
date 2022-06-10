@@ -243,7 +243,7 @@ public class NovalnetOrdersController
 			final Map<String, Object> paymentParameters = new HashMap<String, Object>();
 			final Map<String, Object> dataParameters = new HashMap<String, Object>();
 		
-		if(!"".equals(tid) || tid != null) {
+		if("".equals(tid) || tid == null) {
 			final AddressData addressData = novalnetOrderFacade.getAddressData(addressId);
 			LOG.info("+++++++++++++++++++210");
 			LOG.info(addressData.getFirstName());
@@ -260,12 +260,6 @@ public class NovalnetOrdersController
 			LOG.info(panHash);
 			LOG.info("+++++++++++++++++++335");
 			LOG.info("+++++++++++++++++++349");
-			
-			
-			
-			
-			
-			
 
 			merchantParameters.put("signature", baseStore.getNovalnetAPIKey());
 			merchantParameters.put("tariff", baseStore.getNovalnetTariffId());
@@ -313,7 +307,7 @@ public class NovalnetOrdersController
 			 transactionJsonObject = tomJsonObject.getJSONObject("transaction");
 			LOG.info(response.toString());
 		} else {
-								
+			LOG.info("+++++++++++++++++++++++++++++++320");
 			transactionParameters.put("tid", tid);
 			customParameters.put("lang", languageCode);
 
