@@ -514,7 +514,7 @@ public class NovalnetOrdersController
 	@ApiBaseSiteIdAndUserIdParam
 	public String getRedirectURL(
 			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
-			@ApiParam(value = "credit card hash", required = true) @RequestParam final String currentpayment,
+			@ApiParam(value = "credit card hash", required = true) @RequestParam final String currentPayment,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String panHash,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String uniqId,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String addressId,
