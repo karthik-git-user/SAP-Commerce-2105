@@ -514,6 +514,7 @@ public class NovalnetOrdersController
 	@ApiBaseSiteIdAndUserIdParam
 	public String getRedirectURL(
 			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
+			@ApiParam(value = "credit card hash", required = true) @RequestParam final String currentpayment,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String panHash,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String uniqId,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String addressId,
@@ -583,7 +584,7 @@ public class NovalnetOrdersController
         customerParameters.put("billing", billingParameters);
         customerParameters.put("shipping", shippingParameters);
 
-        transactionParameters.put("payment_type", "CREDITCARD");
+        transactionParameters.put("payment_type", getPaymentType(currentPayment));
         transactionParameters.put("currency", currency);
         transactionParameters.put("amount", orderAmountCent);
         transactionParameters.put("system_name", "SAP Commerce Cloud");
@@ -819,9 +820,9 @@ public class NovalnetOrdersController
         creditcardPaymentinfoParameters.put("active", novalnetCreditCardPaymentMethod.getActive());
         sepaPaymentinfoParameters.put("active", novalnetDirectDebitSepaPaymentMethod.getActive());
         paypalPaymentinfoParameters.put("active", novalnetPayPalPaymentMethod.getActive());
-        paymentinfoParameters.put("novalnetCreditCard", novalnetCreditCardPaymentMethod.getActive());
-        paymentinfoParameters.put("novalnetDirectDebitSepa", novalnetDirectDebitSepaPaymentMethod.getActive());
-        paymentinfoParameters.put("novalnetPayPal", novalnetPayPalPaymentMethod.getActive());
+        paymentinfoParameters.put("novalnetCreditCard", creditcardPaymentinfoParameters);
+        paymentinfoParameters.put("novalnetDirectDebitSepa", sepaPaymentinfoParameters);
+        paymentinfoParameters.put("novalnetPayPal", paypalPaymentinfoParameters);
         
         dataParameters.put("novalnetActivationKey", baseStore.getNovalnetAPIKey());
         dataParameters.put("novalnetAccessKey", baseStore.getNovalnetPaymentAccessKey());
@@ -836,6 +837,27 @@ public class NovalnetOrdersController
         return jsonString;
 	}
 	
-	
+	public static String getPaymentType(String paymentName) {
+        final Map<String, String> paymentType = new HashMap<String, String>();
+        paymentType.put("novalnetCreditCard", "CREDITCARD");
+        paymentType.put("novalnetDirectDebitSepa", "DIRECT_DEBIT_SEPA");
+        paymentType.put("novalnetGuaranteedDirectDebitSepa", "GUARANTEED_DIRECT_DEBIT_SEPA");
+        paymentType.put("novalnetInvoice", "INVOICE");
+        paymentType.put("novalnetGuaranteedInvoice", "GUARANTEED_INVOICE");
+        paymentType.put("novalnetPrepayment", "PREPAYMENT");
+        paymentType.put("novalnetBarzahlen", "CASHPAYMENT");
+        paymentType.put("novalnetPayPal", "PAYPAL");
+        paymentType.put("novalnetInstantBankTransfer", "ONLINE_TRANSFER");
+        paymentType.put("novalnetBancontact", "BANCONTACT");
+        paymentType.put("novalnetMultibanco", "MULTIBANCO");
+        paymentType.put("novalnetIdeal", "IDEAL");
+        paymentType.put("novalnetEps", "EPS");
+        paymentType.put("novalnetGiropay", "GIROPAY");
+        paymentType.put("novalnetPrzelewy24", "PRZELEWY24");
+        paymentType.put("novalnetPostFinanceCard", "POSTFINANCE_CARD");
+        paymentType.put("novalnetPostFinance", "POSTFINANCE");
+        return paymentType.get(paymentName);
+    }
+
     
 }
