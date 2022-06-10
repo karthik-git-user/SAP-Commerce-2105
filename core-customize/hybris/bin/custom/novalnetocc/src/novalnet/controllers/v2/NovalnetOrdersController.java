@@ -635,7 +635,7 @@ public class NovalnetOrdersController
 		LOG.info("+++++++++++++++++++592");
 		LOG.info(jsonString);
 		//~ LOG.info(sendObject);
-		return jsonString;
+		return jsonString.toString();;
 	}
 	
 	
@@ -834,7 +834,7 @@ public class NovalnetOrdersController
         Gson gson = new GsonBuilder().create();
         String jsonString = gson.toJson(dataParameters);
         //~ JSONObject respondObject = new JSONObject(jsonString);
-        return jsonString;
+        return jsonString.toString();
 	}
 	
 	public static String getPaymentType(String paymentName) {
