@@ -810,13 +810,11 @@ public class NovalnetOrdersController
 		PaymentModeModel creditCardPaymentModeModel = paymentModeService.getPaymentModeForCode("novalnetCreditCard");
 		NovalnetCreditCardPaymentModeModel novalnetCreditCardPaymentMethod = (NovalnetCreditCardPaymentModeModel) creditCardPaymentModeModel;
 		
-		
 		final Map<String, Object> paymentinfoParameters= new HashMap<String, Object>();
 		final Map<String, Object> sepaPaymentinfoParameters= new HashMap<String, Object>();
 		final Map<String, Object> paypalPaymentinfoParameters= new HashMap<String, Object>();
 		final Map<String, Object> creditcardPaymentinfoParameters= new HashMap<String, Object>();
         final Map<String, Object> dataParameters = new HashMap<String, Object>();
-        
         
         creditcardPaymentinfoParameters.put("active", novalnetCreditCardPaymentMethod.getActive());
         sepaPaymentinfoParameters.put("active", novalnetDirectDebitSepaPaymentMethod.getActive());
@@ -829,6 +827,8 @@ public class NovalnetOrdersController
         dataParameters.put("novalnetAccessKey", baseStore.getNovalnetPaymentAccessKey());
         dataParameters.put("novalnetClienKey", baseStore.getNovalnetClientKey());
         dataParameters.put("novalnetTariff", baseStore.getNovalnetTariffId());
+        
+        dataParameters.put("paymentinfo", paymentinfoParameters);
         
         Gson gson = new GsonBuilder().create();
         String jsonString = gson.toJson(dataParameters);
