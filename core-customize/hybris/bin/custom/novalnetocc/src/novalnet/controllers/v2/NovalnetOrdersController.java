@@ -635,7 +635,7 @@ public class NovalnetOrdersController
 		LOG.info("+++++++++++++++++++592");
 		LOG.info(jsonString);
 		//~ LOG.info(sendObject);
-		return jsonString.toString();;
+		return jsonString.toString();
 	}
 	
 	
