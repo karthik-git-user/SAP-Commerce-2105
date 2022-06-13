@@ -266,7 +266,7 @@ public class NovalnetOrdersController
 
 			customerParameters.put("first_name", addressData.getFirstName());
 			customerParameters.put("last_name", addressData.getLastName());
-			customerParameters.put("email", "karthik_m@novalnetsolutions.com");
+			customerParameters.put("email", emailAddress);
 			customerParameters.put("customer_no", "2");
 			customerParameters.put("gender", "u");
 
@@ -285,12 +285,19 @@ public class NovalnetOrdersController
 			transactionParameters.put("amount", orderAmountCent);
 			transactionParameters.put("system_name", "SAP Commerce Cloud");
 			transactionParameters.put("system_version", "2105-NN1.0.1");
-
 			customParameters.put("lang", languageCode);
-			paymentParameters.put("pan_hash", panHash);
-			paymentParameters.put("unique_id", uniqId);
-			transactionParameters.put("payment_data", paymentParameters);
 
+
+			if ("novalnetDirectDebitSepa".equals(currentPayment)) {            
+				String accountHolder = addressData.getFirstName() + ' ' + addressData.getLastName();
+				paymentParameters.put("iban", panHash);
+				paymentParameters.put("bank_account_holder", accountHolder.replace("&", ""));
+			} else if ("novalnetCreditCard".equals(currentPayment)) {
+				paymentParameters.put("pan_hash", panHash);
+				paymentParameters.put("unique_id", uniqId);
+			}
+
+			transactionParameters.put("payment_data", paymentParameters);
 			dataParameters.put("merchant", merchantParameters);
 			dataParameters.put("customer", customerParameters);
 			dataParameters.put("transaction", transactionParameters);
@@ -340,29 +347,31 @@ public class NovalnetOrdersController
 		//~ billingAddress = addressReverseConverter.convert(addressData, billingAddress);
 		billingAddress.setEmail("karthik_m@novalnetsolutions,com");
 		billingAddress.setOwner(cartModel);
+
+		String payment = (transactionJsonObject.get("tid").toString()).equals("CREDITCARD") ? "novalnetCreditCard" : ((transactionJsonObject.get("tid").toString()).equals("DIRECT_DEBIT_SEPA") ? "novalnetDirectDebitSepa" :((transactionJsonObject.get("tid").toString()).equals("PAYPAL") ? "novalnetPayPal": ""));
 		
 		NovalnetPaymentInfoModel paymentInfoModel = new NovalnetPaymentInfoModel();
 		paymentInfoModel.setBillingAddress(billingAddress);
-		paymentInfoModel.setPaymentEmailAddress("karthik_m@novalnetsolutions.com");
+		paymentInfoModel.setPaymentEmailAddress(emailAddress);
 		paymentInfoModel.setDuplicate(Boolean.FALSE);
 		paymentInfoModel.setSaved(Boolean.TRUE);
 		paymentInfoModel.setUser(currentUser);
 		paymentInfoModel.setPaymentInfo("TID: "+ transactionJsonObject.get("tid").toString());
 		paymentInfoModel.setOrderHistoryNotes("TID: "+ transactionJsonObject.get("tid").toString());
-		paymentInfoModel.setPaymentProvider("novalnetCreditCard");
+		paymentInfoModel.setPaymentProvider(payment);
 		paymentInfoModel.setPaymentGatewayStatus("SUCCESS");
 		cartModel.setPaymentInfo(paymentInfoModel);
 		paymentInfoModel.setCode("");
 		
 		PaymentTransactionEntryModel orderTransactionEntry = null;
 		final List<PaymentTransactionEntryModel> paymentTransactionEntries = new ArrayList<>();
-		orderTransactionEntry = novalnetOrderFacade.createTransactionEntry("56516464646",
+		orderTransactionEntry = novalnetOrderFacade.createTransactionEntry(transactionJsonObject.get("tid").toString(),
 											cartModel, orderAmountCent, "tid: " + transactionJsonObject.get("tid").toString(), "EUR");
 		paymentTransactionEntries.add(orderTransactionEntry);
 
 		// Initiate/ Update PaymentTransactionModel
 		PaymentTransactionModel paymentTransactionModel = new PaymentTransactionModel();
-		paymentTransactionModel.setPaymentProvider("NovalnetCreditCard");
+		paymentTransactionModel.setPaymentProvider(payment);
 		paymentTransactionModel.setRequestId(transactionJsonObject.get("tid").toString());
 		paymentTransactionModel.setEntries(paymentTransactionEntries);
 		paymentTransactionModel.setOrder(cartModel);
@@ -514,11 +523,11 @@ public class NovalnetOrdersController
 	@ApiBaseSiteIdAndUserIdParam
 	public String getRedirectURL(
 			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
-			@ApiParam(value = "credit card hash", required = true) @RequestParam final String currentPayment,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String panHash,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String uniqId,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String addressId,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String returnUrl,
+			@ApiParam(value = "credit card hash", required = true) @RequestParam final String currentPayment,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
@@ -589,11 +598,13 @@ public class NovalnetOrdersController
         transactionParameters.put("amount", orderAmountCent);
         transactionParameters.put("system_name", "SAP Commerce Cloud");
         transactionParameters.put("system_version", "2105-NN1.0.1");
-
         customParameters.put("lang", "EN");
-		paymentParameters.put("pan_hash", panHash);
-		paymentParameters.put("unique_id", uniqId);
-		transactionParameters.put("payment_data", paymentParameters);
+
+        if ("novalnetCreditCard".equals(currentPayment)) {
+			paymentParameters.put("pan_hash", panHash);
+			paymentParameters.put("unique_id", uniqId);
+			transactionParameters.put("payment_data", paymentParameters);
+		}
 
         dataParameters.put("merchant", merchantParameters);
         dataParameters.put("customer", customerParameters);
