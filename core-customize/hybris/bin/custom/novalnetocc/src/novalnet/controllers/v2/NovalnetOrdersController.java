@@ -281,7 +281,7 @@ public class NovalnetOrdersController
 			customerParameters.put("billing", billingParameters);
 			customerParameters.put("shipping", shippingParameters);
 
-			transactionParameters.put("payment_type", "CREDITCARD");
+			transactionParameters.put("payment_type", getPaymentType(currentPayment));
 			transactionParameters.put("currency", currency);
 			transactionParameters.put("amount", orderAmountCent);
 			transactionParameters.put("system_name", "SAP Commerce Cloud");
