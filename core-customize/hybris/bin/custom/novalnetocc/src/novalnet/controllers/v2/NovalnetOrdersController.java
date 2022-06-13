@@ -289,7 +289,8 @@ public class NovalnetOrdersController
 			customParameters.put("lang", languageCode);
 
 
-			if ("novalnetDirectDebitSepa".equals(currentPayment)) {            
+			if ("novalnetDirectDebitSepa".equals(currentPayment)) { 
+				transactionParameters.put("currency", "EUR");           
 				String accountHolder = addressData.getFirstName() + ' ' + addressData.getLastName();
 				paymentParameters.put("iban", panHash);
 				paymentParameters.put("bank_account_holder", accountHolder.replace("&", ""));
