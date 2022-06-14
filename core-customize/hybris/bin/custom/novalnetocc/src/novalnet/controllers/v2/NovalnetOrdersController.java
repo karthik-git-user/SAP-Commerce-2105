@@ -534,10 +534,12 @@ public class NovalnetOrdersController
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 		final AddressData addressData = novalnetOrderFacade.getAddressData(addressId);
+		PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(currentPayment);
 		LOG.info("+++++++++++++++++++210");
 		LOG.info(addressData.getFirstName());
 		
 		final Locale language = JaloSession.getCurrentSession().getSessionContext().getLocale();
+    	final String emailAddress = JaloSession.getCurrentSession().getUser().getLogin();
         final String languageCode = language.toString().toUpperCase();
 		LOG.info("+++++++++++++++++++210");
 		LOG.info(languageCode);
@@ -581,7 +583,7 @@ public class NovalnetOrdersController
 
         customerParameters.put("first_name", addressData.getFirstName());
         customerParameters.put("last_name", addressData.getLastName());
-        customerParameters.put("email", "karthik_m@novalnetsolutions.com");
+        customerParameters.put("email", emailAddress);
         customerParameters.put("customer_no", "2");
         customerParameters.put("gender", "u");
 
@@ -606,7 +608,22 @@ public class NovalnetOrdersController
 			paymentParameters.put("pan_hash", panHash);
 			paymentParameters.put("unique_id", uniqId);
 			transactionParameters.put("payment_data", paymentParameters);
+			NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
+			if (novalnetPaymentMethod.getNovalnetTestMode()) {
+                testMode = 1;
+            }
 		}
+		
+		if ("novalnetPayPal".equals(currentPayment)) {
+			NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
+			LOG.info("+++++++++++++++++++619");
+			LOG.info(novalnetPaymentMethod.getNovalnetTestMode());
+			if (novalnetPaymentMethod.getNovalnetTestMode()) {
+                testMode = 1;
+            }
+		}
+		
+		transactionParameters.put("test_mode", testMode);
 
         dataParameters.put("merchant", merchantParameters);
         dataParameters.put("customer", customerParameters);
