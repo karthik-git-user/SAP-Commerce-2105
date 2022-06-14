@@ -534,6 +534,7 @@ public class NovalnetOrdersController
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 		final AddressData addressData = novalnetOrderFacade.getAddressData(addressId);
+		Integer testMode = 0;
 		PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(currentPayment);
 		LOG.info("+++++++++++++++++++210");
 		LOG.info(addressData.getFirstName());
