@@ -661,12 +661,9 @@ public class NovalnetOrdersController
 		responseParameters.put("redirect_url", redirectURL);
 		LOG.info(redirectURL);
 		jsonString = gson.toJson(responseParameters);
-		//~ System.out.println(jsonString);
-		//~ JSONObject sendObject = new JSONObject(jsonString);
 		LOG.info("+++++++++++++++++++592");
 		LOG.info(jsonString);
-		//~ LOG.info(sendObject);
-		return jsonString.toString();
+		return jsonString.replaceAll("\\\\", "");
 	}
 	
 	
