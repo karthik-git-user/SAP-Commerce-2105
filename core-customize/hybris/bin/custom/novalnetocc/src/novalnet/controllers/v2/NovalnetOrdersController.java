@@ -659,11 +659,14 @@ public class NovalnetOrdersController
 		final Map<String, Object> responseParameters = new HashMap<String, Object>();
 		String redirectURL = resultJsonObject.get("redirect_url").toString();
 		responseParameters.put("redirect_url", redirectURL);
-		LOG.info(redirectURL);
-		jsonString = gson.toJson(responseParameters);
-		LOG.info("+++++++++++++++++++592");
-		LOG.info(jsonString);
-		return jsonString.replaceAll("\\\\", "");
+		// LOG.info(redirectURL);
+		// jsonString = gson.toJson(responseParameters);
+		// LOG.info("+++++++++++++++++++592");
+		// LOG.info(jsonString);
+		// return jsonString.replaceAll("\\\\", "");
+		JSONObject json = new JSONObject();
+	    json.putAll( responseParameters );
+	    return json.toString(2);
 	}
 	
 	
