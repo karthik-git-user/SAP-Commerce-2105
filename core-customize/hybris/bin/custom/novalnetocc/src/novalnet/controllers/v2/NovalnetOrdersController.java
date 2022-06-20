@@ -523,7 +523,7 @@ public class NovalnetOrdersController
 	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
 	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
 	@ApiBaseSiteIdAndUserIdParam
-	public String getRedirectURL(
+	public byte getRedirectURL(
 			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String panHash,
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String uniqId,
@@ -659,14 +659,13 @@ public class NovalnetOrdersController
 		final Map<String, Object> responseParameters = new HashMap<String, Object>();
 		String redirectURL = resultJsonObject.get("redirect_url").toString();
 		responseParameters.put("redirect_url", redirectURL);
-		// LOG.info(redirectURL);
-		// jsonString = gson.toJson(responseParameters);
-		// LOG.info("+++++++++++++++++++592");
-		// LOG.info(jsonString);
-		// return jsonString.replaceAll("\\\\", "");
-		JSONObject json = new JSONObject();
-	    json.putAll( responseParameters );
-	    return json.toString(2);
+		LOG.info(redirectURL);
+		jsonString = gson.toJson(responseParameters);
+		LOG.info("+++++++++++++++++++592");
+		LOG.info(jsonString);
+		byte[] postData = jsonString.getBytes(StandardCharsets.UTF_8);
+        LOG.info(postData);
+		return postData;
 	}
 	
 	
