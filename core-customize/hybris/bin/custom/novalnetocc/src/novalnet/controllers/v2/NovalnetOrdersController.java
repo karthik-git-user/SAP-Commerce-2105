@@ -361,7 +361,7 @@ public class NovalnetOrdersController
 		paymentInfoModel.setPaymentInfo("TID: "+ transactionJsonObject.get("tid").toString());
 		paymentInfoModel.setOrderHistoryNotes("TID: "+ transactionJsonObject.get("tid").toString());
 		paymentInfoModel.setPaymentProvider(payment);
-		paymentInfoModel.setPaymentGatewayStatus("SUCCESS");
+		paymentInfoModel.setPaymentGatewayStatus(transactionJsonObject.get("status").toString());
 		cartModel.setPaymentInfo(paymentInfoModel);
 		paymentInfoModel.setCode("");
 		
@@ -829,11 +829,12 @@ public class NovalnetOrdersController
 	{
 		final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderno);
         NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
-        // JSONObject json = new JSONObject();
-		// json.put("status", resultJsonObject.get("redirect_url").toString());
-		// return json.toString();
-		String test = "";
-		return test;
+        final Map<String, Object> responseParameters = new HashMap<String, Object>();
+		responseParameters.put("tid", paymentInfoModel.getOrderHistoryNotes());
+		responseParameters.put("status", paymentInfoModel.getPaymentGatewayStatus());
+		Gson gson = new GsonBuilder().create();
+		String jsonString = gson.toJson(responseParameters);
+		return jsonString;
 	}
 	
 	public static String getPaymentType(String paymentName) {
