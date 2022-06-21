@@ -358,8 +358,8 @@ public class NovalnetOrdersController
 		paymentInfoModel.setDuplicate(Boolean.FALSE);
 		paymentInfoModel.setSaved(Boolean.TRUE);
 		paymentInfoModel.setUser(currentUser);
-		paymentInfoModel.setPaymentInfo("TID: "+ transactionJsonObject.get("tid").toString());
-		paymentInfoModel.setOrderHistoryNotes("TID: "+ transactionJsonObject.get("tid").toString());
+		paymentInfoModel.setPaymentInfo("Novalnet Transaction ID : "+ transactionJsonObject.get("tid").toString());
+		paymentInfoModel.setOrderHistoryNotes("Novalnet Transaction ID : "+ transactionJsonObject.get("tid").toString());
 		paymentInfoModel.setPaymentProvider(payment);
 		paymentInfoModel.setPaymentGatewayStatus(transactionJsonObject.get("status").toString());
 		cartModel.setPaymentInfo(paymentInfoModel);
