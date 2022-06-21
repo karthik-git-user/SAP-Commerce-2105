@@ -629,16 +629,17 @@ public class NovalnetOrdersController
 			throw new PaymentAuthorizationException();
 		}
 
-		// final Map<String, Object> responseParameters = new HashMap<String, Object>();
-		// String redirectURL = resultJsonObject.get("redirect_url").toString();
-		// responseParameters.put("redirect_url", redirectURL);
-		// jsonString = gson.toJson(responseParameters);
+		final Map<String, Object> responseParameters = new HashMap<String, Object>();
+		String redirectURL = resultJsonObject.get("redirect_url").toString();
+		responseParameters.put("redirect_url", redirectURL);
+		jsonString = gson.toJson(responseParameters);
 		// byte[] postData = jsonString.getBytes(StandardCharsets.UTF_8);
 		// return postData;
 
-		JSONObject json = new JSONObject();
-		json.put("reirect_url", resultJsonObject.get("redirect_url").toString());
-		return json.toString();
+		// JSONObject json = new JSONObject();
+		// json.put("reirect_url", resultJsonObject.get("redirect_url").toString());
+		// return json.toString();
+		return jsonString;
 	}
 	
 	
@@ -828,8 +829,11 @@ public class NovalnetOrdersController
 	{
 		final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderno);
         NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
-        String test = "";
-        return test;
+        // JSONObject json = new JSONObject();
+		// json.put("status", resultJsonObject.get("redirect_url").toString());
+		// return json.toString();
+		String test = "";
+		return test;
 	}
 	
 	public static String getPaymentType(String paymentName) {
