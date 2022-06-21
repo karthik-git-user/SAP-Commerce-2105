@@ -813,21 +813,24 @@ public class NovalnetOrdersController
 	}
 
 
-	// @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	// @RequestMapping(value = "/users/{userId}/novalnet/paymentDetails", method = RequestMethod.POST)
-	// @RequestMappingOverride
-	// @ResponseStatus(HttpStatus.CREATED)
-	// @ResponseBody
-	// @SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
-	// @ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
-	// @ApiBaseSiteIdAndUserIdParam
-	// public String getPaymentConfig(
-	// 		@ApiParam(value = "credit card hash", required = true) @RequestParam final String orderno,
-	// 		@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
-	// 		throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
-	// {
-		
-	// }
+	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
+	@RequestMapping(value = "/users/{userId}/novalnet/paymentDetails", method = RequestMethod.POST)
+	@RequestMappingOverride
+	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseBody
+	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
+	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
+	@ApiBaseSiteIdAndUserIdParam
+	public String getPaymentDetails(
+			@ApiParam(value = "credit card hash", required = true) @RequestParam final String orderno,
+			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
+			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
+	{
+		final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderno);
+        NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
+        String test = "";
+        return test;
+	}
 	
 	public static String getPaymentType(String paymentName) {
         final Map<String, String> paymentType = new HashMap<String, String>();

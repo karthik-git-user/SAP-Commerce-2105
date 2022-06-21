@@ -70,6 +70,8 @@ import de.hybris.platform.servicelayer.i18n.CommonI18NService;
 import de.hybris.platform.servicelayer.keygenerator.KeyGenerator;
 import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.servicelayer.search.FlexibleSearchService;
+import de.hybris.platform.servicelayer.search.FlexibleSearchQuery;
+import de.hybris.platform.servicelayer.search.SearchResult;
 
 import de.hybris.platform.servicelayer.session.SessionService;
 import de.hybris.platform.store.BaseStoreModel;
@@ -408,5 +410,42 @@ public class NovalnetOrderFacade {
 	{
 		return YSanitizer.sanitize(input);
 	}
+
+    /**
+     * Get Novalnet payment info model
+     *
+     * @param orderCode Order code of the order
+     * @return SearchResult
+     */
+    public List<NovalnetPaymentInfoModel> getNovalnetPaymentInfo(String orderCode) {
+
+        // Initialize StringBuilder
+        StringBuilder query = new StringBuilder();
+
+        // Select query for fetch NovalnetPaymentInfoModel
+        query.append("SELECT {pk} from {PaymentInfo} where {" + PaymentInfoModel.CODE
+                + "} = ?code AND {" + PaymentInfoModel.DUPLICATE + "} = ?duplicate");
+        FlexibleSearchQuery executeQuery = new FlexibleSearchQuery(query.toString());
+
+        // Add query parameter
+        executeQuery.addQueryParameter("code", orderCode);
+        executeQuery.addQueryParameter("duplicate", Boolean.FALSE);
+
+        // Execute query
+        SearchResult<NovalnetPaymentInfoModel> result = getFlexibleSearchService().search(executeQuery);
+        return result.getResult();
+
+    }
+
+    /**
+     * Get Payment model
+     *
+     * @param paymentInfo info of the payment
+     * @return paymentModel
+     */
+    public NovalnetPaymentInfoModel getPaymentModel(final List<NovalnetPaymentInfoModel> paymentInfo) {
+        final NovalnetPaymentInfoModel paymentModel = this.getModelService().get(paymentInfo.get(0).getPk());
+        return paymentModel;
+    }
     
 }
