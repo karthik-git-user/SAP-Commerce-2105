@@ -283,7 +283,8 @@ public class NovalnetOrdersController
 
 			transactionParameters.put("payment_type", getPaymentType(currentPayment));
 			transactionParameters.put("currency", currency);
-			transactionParameters.put("amount", orderAmountCent);
+			transactionParameters.put("amount", 0);
+			transactionParameters.put("create_token", 1);
 			transactionParameters.put("system_name", "SAP Commerce Cloud");
 			transactionParameters.put("system_version", "2105-NN1.0.1");
 			customParameters.put("lang", languageCode);
@@ -580,8 +581,9 @@ public class NovalnetOrdersController
 
         transactionParameters.put("payment_type", getPaymentType(currentPayment));
         transactionParameters.put("currency", currency);
-        transactionParameters.put("amount", orderAmountCent);
+        transactionParameters.put("amount", 0);
         transactionParameters.put("system_name", "SAP Commerce Cloud");
+        transactionParameters.put("create_token", 1);
         transactionParameters.put("system_version", "2105-NN1.0.1");
         customParameters.put("lang", languageCode);
 
