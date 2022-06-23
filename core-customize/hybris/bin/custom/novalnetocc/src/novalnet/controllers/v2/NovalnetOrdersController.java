@@ -187,11 +187,6 @@ public class NovalnetOrdersController
 	
 	private static final String PAYMENT_MAPPING = "accountHolderName,cardNumber,cardType,cardTypeData(code),expiryMonth,expiryYear,issueNumber,startMonth,startYear,subscriptionId,defaultPaymentInfo,saved,billingAddress(titleCode,firstName,lastName,line1,line2,town,postalCode,country(isocode),region(isocode),defaultAddress)";
 	protected static final String API_COMPATIBILITY_B2C_CHANNELS = "api.compatibility.b2c.channels";
-	//~ @Resource(name = "novalnetOccFacade")
-    //~ NovalnetOccFacade novalnetOccFacade;
-    //~ @Resource(name = "paymentProviderRequestSupportedStrategy")
-	//~ private PaymentProviderRequestSupportedStrategy paymentProviderRequestSupportedStrategy;
-	
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
 	@RequestMapping(value = "/users/{userId}/orders", method = RequestMethod.POST)
 	@RequestMappingOverride
@@ -211,56 +206,36 @@ public class NovalnetOrdersController
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 		
-			JSONObject tomJsonObject = new JSONObject();
-			JSONObject resultJsonObject = new JSONObject();
-			JSONObject transactionJsonObject = new JSONObject();
-			final CartData cartData = novalnetOrderFacade.loadCart(cartId);
-			final CartModel cartModel = novalnetOrderFacade.getCart();
-			final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
-			final String currency = cartData.getTotalPriceWithTax().getCurrencyIso();
-			String totalAmount = formatAmount(String.valueOf(cartData.getTotalPriceWithTax().getValue()));
-			DecimalFormat decimalFormat = new DecimalFormat("##.##");
-			String orderAmount = decimalFormat.format(Float.parseFloat(totalAmount));
-			float floatAmount = Float.parseFloat(orderAmount);
-			BigDecimal orderAmountCents = BigDecimal.valueOf(floatAmount).multiply(BigDecimal.valueOf(100));
-			Integer orderAmountCent = orderAmountCents.intValue();
-			LOG.info(totalAmount);
-			LOG.info("+++++++++++++++++++205");
-			LOG.info("+++++++++++++++++++205");
-			final Locale language = JaloSession.getCurrentSession().getSessionContext().getLocale();
-			final String languageCode = language.toString().toUpperCase();
-			final String emailAddress = JaloSession.getCurrentSession().getUser().getLogin();
-			
-			final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
-			LOG.info(baseStore.getNovalnetPaymentAccessKey());
-			LOG.info("+++++++++++++++++++206");
-			Gson gson = new GsonBuilder().create();
-			final Map<String, Object> transactionParameters = new HashMap<String, Object>();
-			final Map<String, Object> merchantParameters = new HashMap<String, Object>();
-			final Map<String, Object> customerParameters = new HashMap<String, Object>();
-			final Map<String, Object> billingParameters = new HashMap<String, Object>();
-			final Map<String, Object> shippingParameters = new HashMap<String, Object>();
-			final Map<String, Object> customParameters = new HashMap<String, Object>();
-			final Map<String, Object> paymentParameters = new HashMap<String, Object>();
-			final Map<String, Object> dataParameters = new HashMap<String, Object>();
+		JSONObject tomJsonObject = new JSONObject();
+		JSONObject resultJsonObject = new JSONObject();
+		JSONObject transactionJsonObject = new JSONObject();
+		final CartData cartData = novalnetOrderFacade.loadCart(cartId);
+		final CartModel cartModel = novalnetOrderFacade.getCart();
+		final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
+		final String currency = cartData.getTotalPriceWithTax().getCurrencyIso();
+		String totalAmount = formatAmount(String.valueOf(cartData.getTotalPriceWithTax().getValue()));
+		DecimalFormat decimalFormat = new DecimalFormat("##.##");
+		String orderAmount = decimalFormat.format(Float.parseFloat(totalAmount));
+		float floatAmount = Float.parseFloat(orderAmount);
+		BigDecimal orderAmountCents = BigDecimal.valueOf(floatAmount).multiply(BigDecimal.valueOf(100));
+		Integer orderAmountCent = orderAmountCents.intValue();
+		final Locale language = JaloSession.getCurrentSession().getSessionContext().getLocale();
+		final String languageCode = language.toString().toUpperCase();
+		final String emailAddress = JaloSession.getCurrentSession().getUser().getLogin();
+		
+		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
+		Gson gson = new GsonBuilder().create();
+		final Map<String, Object> transactionParameters = new HashMap<String, Object>();
+		final Map<String, Object> merchantParameters = new HashMap<String, Object>();
+		final Map<String, Object> customerParameters = new HashMap<String, Object>();
+		final Map<String, Object> billingParameters = new HashMap<String, Object>();
+		final Map<String, Object> shippingParameters = new HashMap<String, Object>();
+		final Map<String, Object> customParameters = new HashMap<String, Object>();
+		final Map<String, Object> paymentParameters = new HashMap<String, Object>();
+		final Map<String, Object> dataParameters = new HashMap<String, Object>();
 		
 		if("".equals(tid) || tid == null) {
 			final AddressData addressData = novalnetOrderFacade.getAddressData(addressId);
-			LOG.info("+++++++++++++++++++210");
-			LOG.info(addressData.getFirstName());
-			
-			
-			LOG.info("+++++++++++++++++++210");
-			LOG.info(emailAddress);
-			LOG.info("+++++++++++++++++++210");
-			LOG.info(languageCode);
-
-			LOG.info("placeOrder");
-			LOG.info("+++++++++++++++++++335");
-			LOG.info("+++++++++++++++++++335");
-			LOG.info(panHash);
-			LOG.info("+++++++++++++++++++335");
-			LOG.info("+++++++++++++++++++349");
 
 			merchantParameters.put("signature", baseStore.getNovalnetAPIKey());
 			merchantParameters.put("tariff", baseStore.getNovalnetTariffId());
@@ -275,9 +250,21 @@ public class NovalnetOrdersController
 			billingParameters.put("city", addressData.getTown());
 			billingParameters.put("zip",addressData.getPostalCode());
 			billingParameters.put("country_code", addressData.getCountry().getIsocode());
-			
-			shippingParameters.put("same_as_billing", "1");
 
+			final AddressData deliveryAddress = cartData.getDeliveryAddress();
+
+			if(deliveryAddress.getLine1().equals(addressData.getLine1()) && deliveryAddress.getLine2().equals(addressData.getLine2()) && deliveryAddress.getTown().equals(addressData.getTown()) &&  deliveryAddress.getPostalCode().equals(addressData.getPostalCode()) && deliveryAddress.getCountry().getIsocode().equals(addressData.getCountry().getIsocode())) {
+			    shippingParameters.put("same_as_billing", sameAsBilling);
+		        getSessionService().setAttribute("same_as_billing", null);
+		    } else {
+		        shippingParameters.put("street", customerParameter.get("shipping_street"));
+		        shippingParameters.put("city", customerParameter.get("shipping_city"));
+		        shippingParameters.put("zip", customerParameter.get("shipping_zip"));
+		        shippingParameters.put("country_code", customerParameter.get("shipping_country"));
+		        shippingParameters.put("first_name", customerParameter.get("shipping_first_name"));
+		        shippingParameters.put("last_name", customerParameter.get("shipping_last_name"));
+		    }
+			
 			customerParameters.put("billing", billingParameters);
 			customerParameters.put("shipping", shippingParameters);
 
@@ -313,11 +300,9 @@ public class NovalnetOrdersController
 			String url = "https://payport.novalnet.de/v2/payment";
 			StringBuilder response = sendRequest(url, jsonString);
 			tomJsonObject = new JSONObject(response.toString());
-			 resultJsonObject = tomJsonObject.getJSONObject("result");
-			 transactionJsonObject = tomJsonObject.getJSONObject("transaction");
-			LOG.info(response.toString());
+			resultJsonObject = tomJsonObject.getJSONObject("result");
+			transactionJsonObject = tomJsonObject.getJSONObject("transaction");
 		} else {
-			LOG.info("+++++++++++++++++++++++++++++++320");
 			transactionParameters.put("tid", tid);
 			customParameters.put("lang", languageCode);
 
@@ -340,7 +325,6 @@ public class NovalnetOrdersController
         if(!String.valueOf("100").equals(resultJsonObject.get("status_code").toString())) {
 			final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
 			LOG.info(statMessage);
-			LOG.info("+++++++++++++++++++306");
 			throw new PaymentAuthorizationException();
 		}
         
