@@ -80,7 +80,8 @@
                 "timedaccesspromotionenginesamplesaddon",
                 "xyformssamples",
                 "xyformsstorefrontcommons",
-                "ysapproductconfigaddon"
+                "ysapproductconfigaddon",
+                "novalnetcheckoutaddon"
             ],
             "storefronts": [
                 "yacceleratorstorefront",
@@ -96,8 +97,7 @@
                 "chinesecommerceorgaddressaddon",
                 "commerceorgaddon",
                 "commerceorgsamplesaddon",
-                "sapproductconfigb2baddon",
-                "novalnetcheckoutaddon"
+                "sapproductconfigb2baddon"
             ],
             "storefront": "yb2bacceleratorstorefront",
             "template": "yacceleratorstorefront"
