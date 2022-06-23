@@ -80,8 +80,7 @@
                 "timedaccesspromotionenginesamplesaddon",
                 "xyformssamples",
                 "xyformsstorefrontcommons",
-                "ysapproductconfigaddon",
-                "novalnetcheckoutaddon"
+                "ysapproductconfigaddon"
             ],
             "storefronts": [
                 "yacceleratorstorefront",
@@ -101,7 +100,12 @@
             ],
             "storefront": "yb2bacceleratorstorefront",
             "template": "yacceleratorstorefront"
-        }
+        },
+        {
+			"addon":"novalnetcheckoutaddon",
+			"storefront":"yacceleratorstorefront",
+			"template":"yacceleratorstorefront"
+		}
     ],
     "properties": [
         {
