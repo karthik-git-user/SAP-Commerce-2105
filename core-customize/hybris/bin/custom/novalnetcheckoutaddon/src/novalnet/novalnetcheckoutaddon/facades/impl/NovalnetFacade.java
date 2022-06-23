@@ -374,7 +374,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
             NovalnetInstantBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetInstantBankTransferPaymentModeModel) paymentModeModel;
             return novalnetPaymentMethod.getNovalnetOrderSuccessStatus();
         } else if ("novalnetOnlineBankTransfer".equals(paymentMethod)) {
-            NovalnetOnlineBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetOnlinetBankTransferPaymentModeModel) paymentModeModel;
+            NovalnetOnlineBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetOnlineBankTransferPaymentModeModel) paymentModeModel;
             return novalnetPaymentMethod.getNovalnetOrderSuccessStatus();
         }  else if ("novalnetBancontact".equals(paymentMethod)) {
 			NovalnetBancontactPaymentModeModel novalnetPaymentMethod = (NovalnetBancontactPaymentModeModel) paymentModeModel;
