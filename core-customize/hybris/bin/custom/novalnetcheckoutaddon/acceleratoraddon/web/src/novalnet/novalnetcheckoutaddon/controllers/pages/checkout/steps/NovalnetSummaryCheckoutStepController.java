@@ -114,6 +114,7 @@ import de.hybris.novalnet.core.model.NovalnetGuaranteedInvoicePaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetPrepaymentPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetBarzahlenPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetInstantBankTransferPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetOnlineBankTransferPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetBancontactPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetMultibancoPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetPostFinanceCardPaymentModeModel;
@@ -302,8 +303,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
 
         transactionParameters.put("payment_type", getPaymentType(currentPayment));
         transactionParameters.put("currency", currency);
-        //~ transactionParameters.put("amount", orderAmountCent);
-        transactionParameters.put("amount", "0");
+        transactionParameters.put("amount", orderAmountCent);
         transactionParameters.put("system_name", "SAP Commerce Cloud");
         transactionParameters.put("system_version", "2105-NN1.0.1");
         
@@ -615,6 +615,16 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
             }
+        } else if ("novalnetOnlineBankTransfer".equals(currentPayment)) {
+            NovalnetOnlineBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetOnlineBankTransferPaymentModeModel) paymentModeModel;
+
+            // Redirect Flag
+            redirect = true;
+
+            // Check for test mode
+            if (novalnetPaymentMethod.getNovalnetTestMode()) {
+                testMode = 1;
+            }
         } else if ("novalnetBancontact".equals(currentPayment)) {
             NovalnetBancontactPaymentModeModel novalnetPaymentMethod = (NovalnetBancontactPaymentModeModel) paymentModeModel;
 
@@ -841,9 +851,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
                 }
             }
             
-            LOGGER.info("test=======843");
-            novalnetFacade.syncmirakl(tomJsonObject, orderData.getCode());
-			LOGGER.info("test=======845");
+
             transactionParameters.put("tid", transactionJsonObject.get("tid"));
             transactionParameters.put("order_no", orderData.getCode());
 
@@ -1033,6 +1041,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
         paymentType.put("novalnetBarzahlen", "CASHPAYMENT");
         paymentType.put("novalnetPayPal", "PAYPAL");
         paymentType.put("novalnetInstantBankTransfer", "ONLINE_TRANSFER");
+        paymentType.put("novalnetOnlineBankTransfer", "ONLINE_BANK_TRANSFER");
         paymentType.put("novalnetBancontact", "BANCONTACT");
         paymentType.put("novalnetMultibanco", "MULTIBANCO");
         paymentType.put("novalnetIdeal", "IDEAL");

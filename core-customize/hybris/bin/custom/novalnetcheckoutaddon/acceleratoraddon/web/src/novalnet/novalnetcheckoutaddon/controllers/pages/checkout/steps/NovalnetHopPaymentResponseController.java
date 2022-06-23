@@ -147,7 +147,6 @@ public class NovalnetHopPaymentResponseController extends NovalnetPaymentMethodC
 		   } 
 		   else
 		   {
-			   LOGGER.info("test============150");  
 			    return processTransaction(resultMap);
 		   }            
 		} 
@@ -165,7 +164,7 @@ public class NovalnetHopPaymentResponseController extends NovalnetPaymentMethodC
 		final Map<String, Object> transactionParameters = new HashMap<String, Object>();
         final Map<String, Object> dataParameters = new HashMap<String, Object>();
         final Map<String, Object> customParameters = new HashMap<String, Object>();
-        LOGGER.info("test============167");  
+                
         String[] successStatus = {"CONFIRMED", "ON_HOLD", "PENDING"};
         
 		transactionParameters.put("tid", resultMap.get("tid"));
@@ -220,9 +219,6 @@ public class NovalnetHopPaymentResponseController extends NovalnetPaymentMethodC
 			dataParameters.put("custom", customParameters);
 
 			jsonString = gson.toJson(dataParameters);
-			LOGGER.info("test============222");
-			novalnetFacade.syncmirakl(tomJsonObject, orderData.getCode());
-			LOGGER.info("test=======225");
 
 			url = "https://payport.novalnet.de/v2/transaction/update";
 			StringBuilder responseString = novalnetFacade.sendRequest(url, jsonString);

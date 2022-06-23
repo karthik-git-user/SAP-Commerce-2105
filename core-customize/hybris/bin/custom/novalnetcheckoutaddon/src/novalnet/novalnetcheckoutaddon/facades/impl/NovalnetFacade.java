@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
 import java.util.Date;
 
 import javax.annotation.Resource;
@@ -70,6 +69,7 @@ import de.hybris.novalnet.core.model.NovalnetInvoicePaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetPrepaymentPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetBarzahlenPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetInstantBankTransferPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetOnlineBankTransferPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetBancontactPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetMultibancoPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetIdealPaymentModeModel;
@@ -90,7 +90,6 @@ import java.net.URL;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 import org.json.JSONObject;
-import org.json.JSONArray;
 
 import java.net.MalformedURLException;
 
@@ -101,10 +100,6 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.UnknownHostException;
 import java.util.Base64;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.GsonBuilder;
 
 /**
  * NovalnetFacade
@@ -214,106 +209,6 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
     
     
 	/**
-     * Sync data to mirakl
-     *
-     * @param novalnetJsonObject Order code of the order
-     */
-    public void syncmirakl(JSONObject tomJsonObject, String orderCode) {
-        LOGGER.info("test============221");  
-        JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
-		JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
-		JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
-		JSONObject billingJsonObject = customerJsonObject.getJSONObject("billing");
-		JSONObject shippingJsonObject = customerJsonObject.getJSONObject("billing");
-		if(customerJsonObject.has("shipping")) {
-			shippingJsonObject = customerJsonObject.getJSONObject("shipping");
-			if(shippingJsonObject.has("same_as_billing") && shippingJsonObject.get("same_as_billing").toString().equals("1") ){
-				shippingJsonObject = customerJsonObject.getJSONObject("billing");
-			}
-		}
-		
-        final Map<String, Object> customerParameters = new HashMap<String, Object>();
-        final Map<String, Object> billingParameters = new HashMap<String, Object>();
-        final Map<String, Object> shippingParameters = new HashMap<String, Object>();
-        final Map<String, Object> paymentinfoParameters= new HashMap<String, Object>();
-        final Map<String, Object> dataParameters = new HashMap<String, Object>();
-        
-        LOGGER.info("test============238");  
-        dataParameters.put("commercial_id", orderCode);
-        dataParameters.put("scored", true);
-        dataParameters.put("shipping_zone_code", "testshippingzone");
-
-        customerParameters.put("civility", "Dr");
-        customerParameters.put("firstname", customerJsonObject.get("first_name"));
-        customerParameters.put("lastname", customerJsonObject.get("last_name"));
-        customerParameters.put("email", customerJsonObject.get("email"));
-        customerParameters.put("customer_id", customerJsonObject.get("customer_no"));
-        
-        billingParameters.put("civility", "Dr");
-        billingParameters.put("firstname", customerJsonObject.get("first_name"));
-        billingParameters.put("lastname", customerJsonObject.get("last_name"));
-        billingParameters.put("street_1", billingJsonObject.get("street"));
-        billingParameters.put("city", billingJsonObject.get("city"));
-        billingParameters.put("zip_code", billingJsonObject.get("zip"));
-        billingParameters.put("country_iso_code", billingJsonObject.get("country_code"));
-        billingParameters.put("country", "Germany");
-        billingParameters.put("company", "Novalnet");
-        billingParameters.put("state", "IDF");
-        billingParameters.put("phone", "0619874662");
-        billingParameters.put("phone_secondary", "0123456789");
-        billingParameters.put("street_2", "Escalier A");
-        
-        shippingParameters.put("civility", "Dr");
-        shippingParameters.put("firstname", customerJsonObject.get("first_name"));
-        shippingParameters.put("lastname", customerJsonObject.get("last_name"));
-        shippingParameters.put("street_1", shippingJsonObject.get("street"));
-        shippingParameters.put("city", shippingJsonObject.get("city"));
-        shippingParameters.put("zip_code", shippingJsonObject.get("zip"));
-        shippingParameters.put("country_iso_code", shippingJsonObject.get("country_code"));
-        shippingParameters.put("country", "Germany");
-        shippingParameters.put("company", "Novalnet");
-        shippingParameters.put("state", "IDF");
-        shippingParameters.put("phone", "0619874662");
-        shippingParameters.put("phone_secondary", "0123456789");
-        shippingParameters.put("street_2", "Escalier A");
-        
-        paymentinfoParameters.put("payment_type", "NOVALNET_"+transactionJsonObject.get("payment_type"));
-        paymentinfoParameters.put("imprint_number", transactionJsonObject.get("tid"));
-        
-        
-        customerParameters.put("billing_address", billingParameters);
-        customerParameters.put("shipping_address", shippingParameters);
-        dataParameters.put("customer", customerParameters);
-        dataParameters.put("payment_info", paymentinfoParameters);
-        
-        Gson gson = new GsonBuilder().create();
-        String jsonString = gson.toJson(dataParameters);
-        //~ JSONObject requestJsonObject = new JSONObject(jsonString);
-        
-        //~ final Map<String, Object> offerParameters = new HashMap<String, Object>();
-        //~ offerParameters.put("price", "57.00");
-        //~ offerParameters.put("shipping_price", "17.00");
-        //~ offerParameters.put("shipping_type_code", "testshipping1");
-        //~ offerParameters.put("offer_id", "2005");
-        //~ offerParameters.put("offer_price", "57.00");
-        //~ String offerString = gson.toJson(offerParameters); 
-         //~ LOGGER.info("test============300");        
-         //~ LOGGER.info(offerString);        
-        //~ JSONArray array = new JSONArray();
-        //~ String str = "{\"shipping_price\":\"17.00\",\"price\":\"57.00\",\"shipping_type_code\":\"testshipping1\",\"offer_id\":\"2005\",\"offer_price\":\"57.00\"}";
-        //~ String str1 = str.replaceAll("\\\\", "");
-        //~ array.put(str1);
-        //~ requestJsonObject.put("offers", array);
-
-        String url = "https://xtcommerce6.novalnet.de/mirakl_api_handler.php";
-        //~ LOGGER.info("test============290");  
-        
-        miraklSendRequest(url, jsonString);
-
-    }
-    
-    
-	/**
      * Send request
      *
      * @param url to which the requst to be sent
@@ -329,10 +224,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
             String urly = url;
             URL obj = new URL(urly);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            LOGGER.info("teststring");
-            LOGGER.info(jsonString);
             byte[] postData = jsonString.getBytes(StandardCharsets.UTF_8);
-            LOGGER.info(postData);
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Charset", "utf-8");
@@ -363,55 +255,6 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
 
         return response;
 
-    }
-    
-    
-     public void miraklSendRequest(String url, String jsonString) {
-        final BaseStoreModel baseStore = this.getBaseStoreModel();
-        String password = baseStore.getNovalnetPaymentAccessKey().trim();
-        StringBuilder response = new StringBuilder();
-
-        try {
-            String urly = url;
-            URL obj = new URL(urly);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            LOGGER.info("teststring");
-            LOGGER.info(jsonString);
-            byte[] postData = jsonString.getBytes(StandardCharsets.UTF_8);
-            LOGGER.info(postData);
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/json");
-            con.setRequestProperty("Charset", "utf-8");
-            con.setRequestProperty("Accept", "application/json");
-            con.setRequestProperty("Authorization", "665177a1-78b9-44c9-8a93-a2c8dc11680c");
-
-            con.setDoOutput(true);
-            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-            wr.write(postData);
-            wr.flush();
-            wr.close();
-            int responseCode = con.getResponseCode();
-            LOGGER.info("+++response1+++");
-            LOGGER.info("+++response code+++"+responseCode);
-            LOGGER.info("+++response+++");
-            BufferedReader iny = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String output;
-
-
-            while ((output = iny.readLine()) != null) {
-                response.append(output);
-            }
-            iny.close();
-        } catch (MalformedURLException ex) {
-            LOGGER.error("MalformedURLException ", ex);
-        } catch (IOException ex) {
-            LOGGER.error("IOException ", ex);
-        }
-
-        LOGGER.info("+++response+++");
-        LOGGER.info(response);
-        LOGGER.info("+++response+++");
     }
 
     /**
@@ -530,8 +373,11 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         } else if ("novalnetInstantBankTransfer".equals(paymentMethod)) {
             NovalnetInstantBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetInstantBankTransferPaymentModeModel) paymentModeModel;
             return novalnetPaymentMethod.getNovalnetOrderSuccessStatus();
-        } else if ("novalnetBancontact".equals(paymentMethod)) {
-            NovalnetBancontactPaymentModeModel novalnetPaymentMethod = (NovalnetBancontactPaymentModeModel) paymentModeModel;
+        } else if ("novalnetOnlineBankTransfer".equals(paymentMethod)) {
+            NovalnetOnlineBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetOnlinetBankTransferPaymentModeModel) paymentModeModel;
+            return novalnetPaymentMethod.getNovalnetOrderSuccessStatus();
+        }  else if ("novalnetBancontact".equals(paymentMethod)) {
+			NovalnetBancontactPaymentModeModel novalnetPaymentMethod = (NovalnetBancontactPaymentModeModel) paymentModeModel;
             return novalnetPaymentMethod.getNovalnetOrderSuccessStatus();
         } else if ("novalnetPostFinanceCard".equals(paymentMethod)) {
             NovalnetPostFinanceCardPaymentModeModel novalnetPaymentMethod = (NovalnetPostFinanceCardPaymentModeModel) paymentModeModel;
@@ -680,6 +526,9 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
             orderModel.setPaymentMode(novalnetPaymentMethod);
         } else if ("novalnetInstantBankTransfer".equals(currentPayment)) {
             NovalnetInstantBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetInstantBankTransferPaymentModeModel) paymentModeModel;
+            orderModel.setPaymentMode(novalnetPaymentMethod);
+        } else if ("novalnetOnlineBankTransfer".equals(currentPayment)) {
+            NovalnetOnlineBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetOnlineBankTransferPaymentModeModel) paymentModeModel;
             orderModel.setPaymentMode(novalnetPaymentMethod);
         } else if ("novalnetMultibanco".equals(currentPayment)) {
             NovalnetMultibancoPaymentModeModel novalnetPaymentMethod = (NovalnetMultibancoPaymentModeModel) paymentModeModel;

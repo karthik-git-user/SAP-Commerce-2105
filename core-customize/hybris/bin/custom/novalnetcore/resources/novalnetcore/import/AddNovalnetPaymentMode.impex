@@ -28,6 +28,9 @@ INSERT_UPDATE NovalnetPayPalPaymentMode;code[unique=true];name[lang=de];name[lan
 INSERT_UPDATE NovalnetInstantBankTransferPaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code)
 ;novalnetInstantBankTransfer;Sofortüberweisung;Sofort;Sie werden zu Sofortüberweisung weitergeleitet. Um eine erfolgreiche Zahlung zu gewährleisten, darf die Seite nicht geschlossen oder neu geladen werden, bis die Bezahlung abgeschlossen ist;You will be redirected to Sofort. Please don’t close or refresh the browser until the payment is completed;false;PaymentInfo;false;COMPLETED
 
+INSERT_UPDATE NovalnetOnlineBankTransferPaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code)
+;novalnetOnlineBankTransfer;Sofortüberweisung;Sofort;Sie werden auf die Banking-Seite weitergeleitet. Bitte schließen oder aktualisieren Sie den Browser nicht, bis die Zahlung abgeschlossen ist;You will be redirected to banking page. Please don’t close or refresh the browser until the payment is completed;false;PaymentInfo;false;COMPLETED
+
 INSERT_UPDATE NovalnetBancontactPaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code)
 ;novalnetBancontact;Bancontact;Bancontact;Sie werden zu Bancontact weitergeleitet. Um eine erfolgreiche Zahlung zu gewährleisten, darf die Seite nicht geschlossen oder neu geladen werden, bis die Bezahlung abgeschlossen ist;You will be redirected to Bancontact. Please don’t close or refresh the browser until the payment is completed;false;PaymentInfo;false;COMPLETED
 

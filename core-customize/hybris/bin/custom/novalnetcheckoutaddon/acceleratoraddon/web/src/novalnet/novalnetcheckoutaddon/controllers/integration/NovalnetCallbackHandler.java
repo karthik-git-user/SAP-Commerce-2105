@@ -223,6 +223,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             initialPayments.put("GUARANTEED_INSTALLMENT_PAYMENT", "GUARANTEED_INSTALLMENT_PAYMENT");
             initialPayments.put("PAYPAL", "PAYPAL");
             initialPayments.put("ONLINE_TRANSFER", "ONLINE_TRANSFER");
+            initialPayments.put("ONLINE_BANK_TRANSFER", "ONLINE_BANK_TRANSFER");
             initialPayments.put("IDEAL", "IDEAL");
             initialPayments.put("EPS", "EPS");
             initialPayments.put("PAYSAFECARD", "PAYSAFECARD");
@@ -262,6 +263,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             String[] multibancoPaymentTypes = {"MULTIBANCO", "MULTIBANCO_CREDIT"};
             String[] payPalPaymentTypes = {"PAYPAL", "PAYPAL_BOOKBACK", "REFUND_BY_BANK_TRANSFER_EU"};
             String[] instantBankTransferPaymentTypes = {"ONLINE_TRANSFER", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
+            String[] onlineBankTransferPaymentTypes = {"ONLINE_BANK_TRANSFER", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
             String[] bancontactPaymentTypes = {"BANCONTACT", "REFUND_BY_BANK_TRANSFER_EU"};
             String[] idealPaymentTypes = {"IDEAL", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
             String[] epsPaymentTypes = {"EPS", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
@@ -279,6 +281,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             paymentTypes.put("novalnetPrepayment", prepaymentPaymentTypes);
             paymentTypes.put("novalnetPayPal", payPalPaymentTypes);
             paymentTypes.put("novalnetInstantBankTransfer", instantBankTransferPaymentTypes);
+            paymentTypes.put("novalnetOnlineBankTransfer", onlineBankTransferPaymentTypes);
             paymentTypes.put("novalnetIdeal", idealPaymentTypes);
             paymentTypes.put("novalnetEps", epsPaymentTypes);
             paymentTypes.put("novalnetGiropay", giropayPaymentTypes);
