@@ -94,8 +94,7 @@
                 "b2bpunchoutaddon",
                 "commerceorgaddon",
                 "commerceorgsamplesaddon",
-                "sapproductconfigb2baddon",
-                "secureportaladdon"
+                "sapproductconfigb2baddon"
             ],
             "storefront": "yb2bacceleratorstorefront",
             "template": "yacceleratorstorefront"
@@ -306,10 +305,6 @@
                     "contextPath": "/b2bpunchout"
                 },
                 {
-                    "name": "secureportaladdon",
-                    "contextPath": "/secureportaladdon"
-                },
-                {
                     "name": "hac",
                     "contextPath": "/hac"
                 },
@@ -367,10 +362,6 @@
                 {
                     "name": "b2bpunchout",
                     "contextPath": "/b2bpunchout"
-                },
-                {
-                    "name": "secureportaladdon",
-                    "contextPath": "/secureportaladdon"
                 },
                 {
                     "name": "commercewebservices",

@@ -300,7 +300,6 @@
 	  <extension name= 'xyformsservices' />
 	  <extension name= 'xyformsstorefrontcommons' />
 	  <extension name= 'xyformsweb' />
-	  <extension name= 'secureportaladdon' />
 	 
 
 <!-- Sample Custom Extensions -->
