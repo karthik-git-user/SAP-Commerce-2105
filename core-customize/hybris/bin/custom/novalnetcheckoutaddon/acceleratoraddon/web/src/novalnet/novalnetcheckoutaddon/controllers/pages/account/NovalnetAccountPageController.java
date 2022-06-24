@@ -275,27 +275,27 @@ public class NovalnetAccountPageController extends AbstractSearchPageController 
 	}
 
 
-	@RequestMapping(value = "/addressform", method = RequestMethod.GET)
-	public String getCountryAddressForm(@RequestParam("addressCode") final String addressCode,
-			@RequestParam("countryIsoCode") final String countryIsoCode, final Model model)
-	{
-		model.addAttribute("supportedCountries", getCountries());
-		populateModelRegionAndCountry(model, countryIsoCode);
+	//~ @RequestMapping(value = "/addressform", method = RequestMethod.GET)
+	//~ public String getCountryAddressForm(@RequestParam("addressCode") final String addressCode,
+			//~ @RequestParam("countryIsoCode") final String countryIsoCode, final Model model)
+	//~ {
+		//~ model.addAttribute("supportedCountries", getCountries());
+		//~ populateModelRegionAndCountry(model, countryIsoCode);
 
-		final AddressForm addressForm = new AddressForm();
-		model.addAttribute(ADDRESS_FORM_ATTR, addressForm);
-		for (final AddressData addressData : userFacade.getAddressBook())
-		{
-			if (addressData.getId() != null && addressData.getId().equals(addressCode)
-					&& countryIsoCode.equals(addressData.getCountry().getIsocode()))
-			{
-				model.addAttribute(ADDRESS_DATA_ATTR, addressData);
-				addressDataUtil.convert(addressData, addressForm);
-				break;
-			}
-		}
-		return ControllerConstants.Views.Fragments.Account.CountryAddressForm;
-	}
+		//~ final AddressForm addressForm = new AddressForm();
+		//~ model.addAttribute(ADDRESS_FORM_ATTR, addressForm);
+		//~ for (final AddressData addressData : userFacade.getAddressBook())
+		//~ {
+			//~ if (addressData.getId() != null && addressData.getId().equals(addressCode)
+					//~ && countryIsoCode.equals(addressData.getCountry().getIsocode()))
+			//~ {
+				//~ model.addAttribute(ADDRESS_DATA_ATTR, addressData);
+				//~ addressDataUtil.convert(addressData, addressForm);
+				//~ break;
+			//~ }
+		//~ }
+		//~ return ControllerConstants.Views.Fragments.Account.CountryAddressForm;
+	//~ }
 
 	protected void populateModelRegionAndCountry(final Model model, final String countryIsoCode)
 	{
