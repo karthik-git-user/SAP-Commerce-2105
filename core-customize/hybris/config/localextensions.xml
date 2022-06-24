@@ -82,7 +82,9 @@
 	  <extension name= 'merchandisingsmartedit' />
 	  <extension name= 'merchandisingstorefrontsampledataaddon' />
 	  <extension name= 'chinesecommercewebservicescommons' />
+<!--
       <extension name= 'chineseaddressaddon' />
+-->
       <extension name= 'chineseaddressbackoffice' />
       <extension name= 'chineseaddressfacades' />
       <extension name= 'chineseaddressocc' />
