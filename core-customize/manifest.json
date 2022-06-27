@@ -53,7 +53,6 @@
                 "assistedservicestorefront",
                 "assistedserviceyprofileaddon",
                 "captchaaddon",
-                "chineseaddressaddon",
                 "configurablebundleaddon",
                 "consignmenttrackingaddon",
                 "customercouponaddon",
@@ -100,7 +99,12 @@
             ],
             "storefront": "yb2bacceleratorstorefront",
             "template": "yacceleratorstorefront"
-        }
+        },
+		{
+			"addon": "novalnetcheckoutaddon", 
+			"storefront": "yacceleratorstorefront",
+            "template": "yacceleratorstorefront"	
+		}
     ],
     "properties": [
         {
