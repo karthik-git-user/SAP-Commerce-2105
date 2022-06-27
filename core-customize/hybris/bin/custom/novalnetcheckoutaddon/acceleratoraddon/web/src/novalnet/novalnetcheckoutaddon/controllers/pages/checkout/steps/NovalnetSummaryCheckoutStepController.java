@@ -305,7 +305,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
         transactionParameters.put("currency", currency);
         transactionParameters.put("amount", orderAmountCent);
         transactionParameters.put("system_name", "SAP Commerce Cloud");
-        transactionParameters.put("system_version", "2105-NN1.0.1");
+        transactionParameters.put("system_version", "2105-NN2.0.0");
         
         boolean verify_payment_data = false;
 

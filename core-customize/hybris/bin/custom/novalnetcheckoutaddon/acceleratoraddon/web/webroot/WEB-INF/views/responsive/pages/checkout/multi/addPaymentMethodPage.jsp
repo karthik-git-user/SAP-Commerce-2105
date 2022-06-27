@@ -137,7 +137,7 @@
                                                             <br/><br/>
                                                             <div id = "nn_overlay">
                                                             </div>
-                                                            <iframe id='novalnetCreditCardIframe' frameborder='0' scrolling='no'></iframe><br/>
+                                                            <iframe id='novalnetCreditCardIframe' frameborder='0' scrolling='no' style = "min-width: 40%;"></iframe><br/>
                                                             <formElement:formCheckbox
                                                             path="creditcardSaveData"
                                                             idKey="creditcardSaveData"
@@ -160,7 +160,7 @@
                                                         </c:if>
                                                         <div id = "nn_overlay">
                                                         </div>
-                                                        <iframe id="novalnetCreditCardIframe" frameborder="0" scrolling="no"></iframe>
+                                                        <iframe id="novalnetCreditCardIframe" frameborder="0" scrolling="no" style = "min-width: 40%;"></iframe>
 
                                                          <c:if test="${novalnetCreditCardOneClickEnabled == true}">
                                                             <formElement:formCheckbox
