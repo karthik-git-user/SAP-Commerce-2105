@@ -406,7 +406,6 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
 
                 if ("TRANSACTION_CANCEL".equals(eventJsonObject.get("type").toString())) {
                     callbackComments = "The transaction has been canceled on " + currentDate.toString();
-
                     novalnetFacade.updatePaymentInfo(paymentInfo, transactionJsonObject.get(STATUS_LITERAL).toString());
                     novalnetFacade.updateCancelStatus(orderNo);
                     novalnetFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
@@ -557,7 +556,10 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                     return false;
                 } else if ("SUBSCRIPTION_STOP".equals(requestPaymentType)) {
 
-                    // UPDATE THE STATUS OF THE USER SUBSCRIPTION
+                    // UPDATE THE STATUS OF THE Transaction
+                } else if ("PAYMENT".equals(requestPaymentType)) {
+                    paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
+                    novalnetFacade.updateOrderStatus(orderNo, paymentInfoModel);
                 }
             }
             displayMessage("Novalnet webhook script executed. Status not valid");

@@ -251,6 +251,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
         final Integer tariff = baseStore.getNovalnetTariffId();
         final String apiKey = baseStore.getNovalnetAPIKey();
         String token = "";
+        String paymentName = "";
 
         final CartData cartData = getCheckoutFacade().getCheckoutCart();
 
@@ -698,6 +699,8 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             }
         }
 
+        paymentName = novalnetPaymentMethod.getName();
+
         transactionParameters.put("test_mode", testMode);
 
         if (redirect == true) {
@@ -761,7 +764,8 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
         if (Arrays.asList(successStatus).contains(transactionJsonObject.get("status").toString())) {
             final CartModel cartModel = novalnetFacade.getNovalnetCheckoutCart();
 
-            String orderComments = "Novalnet transaction id : " + transactionJsonObject.get("tid");
+            String orderComments = "Payment Method : " + paymentName + "<br>";
+            orderComments += "Novalnet transaction id : " + transactionJsonObject.get("tid");
             AddressData addressData = getSessionService().getAttribute("novalnetAddressData");
 
             String bankDetails = "";
@@ -825,7 +829,6 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
 
 				if(novalnetGuaranteedDirectDebitSepaStorePaymentData == true) {
 					novalnetFacade.handleReferenceTransactionInfo(response, customerNo, "novalnetDirectDebitSepa");
-					JSONObject paymentDataJsonObject = transactionJsonObject.getJSONObject("payment_data");
 				}
 			}
 
@@ -835,21 +838,6 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             final OrderData orderData;
 
             orderData = novalnetFacade.saveOrderData(orderComments, currentPayment, transactionJsonObject.get("status").toString(), orderAmountCent, transactionJsonObject.getString("currency"), transactionJsonObject.get("tid").toString(), customerJsonObject.getString("email"), addressData, bankDetails);
-
-
-            if (("novalnetInvoice".equals(currentPayment) || "novalnetPrepayment".equals(currentPayment))) {
-
-                bankDetails += formPayamentReferenceComments(transactionJsonObject.get("tid").toString(), orderData.getCode());
-
-            }
-
-            if ("novalnetDirectDebitSepa".equals(currentPayment) && !novalnetFacade.isGuestUser() && oneClickShopping) {
-                boolean novalnetDirectDebitSepaStorePaymentData = getSessionService().getAttribute("novalnetDirectDebitSepaStorePaymentData");
-                if (novalnetDirectDebitSepaStorePaymentData == true) {
-                    JSONObject paymentDataJsonObject = transactionJsonObject.getJSONObject("payment_data");
-                    
-                }
-            }
             
 
             transactionParameters.put("tid", transactionJsonObject.get("tid"));
