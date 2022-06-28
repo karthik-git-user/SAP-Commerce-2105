@@ -251,7 +251,6 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
         final Integer tariff = baseStore.getNovalnetTariffId();
         final String apiKey = baseStore.getNovalnetAPIKey();
         String token = "";
-        String paymentName = "";
 
         final CartData cartData = getCheckoutFacade().getCheckoutCart();
 
@@ -321,8 +320,6 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
 
             NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
 
-            paymentName = novalnetPaymentMethod.getName();
-
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
             }
@@ -378,8 +375,6 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
         } else if ("novalnetGuaranteedDirectDebitSepa".equals(currentPayment)) {
 
             NovalnetGuaranteedDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetGuaranteedDirectDebitSepaPaymentModeModel) paymentModeModel;
-
-            paymentName = novalnetPaymentMethod.getName();
 
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
@@ -474,10 +469,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
                 testMode = 1;
             }
         } else if ("novalnetCreditCard".equals(currentPayment)) {
-            NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
-
-            paymentName = novalnetPaymentMethod.getName();
-            
+            NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;            
             if(novalnetPaymentMethod != null) {
 				onholdOrderAmount = novalnetPaymentMethod.getNovalnetOnholdAmount();
 				if (onholdOrderAmount == null) { 
@@ -537,8 +529,6 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             NovalnetInvoicePaymentModeModel novalnetPaymentMethod = (NovalnetInvoicePaymentModeModel) paymentModeModel;
             transactionParameters.put("invoice_type", "INVOICE");
 
-            paymentName = novalnetPaymentMethod.getName();
-
             // Form invoice duedate
             Integer invoiceDueDate = novalnetPaymentMethod.getNovalnetDueDate();
             if (invoiceDueDate != null && invoiceDueDate > 7) {
@@ -565,7 +555,6 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             }
         } else if ("novalnetPrepayment".equals(currentPayment)) {
 			NovalnetPrepaymentPaymentModeModel novalnetPaymentMethod = (NovalnetPrepaymentPaymentModeModel) paymentModeModel;
-            paymentName = novalnetPaymentMethod.getName();
 			Integer prepaymentDueDate = novalnetPaymentMethod.getNovalnetDueDate();
             if (prepaymentDueDate != null && PREPAYMENT_FROM_DATE >= 7 && prepaymentDueDate <= PREPAYMENT_TILL_DATE) {
                 transactionParameters.put("due_date", formatDate(prepaymentDueDate));
@@ -606,9 +595,6 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             }
         } else if ("novalnetBarzahlen".equals(currentPayment)) {
             NovalnetBarzahlenPaymentModeModel novalnetPaymentMethod = (NovalnetBarzahlenPaymentModeModel) paymentModeModel;
-
-            paymentName = novalnetPaymentMethod.getName();
-
             // Form Barzahlen slip expiry date
             Integer slipExpiryDate = novalnetPaymentMethod.getNovalnetBarzahlenslipExpiryDate();
             if (slipExpiryDate != null) {
@@ -775,6 +761,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
         if (Arrays.asList(successStatus).contains(transactionJsonObject.get("status").toString())) {
             final CartModel cartModel = novalnetFacade.getNovalnetCheckoutCart();
 
+            String paymentName = novalnetFacade.getPaymentName(currentPayment);
             String orderComments = Localization.getLocalizedString("novalnet.paymentname") + ": " + paymentName + "<br>";
             orderComments += "Novalnet transaction id : " + transactionJsonObject.get("tid");
             AddressData addressData = getSessionService().getAttribute("novalnetAddressData");
@@ -868,26 +855,6 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             getSessionService().setAttribute("novalnetCheckoutError", statusMessage);
             return getCheckoutStep().previousStep();
         }
-    }
-
-
-    /**
-     * Form the payment reference comments
-     *
-     * @param request The servlet request
-     * @return Mapped values
-     */
-    public static String formPayamentReferenceComments(String transactionID, String orderno) {
-        String bankDetails = "";
-        String referenceComments = "<br>";
-        int i = 0;
-        referenceComments += "PAYMENT_REFERENCE" + ++i + ": " + "TID " + transactionID + "<br>";
-
-        // Add Reference notification text
-        bankDetails += Localization.getLocalizedString("novalnet.bankDetailspaymentRefernceMulti");
-        bankDetails += bankDetails + referenceComments.replace("PAYMENT_REFERENCE", Localization.getLocalizedString("novalnet.bankDetailsPaymentReference") + " ");
-        
-        return bankDetails;
     }
 
     /**

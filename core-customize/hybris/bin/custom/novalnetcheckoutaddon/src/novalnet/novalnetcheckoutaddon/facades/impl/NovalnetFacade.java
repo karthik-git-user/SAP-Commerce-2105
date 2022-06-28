@@ -658,7 +658,6 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         }
 
         return paymentName;
-
     }
     
     /**
