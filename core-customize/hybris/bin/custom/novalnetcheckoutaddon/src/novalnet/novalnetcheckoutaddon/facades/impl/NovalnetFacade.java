@@ -615,13 +615,12 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         if ("novalnetDirectDebitSepa".equals(currentPayment)) {
             NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
             paymentName = novalnetPaymentMethod.getName();
-            
+
         } else if ("novalnetGuaranteedDirectDebitSepa".equals(currentPayment)) {
             NovalnetGuaranteedDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetGuaranteedDirectDebitSepaPaymentModeModel) paymentModeModel;
             paymentName = novalnetPaymentMethod.getName();
             
         } else if ("novalnetPayPal".equals(currentPayment)) {
-            redirect = true;
             NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
             paymentName = novalnetPaymentMethod.getName();
 
