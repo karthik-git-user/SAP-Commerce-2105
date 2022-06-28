@@ -23,6 +23,7 @@ import de.hybris.platform.acceleratorstorefrontcommons.forms.GuestRegisterForm;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.validation.GuestRegisterValidator;
 import de.hybris.platform.acceleratorstorefrontcommons.security.AutoLoginStrategy;
 import de.hybris.platform.acceleratorstorefrontcommons.strategy.CustomerConsentDataStrategy;
+import de.hybris.platform.util.localization.Localization;
 import de.hybris.platform.cms2.exceptions.CMSItemNotFoundException;
 import de.hybris.platform.cms2.model.pages.ContentPageModel;
 import de.hybris.platform.commercefacades.consent.ConsentFacade;
@@ -73,6 +74,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import static de.hybris.platform.commercefacades.constants.CommerceFacadesConstants.CONSENT_GIVEN;
 
 import novalnet.novalnetcheckoutaddon.controllers.NovalnetcheckoutaddonControllerConstants;
+import novalnet.novalnetcheckoutaddon.facades.NovalnetFacade;
+import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
 
 
 /**
@@ -95,6 +98,9 @@ public class NovalnetCheckoutController extends AbstractCheckoutController {
 	
 	@Resource(name = "productFacade")
 	private ProductFacade productFacade;
+
+	@Resource(name = "novalnetFacade")
+    NovalnetFacade novalnetFacade;
 
     @Resource(name = "orderFacade")
 	private OrderFacade orderFacade;
@@ -291,7 +297,11 @@ public class NovalnetCheckoutController extends AbstractCheckoutController {
 			}
 		}
 
-       model.addAttribute("orderCode", orderCode);
+		final List<NovalnetPaymentInfoModel> paymentInfo = novalnetFacade.getNovalnetPaymentInfo(orderCode);
+		NovalnetPaymentInfoModel paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
+		String paymentName = novalnetFacade.getPaymentName(paymentInfoModel.getPaymentProvider());
+        model.addAttribute("orderCode", orderCode);
+        model.addAttribute("paymentName", Localization.getLocalizedString("novalnet.paymentname") + ": " + paymentName + "<br>");
 		model.addAttribute("orderData", orderDetails);
 		model.addAttribute("allItems", orderDetails.getEntries());
 		model.addAttribute("deliveryAddress", orderDetails.getDeliveryAddress());

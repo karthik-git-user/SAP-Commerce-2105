@@ -34,6 +34,7 @@
 								<spring:theme code="text.account.paymentType"/>
 							</div>
 							<div class="value-order">
+								${paymentName}
 								${novalnetPaymentInfo.transactionDetails}
 								<c:if test="${not empty novalnetPaymentInfo.orderHistoryNotes}">
 									${novalnetPaymentInfo.orderHistoryNotes}
