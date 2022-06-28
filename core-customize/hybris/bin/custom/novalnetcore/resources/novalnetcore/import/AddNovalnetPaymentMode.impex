@@ -8,10 +8,10 @@ INSERT_UPDATE NovalnetGuaranteedDirectDebitSepaPaymentMode;code[unique=true];nam
 ;novalnetGuaranteedDirectDebitSepa;Lastschrift SEPA;Direct Debit SEPA;Der Betrag wird durch Novalnet von Ihrem Konto abgebucht;The amount will be debited from your account by Novalnet;false;PaymentInfo;false;COMPLETED;999
 
 INSERT_UPDATE NovalnetInvoicePaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code);novalnetCallbackOrderStatus(code)
-;novalnetInvoice;Kauf auf Rechnung;Invoice;Sie erhalten eine E-Mail mit den Bankdaten von Novalnet, um die Zahlung abzuschließen;You will receive an e-mail with the Novalnet account details to complete the payment;false;PaymentInfo;false;PAYMENT_NOT_AUTHORIZED;COMPLETED
+;novalnetInvoice;Rechnung;Invoice;Sie erhalten eine E-Mail mit den Bankdaten von Novalnet, um die Zahlung abzuschließen;You will receive an e-mail with the Novalnet account details to complete the payment;false;PaymentInfo;false;PAYMENT_NOT_AUTHORIZED;COMPLETED
 
 INSERT_UPDATE NovalnetGuaranteedInvoicePaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code);novalnetCallbackOrderStatus(code);novalnetMinimumGuaranteeAmount
-;novalnetGuaranteedInvoice;Kauf auf Rechnung;Invoice;Sie erhalten eine E-Mail mit den Bankdaten von Novalnet, um die Zahlung abzuschließen; You will receive an e-mail with the Novalnet account details to complete the payment;false;PaymentInfo;false;PAYMENT_NOT_AUTHORIZED;COMPLETED;999
+;novalnetGuaranteedInvoice;Rechnung mit Zahlungsgarantie;Invoice;Sie erhalten eine E-Mail mit den Bankdaten von Novalnet, um die Zahlung abzuschließen; You will receive an e-mail with the Novalnet account details to complete the payment;false;PaymentInfo;false;PAYMENT_NOT_AUTHORIZED;COMPLETED;999
 
 INSERT_UPDATE NovalnetPrepaymentPaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code);novalnetCallbackOrderStatus(code)
 ;novalnetPrepayment;Vorkasse;Prepayment;Sie erhalten eine E-Mail mit den Bankdaten von Novalnet, um die Zahlung abzuschließen;You will receive an e-mail with the Novalnet account details to complete the payment;false;PaymentInfo;false;PAYMENT_NOT_AUTHORIZED;COMPLETED

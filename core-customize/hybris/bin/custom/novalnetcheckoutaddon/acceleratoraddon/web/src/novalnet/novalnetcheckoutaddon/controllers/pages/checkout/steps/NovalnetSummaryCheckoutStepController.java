@@ -321,6 +321,8 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
 
             NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
 
+            paymentName = novalnetPaymentMethod.getName();
+
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
             }
@@ -376,6 +378,8 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
         } else if ("novalnetGuaranteedDirectDebitSepa".equals(currentPayment)) {
 
             NovalnetGuaranteedDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetGuaranteedDirectDebitSepaPaymentModeModel) paymentModeModel;
+
+            paymentName = novalnetPaymentMethod.getName();
 
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
@@ -471,6 +475,8 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             }
         } else if ("novalnetCreditCard".equals(currentPayment)) {
             NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
+
+            paymentName = novalnetPaymentMethod.getName();
             
             if(novalnetPaymentMethod != null) {
 				onholdOrderAmount = novalnetPaymentMethod.getNovalnetOnholdAmount();
@@ -531,6 +537,8 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             NovalnetInvoicePaymentModeModel novalnetPaymentMethod = (NovalnetInvoicePaymentModeModel) paymentModeModel;
             transactionParameters.put("invoice_type", "INVOICE");
 
+            paymentName = novalnetPaymentMethod.getName();
+
             // Form invoice duedate
             Integer invoiceDueDate = novalnetPaymentMethod.getNovalnetDueDate();
             if (invoiceDueDate != null && invoiceDueDate > 7) {
@@ -557,6 +565,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             }
         } else if ("novalnetPrepayment".equals(currentPayment)) {
 			NovalnetPrepaymentPaymentModeModel novalnetPaymentMethod = (NovalnetPrepaymentPaymentModeModel) paymentModeModel;
+            paymentName = novalnetPaymentMethod.getName();
 			Integer prepaymentDueDate = novalnetPaymentMethod.getNovalnetDueDate();
             if (prepaymentDueDate != null && PREPAYMENT_FROM_DATE >= 7 && prepaymentDueDate <= PREPAYMENT_TILL_DATE) {
                 transactionParameters.put("due_date", formatDate(prepaymentDueDate));
@@ -597,6 +606,8 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             }
         } else if ("novalnetBarzahlen".equals(currentPayment)) {
             NovalnetBarzahlenPaymentModeModel novalnetPaymentMethod = (NovalnetBarzahlenPaymentModeModel) paymentModeModel;
+
+            paymentName = novalnetPaymentMethod.getName();
 
             // Form Barzahlen slip expiry date
             Integer slipExpiryDate = novalnetPaymentMethod.getNovalnetBarzahlenslipExpiryDate();
@@ -699,7 +710,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             }
         }
 
-        paymentName = novalnetPaymentMethod.getName();
+        
 
         transactionParameters.put("test_mode", testMode);
 
@@ -764,7 +775,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
         if (Arrays.asList(successStatus).contains(transactionJsonObject.get("status").toString())) {
             final CartModel cartModel = novalnetFacade.getNovalnetCheckoutCart();
 
-            String orderComments = "Payment Method : " + paymentName + "<br>";
+            String orderComments = Localization.getLocalizedString("novalnet.paymentname") + ": " + paymentName + "<br>";
             orderComments += "Novalnet transaction id : " + transactionJsonObject.get("tid");
             AddressData addressData = getSessionService().getAttribute("novalnetAddressData");
 

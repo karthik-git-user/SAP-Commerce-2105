@@ -604,6 +604,62 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         return getOrderConverter().convert(orderModel);
 
     }
+
+
+    public String getPaymentName(String currentPayment) {
+
+        String paymentName = "";
+
+        PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(currentPayment);
+
+        if ("novalnetPayPal".equals(currentPayment)) {
+            NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
+            paymentName = novalnetPaymentMethod.getName();
+
+        } else if ("novalnetCreditCard".equals(currentPayment)) {
+            NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
+            paymentName = novalnetPaymentMethod.getName();
+            
+        } else if ("novalnetInstantBankTransfer".equals(currentPayment)) {
+            NovalnetInstantBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetInstantBankTransferPaymentModeModel) paymentModeModel;
+            paymentName = novalnetPaymentMethod.getName();
+            
+        } else if ("novalnetOnlineBankTransfer".equals(currentPayment)) {
+            NovalnetOnlineBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetOnlineBankTransferPaymentModeModel) paymentModeModel;
+            paymentName = novalnetPaymentMethod.getName();
+            
+        } else if ("novalnetBancontact".equals(currentPayment)) {
+            NovalnetBancontactPaymentModeModel novalnetPaymentMethod = (NovalnetBancontactPaymentModeModel) paymentModeModel;
+            paymentName = novalnetPaymentMethod.getName();
+            
+        } else if ("novalnetIdeal".equals(currentPayment)) {
+            NovalnetIdealPaymentModeModel novalnetPaymentMethod = (NovalnetIdealPaymentModeModel) paymentModeModel;
+            paymentName = novalnetPaymentMethod.getName();
+        } else if ("novalnetEps".equals(currentPayment)) {
+            NovalnetEpsPaymentModeModel novalnetPaymentMethod = (NovalnetEpsPaymentModeModel) paymentModeModel;
+            paymentName = novalnetPaymentMethod.getName();
+
+        } else if ("novalnetGiropay".equals(currentPayment)) {
+            NovalnetGiropayPaymentModeModel novalnetPaymentMethod = (NovalnetGiropayPaymentModeModel) paymentModeModel;
+            paymentName = novalnetPaymentMethod.getName();
+           
+        } else if ("novalnetPostFinance".equals(currentPayment)) {
+            NovalnetPostFinancePaymentModeModel novalnetPaymentMethod = (NovalnetPostFinancePaymentModeModel) paymentModeModel;
+            paymentName = novalnetPaymentMethod.getName();
+
+        } else if ("novalnetPostFinanceCard".equals(currentPayment)) {
+            NovalnetPostFinanceCardPaymentModeModel novalnetPaymentMethod = (NovalnetPostFinanceCardPaymentModeModel) paymentModeModel;
+            paymentName = novalnetPaymentMethod.getName();
+            
+        } else if ("novalnetPrzelewy24".equals(currentPayment)) {
+            NovalnetPrzelewy24PaymentModeModel novalnetPaymentMethod = (NovalnetPrzelewy24PaymentModeModel) paymentModeModel;
+            paymentName = novalnetPaymentMethod.getName();
+           
+        }
+
+        return paymentName;
+
+    }
     
     /**
      * update the callback order status
