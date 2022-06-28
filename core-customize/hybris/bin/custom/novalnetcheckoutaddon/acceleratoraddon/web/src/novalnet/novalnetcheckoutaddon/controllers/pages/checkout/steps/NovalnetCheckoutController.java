@@ -297,11 +297,11 @@ public class NovalnetCheckoutController extends AbstractCheckoutController {
 			}
 		}
 
-		final List<NovalnetPaymentInfoModel> paymentInfo = novalnetFacade.getNovalnetPaymentInfo(orderCode);
-		NovalnetPaymentInfoModel paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
-		String paymentName = novalnetFacade.getPaymentName(paymentInfoModel.getPaymentProvider());
+		// final List<NovalnetPaymentInfoModel> paymentInfo = novalnetFacade.getNovalnetPaymentInfo(orderCode);
+		// NovalnetPaymentInfoModel paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
+		// String paymentName = novalnetFacade.getPaymentName(paymentInfoModel.getPaymentProvider());
         model.addAttribute("orderCode", orderCode);
-        model.addAttribute("paymentName", Localization.getLocalizedString("novalnet.paymentname") + ": " + paymentName + "<br>");
+        // model.addAttribute("paymentName", Localization.getLocalizedString("novalnet.paymentname") + ": " + paymentName + "<br>");
 		model.addAttribute("orderData", orderDetails);
 		model.addAttribute("allItems", orderDetails.getEntries());
 		model.addAttribute("deliveryAddress", orderDetails.getDeliveryAddress());

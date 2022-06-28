@@ -190,7 +190,7 @@ public class NovalnetHopPaymentResponseController extends NovalnetPaymentMethodC
 			String paymentName = novalnetFacade.getPaymentName(currentPayment);
             String orderComments = Localization.getLocalizedString("novalnet.paymentname") + ": " + paymentName + "<br>";
 
-			orderComments = "Novalnet transaction id : " + transactionJsonObject.get("tid");
+			orderComments += "Novalnet transaction id : " + transactionJsonObject.get("tid");
 			AddressData addressData = getSessionService().getAttribute("novalnetAddressData");
 
 			int orderAmountCent = Integer.parseInt(transactionJsonObject.get("amount").toString());
