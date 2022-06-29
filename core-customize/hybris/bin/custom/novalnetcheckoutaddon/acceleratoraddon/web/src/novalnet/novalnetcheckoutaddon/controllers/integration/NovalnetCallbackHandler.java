@@ -452,7 +452,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                         if (orderAmount > paidAmount) {
                             String[] statusPending = {"PENDING"};
                             if (Arrays.asList(statusPending).contains(paymentInfo.get(0).getPaymentGatewayStatus()) && "CONFIRMED".equals(transactionJsonObject.get(STATUS_LITERAL).toString())) {
-                                callbackComments = "The transaction has been confirmed successfully for the TID: " + transactionJsonObject.get("tid").toString() + " with amount " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString();
+                                callbackComments = "The transaction has been confirmed successfully for the TID: " + transactionJsonObject.get("tid").toString() + " with amount: " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString();
                                 novalnetFacade.updateOrderStatus(orderNo, paymentInfoModel);
                             } else {
                                 String reasonText = !("".equals(resultJsonObject.get("status_desc").toString())) ? resultJsonObject.get("status_desc").toString() : (!("".equals(resultJsonObject.get("status_text").toString())) ? resultJsonObject.get("status_text").toString() : "Payment could not be completed");
@@ -516,7 +516,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                         // if settlement of invoice OR Advance payment through Customer
                         if (orderAmount > paidAmount) {
                             // Form callback comments
-                            String notifyComments = callbackComments = "Credit has been successfully received for the TID: " + eventJsonObject.get("parent_tid").toString() + " with amount " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID: " + transactionJsonObject.get("tid").toString();
+                            String notifyComments = callbackComments = "Credit has been successfully received for the TID: " + eventJsonObject.get("parent_tid").toString() + " with amount: " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID: " + transactionJsonObject.get("tid").toString();
 
                             // Update PART PAID payment status
                             novalnetFacade.updatePartPaidStatus(orderNo);
@@ -543,7 +543,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                             return false;
                         }
                     } else if (Arrays.asList(creditPayment).contains(requestPaymentType)) {
-                        callbackComments = "Credit has been successfully received for the TID: " + eventJsonObject.get("parent_tid").toString() + " with amount" + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID:" + transactionJsonObject.get("tid").toString() + ".";
+                        callbackComments = "Credit has been successfully received for the TID: " + eventJsonObject.get("parent_tid").toString() + " with amount: " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID:" + transactionJsonObject.get("tid").toString() + ".";
                         novalnetFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
                         novalnetFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
 
