@@ -556,9 +556,11 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                 } else if ("SUBSCRIPTION_STOP".equals(requestPaymentType)) {
 
                     // UPDATE THE STATUS OF THE Transaction
-                } else if ("PAYMENT".equals(requestPaymentType)) {
+                } else if ("PAYMENT".equals(eventJsonObject.get("type").toString())) {
                     paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
                     novalnetFacade.updateOrderStatus(orderNo, paymentInfoModel);
+                    displayMessage("Novalnet webhook script executed. Status updated for initial transaction");
+                    return false;
                 }
             }
             displayMessage("Novalnet webhook script executed. Status not valid");
