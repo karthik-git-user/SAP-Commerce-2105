@@ -334,7 +334,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
 
             String referenceTid = transactionJsonObject.get("tid").toString();
             String[] status = {"CONFIRMED", "PENDING", "ON_HOLD", "DEACTIVATED", "FAILURE"};
-            if (!"".equals(transactionJsonObject.get(STATUS_LITERAL).toString()) && Arrays.asList(successStatus).contains(transactionJsonObject.get(STATUS_LITERAL).toString())) {
+            if (!"".equals(transactionJsonObject.get(STATUS_LITERAL).toString()) && Arrays.asList(status).contains(transactionJsonObject.get(STATUS_LITERAL).toString())) {
 
                 if ((chargebackPayments.containsValue(requestPaymentType) || collectionPayments.containsValue(requestPaymentType)) || creditPayments.containsValue(requestPaymentType) || refundPayments.containsValue(requestPaymentType)) {
                     // Get reference TID
