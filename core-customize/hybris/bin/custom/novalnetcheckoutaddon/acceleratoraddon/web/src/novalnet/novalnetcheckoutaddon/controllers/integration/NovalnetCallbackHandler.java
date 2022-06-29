@@ -333,7 +333,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             }
 
             String referenceTid = transactionJsonObject.get("tid").toString();
-            String[] successStatus = {"CONFIRMED", "PENDING", "ON_HOLD"};
+            String[] status = {"CONFIRMED", "PENDING", "ON_HOLD", "DEACTIVATED", "FAILURE"};
             if (!"".equals(transactionJsonObject.get(STATUS_LITERAL).toString()) && Arrays.asList(successStatus).contains(transactionJsonObject.get(STATUS_LITERAL).toString())) {
 
                 if ((chargebackPayments.containsValue(requestPaymentType) || collectionPayments.containsValue(requestPaymentType)) || creditPayments.containsValue(requestPaymentType) || refundPayments.containsValue(requestPaymentType)) {
@@ -444,30 +444,27 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                             sendEmail(callbackComments, toEmailAddress);
                             return false;
                         }
-
                     }
 
                     if (Arrays.asList(pendingPaymentType).contains(requestPaymentType)) {   // IF PAYMENT MADE ON REAL TIME (NOT THROUGH SUBSCRIPTION RENEWAL)
+
+                        novalnetFacade.updatePaymentInfo(paymentInfo, transactionJsonObject.get(STATUS_LITERAL).toString());
 
                         if (orderAmount > paidAmount) {
                             String[] statusPending = {"PENDING"};
                             if (Arrays.asList(statusPending).contains(paymentInfo.get(0).getPaymentGatewayStatus()) && "CONFIRMED".equals(transactionJsonObject.get(STATUS_LITERAL).toString())) {
                                 callbackComments = "The transaction has been confirmed successfully for the TID: " + transactionJsonObject.get("tid").toString() + " with amount: " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString();
+                                paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
                                 novalnetFacade.updateOrderStatus(orderNo, paymentInfoModel);
                             } else {
                                 String reasonText = !("".equals(resultJsonObject.get("status_desc").toString())) ? resultJsonObject.get("status_desc").toString() : (!("".equals(resultJsonObject.get("status_text").toString())) ? resultJsonObject.get("status_text").toString() : "Payment could not be completed");
                                 callbackComments = "The transaction has been cancelled due to:" + reasonText;
+                                novalnetFacade.updateCancelStatus(orderNo);
                             }
                             // Update callback comments
                             novalnetFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
-
-                            // Update Order success status
-
-
                             // Update Callback info
-                            novalnetFacade.updatePaymentInfo(paymentInfo, transactionJsonObject.get(STATUS_LITERAL).toString());
                             novalnetFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
-
                             // Send notification email
                             sendEmail(callbackComments, toEmailAddress);
                             return false;
