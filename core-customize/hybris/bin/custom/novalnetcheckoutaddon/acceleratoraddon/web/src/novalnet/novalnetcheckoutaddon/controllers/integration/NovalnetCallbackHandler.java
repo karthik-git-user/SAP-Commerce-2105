@@ -448,17 +448,17 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
 
                     if (Arrays.asList(pendingPaymentType).contains(requestPaymentType)) {   // IF PAYMENT MADE ON REAL TIME (NOT THROUGH SUBSCRIPTION RENEWAL)
 
-                        novalnetFacade.updatePaymentInfo(paymentInfo, transactionJsonObject.get(STATUS_LITERAL).toString());
-
                         if (orderAmount > paidAmount) {
                             String[] statusPending = {"PENDING"};
                             if (Arrays.asList(statusPending).contains(paymentInfo.get(0).getPaymentGatewayStatus()) && "CONFIRMED".equals(transactionJsonObject.get(STATUS_LITERAL).toString())) {
-                                callbackComments = "The transaction has been confirmed successfully for the TID: " + transactionJsonObject.get("tid").toString() + " with amount: " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString();
-                                paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
-                                novalnetFacade.updateOrderStatus(orderNo, paymentInfoModel);
+                                    callbackComments = "The transaction has been confirmed successfully for the TID: " + transactionJsonObject.get("tid").toString() + " with amount: " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString();
+                                    novalnetFacade.updatePaymentInfo(paymentInfo, transactionJsonObject.get(STATUS_LITERAL).toString());
+                                    paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
+                                    novalnetFacade.updateOrderStatus(orderNo, paymentInfoModel);
                             } else {
                                 String reasonText = !("".equals(resultJsonObject.get("status_desc").toString())) ? resultJsonObject.get("status_desc").toString() : (!("".equals(resultJsonObject.get("status_text").toString())) ? resultJsonObject.get("status_text").toString() : "Payment could not be completed");
                                 callbackComments = "The transaction has been cancelled due to:" + reasonText;
+                                novalnetFacade.updatePaymentInfo(paymentInfo, transactionJsonObject.get(STATUS_LITERAL).toString());
                                 novalnetFacade.updateCancelStatus(orderNo);
                             }
                             // Update callback comments
