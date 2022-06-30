@@ -526,7 +526,7 @@ public class NovalnetPaymentMethodCheckoutStepController extends AbstractCheckou
                         Integer count = 0;
 
                         for(i=0; i<=paymentInfo.size(); i++){
-                            if(count <2 && " ".equals(paymentInfo.get(i).getPaypalEmailID())) {
+                            if(count <2 && !" ".equals(paymentInfo.get(i).getPaypalEmailID())) {
                                 if(count == 0) {
             						model.addAttribute("novalnetPayPalTransactionId", paymentInfo.get(i).getPaypalTransactionID());
             						model.addAttribute("novalnetPaypalEmailID", paymentInfo.get(i).getPaypalEmailID());
