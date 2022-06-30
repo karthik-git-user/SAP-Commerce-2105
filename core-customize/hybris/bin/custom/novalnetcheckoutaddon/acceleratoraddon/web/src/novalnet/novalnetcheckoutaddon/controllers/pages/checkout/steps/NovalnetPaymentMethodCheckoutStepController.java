@@ -521,19 +521,28 @@ public class NovalnetPaymentMethodCheckoutStepController extends AbstractCheckou
 						model.addAttribute("novalnetDirectDebitSepaOneClickToken2", paymentInfo.get(1).getToken());
 						getSessionService().setAttribute("novalnetDirectDebitSepaOneClickToken2", paymentInfo.get(1).getToken());
 					}
-                } else if ("novalnetPayPal".equals(paymentName)) {         
-						model.addAttribute("novalnetPayPalTransactionId", paymentInfo.get(0).getPaypalTransactionID());
-						model.addAttribute("novalnetPaypalEmailID", paymentInfo.get(0).getPaypalEmailID());
-						model.addAttribute("novalnetPayPalOneClickToken1", paymentInfo.get(0).getToken());
-						getSessionService().setAttribute("novalnetPayPalOneClickToken1", paymentInfo.get(0).getToken());
-                    
-                     if(paymentInfo.size() > 1) {
-						model.addAttribute("novalnetPayPalTransactionId2", paymentInfo.get(1).getPaypalTransactionID());
-						model.addAttribute("novalnetPaypalEmailID2", paymentInfo.get(1).getPaypalEmailID());
-						model.addAttribute("novalnetPayPalOneClickToken2", paymentInfo.get(1).getToken());
-						getSessionService().setAttribute("novalnetPayPalOneClickToken2", paymentInfo.get(1).getToken());
-						
-					}
+                } else if ("novalnetPayPal".equals(paymentName)) {
+                        Integer i = 0;
+                        Integer count = 0;
+
+                        for(i=0; i<=paymentInfo.size(); i++){
+                            if(count <2 && " ".equals(paymentInfo.get(i).getPaypalEmailID())) {
+                                if(count == 0) {
+            						model.addAttribute("novalnetPayPalTransactionId", paymentInfo.get(i).getPaypalTransactionID());
+            						model.addAttribute("novalnetPaypalEmailID", paymentInfo.get(i).getPaypalEmailID());
+            						model.addAttribute("novalnetPayPalOneClickToken1", paymentInfo.get(i).getToken());
+            						getSessionService().setAttribute("novalnetPayPalOneClickToken1", paymentInfo.get(i).getToken());
+                                } else if(count == 1) {
+            						model.addAttribute("novalnetPayPalTransactionId2", paymentInfo.get(i).getPaypalTransactionID());
+            						model.addAttribute("novalnetPaypalEmailID2", paymentInfo.get(i).getPaypalEmailID());
+            						model.addAttribute("novalnetPayPalOneClickToken2", paymentInfo.get(i).getToken());
+            						getSessionService().setAttribute("novalnetPayPalOneClickToken2", paymentInfo.get(i).getToken());
+                				}
+                                count = count + 1;
+                                i++;
+                            }
+                        }
+                    }
                 }
                 model.addAttribute(paymentName + "OneClick", true);
                 getSessionService().setAttribute(paymentName + "ReferenceTid", paymentInfo.get(0).getOrginalTid().toString());

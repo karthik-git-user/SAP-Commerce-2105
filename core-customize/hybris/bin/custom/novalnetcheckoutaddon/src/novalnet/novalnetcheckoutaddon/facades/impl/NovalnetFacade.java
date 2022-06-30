@@ -396,7 +396,6 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
             return novalnetPaymentMethod.getNovalnetOrderSuccessStatus();
         } else if ("novalnetPrzelewy24".equals(paymentMethod)) {
             NovalnetPrzelewy24PaymentModeModel novalnetPaymentMethod = (NovalnetPrzelewy24PaymentModeModel) paymentModeModel;
-
             // Payment pending status
             if ("PENDING".equals(paymentInfoModel.getPaymentGatewayStatus())) {
                 return OrderStatus.PAYMENT_NOT_CAPTURED;
@@ -819,16 +818,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
      */
     public List<NovalnetPaymentRefInfoModel> getPaymentRefInfo(String customerNo, String paymentType) {
         // Initialize StringBuilder
-        long customerId = Long.parseLong(customerNo);
-        StringBuilder countQuery = new StringBuilder();
-        countQuery.append("SELECT {pk} from {" + NovalnetPaymentRefInfoModel._TYPECODE + "} where {" + NovalnetPaymentRefInfoModel.CUSTOMERNO
-                + "} = ?customerNo AND {" + NovalnetPaymentRefInfoModel.PAYMENTTYPE + "} = ?paymentType");
-        FlexibleSearchQuery executeCountQuery = new FlexibleSearchQuery(countQuery.toString());
-        executeCountQuery.addQueryParameter("paymentType", paymentType);
-        executeCountQuery.addQueryParameter("customerNo", customerId);
-        SearchResult<NovalnetPaymentRefInfoModel> countResult = getFlexibleSearchService().search(executeCountQuery);
-        
-        final List<NovalnetPaymentRefInfoModel> countPaymentInfo = countResult.getResult(); 
+        long customerId = Long.parseLong(customerNo); 
         
         StringBuilder query = new StringBuilder();
 
