@@ -254,8 +254,7 @@ public class NovalnetOrdersController
 			final AddressData deliveryAddress = cartData.getDeliveryAddress();
 
 			if(deliveryAddress.getLine1().equals(addressData.getLine1()) && deliveryAddress.getLine2().equals(addressData.getLine2()) && deliveryAddress.getTown().equals(addressData.getTown()) &&  deliveryAddress.getPostalCode().equals(addressData.getPostalCode()) && deliveryAddress.getCountry().getIsocode().equals(addressData.getCountry().getIsocode())) {
-			    shippingParameters.put("same_as_billing", sameAsBilling);
-		        getSessionService().setAttribute("same_as_billing", null);
+			    shippingParameters.put("same_as_billing", 1);
 		    } else {
 		        shippingParameters.put("street", customerParameter.get("shipping_street"));
 		        shippingParameters.put("city", customerParameter.get("shipping_city"));
@@ -324,7 +323,6 @@ public class NovalnetOrdersController
         
         if(!String.valueOf("100").equals(resultJsonObject.get("status_code").toString())) {
 			final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
-			LOG.info(statMessage);
 			throw new PaymentAuthorizationException();
 		}
         
@@ -371,10 +369,7 @@ public class NovalnetOrdersController
         cartModel.setPaymentMode(novalnetPaymentMethod);
         novalnetOrderFacade.getModelService().saveAll(cartModel, billingAddress);
 		final OrderData orderData = novalnetOrderFacade.getCheckoutFacade().placeOrder();
-		LOG.info("++++++++315");
-		LOG.info(orderData.getCode());
 		String orderNumber = orderData.getCode();
-		LOG.info("++++++++316");
 		List<OrderModel> orderInfoModel = getOrderInfoModel(orderNumber);
         OrderModel orderModel = novalnetOrderFacade.getModelService().get(orderInfoModel.get(0).getPk());
 		//~ return getDataMapper().map(orderData, OrderWsDTO.class, fields);
@@ -580,7 +575,6 @@ public class NovalnetOrdersController
 		
 		if ("novalnetPayPal".equals(currentPayment)) {
 			NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
-			LOG.info(novalnetPaymentMethod.getNovalnetTestMode());
 			if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
             }
@@ -605,7 +599,6 @@ public class NovalnetOrdersController
         JSONObject tomJsonObject = new JSONObject(response.toString());
         JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
         JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
-        LOG.info(response.toString());
         
         if(!String.valueOf("100").equals(resultJsonObject.get("status_code").toString())) {
 			final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
@@ -616,12 +609,6 @@ public class NovalnetOrdersController
 		String redirectURL = resultJsonObject.get("redirect_url").toString();
 		responseParameters.put("redirect_url", redirectURL);
 		jsonString = gson.toJson(responseParameters);
-		// byte[] postData = jsonString.getBytes(StandardCharsets.UTF_8);
-		// return postData;
-
-		// JSONObject json = new JSONObject();
-		// json.put("reirect_url", resultJsonObject.get("redirect_url").toString());
-		// return json.toString();
 		return jsonString;
 	}
 	
@@ -691,7 +678,6 @@ public class NovalnetOrdersController
         
         paymentinfoParameters.put("payment_type", "NOVALNET_"+transactionJsonObject.get("payment_type"));
         paymentinfoParameters.put("imprint_number", transactionJsonObject.get("tid"));
-        
         
         customerParameters.put("billing_address", billingParameters);
         customerParameters.put("shipping_address", shippingParameters);
