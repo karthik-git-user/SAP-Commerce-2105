@@ -102,10 +102,15 @@
             "template": "yacceleratorstorefront"
         },
         {
-			"addon":"acceleratorwebservicesaddon",
+			"addon":"mirakladdon",
 			"storefront":"commercewebservices",
 			"template":"commercewebservices"
-		}
+		},
+        {
+            "addon":"acceleratorwebservicesaddon",
+            "storefront":"commercewebservices",
+            "template":"mirakladdon"
+        }
     ],
     "aspects": [
         {
