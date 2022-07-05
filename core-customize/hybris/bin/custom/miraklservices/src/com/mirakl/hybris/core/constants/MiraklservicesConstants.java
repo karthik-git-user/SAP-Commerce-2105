@@ -16,7 +16,7 @@ public final class MiraklservicesConstants extends GeneratedMiraklservicesConsta
   public static final String MIRAKL_CUSTOM_USER_AGENT_ENABLED = "mirakl.api.customuseragent.enabled";
   public static final String MIRAKL_CUSTOM_USER_AGENT_VALUE = "mirakl.api.customuseragent.value";
   public static final String MEDIA_URL_SECURE = "media.url.secure";
-  public static final String OFFER_NEW_STATE_CODE_KEY = "mirakl.offers.state.new.code";
+  public static final String OFFER_NEW_STATE_CODE_KEY = 11;
   public static final String UPDATE_RECEIVED_EVENT_NAME = "_UpdateReceived";
   public static final String BOOLEAN_VALUE_LIST_ID = "boolean-values";
   public static final String PRODUCTS_IMPORT_MAX_DURATION = "mirakl.products.import.maximumduration";
