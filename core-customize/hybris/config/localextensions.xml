@@ -209,6 +209,7 @@
 	<extension name='miraklmediaconversion' />
 	<extension name='miraklbackofficeaddon' />
 	<extension name='miraklchannelsaddon' />
+    <extension name='miraklocc' />
 
 <!--
 	<extension name="sapdigitalpaymentaddon" />  
