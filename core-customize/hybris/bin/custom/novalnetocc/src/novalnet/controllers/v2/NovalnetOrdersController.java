@@ -253,16 +253,16 @@ public class NovalnetOrdersController
 
 			final AddressData deliveryAddress = novalnetOrderFacade.getCheckoutFacade().getCheckoutCart().getDeliveryAddress();
 
-			if(deliveryAddress.getLine1().equals(addressData.getLine1()) && deliveryAddress.getLine2().equals(addressData.getLine2()) && deliveryAddress.getTown().equals(addressData.getTown()) &&  deliveryAddress.getPostalCode().equals(addressData.getPostalCode()) && deliveryAddress.getCountry().getIsocode().equals(addressData.getCountry().getIsocode())) {
+			// if(deliveryAddress.getLine1().equals(addressData.getLine1()) && deliveryAddress.getLine2().equals(addressData.getLine2()) && deliveryAddress.getTown().equals(addressData.getTown()) &&  deliveryAddress.getPostalCode().equals(addressData.getPostalCode()) && deliveryAddress.getCountry().getIsocode().equals(addressData.getCountry().getIsocode())) {
 			    shippingParameters.put("same_as_billing", 1);
-		    } else {
-		        shippingParameters.put("street", deliveryAddress.getLine1() + " " + deliveryAddress.getLine2());
-		        shippingParameters.put("city", deliveryAddress.getTown());
-		        shippingParameters.put("zip", deliveryAddress.getPostalCode());
-		        shippingParameters.put("country_code", deliveryAddress.getCountry().getIsocode());
-		        shippingParameters.put("first_name", deliveryAddress.getFirstName());
-		        shippingParameters.put("last_name", deliveryAddress.getLastName());
-		    }
+		    // } else {
+		    //     shippingParameters.put("street", deliveryAddress.getLine1() + " " + deliveryAddress.getLine2());
+		    //     shippingParameters.put("city", deliveryAddress.getTown());
+		    //     shippingParameters.put("zip", deliveryAddress.getPostalCode());
+		    //     shippingParameters.put("country_code", deliveryAddress.getCountry().getIsocode());
+		    //     shippingParameters.put("first_name", deliveryAddress.getFirstName());
+		    //     shippingParameters.put("last_name", deliveryAddress.getLastName());
+		    // }
 			
 			customerParameters.put("billing", billingParameters);
 			customerParameters.put("shipping", shippingParameters);
