@@ -211,7 +211,7 @@ public class NovalnetOrdersController
 		JSONObject billingObject = new JSONObject();
 
 		requestObject = new JSONObject(reqJsonString.toString());
-		billingObject = requestObject.getJSONObject("panHash");
+		billingObject = requestObject.getJSONObject("billingAddress");
 		LOG.info(requestObject.get("tid"));
 		LOG.info(billingObject.get("postalCode"));
 		
