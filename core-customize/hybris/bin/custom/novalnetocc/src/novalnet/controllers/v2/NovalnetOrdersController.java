@@ -222,6 +222,7 @@ public class NovalnetOrdersController
 		final Locale language = JaloSession.getCurrentSession().getSessionContext().getLocale();
 		final String languageCode = language.toString().toUpperCase();
 		final String emailAddress = JaloSession.getCurrentSession().getUser().getLogin();
+		String customerNo = JaloSession.getCurrentSession().getUser().getPK().toString();
 		
 		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
 		Gson gson = new GsonBuilder().create();
@@ -243,7 +244,7 @@ public class NovalnetOrdersController
 			customerParameters.put("first_name", addressData.getFirstName());
 			customerParameters.put("last_name", addressData.getLastName());
 			customerParameters.put("email", emailAddress);
-			customerParameters.put("customer_no", "2");
+			customerParameters.put("customer_no", customerNo);
 			customerParameters.put("gender", "u");
 
 			billingParameters.put("street", addressData.getLine1() +" "+ addressData.getLine2());
@@ -251,18 +252,18 @@ public class NovalnetOrdersController
 			billingParameters.put("zip",addressData.getPostalCode());
 			billingParameters.put("country_code", addressData.getCountry().getIsocode());
 
-			final AddressData deliveryAddress = novalnetOrderFacade.getCheckoutFacade().getCheckoutCart().getDeliveryAddress();
+			final AddressData deliveryAddress = cartModel.getDeliveryAddress();
 
-			// if(deliveryAddress.getLine1().equals(addressData.getLine1()) && deliveryAddress.getLine2().equals(addressData.getLine2()) && deliveryAddress.getTown().equals(addressData.getTown()) &&  deliveryAddress.getPostalCode().equals(addressData.getPostalCode()) && deliveryAddress.getCountry().getIsocode().equals(addressData.getCountry().getIsocode())) {
+			if(deliveryAddress.getLine1().equals(addressData.getLine1()) && deliveryAddress.getLine2().equals(addressData.getLine2()) && deliveryAddress.getTown().equals(addressData.getTown()) &&  deliveryAddress.getPostalCode().equals(addressData.getPostalCode()) && deliveryAddress.getCountry().getIsocode().equals(addressData.getCountry().getIsocode())) {
 			    shippingParameters.put("same_as_billing", 1);
-		    // } else {
-		    //     shippingParameters.put("street", deliveryAddress.getLine1() + " " + deliveryAddress.getLine2());
-		    //     shippingParameters.put("city", deliveryAddress.getTown());
-		    //     shippingParameters.put("zip", deliveryAddress.getPostalCode());
-		    //     shippingParameters.put("country_code", deliveryAddress.getCountry().getIsocode());
-		    //     shippingParameters.put("first_name", deliveryAddress.getFirstName());
-		    //     shippingParameters.put("last_name", deliveryAddress.getLastName());
-		    // }
+		    } else {
+		        shippingParameters.put("street", deliveryAddress.getLine1() + " " + deliveryAddress.getLine2());
+		        shippingParameters.put("city", deliveryAddress.getTown());
+		        shippingParameters.put("zip", deliveryAddress.getPostalCode());
+		        shippingParameters.put("country_code", deliveryAddress.getCountry().getIsocode());
+		        shippingParameters.put("first_name", deliveryAddress.getFirstName());
+		        shippingParameters.put("last_name", deliveryAddress.getLastName());
+		    }
 			
 			customerParameters.put("billing", billingParameters);
 			customerParameters.put("shipping", shippingParameters);
