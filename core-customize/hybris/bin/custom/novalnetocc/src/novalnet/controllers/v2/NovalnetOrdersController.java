@@ -198,6 +198,7 @@ public class NovalnetOrdersController
 	public OrderWsDTO placeOrder(
 			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
 			@ApiParam(value = "credit card hash", required = false) @RequestParam final String panHash,
+			@ApiParam(value = "credit card hash", required = false) @RequestParam final String jsonString,
 			@ApiParam(value = "credit card hash", required = false) @RequestParam final String uniqId,
 			@ApiParam(value = "credit card hash", required = false) @RequestParam final String addressId,
 			@ApiParam(value = "credit card hash", required = false) @RequestParam final String tid,
@@ -205,6 +206,11 @@ public class NovalnetOrdersController
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
+
+		requestObject = new JSONObject(jsonString.toString());
+		billingObject = requestObject.getJSONObject("panHash");
+		LOG.info(requestObject.get("tid"));
+		LOG.info(billingObject.get("postalCode"));
 		
 		JSONObject tomJsonObject = new JSONObject();
 		JSONObject resultJsonObject = new JSONObject();
@@ -252,10 +258,10 @@ public class NovalnetOrdersController
 			billingParameters.put("zip",addressData.getPostalCode());
 			billingParameters.put("country_code", addressData.getCountry().getIsocode());
 
-			AddressData deliveryAddress = cartData.getDeliveryAddress();
-			AddressData deliveryAddress1 = novalnetOrderFacade.getCheckoutFacade().getCheckoutCart().getDeliveryAddress();
-			LOG.info(deliveryAddress.getLine1());
-			LOG.info(deliveryAddress1.getLine1());
+			// AddressData deliveryAddress = cartData.getDeliveryAddress();
+			// AddressData deliveryAddress1 = novalnetOrderFacade.getCheckoutFacade().getCheckoutCart().getDeliveryAddress();
+			// LOG.info(deliveryAddress.getLine1());
+			// LOG.info(deliveryAddress1.getLine1());
 
 			// if(deliveryAddress.getLine1().equals(addressData.getLine1()) && deliveryAddress.getLine2().equals(addressData.getLine2()) && deliveryAddress.getTown().equals(addressData.getTown()) &&  deliveryAddress.getPostalCode().equals(addressData.getPostalCode()) && deliveryAddress.getCountry().getIsocode().equals(addressData.getCountry().getIsocode())) {
 			    shippingParameters.put("same_as_billing", 1);
