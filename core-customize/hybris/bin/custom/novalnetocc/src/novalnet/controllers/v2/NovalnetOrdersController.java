@@ -198,7 +198,7 @@ public class NovalnetOrdersController
 	public OrderWsDTO placeOrder(
 			@ApiParam(value = "Cart code for logged in user, cart GUID for guest checkout", required = true) @RequestParam final String cartId,
 			@ApiParam(value = "credit card hash", required = false) @RequestParam final String panHash,
-			@ApiParam(value = "credit card hash", required = false) @RequestParam final String jsonString,
+			@ApiParam(value = "credit card hash", required = false) @RequestParam final String reqJsonString,
 			@ApiParam(value = "credit card hash", required = false) @RequestParam final String uniqId,
 			@ApiParam(value = "credit card hash", required = false) @RequestParam final String addressId,
 			@ApiParam(value = "credit card hash", required = false) @RequestParam final String tid,
@@ -207,7 +207,10 @@ public class NovalnetOrdersController
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 
-		requestObject = new JSONObject(jsonString.toString());
+		JSONObject requestObject = new JSONObject();
+		JSONObject billingObject = new JSONObject();
+
+		requestObject = new JSONObject(reqJsonString.toString());
 		billingObject = requestObject.getJSONObject("panHash");
 		LOG.info(requestObject.get("tid"));
 		LOG.info(billingObject.get("postalCode"));
