@@ -226,7 +226,7 @@
 	<extension name='novalnetocc' />
 -->
 	<extension name='novalnetcore' />
-	<!-- <extension name='novalnetocc' /> -->
+	<extension name='novalnetocc' />
 	<extension name='novalnetfacades' />
 	<extension name='novalnetbackoffice' />
 <!--
