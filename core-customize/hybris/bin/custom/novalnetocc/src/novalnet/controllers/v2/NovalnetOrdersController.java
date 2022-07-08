@@ -252,7 +252,7 @@ public class NovalnetOrdersController
 			billingParameters.put("zip",addressData.getPostalCode());
 			billingParameters.put("country_code", addressData.getCountry().getIsocode());
 
-			final AddressData deliveryAddress = cartModel.getDeliveryAddress();
+			AddressModel deliveryAddress = cartModel.getDeliveryAddress();
 
 			if(deliveryAddress.getLine1().equals(addressData.getLine1()) && deliveryAddress.getLine2().equals(addressData.getLine2()) && deliveryAddress.getTown().equals(addressData.getTown()) &&  deliveryAddress.getPostalCode().equals(addressData.getPostalCode()) && deliveryAddress.getCountry().getIsocode().equals(addressData.getCountry().getIsocode())) {
 			    shippingParameters.put("same_as_billing", 1);
