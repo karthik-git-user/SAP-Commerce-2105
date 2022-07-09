@@ -209,8 +209,8 @@ public class NovalnetOrdersController
 
 		requestObject = new JSONObject(reqJsonString.toString());
 		
-		LOG.info(requestObject.get("tid").toString());
-		LOG.info(billingObject.get("postalCode").toString());
+		// LOG.info(requestObject.get("tid").toString());
+		// LOG.info(billingObject.get("postalCode").toString());
 
 		String action = requestObject.get("action").toString();
 		
