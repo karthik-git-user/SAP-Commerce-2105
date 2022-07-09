@@ -379,7 +379,7 @@ public class NovalnetOrdersController
 		billingAddress.setLine2(street2);
 		billingAddress.setTown(town);
 		billingAddress.setPostalcode(zip);
-		billingAddress.setCountry(getCommonI18NService().getCountry(countryCode));
+		billingAddress.setCountry(novalnetOrderFacade.getCommonI18NService().getCountry(countryCode));
 		// billingAddress.setRegion(getCommonI18NService().getRegion(countryObject.get("isocode"), regionObject.get("isocode")));
 		billingAddress.setEmail(emailAddress);
 
