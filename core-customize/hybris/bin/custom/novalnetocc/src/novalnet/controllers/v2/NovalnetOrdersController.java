@@ -332,6 +332,8 @@ LOG.info(jsonString);
 			String url = "https://payport.novalnet.de/v2/payment";
 			StringBuilder response = sendRequest(url, jsonString);
 			tomJsonObject = new JSONObject(response.toString());
+					LOG.info("response+");
+LOG.info(response.toString());
 			resultJsonObject = tomJsonObject.getJSONObject("result");
 			transactionJsonObject = tomJsonObject.getJSONObject("transaction");
 		} else {
@@ -356,7 +358,8 @@ LOG.info(jsonString);
 			transactionJsonObject = tomJsonObject.getJSONObject("transaction");
 			customerJsonObject = tomJsonObject.getJSONObject("customer");
 			billingJsonObject = tomJsonObject.getJSONObject("billing");
-
+		LOG.info("response+");
+LOG.info(response.toString());
 
 			firstName = customerJsonObject.get("first_name").toString();
 			lastName = customerJsonObject.get("last_name").toString();
@@ -367,8 +370,7 @@ LOG.info(jsonString);
 			
 		}
 
-		LOG.info("response+");
-LOG.info(response.toString());
+
         
         if(!String.valueOf("100").equals(resultJsonObject.get("status_code").toString())) {
 			final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
