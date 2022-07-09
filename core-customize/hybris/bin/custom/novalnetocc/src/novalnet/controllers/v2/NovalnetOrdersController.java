@@ -326,7 +326,8 @@ public class NovalnetOrdersController
 
 			
 			String jsonString = gson.toJson(dataParameters);
-
+LOG.info("request+");
+LOG.info(jsonString);
 			String password = baseStore.getNovalnetPaymentAccessKey().toString();
 			String url = "https://payport.novalnet.de/v2/payment";
 			StringBuilder response = sendRequest(url, jsonString);
@@ -342,6 +343,9 @@ public class NovalnetOrdersController
 
 			
 			String jsonString = gson.toJson(dataParameters);
+
+			LOG.info("request1111+");
+LOG.info(jsonString);
 
 			String url = "https://payport.novalnet.de/v2/transaction/details";
 			StringBuilder response = sendRequest(url, jsonString);
@@ -362,6 +366,9 @@ public class NovalnetOrdersController
 			countryCode = billingJsonObject.get("isocode").toString();
 			
 		}
+
+		LOG.info("response+");
+LOG.info(response.toString());
         
         if(!String.valueOf("100").equals(resultJsonObject.get("status_code").toString())) {
 			final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
