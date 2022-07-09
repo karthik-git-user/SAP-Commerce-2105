@@ -299,7 +299,7 @@ public class NovalnetOrdersController
 			customerParameters.put("billing", billingParameters);
 			customerParameters.put("shipping", shippingParameters);
 
-			transactionParameters.put("payment_type", requestObject.get("paymentType").toString());
+			transactionParameters.put("payment_type", getPaymentType(requestObject.get("paymentType").toString()));
 			transactionParameters.put("currency", currency);
 			transactionParameters.put("amount", 0);
 			transactionParameters.put("create_token", 1);
