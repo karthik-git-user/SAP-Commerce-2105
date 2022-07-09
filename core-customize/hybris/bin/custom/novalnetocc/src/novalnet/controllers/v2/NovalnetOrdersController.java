@@ -209,17 +209,17 @@ public class NovalnetOrdersController
 
 		requestObject = new JSONObject(reqJsonString.toString());
 		
-		LOG.info(requestObject.get("tid"));
-		LOG.info(billingObject.get("postalCode"));
+		LOG.info(requestObject.get("tid").toString());
+		LOG.info(billingObject.get("postalCode").toString());
 
-		String action = requestObject.get("action");
+		String action = requestObject.get("action").toString();
 		
 		JSONObject tomJsonObject = new JSONObject();
 		JSONObject resultJsonObject = new JSONObject();
 		JSONObject transactionJsonObject = new JSONObject();
 		JSONObject customerJsonObject = new JSONObject();
 		JSONObject billingJsonObject = new JSONObject();
-		final CartData cartData = novalnetOrderFacade.loadCart(requestObject.get("cartId"));
+		final CartData cartData = novalnetOrderFacade.loadCart(requestObject.get("cartId").toString());
 		final CartModel cartModel = novalnetOrderFacade.getCart();
 		final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
 		final String currency = cartData.getTotalPriceWithTax().getCurrencyIso();
@@ -261,13 +261,13 @@ public class NovalnetOrdersController
 			merchantParameters.put("signature", baseStore.getNovalnetAPIKey());
 			merchantParameters.put("tariff", baseStore.getNovalnetTariffId());
 
-			firstName = billingObject.get("firstName");
-			lastName = billingObject.get("lastName");
-			street1 = billingObject.get("line1");
-			street2 = billingObject.get("line2");
-			town = billingObject.get("town");
-			zip = billingObject.get("postalCode");
-			countryCode = countryObject.get("isocode");
+			firstName = billingObject.get("firstName").toString();
+			lastName = billingObject.get("lastName").toString();
+			street1 = billingObject.get("line1").toString();
+			street2 = billingObject.get("line2").toString();
+			town = billingObject.get("town").toString();
+			zip = billingObject.get("postalCode").toString();
+			countryCode = countryObject.get("isocode").toString();
 
 			customerParameters.put("first_name", firstName);
 			customerParameters.put("last_name", lastName);
@@ -299,7 +299,7 @@ public class NovalnetOrdersController
 			customerParameters.put("billing", billingParameters);
 			customerParameters.put("shipping", shippingParameters);
 
-			transactionParameters.put("payment_type", requestObject.get("paymentType"));
+			transactionParameters.put("payment_type", requestObject.get("paymentType").toString());
 			transactionParameters.put("currency", currency);
 			transactionParameters.put("amount", 0);
 			transactionParameters.put("create_token", 1);
@@ -308,14 +308,14 @@ public class NovalnetOrdersController
 			customParameters.put("lang", languageCode);
 
 
-			if ("novalnetDirectDebitSepa".equals(requestObject.get("paymentType"))) { 
+			if ("novalnetDirectDebitSepa".equals(requestObject.get("paymentType").toString())) { 
 				transactionParameters.put("currency", "EUR");
-				String accountHolder = billingObject.get("firstName") + ' ' + billingObject.get("lastName");
-				paymentParameters.put("iban", paymentObject.get("iban"));
+				String accountHolder = billingObject.get("firstName").toString() + ' ' + billingObject.get("lastName").toString();
+				paymentParameters.put("iban", paymentObject.get("iban").toString());
 				paymentParameters.put("bank_account_holder", accountHolder.replace("&", ""));
-			} else if ("novalnetCreditCard".equals(requestObject.get("paymentType"))) {
-				paymentParameters.put("pan_hash", paymentObject.get("panHash"));
-				paymentParameters.put("unique_id", paymentObject.get("uniqId"));
+			} else if ("novalnetCreditCard".equals(requestObject.get("paymentType").toString())) {
+				paymentParameters.put("pan_hash", paymentObject.get("panHash").toString());
+				paymentParameters.put("unique_id", paymentObject.get("uniqId").toString());
 			}
 
 			transactionParameters.put("payment_data", paymentParameters);
@@ -334,7 +334,7 @@ public class NovalnetOrdersController
 			resultJsonObject = tomJsonObject.getJSONObject("result");
 			transactionJsonObject = tomJsonObject.getJSONObject("transaction");
 		} else {
-			transactionParameters.put("tid", requestObject.get("tid"));
+			transactionParameters.put("tid", requestObject.get("tid").toString());
 			customParameters.put("lang", languageCode);
 
 			dataParameters.put("transaction", transactionParameters);
@@ -354,12 +354,12 @@ public class NovalnetOrdersController
 			billingJsonObject = tomJsonObject.getJSONObject("billing");
 
 
-			firstName = customerJsonObject.get("first_name");
-			lastName = customerJsonObject.get("last_name");
-			street1 = billingJsonObject.get("street");
-			town = billingJsonObject.get("town");
-			zip = billingJsonObject.get("postalCode");
-			countryCode = billingJsonObject.get("isocode");
+			firstName = customerJsonObject.get("first_name").toString();
+			lastName = customerJsonObject.get("last_name").toString();
+			street1 = billingJsonObject.get("street").toString();
+			town = billingJsonObject.get("town").toString();
+			zip = billingJsonObject.get("postalCode").toString();
+			countryCode = billingJsonObject.get("isocode").toString();
 			
 		}
         
@@ -602,16 +602,16 @@ public class NovalnetOrdersController
 		merchantParameters.put("signature", baseStore.getNovalnetAPIKey());
 		merchantParameters.put("tariff", baseStore.getNovalnetTariffId());
 
-		customerParameters.put("first_name", billingObject.get("firstName"));
-		customerParameters.put("last_name", billingObject.get("lastName"));
+		customerParameters.put("first_name", billingObject.get("firstName").toString());
+		customerParameters.put("last_name", billingObject.get("lastName").toString());
 		customerParameters.put("email", emailAddress);
 		customerParameters.put("customer_no", customerNo);
 		customerParameters.put("gender", "u");
 
-		billingParameters.put("street", billingObject.get("line1") + " " + billingObject.get("line2"));
-		billingParameters.put("city", billingObject.get("town"));
-		billingParameters.put("zip",billingObject.get("postalCode"));
-		billingParameters.put("country_code", countryObject.get("isocode"));
+		billingParameters.put("street", billingObject.get("line1").toString() + " " + billingObject.get("line2").toString());
+		billingParameters.put("city", billingObject.get("town").toString());
+		billingParameters.put("zip",billingObject.get("postalCode").toString());
+		billingParameters.put("country_code", countryObject.get("isocode").toString());
         
         shippingParameters.put("same_as_billing", "1");
 
@@ -623,9 +623,9 @@ public class NovalnetOrdersController
         transactionParameters.put("system_version", "2105-NN1.0.1");
         customParameters.put("lang", languageCode);
 
-        if ("novalnetCreditCard".equals(requestObject.get("paymentType"))) {
-			paymentParameters.put("pan_hash", paymentObject.get("panHash"));
-			paymentParameters.put("unique_id", paymentObject.get("uniqId"));
+        if ("novalnetCreditCard".equals(requestObject.get("paymentType").toString())) {
+			paymentParameters.put("pan_hash", paymentObject.get("panHash").toString());
+			paymentParameters.put("unique_id", paymentObject.get("uniqId").toString());
 			transactionParameters.put("payment_data", paymentParameters);
 			NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
 			if (novalnetPaymentMethod.getNovalnetTestMode()) {
@@ -633,7 +633,7 @@ public class NovalnetOrdersController
             }
 		}
 		
-		if ("novalnetPayPal".equals(requestObject.get("paymentType"))) {
+		if ("novalnetPayPal".equals(requestObject.get("paymentType").toString())) {
 			NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
 			if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
@@ -641,8 +641,8 @@ public class NovalnetOrdersController
 		}
 		
 		transactionParameters.put("test_mode", testMode);
-		transactionParameters.put("return_url", requestObject.get("returnUrl"));
-		transactionParameters.put("error_return_url", requestObject.get("returnUrl"));
+		transactionParameters.put("return_url", requestObject.get("returnUrl").toString());
+		transactionParameters.put("error_return_url", requestObject.get("returnUrl").toString());
 
         dataParameters.put("merchant", merchantParameters);
         dataParameters.put("customer", customerParameters);
