@@ -196,7 +196,7 @@ public class NovalnetOrdersController
 	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
 	@ApiBaseSiteIdAndUserIdParam
 	public OrderWsDTO placeOrder(
-			@ApiParam(value = "credit card hash", required = false) @RequestParam final String reqJsonString
+			@ApiParam(value = "credit card hash", required = false) @RequestParam final String reqJsonString,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
@@ -218,6 +218,7 @@ public class NovalnetOrdersController
 		JSONObject resultJsonObject = new JSONObject();
 		JSONObject transactionJsonObject = new JSONObject();
 		JSONObject customerJsonObject = new JSONObject();
+		JSONObject billingJsonObject = new JSONObject();
 		final CartData cartData = novalnetOrderFacade.loadCart(requestObject.get("cartId"));
 		final CartModel cartModel = novalnetOrderFacade.getCart();
 		final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
@@ -378,7 +379,7 @@ public class NovalnetOrdersController
 		billingAddress.setLine2(street2);
 		billingAddress.setTown(town);
 		billingAddress.setPostalcode(zip);
-		billingAddress.setCountry(getCommonI18NService().getCountry(countryCode);
+		billingAddress.setCountry(getCommonI18NService().getCountry(countryCode));
 		// billingAddress.setRegion(getCommonI18NService().getRegion(countryObject.get("isocode"), regionObject.get("isocode")));
 		billingAddress.setEmail(emailAddress);
 
@@ -566,19 +567,20 @@ public class NovalnetOrdersController
 
 		// final AddressData addressData = novalnetOrderFacade.getAddressData(addressId);
 		Integer testMode = 0;
-		PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(requestObject.get("paymentType"));
+		PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(requestObject.get("paymentType").toString());
 		
 		final Locale language = JaloSession.getCurrentSession().getSessionContext().getLocale();
     	final String emailAddress = JaloSession.getCurrentSession().getUser().getLogin();
         final String languageCode = language.toString().toUpperCase();
-		final CartData cartData = novalnetOrderFacade.loadCart(requestObject.get("cartId"));
+		final CartData cartData = novalnetOrderFacade.loadCart(requestObject.get("cartId").toString());
 		String totalAmount = formatAmount(String.valueOf(cartData.getTotalPriceWithTax().getValue()));
 		DecimalFormat decimalFormat = new DecimalFormat("##.##");
 		String orderAmount = decimalFormat.format(Float.parseFloat(totalAmount));
 		float floatAmount = Float.parseFloat(orderAmount);
         BigDecimal orderAmountCents = BigDecimal.valueOf(floatAmount).multiply(BigDecimal.valueOf(100));
         Integer orderAmountCent = orderAmountCents.intValue();
-		
+		String customerNo = JaloSession.getCurrentSession().getUser().getPK().toString();
+
 		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
 		final CartModel cartModel = novalnetOrderFacade.getCart();
 		final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
@@ -613,7 +615,7 @@ public class NovalnetOrdersController
         
         shippingParameters.put("same_as_billing", "1");
 
-        transactionParameters.put("payment_type", getPaymentType(requestObject.get("paymentType")));
+        transactionParameters.put("payment_type", getPaymentType(requestObject.get("paymentType").toString()));
         transactionParameters.put("currency", currency);
         transactionParameters.put("amount", 0);
         transactionParameters.put("system_name", "SAP Commerce Cloud");
