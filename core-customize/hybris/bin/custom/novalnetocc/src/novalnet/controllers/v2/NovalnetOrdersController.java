@@ -354,19 +354,20 @@ LOG.info(jsonString);
 
 			tomJsonObject = new JSONObject(response.toString());
 			resultJsonObject = tomJsonObject.getJSONObject("result");
-			//~ JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
 			transactionJsonObject = tomJsonObject.getJSONObject("transaction");
 			customerJsonObject = tomJsonObject.getJSONObject("customer");
-			billingJsonObject = tomJsonObject.getJSONObject("billing");
+			billingJsonObject = customerJsonObject.getJSONObject("billing");
 		LOG.info("response+");
 LOG.info(response.toString());
 
 			firstName = customerJsonObject.get("first_name").toString();
 			lastName = customerJsonObject.get("last_name").toString();
-			street1 = billingJsonObject.get("street").toString();
-			town = billingJsonObject.get("town").toString();
-			zip = billingJsonObject.get("postalCode").toString();
-			countryCode = billingJsonObject.get("isocode").toString();
+			if (billingJsonObject.has("street")) {
+				street1 = billingJsonObject.get("street").toString();
+			}
+			town = billingJsonObject.get("city").toString();
+			zip = billingJsonObject.get("zip").toString();
+			countryCode = billingJsonObject.get("country_code").toString();
 			
 		}
 
