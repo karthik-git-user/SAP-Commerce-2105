@@ -486,8 +486,11 @@ LOG.info(response.toString());
 		StringBuilder responseString = sendRequest(url, jsonString);
         syncmirakl(tomJsonObject, orderData.getCode());
 
+        long callbackInfoTid = Long.parseLong(transactionJsonObject.get("tid").toString());
+        int orderPaidAmount = orderAmountCent;
+
 		NovalnetCallbackInfoModel novalnetCallbackInfo = new NovalnetCallbackInfoModel();
-        novalnetCallbackInfo.setPaymentType(currentPayment);
+        novalnetCallbackInfo.setPaymentType(payment);
         novalnetCallbackInfo.setOrderAmount(orderAmountCent);
         novalnetCallbackInfo.setCallbackTid(callbackInfoTid);
         novalnetCallbackInfo.setOrginalTid(callbackInfoTid);
