@@ -115,6 +115,7 @@ import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
 import de.hybris.novalnet.core.model.NovalnetCreditCardPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetDirectDebitSepaPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetPayPalPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetCallbackInfoModel;
 import de.hybris.platform.core.model.order.payment.PaymentModeModel;
 import de.hybris.platform.payment.model.PaymentTransactionEntryModel;
 import de.hybris.platform.orderhistory.model.OrderHistoryEntryModel;
@@ -426,19 +427,42 @@ LOG.info(response.toString());
 		paymentTransactionModel.setOrder(cartModel);
 		paymentTransactionModel.setInfo(paymentInfoModel);
 
-		// Update the OrderModel
 		cartModel.setPaymentTransactions(Arrays.asList(paymentTransactionModel));
-		PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode("novalnetCreditCard");
-		NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
-        cartModel.setPaymentMode(novalnetPaymentMethod);
-        novalnetOrderFacade.getModelService().saveAll(cartModel, billingAddress);
+
+		novalnetOrderFacade.getModelService().saveAll(cartModel, billingAddress);
+
 		final OrderData orderData = novalnetOrderFacade.getCheckoutFacade().placeOrder();
 		String orderNumber = orderData.getCode();
 		List<OrderModel> orderInfoModel = getOrderInfoModel(orderNumber);
         OrderModel orderModel = novalnetOrderFacade.getModelService().get(orderInfoModel.get(0).getPk());
-		//~ return getDataMapper().map(orderData, OrderWsDTO.class, fields);
-		paymentInfoModel.setCode(orderNumber);
-        novalnetOrderFacade.getModelService().saveAll(paymentInfoModel);        
+
+        paymentInfoModel.setCode(orderNumber);
+
+		// // Update the OrderModel
+		// 
+		// PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode("novalnetCreditCard");
+		// NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
+  //       cartModel.setPaymentMode(novalnetPaymentMethod);
+
+        novalnetOrderFacade.getModelService().save(paymentInfoModel);
+
+        PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(payment);
+
+        if ("novalnetCreditCard".equals(payment)) {
+            NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
+            orderModel.setPaymentMode(novalnetPaymentMethod);
+        } else if ("novalnetDirectDebitSepa".equals(payment)) {
+
+            NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
+            orderModel.setPaymentMode(novalnetPaymentMethod);
+        } else if ("novalnetPayPal".equals(payment)) {
+            NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
+            orderModel.setPaymentMode(novalnetPaymentMethod);
+        }
+
+        orderModel.setStatusInfo("Tid : " + transactionJsonObject.get("tid").toString());
+
+		
         OrderHistoryEntryModel orderEntry = novalnetOrderFacade.getModelService().create(OrderHistoryEntryModel.class);
 		orderEntry.setTimestamp(new Date());
 		orderEntry.setOrder(orderModel);
@@ -461,7 +485,17 @@ LOG.info(response.toString());
 		String url = "https://payport.novalnet.de/v2/transaction/update";
 		StringBuilder responseString = sendRequest(url, jsonString);
         syncmirakl(tomJsonObject, orderData.getCode());
-		return dataMapper.map(orderData, OrderWsDTO.class, fields);
+
+		NovalnetCallbackInfoModel novalnetCallbackInfo = new NovalnetCallbackInfoModel();
+        novalnetCallbackInfo.setPaymentType(currentPayment);
+        novalnetCallbackInfo.setOrderAmount(orderAmountCent);
+        novalnetCallbackInfo.setCallbackTid(callbackInfoTid);
+        novalnetCallbackInfo.setOrginalTid(callbackInfoTid);
+        novalnetCallbackInfo.setPaidAmount(orderPaidAmount);
+        novalnetCallbackInfo.setOrderNo(orderNumber);
+        novalnetOrderFacade.getModelService().save(novalnetCallbackInfo);
+
+        return dataMapper.map(orderData, OrderWsDTO.class, fields);
 	}
 	
 	public List<OrderModel> getOrderInfoModel(String orderCode) {
