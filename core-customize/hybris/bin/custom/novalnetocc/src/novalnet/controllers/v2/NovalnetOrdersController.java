@@ -605,7 +605,7 @@ LOG.info(response.toString());
         final Map<String, Object> dataParameters = new HashMap<String, Object>();
 
         billingObject = requestObject.getJSONObject("billingAddress");
-		paymentObject = requestObject.getJSONObject("paymentData");
+		
 		countryObject = billingObject.getJSONObject("country");
 		regionObject = billingObject.getJSONObject("region");
 		merchantParameters.put("signature", baseStore.getNovalnetAPIKey());
@@ -633,6 +633,7 @@ LOG.info(response.toString());
         customParameters.put("lang", languageCode);
 
         if ("novalnetCreditCard".equals(requestObject.get("paymentType").toString())) {
+        	paymentObject = requestObject.getJSONObject("paymentData");
 			paymentParameters.put("pan_hash", paymentObject.get("panHash").toString());
 			paymentParameters.put("unique_id", paymentObject.get("uniqId").toString());
 			transactionParameters.put("payment_data", paymentParameters);
