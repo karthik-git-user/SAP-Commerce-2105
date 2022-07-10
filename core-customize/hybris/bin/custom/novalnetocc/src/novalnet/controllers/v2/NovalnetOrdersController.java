@@ -575,6 +575,9 @@ LOG.info(response.toString());
 
 		requestObject = new JSONObject(reqJsonString.toString());
 
+		LOG.info("jsonrequest666666+");
+LOG.info(reqJsonString.toString());
+
 		// final AddressData addressData = novalnetOrderFacade.getAddressData(addressId);
 		Integer testMode = 0;
 		PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(requestObject.get("paymentType").toString());
@@ -664,9 +667,16 @@ LOG.info(response.toString());
         Gson gson = new GsonBuilder().create();
         String jsonString = gson.toJson(dataParameters);
 
+        LOG.info("request222+");
+LOG.info(jsonString);
+
         String password = baseStore.getNovalnetPaymentAccessKey().toString();
         String url = "https://payport.novalnet.de/v2/payment";
         StringBuilder response = sendRequest(url, jsonString);
+
+
+        LOG.info("response555+");
+LOG.info(response.toString()));
         JSONObject tomJsonObject = new JSONObject(response.toString());
         JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
         JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
