@@ -658,6 +658,9 @@ LOG.info(reqJsonString.toString());
 		transactionParameters.put("return_url", requestObject.get("returnUrl").toString());
 		transactionParameters.put("error_return_url", requestObject.get("returnUrl").toString());
 
+		customerParameters.put("billing", billingParameters);
+		customerParameters.put("shipping", shippingParameters);
+
         dataParameters.put("merchant", merchantParameters);
         dataParameters.put("customer", customerParameters);
         dataParameters.put("transaction", transactionParameters);
