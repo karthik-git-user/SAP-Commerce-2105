@@ -229,7 +229,6 @@
 	<extension name='novalnetocc' />
 	<extension name='novalnetfacades' />
 	<extension name='novalnetbackoffice' />
-    <extension name='novalnetcheckoutaddon' />
 <!--
 	<extension name='novalnetcheckoutaddon' />
 	<extension name='novalnetbackoffice' />
