@@ -378,9 +378,6 @@ LOG.info(response.toString());
 			final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
 			throw new PaymentAuthorizationException();
 		}
-
-
-        
         
         final AddressModel billingAddress = novalnetOrderFacade.getModelService().create(AddressModel.class);
 		
@@ -399,6 +396,20 @@ LOG.info(response.toString());
 		billingAddress.setOwner(cartModel);
 
 		String payment = (transactionJsonObject.get("payment_type").toString()).equals("CREDITCARD") ? "novalnetCreditCard" : ((transactionJsonObject.get("payment_type").toString()).equals("DIRECT_DEBIT_SEPA") ? "novalnetDirectDebitSepa" :((transactionJsonObject.get("payment_type").toString()).equals("PAYPAL") ? "novalnetPayPal": ""));
+
+		PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(payment);
+
+        if ("novalnetCreditCard".equals(payment)) {
+            NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
+            cartModel.setPaymentMode(novalnetPaymentMethod);
+        } else if ("novalnetDirectDebitSepa".equals(payment)) {
+
+            NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
+            cartModel.setPaymentMode(novalnetPaymentMethod);
+        } else if ("novalnetPayPal".equals(payment)) {
+            NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
+            cartModel.setPaymentMode(novalnetPaymentMethod);
+        }
 		
 		NovalnetPaymentInfoModel paymentInfoModel = new NovalnetPaymentInfoModel();
 		paymentInfoModel.setBillingAddress(billingAddress);
@@ -446,13 +457,10 @@ LOG.info(response.toString());
 
         novalnetOrderFacade.getModelService().save(paymentInfoModel);
 
-        PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(payment);
-
         if ("novalnetCreditCard".equals(payment)) {
             NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
             orderModel.setPaymentMode(novalnetPaymentMethod);
         } else if ("novalnetDirectDebitSepa".equals(payment)) {
-
             NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
             orderModel.setPaymentMode(novalnetPaymentMethod);
         } else if ("novalnetPayPal".equals(payment)) {
@@ -460,8 +468,7 @@ LOG.info(response.toString());
             orderModel.setPaymentMode(novalnetPaymentMethod);
         }
 
-        orderModel.setStatusInfo("Tid : " + transactionJsonObject.get("tid").toString());
-
+        orderModel.setStatusInfo("Novalnet Transaction ID : " + transactionJsonObject.get("tid").toString());
 		
         OrderHistoryEntryModel orderEntry = novalnetOrderFacade.getModelService().create(OrderHistoryEntryModel.class);
 		orderEntry.setTimestamp(new Date());
