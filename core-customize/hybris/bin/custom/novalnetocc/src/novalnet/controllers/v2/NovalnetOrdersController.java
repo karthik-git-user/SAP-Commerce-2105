@@ -429,7 +429,7 @@ LOG.info(response.toString());
 
 		cartModel.setPaymentTransactions(Arrays.asList(paymentTransactionModel));
 
-		
+		novalnetOrderFacade.getModelService().saveAll(cartModel, billingAddress);
 
 		final OrderData orderData = novalnetOrderFacade.getCheckoutFacade().placeOrder();
 		String orderNumber = orderData.getCode();
@@ -444,8 +444,7 @@ LOG.info(response.toString());
 		// NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
   //       cartModel.setPaymentMode(novalnetPaymentMethod);
 
-        // novalnetOrderFacade.getModelService().save(paymentInfoModel);
-        novalnetOrderFacade.getModelService().saveAll(cartModel, billingAddress, paymentInfoModel);
+        novalnetOrderFacade.getModelService().save(paymentInfoModel);
 
         PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(payment);
 
@@ -462,16 +461,15 @@ LOG.info(response.toString());
         }
 
         orderModel.setStatusInfo("Tid : " + transactionJsonObject.get("tid").toString());
-        orderModel.setPaymentInfo(paymentInfoModel);
-		orderModel.setStatus(OrderStatus.COMPLETED);
-		orderModel.setPaymentStatus(PaymentStatus.PAID);
+
 		
         OrderHistoryEntryModel orderEntry = novalnetOrderFacade.getModelService().create(OrderHistoryEntryModel.class);
 		orderEntry.setTimestamp(new Date());
 		orderEntry.setOrder(orderModel);
 		orderEntry.setDescription("Tid : " + transactionJsonObject.get("tid").toString());
+		orderModel.setPaymentInfo(paymentInfoModel);
         novalnetOrderFacade.getModelService().saveAll(orderModel, orderEntry);
-		// updateOrderStatus(orderNumber, paymentInfoModel);
+		updateOrderStatus(orderNumber, paymentInfoModel);
 		
 		transactionParameters.clear();
         dataParameters.clear();
