@@ -147,7 +147,7 @@ import de.hybris.platform.servicelayer.i18n.CommonI18NService;
 import de.hybris.platform.jalo.JaloSession;
 import org.springframework.beans.factory.annotation.Required;
 import de.novalnet.order.NovalnetOrderFacade;
-import de.novalnet.beans.NnResponseDataData;
+import de.novalnet.beans.NnResponseData;
 import novalnet.dto.payment.NnResponseWsDTO;
 
 import java.text.NumberFormat;
