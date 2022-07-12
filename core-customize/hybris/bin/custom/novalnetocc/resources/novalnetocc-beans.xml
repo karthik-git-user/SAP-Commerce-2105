@@ -17,22 +17,10 @@
 	</bean>
 	-->
 	
-	 <bean class="de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO">
-        <property name="novalnetPanHash" type="String" />
-        <property name="novalnetUniqId" type="String" />
-        <property name="novalnetBillingAddress" type="de.hybris.platform.commercewebservicescommons.dto.user.AddressWsDTO"/>
-    </bean>
-
-    <bean class="de.hybris.platform.commercewebservicescommons.dto.order.AbstractOrderWsDTO">
-        <property name="titleCode" type="String" />
-        <property name="firstName" type="String" />
-        <property name="lastName" type="String" />
-        <property name="line1" type="java.util.Date" />
-        <property name="line2" type="java.util.Date" />
-        <property name="postalCode" type="String" />
-        <property name="town" type="java.math.BigDecimal" />
-        <property name="region" type="de.hybris.platform.commercewebservicescommons.dto.user.RegionWsDTO" />
-        <property name="country" type="de.hybris.platform.commercewebservicescommons.dto.user.CountryWsDTO" />
+	<bean class="novalnet.dto.payment.NnResponseWsDTO">
+        <property name="redirectURL" type="String">
+            <description>Identifier of the shop</description>
+        </property>
     </bean>
     
     

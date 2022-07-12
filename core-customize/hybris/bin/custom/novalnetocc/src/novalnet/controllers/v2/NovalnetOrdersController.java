@@ -147,6 +147,8 @@ import de.hybris.platform.servicelayer.i18n.CommonI18NService;
 import de.hybris.platform.jalo.JaloSession;
 import org.springframework.beans.factory.annotation.Required;
 import de.novalnet.order.NovalnetOrderFacade;
+import de.novalnet.beans.NnResponseDataData;
+import novalnet.dto.payment.NnResponseWsDTO;
 
 import java.text.NumberFormat;
 import java.text.DecimalFormat;
@@ -738,7 +740,9 @@ LOG.info(response.toString());
 		String redirectURL = resultJsonObject.get("redirect_url").toString();
 		responseParameters.put("redirect_url", redirectURL);
 		jsonString = gson.toJson(responseParameters);
-		return jsonString;
+		NnResponseData.setRedirectURL(redirectURL);
+		// return jsonString;
+		return dataMapper.map(NnResponseData, nnResponseWsDTO.class, fields);
 	}
 	
 	
