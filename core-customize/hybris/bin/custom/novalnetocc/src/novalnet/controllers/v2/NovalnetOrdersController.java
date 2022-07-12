@@ -178,6 +178,8 @@ public class NovalnetOrdersController
     private CalculationService calculationService;
     private Populator<AddressModel, AddressData> addressPopulator;
     private CommonI18NService commonI18NService;
+
+    private NnResponseData responseData;
     
 
 	@Resource(name = "novalnetOrderFacade")
@@ -609,7 +611,7 @@ LOG.info(response.toString());
 	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
 	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
 	@ApiBaseSiteIdAndUserIdParam
-	public String getRedirectURL(
+	public NnResponseWsDTO getRedirectURL(
 			@ApiParam(value = "credit card hash", required = true) @RequestParam final String reqJsonString,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
@@ -740,9 +742,9 @@ LOG.info(response.toString());
 		String redirectURL = resultJsonObject.get("redirect_url").toString();
 		responseParameters.put("redirect_url", redirectURL);
 		jsonString = gson.toJson(responseParameters);
-		NnResponseData.setRedirectURL(redirectURL);
+		responseData.setRedirectURL(redirectURL);
 		// return jsonString;
-		return dataMapper.map(NnResponseData, nnResponseWsDTO.class, fields);
+		return dataMapper.map(responseData, NnResponseWsDTO.class, fields);
 	}
 	
 	
