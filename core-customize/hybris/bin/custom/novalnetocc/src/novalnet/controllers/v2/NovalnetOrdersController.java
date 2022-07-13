@@ -744,10 +744,7 @@ LOG.info(response.toString());
 			throw new PaymentAuthorizationException();
 		}
 
-		// final Map<String, Object> responseParameters = new HashMap<String, Object>();
 		String redirectURL = resultJsonObject.get("redirect_url").toString();
-		// responseParameters.put("redirect_url", redirectURL);
-		// jsonString = gson.toJson(responseParameters);
 		NnResponseData responseData = new NnResponseData();
 		responseData.setRedirectURL(redirectURL);
 		return dataMapper.map(responseData, NnResponseWsDTO.class, fields);
@@ -897,44 +894,6 @@ LOG.info(response.toString());
 		NovalnetPayPalPaymentModeModel novalnetPayPalPaymentMethod = (NovalnetPayPalPaymentModeModel) payPalPaymentModeModel;
 		PaymentModeModel creditCardPaymentModeModel = paymentModeService.getPaymentModeForCode("novalnetCreditCard");
 		NovalnetCreditCardPaymentModeModel novalnetCreditCardPaymentMethod = (NovalnetCreditCardPaymentModeModel) creditCardPaymentModeModel;
-		
-		// final Map<String, Object> paymentinfoParameters= new HashMap<String, Object>();
-		// final Map<String, Object> sepaPaymentinfoParameters= new HashMap<String, Object>();
-		// final Map<String, Object> paypalPaymentinfoParameters= new HashMap<String, Object>();
-		// final Map<String, Object> creditcardPaymentinfoParameters= new HashMap<String, Object>();
-  //       final Map<String, Object> dataParameters = new HashMap<String, Object>();
-        
-        // creditcardPaymentinfoParameters.put("active", novalnetCreditCardPaymentMethod.getActive());
-        // sepaPaymentinfoParameters.put("active", novalnetDirectDebitSepaPaymentMethod.getActive());
-        // paypalPaymentinfoParameters.put("active", novalnetPayPalPaymentMethod.getActive());
-        // paymentinfoParameters.put("novalnetCreditCard", creditcardPaymentinfoParameters);
-        // paymentinfoParameters.put("novalnetDirectDebitSepa", sepaPaymentinfoParameters);
-        // paymentinfoParameters.put("novalnetPayPal", paypalPaymentinfoParameters);
-        
-        // dataParameters.put("novalnetClienKey", baseStore.getNovalnetClientKey());
-        
-        // dataParameters.put("paymentinfo", paymentinfoParameters);
-        
-  //       Gson gson = new GsonBuilder().create();
-  //       String jsonString = gson.toJson(dataParameters);
-
-  //       String message;
-		// JSONObject json = new JSONObject();
-		// json.put("name", "student");
-
-		// JSONArray array = new JSONArray();
-		// JSONObject item = new JSONObject();
-		// item.put("information", "test");
-		// item.put("id", 3);
-		// item.put("name", "course1");
-		// array.put(item);
-
-		// json.put("course", array);
-
-		// message = json.toString();
-  //       return message;
-
-
 
         NnCreditCardData creditCardData = new NnCreditCardData();
         creditCardData.setActive(novalnetCreditCardPaymentMethod.getActive());
@@ -973,13 +932,6 @@ LOG.info(response.toString());
 	{
 		final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderno);
         NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
-  //       final Map<String, Object> responseParameters = new HashMap<String, Object>();
-		// responseParameters.put("comments", paymentInfoModel.getOrderHistoryNotes());
-		// responseParameters.put("status", paymentInfoModel.getPaymentGatewayStatus());
-		// Gson gson = new GsonBuilder().create();
-		// String jsonString = gson.toJson(responseParameters);
-		// return jsonString;
-
 		NnPaymentDetailsData paymentDetailsData = new NnPaymentDetailsData();
 		paymentDetailsData.setStatus(paymentInfoModel.getPaymentGatewayStatus());
 		paymentDetailsData.setComments(paymentInfoModel.getOrderHistoryNotes());
