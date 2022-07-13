@@ -19,10 +19,57 @@
 	
 	<bean class="novalnet.dto.payment.NnResponseWsDTO">
         <property name="redirectURL" type="String">
-            <description>Identifier of the shop</description>
+            <description>URL for the external payments</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnConfigWsDTO">
+        <property name="novalnetClienKey" type="String">
+            <description>Key to load the CreditCard Iframe</description>
+        </property>
+        <property name="paymentinfo" type="novalnet.dto.payment.NnPaymentWsDTO">
+            <description>Payment Configurations</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnPaymentWsDTO">
+        <property name="novalnetCreditCard" type="novalnet.dto.payment.NnCreditCardWsDTO">
+            <description>Novalnet CreditCard Configuration</description>
+        </property>
+        <property name="novalnetDirectDebitSepa" type="novalnet.dto.payment.NnDirectDebitSepaWsDTO">
+            <description>Novalnet DirectDebit SEPA Configuration</description>
+        </property>
+        <property name="novalnetPayPal" type="novalnet.dto.payment.NnPayPalWsDTO">
+            <description>Novalnet PayPal Configuration</description>
         </property>
     </bean>
     
+    <bean class="novalnet.dto.payment.NnCreditCardWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnDirectDebitSepaWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnPayPalWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnPaymentDetailsWsDTO">
+        <property name="status" type="String">
+            <description>Transaction Status</description>
+        </property>
+        <property name="comments" type="String">
+            <description>Transaction Comments</description>
+        </property>
+    </bean>
     
 
 </beans>

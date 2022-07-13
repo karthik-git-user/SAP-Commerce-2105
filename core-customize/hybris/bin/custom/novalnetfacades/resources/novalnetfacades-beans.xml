@@ -5,4 +5,32 @@
 		<property name="redirectURL" type="String"/>
 	</bean>
 
+	<bean class="de.novalnet.beans.NnConfigData">
+		<property name="novalnetClienKey" type="String"/>
+		<property name="paymentinfo" type="de.novalnet.beans.NnPaymentData"/>
+	</bean>
+
+	<bean class="de.novalnet.beans.NnPaymentData">
+		<property name="novalnetCreditCard" type="de.novalnet.beans.NnCreditCardData"/>
+		<property name="novalnetDirectDebitSepa" type="de.novalnet.beans.NnDirectDebitSepaData"/>
+		<property name="novalnetPayPal" type="de.novalnet.beans.NnPayPalData"/>
+	</bean>
+
+	<bean class="de.novalnet.beans.NnCreditCardData">
+		<property name="active" type="Boolean"/>
+	</bean>
+
+	<bean class="de.novalnet.beans.NnDirectDebitSepaData">
+		<property name="active" type="Boolean"/>
+	</bean>
+
+	<bean class="de.novalnet.beans.NnPayPalData">
+		<property name="active" type="Boolean"/>
+	</bean>
+
+	<bean class="de.novalnet.beans.NnPaymentDetailsData">
+		<property name="status" type="String"/>
+		<property name="comments" type="String"/>
+	</bean>
+
 </beans>
