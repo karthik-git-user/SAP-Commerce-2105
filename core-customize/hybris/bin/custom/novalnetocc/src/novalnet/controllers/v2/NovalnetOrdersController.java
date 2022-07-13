@@ -178,8 +178,7 @@ public class NovalnetOrdersController
     private CalculationService calculationService;
     private Populator<AddressModel, AddressData> addressPopulator;
     private CommonI18NService commonI18NService;
-
-    private NnResponseData responseData;
+   
     
 
 	@Resource(name = "novalnetOrderFacade")
@@ -742,8 +741,8 @@ LOG.info(response.toString());
 		String redirectURL = resultJsonObject.get("redirect_url").toString();
 		responseParameters.put("redirect_url", redirectURL);
 		jsonString = gson.toJson(responseParameters);
+		NnResponseData responseData = new NnResponseData();
 		responseData.setRedirectURL(redirectURL);
-		// return jsonString;
 		return dataMapper.map(responseData, NnResponseWsDTO.class, fields);
 	}
 	
