@@ -294,10 +294,10 @@ public class NovalnetOrdersController
 
 			final AddressModel deliveryAddress3 = cartModel.getDeliveryAddress();
 
-			AddressData deliveryAddress = cartData.getDeliveryAddress();
+			// AddressData deliveryAddress = cartData.getDeliveryAddress();
 			AddressData deliveryAddress1 = novalnetOrderFacade.getCheckoutFacade().getCheckoutCart().getDeliveryAddress();
-			LOG.info("+++++++++++++++00000======================");
-			LOG.info(deliveryAddress.getLine1());
+			// LOG.info("+++++++++++++++00000======================");
+			// LOG.info(deliveryAddress.getLine1());
 			LOG.info("+++++++++++++++111111======================");
 			LOG.info(deliveryAddress1.getLine1());
 			LOG.info("+++++++++++++++33333======================");
