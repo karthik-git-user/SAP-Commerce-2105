@@ -294,16 +294,16 @@ public class NovalnetOrdersController
 
 			final AddressModel deliveryAddress = cartModel.getDeliveryAddress();
 
-			if(deliveryAddress.getLine1().equals(street1) && deliveryAddress.getLine2().equals(street2) && deliveryAddress.getTown().equals(town) &&  deliveryAddress.getPostalCode().equals(zip) && deliveryAddress.getCountry().getIsocode().equals(countryCode)) {
+			if(deliveryAddress.getLine1().equals(street1) && deliveryAddress.getLine2().equals(street2) && deliveryAddress.getTown().equals(town) &&  deliveryAddress.getPostalcode().equals(zip) && deliveryAddress.getCountry().getIsocode().equals(countryCode)) {
 			    shippingParameters.put("same_as_billing", 1);
 			    LOG.info("The billing address is same as shipping address for cart id " + requestObject.get("cartId").toString());
 		    } else {
 		        shippingParameters.put("street", deliveryAddress.getLine1() + " " + deliveryAddress.getLine2());
 		        shippingParameters.put("city", deliveryAddress.getTown());
-		        shippingParameters.put("zip", deliveryAddress.getPostalCode());
+		        shippingParameters.put("zip", deliveryAddress.getPostalcode());
 		        shippingParameters.put("country_code", deliveryAddress.getCountry().getIsocode());
-		        shippingParameters.put("first_name", deliveryAddress.getFirstName());
-		        shippingParameters.put("last_name", deliveryAddress.getLastName());
+		        shippingParameters.put("first_name", deliveryAddress.getFirstname());
+		        shippingParameters.put("last_name", deliveryAddress.getLastname());
 		    }
 			
 			customerParameters.put("billing", billingParameters);
