@@ -292,10 +292,16 @@ public class NovalnetOrdersController
 			billingParameters.put("zip", zip);
 			billingParameters.put("country_code", countryCode);
 
-			// AddressData deliveryAddress = cartData.getDeliveryAddress();
-			// AddressData deliveryAddress1 = novalnetOrderFacade.getCheckoutFacade().getCheckoutCart().getDeliveryAddress();
-			// LOG.info(deliveryAddress.getLine1());
-			// LOG.info(deliveryAddress1.getLine1());
+			final AddressModel deliveryAddress3 = cartModel.getDeliveryAddress();
+
+			AddressData deliveryAddress = cartData.getDeliveryAddress();
+			AddressData deliveryAddress1 = novalnetOrderFacade.getCheckoutFacade().getCheckoutCart().getDeliveryAddress();
+			LOG.info("+++++++++++++++00000======================");
+			LOG.info(deliveryAddress.getLine1());
+			LOG.info("+++++++++++++++111111======================");
+			LOG.info(deliveryAddress1.getLine1());
+			LOG.info("+++++++++++++++33333======================");
+			LOG.info(deliveryAddress3.getLine1());
 
 			// if(deliveryAddress.getLine1().equals(addressData.getLine1()) && deliveryAddress.getLine2().equals(addressData.getLine2()) && deliveryAddress.getTown().equals(addressData.getTown()) &&  deliveryAddress.getPostalCode().equals(addressData.getPostalCode()) && deliveryAddress.getCountry().getIsocode().equals(addressData.getCountry().getIsocode())) {
 			    shippingParameters.put("same_as_billing", 1);
@@ -631,7 +637,7 @@ LOG.info(response.toString());
 		requestObject = new JSONObject(reqJsonString.toString());
 
 		LOG.info("jsonrequest666666+");
-LOG.info(reqJsonString.toString());
+		LOG.info(reqJsonString.toString());
 
 		// final AddressData addressData = novalnetOrderFacade.getAddressData(addressId);
 		Integer testMode = 0;
