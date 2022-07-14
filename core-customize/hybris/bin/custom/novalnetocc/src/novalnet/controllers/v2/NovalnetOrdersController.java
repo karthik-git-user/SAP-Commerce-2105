@@ -292,27 +292,19 @@ public class NovalnetOrdersController
 			billingParameters.put("zip", zip);
 			billingParameters.put("country_code", countryCode);
 
-			final AddressModel deliveryAddress3 = cartModel.getDeliveryAddress();
+			final AddressModel deliveryAddress = cartModel.getDeliveryAddress();
 
-			// AddressData deliveryAddress = cartData.getDeliveryAddress();
-			// AddressData deliveryAddress1 = novalnetOrderFacade.getCheckoutFacade().getCheckoutCart().getDeliveryAddress();
-			// LOG.info("+++++++++++++++00000======================");
-			// LOG.info(deliveryAddress.getLine1());
-			// LOG.info("+++++++++++++++111111======================");
-			// LOG.info(deliveryAddress1.getLine1());
-			LOG.info("+++++++++++++++33333======================");
-			LOG.info(deliveryAddress3.getLine1());
-
-			// if(deliveryAddress.getLine1().equals(addressData.getLine1()) && deliveryAddress.getLine2().equals(addressData.getLine2()) && deliveryAddress.getTown().equals(addressData.getTown()) &&  deliveryAddress.getPostalCode().equals(addressData.getPostalCode()) && deliveryAddress.getCountry().getIsocode().equals(addressData.getCountry().getIsocode())) {
+			if(deliveryAddress.getLine1().equals(street1) && deliveryAddress.getLine2().equals(street2) && deliveryAddress.getTown().equals(town) &&  deliveryAddress.getPostalCode().equals(zip) && deliveryAddress.getCountry().getIsocode().equals(countryCode)) {
 			    shippingParameters.put("same_as_billing", 1);
-		    // } else {
-		    //     shippingParameters.put("street", deliveryAddress.getLine1() + " " + deliveryAddress.getLine2());
-		    //     shippingParameters.put("city", deliveryAddress.getTown());
-		    //     shippingParameters.put("zip", deliveryAddress.getPostalCode());
-		    //     shippingParameters.put("country_code", deliveryAddress.getCountry().getIsocode());
-		    //     shippingParameters.put("first_name", deliveryAddress.getFirstName());
-		    //     shippingParameters.put("last_name", deliveryAddress.getLastName());
-		    // }
+			    LOG.info("The billing address is same as shipping address for cart id " + requestObject.get("cartId").toString());
+		    } else {
+		        shippingParameters.put("street", deliveryAddress.getLine1() + " " + deliveryAddress.getLine2());
+		        shippingParameters.put("city", deliveryAddress.getTown());
+		        shippingParameters.put("zip", deliveryAddress.getPostalCode());
+		        shippingParameters.put("country_code", deliveryAddress.getCountry().getIsocode());
+		        shippingParameters.put("first_name", deliveryAddress.getFirstName());
+		        shippingParameters.put("last_name", deliveryAddress.getLastName());
+		    }
 			
 			customerParameters.put("billing", billingParameters);
 			customerParameters.put("shipping", shippingParameters);
