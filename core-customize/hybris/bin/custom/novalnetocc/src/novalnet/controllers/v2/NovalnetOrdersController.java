@@ -668,7 +668,8 @@ public class NovalnetOrdersController
     }
 
 
-    public OrderData createOrder(JSONObject transactionJsonObject, String payment, AddressModel billingAddress, String emailAddress, UserModel currentUser, Integer orderAmountCent, String currency, String languageCode) {
+    public OrderData createOrder(JSONObject transactionJsonObject, String payment, AddressModel billingAddress, String emailAddress, UserModel currentUser, Integer orderAmountCent, String currency, String languageCode)
+    throws InvalidCartException, NoCheckoutCartException {
 
     	PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(payment);
 
