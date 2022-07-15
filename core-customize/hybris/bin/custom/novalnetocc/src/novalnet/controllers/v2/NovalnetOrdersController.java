@@ -276,7 +276,7 @@ public class NovalnetOrdersController
 			firstName = billingObject.get("firstName").toString();
 			lastName = billingObject.get("lastName").toString();
 			street1 = billingObject.get("line1").toString();
-			street2 = (billingObject.get("line2").toString() != null && !billingObject.get("line2").toString().trim().isEmpty()) ? billingObject.get("line2").toString() : "";
+			street2 = billingObject.get("line2").toString();
 			town = billingObject.get("town").toString();
 			zip = billingObject.get("postalCode").toString();
 			countryCode = countryObject.get("isocode").toString();
@@ -292,13 +292,49 @@ public class NovalnetOrdersController
 			billingParameters.put("zip", zip);
 			billingParameters.put("country_code", countryCode);
 
+
+
 			final AddressModel deliveryAddress = cartModel.getDeliveryAddress();
 
 
+			if(deliveryAddress.getLine1().toString().equals(street1)) {
 
-			String deliveryStreet2 = (deliveryAddress.getLine2().toString() != null && !deliveryAddress.getLine2().toString().trim().isEmpty()) ? deliveryAddress.getLine2().toString() : "";
+				Log.info("street1 is same ");
+			}else{
+					Log.info("street1 is not same ");
+			}
 
-			if(deliveryAddress.getLine1().toString().equals(street1) && deliveryStreet2.equals(street2) && deliveryAddress.getTown().toString().equals(town) &&  deliveryAddress.getPostalcode().toString().equals(zip) && deliveryAddress.getCountry().getIsocode().toString().equals(countryCode)) {
+			if(deliveryAddress.getLine2().toString().equals(street2)) {
+
+				Log.info("street2 is same ");
+			}else{
+					Log.info("street2 is not same ");
+			}
+
+			if(deliveryAddress.getTown().toString().equals(town)) {
+
+				Log.info("town is same ");
+			}else{
+					Log.info("town is not same ");
+			}
+
+			if(deliveryAddress.getPostalcode().toString().equals(zip)) {
+
+				Log.info("zip_code is same ");
+			}else{
+					Log.info("zip_code is not same ");
+			}
+
+			if(deliveryAddress.getCountry().getIsocode().toString().equals(countryCode)) {
+
+				Log.info("country code is same ");
+			}else{
+					Log.info("country code is not same ");
+			}
+
+			
+
+			if(deliveryAddress.getLine1().toString().equals(street1) && deliveryAddress.getLine2().toString().equals(street2) && deliveryAddress.getTown().toString().equals(town) &&  deliveryAddress.getPostalcode().toString().equals(zip) && deliveryAddress.getCountry().getIsocode().toString().equals(countryCode)) {
 			    shippingParameters.put("same_as_billing", 1);
 			    LOG.info("The billing address is same as shipping address for cart id " + requestObject.get("cartId").toString());
 		    } else {
@@ -308,6 +344,7 @@ public class NovalnetOrdersController
 		        shippingParameters.put("country_code", deliveryAddress.getCountry().getIsocode());
 		        shippingParameters.put("first_name", deliveryAddress.getFirstname());
 		        shippingParameters.put("last_name", deliveryAddress.getLastname());
+		        LOG.info("The billing address differs from shipping address");
 		    }
 			
 			customerParameters.put("billing", billingParameters);
