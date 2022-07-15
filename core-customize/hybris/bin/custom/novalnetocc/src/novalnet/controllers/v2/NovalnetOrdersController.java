@@ -217,7 +217,7 @@ public class NovalnetOrdersController
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 
-		
+		JSONObject requestObject = new JSONObject(reqJsonString.toString());
 		cartData = novalnetOrderFacade.loadCart(requestObject.get("cartId").toString());
 		cartModel = novalnetOrderFacade.getCart();
 		baseStore = novalnetOrderFacade.getBaseStoreModel();
@@ -226,7 +226,6 @@ public class NovalnetOrdersController
 		final String emailAddress 	= JaloSession.getCurrentSession().getUser().getLogin();
 		String responseString = "";
 
-		JSONObject requestObject = new JSONObject(reqJsonString.toString());
 		// JSONObject resultJsonObject = new JSONObject();
 		// JSONObject transactionJsonObject = new JSONObject();
 		// JSONObject customerJsonObject = new JSONObject();
@@ -551,7 +550,6 @@ public class NovalnetOrdersController
 		PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(currentPayment);
 
     	JSONObject billingObject = new JSONObject(requestObject.getJSONObject("billingAddress").toString());
-		JSONObject paymentObject = new JSONObject(requestObject.getJSONObject("paymentData").toString());
 		JSONObject countryObject = new JSONObject(billingObject.getJSONObject("country").toString());
 		JSONObject regionObject  = new JSONObject(billingObject.getJSONObject("region").toString());
 
@@ -603,8 +601,10 @@ public class NovalnetOrdersController
 		transactionParameters.put("system_version", "2105-NN1.0.1");
 		customParameters.put("lang", languageCode);
 
+		JSONObject paymentObject = new JSONObject();
+
 		if ("novalnetCreditCard".equals(currentPayment)) {
-        	JSONObject paymentObject = new JSONObject(requestObject.getJSONObject("paymentData"));
+        	paymentObject = new JSONObject(requestObject.getJSONObject("paymentData"));
 			paymentParameters.put("pan_hash", paymentObject.get("panHash").toString());
 			paymentParameters.put("unique_id", paymentObject.get("uniqId").toString());
 			NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
@@ -616,8 +616,8 @@ public class NovalnetOrdersController
 			if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
             }
-		} else if ("novalnetDirectDebitSepa".equals(payment)) {
-			JSONObject paymentObject = new JSONObject(requestObject.getJSONObject("paymentData"));
+		} else if ("novalnetDirectDebitSepa".equals(currentPayment)) {
+			paymentObject = new JSONObject(requestObject.getJSONObject("paymentData"));
             NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
 			String accountHolder = billingObject.get("firstName").toString() + ' ' + billingObject.get("lastName").toString();
 			paymentParameters.put("iban", paymentObject.get("iban").toString());
@@ -767,7 +767,7 @@ public class NovalnetOrdersController
 		createTransactionUpdate(transactionJsonObject.get("tid").toString(), orderNumber, languageCode);
 		
 
-        syncmirakl(tomJsonObject, orderNumber);
+       
 
         long callbackInfoTid = Long.parseLong(transactionJsonObject.get("tid").toString());
         int orderPaidAmount = orderAmountCent;
@@ -805,6 +805,8 @@ public class NovalnetOrdersController
 		LOG.info(jsonString);
 		String url = "https://payport.novalnet.de/v2/transaction/details";
 		StringBuilder response = sendRequest(url, jsonString);
+		JSONObject tomJsonObject = new JSONObject(response.toString());
+		syncmirakl(tomJsonObject, orderNumber);
 		response.toString();
     }
 
@@ -895,6 +897,8 @@ public class NovalnetOrdersController
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 
+		JSONObject requestObject = new JSONObject(reqJsonString.toString());
+
 		cartData = novalnetOrderFacade.loadCart(requestObject.get("cartId").toString());
 		cartModel = novalnetOrderFacade.getCart();
 		baseStore = novalnetOrderFacade.getBaseStoreModel();
@@ -903,7 +907,7 @@ public class NovalnetOrdersController
 		final String emailAddress 	= JaloSession.getCurrentSession().getUser().getLogin();
 		String responseString = "";
 
-		JSONObject requestObject = new JSONObject(reqJsonString.toString());
+		
 
 		final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
 		String totalAmount 			= formatAmount(String.valueOf(cartData.getTotalPriceWithTax().getValue()));
@@ -1032,7 +1036,7 @@ public class NovalnetOrdersController
 // LOG.info(jsonString);
 
 //         String password = baseStore.getNovalnetPaymentAccessKey().toString();
-//         String url = "https://payport.novalnet.de/v2/payment";
+        String url = "https://payport.novalnet.de/v2/payment";
         StringBuilder response = sendRequest(url, jsonString);
 
 
