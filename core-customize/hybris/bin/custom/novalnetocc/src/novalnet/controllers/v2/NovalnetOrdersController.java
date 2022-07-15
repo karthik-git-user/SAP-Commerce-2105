@@ -276,7 +276,7 @@ public class NovalnetOrdersController
 			firstName = billingObject.get("firstName").toString();
 			lastName = billingObject.get("lastName").toString();
 			street1 = billingObject.get("line1").toString();
-			street2 = billingObject.get("line2").toString();
+			street2 = (billingObject.get("line2").toString() != null && !billingObject.get("line2").toString().trim().isEmpty()) ? billingObject.get("line2").toString() : "";
 			town = billingObject.get("town").toString();
 			zip = billingObject.get("postalCode").toString();
 			countryCode = countryObject.get("isocode").toString();
@@ -293,7 +293,10 @@ public class NovalnetOrdersController
 			billingParameters.put("country_code", countryCode);
 
 			final AddressModel deliveryAddress = cartModel.getDeliveryAddress();
-			String deliveryStreet2 = (deliveryAddress.getLine2().toString()) ? deliveryAddress.getLine2().toString() : "";
+
+
+
+			String deliveryStreet2 = (deliveryAddress.getLine2().toString() != null && !deliveryAddress.getLine2().toString().trim().isEmpty()) ? deliveryAddress.getLine2().toString() : "";
 
 			if(deliveryAddress.getLine1().toString().equals(street1) && deliveryStreet2.equals(street2) && deliveryAddress.getTown().toString().equals(town) &&  deliveryAddress.getPostalcode().toString().equals(zip) && deliveryAddress.getCountry().getIsocode().toString().equals(countryCode)) {
 			    shippingParameters.put("same_as_billing", 1);
