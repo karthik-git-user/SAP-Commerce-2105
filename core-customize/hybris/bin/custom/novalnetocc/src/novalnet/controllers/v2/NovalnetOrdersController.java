@@ -299,37 +299,37 @@ public class NovalnetOrdersController
 
 			if(deliveryAddress.getLine1().toString().equals(street1)) {
 
-				Log.info("street1 is same ");
+				LOG.info("street1 is same ");
 			}else{
-					Log.info("street1 is not same ");
+					LOG.info("street1 is not same ");
 			}
 
 			if(deliveryAddress.getLine2().toString().equals(street2)) {
 
-				Log.info("street2 is same ");
+				LOG.info("street2 is same ");
 			}else{
-					Log.info("street2 is not same ");
+					LOG.info("street2 is not same ");
 			}
 
 			if(deliveryAddress.getTown().toString().equals(town)) {
 
-				Log.info("town is same ");
+				LOG.info("town is same ");
 			}else{
-					Log.info("town is not same ");
+					LOG.info("town is not same ");
 			}
 
 			if(deliveryAddress.getPostalcode().toString().equals(zip)) {
 
-				Log.info("zip_code is same ");
+				LOG.info("zip_code is same ");
 			}else{
-					Log.info("zip_code is not same ");
+					LOG.info("zip_code is not same ");
 			}
 
 			if(deliveryAddress.getCountry().getIsocode().toString().equals(countryCode)) {
 
-				Log.info("country code is same ");
+				LOG.info("country code is same ");
 			}else{
-					Log.info("country code is not same ");
+					LOG.info("country code is not same ");
 			}
 
 			
