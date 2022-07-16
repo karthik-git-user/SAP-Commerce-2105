@@ -903,15 +903,13 @@ public class NovalnetOrdersController
 
 		JSONObject requestObject = new JSONObject(reqJsonString.toString());
 
-		cartData = novalnetOrderFacade.loadCart(requestObject.get("cartId").toString());
+		cartData  = novalnetOrderFacade.loadCart(requestObject.get("cartId").toString());
 		cartModel = novalnetOrderFacade.getCart();
 		baseStore = novalnetOrderFacade.getBaseStoreModel();
 
-		String action 				= requestObject.get("action").toString();
+		String action = "get_redirect_url";
 		final String emailAddress 	= JaloSession.getCurrentSession().getUser().getLogin();
 		String responseString = "";
-
-		
 
 		final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
 		String totalAmount 			= formatAmount(String.valueOf(cartData.getTotalPriceWithTax().getValue()));
