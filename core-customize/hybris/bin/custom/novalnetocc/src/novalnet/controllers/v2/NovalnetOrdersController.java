@@ -604,10 +604,8 @@ public class NovalnetOrdersController
 		transactionParameters.put("system_version", "2105-NN1.0.1");
 		customParameters.put("lang", languageCode);
 
-		JSONObject paymentObject = new JSONObject();
-
 		if ("novalnetCreditCard".equals(currentPayment)) {
-        	paymentObject = new JSONObject(requestObject.getJSONObject("paymentData"));
+			JSONObject paymentObject = new JSONObject(requestObject.getJSONObject("paymentData").toString());
         	LOG.info("payment_object66");
 		LOG.info(paymentObject.toString());
 			paymentParameters.put("pan_hash", paymentObject.get("panHash").toString());
@@ -622,7 +620,7 @@ public class NovalnetOrdersController
                 testMode = 1;
             }
 		} else if ("novalnetDirectDebitSepa".equals(currentPayment)) {
-			paymentObject = new JSONObject(requestObject.getJSONObject("paymentData"));
+			JSONObject paymentObject = new JSONObject(requestObject.getJSONObject("paymentData").toString());
             NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
 			String accountHolder = billingObject.get("firstName").toString() + ' ' + billingObject.get("lastName").toString();
 			paymentParameters.put("iban", paymentObject.get("iban").toString());
