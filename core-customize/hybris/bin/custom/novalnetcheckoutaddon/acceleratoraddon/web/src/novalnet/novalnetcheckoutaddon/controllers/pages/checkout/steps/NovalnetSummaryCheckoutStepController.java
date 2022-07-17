@@ -114,6 +114,7 @@ import de.hybris.novalnet.core.model.NovalnetGuaranteedInvoicePaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetPrepaymentPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetBarzahlenPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetInstantBankTransferPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetOnlineBankTransferPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetBancontactPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetMultibancoPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetPostFinanceCardPaymentModeModel;
@@ -304,7 +305,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
         transactionParameters.put("currency", currency);
         transactionParameters.put("amount", orderAmountCent);
         transactionParameters.put("system_name", "SAP Commerce Cloud");
-        transactionParameters.put("system_version", "2105-NN1.0.1");
+        transactionParameters.put("system_version", "2105-NN1.1.0");
         
         boolean verify_payment_data = false;
 
@@ -373,7 +374,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
 
         } else if ("novalnetGuaranteedDirectDebitSepa".equals(currentPayment)) {
 
-				
+            NovalnetGuaranteedDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetGuaranteedDirectDebitSepaPaymentModeModel) paymentModeModel;
 
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
@@ -469,7 +470,6 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             }
         } else if ("novalnetCreditCard".equals(currentPayment)) {
             NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
-            
             if(novalnetPaymentMethod != null) {
 				onholdOrderAmount = novalnetPaymentMethod.getNovalnetOnholdAmount();
 				if (onholdOrderAmount == null) { 
@@ -595,7 +595,6 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             }
         } else if ("novalnetBarzahlen".equals(currentPayment)) {
             NovalnetBarzahlenPaymentModeModel novalnetPaymentMethod = (NovalnetBarzahlenPaymentModeModel) paymentModeModel;
-
             // Form Barzahlen slip expiry date
             Integer slipExpiryDate = novalnetPaymentMethod.getNovalnetBarzahlenslipExpiryDate();
             if (slipExpiryDate != null) {
@@ -606,6 +605,16 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             }
         } else if ("novalnetInstantBankTransfer".equals(currentPayment)) {
             NovalnetInstantBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetInstantBankTransferPaymentModeModel) paymentModeModel;
+
+            // Redirect Flag
+            redirect = true;
+
+            // Check for test mode
+            if (novalnetPaymentMethod.getNovalnetTestMode()) {
+                testMode = 1;
+            }
+        } else if ("novalnetOnlineBankTransfer".equals(currentPayment)) {
+            NovalnetOnlineBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetOnlineBankTransferPaymentModeModel) paymentModeModel;
 
             // Redirect Flag
             redirect = true;
@@ -750,7 +759,9 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
         if (Arrays.asList(successStatus).contains(transactionJsonObject.get("status").toString())) {
             final CartModel cartModel = novalnetFacade.getNovalnetCheckoutCart();
 
-            String orderComments = "Novalnet transaction id : " + transactionJsonObject.get("tid");
+            String paymentName = novalnetFacade.getPaymentName(currentPayment);
+            String orderComments = Localization.getLocalizedString("novalnet.paymentname") + ": " + paymentName + "<br>";
+            orderComments += "Novalnet transaction id : " + transactionJsonObject.get("tid");
             AddressData addressData = getSessionService().getAttribute("novalnetAddressData");
 
             String bankDetails = "";
@@ -814,7 +825,6 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
 
 				if(novalnetGuaranteedDirectDebitSepaStorePaymentData == true) {
 					novalnetFacade.handleReferenceTransactionInfo(response, customerNo, "novalnetDirectDebitSepa");
-					JSONObject paymentDataJsonObject = transactionJsonObject.getJSONObject("payment_data");
 				}
 			}
 
@@ -822,12 +832,6 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             dataParameters.clear();
             
             final OrderData orderData;
-            
-            if (("novalnetInvoice".equals(currentPayment) || "novalnetPrepayment".equals(currentPayment))) {
-
-                bankDetails += formPayamentReferenceComments(transactionJsonObject.get("tid").toString(), orderData.getCode());
-
-            }
 
             orderData = novalnetFacade.saveOrderData(orderComments, currentPayment, transactionJsonObject.get("status").toString(), orderAmountCent, transactionJsonObject.getString("currency"), transactionJsonObject.get("tid").toString(), customerJsonObject.getString("email"), addressData, bankDetails);
             
@@ -849,26 +853,6 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
             getSessionService().setAttribute("novalnetCheckoutError", statusMessage);
             return getCheckoutStep().previousStep();
         }
-    }
-
-
-    /**
-     * Form the payment reference comments
-     *
-     * @param request The servlet request
-     * @return Mapped values
-     */
-    public static String formPayamentReferenceComments(String transactionID, String orderno) {
-        String bankDetails = "";
-        String referenceComments = "<br>";
-        int i = 0;
-        referenceComments += "PAYMENT_REFERENCE" + ++i + ": " + "TID " + transactionID + "<br>";
-
-        // Add Reference notification text
-        bankDetails += Localization.getLocalizedString("novalnet.bankDetailspaymentRefernceMulti");
-        bankDetails += bankDetails + referenceComments.replace("PAYMENT_REFERENCE", Localization.getLocalizedString("novalnet.bankDetailsPaymentReference") + " ");
-        
-        return bankDetails;
     }
 
     /**
@@ -1021,6 +1005,7 @@ public class NovalnetSummaryCheckoutStepController extends AbstractCheckoutStepC
         paymentType.put("novalnetBarzahlen", "CASHPAYMENT");
         paymentType.put("novalnetPayPal", "PAYPAL");
         paymentType.put("novalnetInstantBankTransfer", "ONLINE_TRANSFER");
+        paymentType.put("novalnetOnlineBankTransfer", "ONLINE_BANK_TRANSFER");
         paymentType.put("novalnetBancontact", "BANCONTACT");
         paymentType.put("novalnetMultibanco", "MULTIBANCO");
         paymentType.put("novalnetIdeal", "IDEAL");

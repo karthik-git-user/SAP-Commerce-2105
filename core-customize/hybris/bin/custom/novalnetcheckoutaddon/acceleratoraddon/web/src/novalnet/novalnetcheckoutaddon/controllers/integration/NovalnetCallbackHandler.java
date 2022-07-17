@@ -223,6 +223,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             initialPayments.put("GUARANTEED_INSTALLMENT_PAYMENT", "GUARANTEED_INSTALLMENT_PAYMENT");
             initialPayments.put("PAYPAL", "PAYPAL");
             initialPayments.put("ONLINE_TRANSFER", "ONLINE_TRANSFER");
+            initialPayments.put("ONLINE_BANK_TRANSFER", "ONLINE_BANK_TRANSFER");
             initialPayments.put("IDEAL", "IDEAL");
             initialPayments.put("EPS", "EPS");
             initialPayments.put("PAYSAFECARD", "PAYSAFECARD");
@@ -250,7 +251,6 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             collectionPayments.put("DEBT_COLLECTION_CREDITCARD", "DEBT_COLLECTION_CREDITCARD");
             collectionPayments.put("GUARANTEED_DEBT_COLLECTION", "GUARANTEED_DEBT_COLLECTION");
             collectionPayments.put("CASHPAYMENT_CREDIT", "CASHPAYMENT_CREDIT");
-
             collectionPayments.put("DEBT_COLLECTION_DE", "DEBT_COLLECTION_DE");
 
             // Payment types for each payment method
@@ -258,10 +258,11 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             String[] creditCardPaymentTypes = {"CREDITCARD", "CREDITCARD_CHARGEBACK", "CREDITCARD_BOOKBACK", "TRANSACTION_CANCELLATION", "CREDIT_ENTRY_CREDITCARD", "DEBT_COLLECTION_CREDITCARD"};
             String[] directDebitSepaPaymentTypes = {"DIRECT_DEBIT_SEPA", "RETURN_DEBIT_SEPA", "REFUND_BY_BANK_TRANSFER_EU", "TRANSACTION_CANCELLATION", "CREDIT_ENTRY_SEPA", "DEBT_COLLECTION_SEPA"};
             String[] invoicePaymentTypes = {"INVOICE_START", "INVOICE_CREDIT", "TRANSACTION_CANCELLATION", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE", "INVOICE"};
-            String[] prepaymentPaymentTypes = {"INVOICE_START", "INVOICE_CREDIT", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE"};
+            String[] prepaymentPaymentTypes = {"PREPAYMENT", "INVOICE_CREDIT", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE"};
             String[] multibancoPaymentTypes = {"MULTIBANCO", "MULTIBANCO_CREDIT"};
             String[] payPalPaymentTypes = {"PAYPAL", "PAYPAL_BOOKBACK", "REFUND_BY_BANK_TRANSFER_EU"};
             String[] instantBankTransferPaymentTypes = {"ONLINE_TRANSFER", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
+            String[] onlineBankTransferPaymentTypes = {"ONLINE_BANK_TRANSFER", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
             String[] bancontactPaymentTypes = {"BANCONTACT", "REFUND_BY_BANK_TRANSFER_EU"};
             String[] idealPaymentTypes = {"IDEAL", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
             String[] epsPaymentTypes = {"EPS", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
@@ -279,6 +280,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             paymentTypes.put("novalnetPrepayment", prepaymentPaymentTypes);
             paymentTypes.put("novalnetPayPal", payPalPaymentTypes);
             paymentTypes.put("novalnetInstantBankTransfer", instantBankTransferPaymentTypes);
+            paymentTypes.put("novalnetOnlineBankTransfer", onlineBankTransferPaymentTypes);
             paymentTypes.put("novalnetIdeal", idealPaymentTypes);
             paymentTypes.put("novalnetEps", epsPaymentTypes);
             paymentTypes.put("novalnetGiropay", giropayPaymentTypes);
@@ -331,8 +333,8 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             }
 
             String referenceTid = transactionJsonObject.get("tid").toString();
-            String[] successStatus = {"CONFIRMED", "PENDING", "ON_HOLD"};
-            if (!"".equals(transactionJsonObject.get(STATUS_LITERAL).toString()) && Arrays.asList(successStatus).contains(transactionJsonObject.get(STATUS_LITERAL).toString())) {
+            String[] status = {"CONFIRMED", "PENDING", "ON_HOLD", "DEACTIVATED", "FAILURE"};
+            if (!"".equals(transactionJsonObject.get(STATUS_LITERAL).toString()) && Arrays.asList(status).contains(transactionJsonObject.get(STATUS_LITERAL).toString())) {
 
                 if ((chargebackPayments.containsValue(requestPaymentType) || collectionPayments.containsValue(requestPaymentType)) || creditPayments.containsValue(requestPaymentType) || refundPayments.containsValue(requestPaymentType)) {
                     // Get reference TID
@@ -403,7 +405,6 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
 
                 if ("TRANSACTION_CANCEL".equals(eventJsonObject.get("type").toString())) {
                     callbackComments = "The transaction has been canceled on " + currentDate.toString();
-
                     novalnetFacade.updatePaymentInfo(paymentInfo, transactionJsonObject.get(STATUS_LITERAL).toString());
                     novalnetFacade.updateCancelStatus(orderNo);
                     novalnetFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
@@ -443,7 +444,6 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                             sendEmail(callbackComments, toEmailAddress);
                             return false;
                         }
-
                     }
 
                     if (Arrays.asList(pendingPaymentType).contains(requestPaymentType)) {   // IF PAYMENT MADE ON REAL TIME (NOT THROUGH SUBSCRIPTION RENEWAL)
@@ -451,22 +451,20 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                         if (orderAmount > paidAmount) {
                             String[] statusPending = {"PENDING"};
                             if (Arrays.asList(statusPending).contains(paymentInfo.get(0).getPaymentGatewayStatus()) && "CONFIRMED".equals(transactionJsonObject.get(STATUS_LITERAL).toString())) {
-                                callbackComments = "The transaction has been confirmed successfully for the TID: " + transactionJsonObject.get("tid").toString() + " with amount " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString();
-                                novalnetFacade.updateOrderStatus(orderNo, paymentInfoModel);
+                                    callbackComments = "The transaction has been confirmed successfully for the TID: " + transactionJsonObject.get("tid").toString() + " with amount: " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString();
+                                    novalnetFacade.updatePaymentInfo(paymentInfo, transactionJsonObject.get(STATUS_LITERAL).toString());
+                                    paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
+                                    novalnetFacade.updateOrderStatus(orderNo, paymentInfoModel);
                             } else {
                                 String reasonText = !("".equals(resultJsonObject.get("status_desc").toString())) ? resultJsonObject.get("status_desc").toString() : (!("".equals(resultJsonObject.get("status_text").toString())) ? resultJsonObject.get("status_text").toString() : "Payment could not be completed");
                                 callbackComments = "The transaction has been cancelled due to:" + reasonText;
+                                novalnetFacade.updatePaymentInfo(paymentInfo, transactionJsonObject.get(STATUS_LITERAL).toString());
+                                novalnetFacade.updateCancelStatus(orderNo);
                             }
                             // Update callback comments
                             novalnetFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
-
-                            // Update Order success status
-
-
                             // Update Callback info
-                            novalnetFacade.updatePaymentInfo(paymentInfo, transactionJsonObject.get(STATUS_LITERAL).toString());
                             novalnetFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
-
                             // Send notification email
                             sendEmail(callbackComments, toEmailAddress);
                             return false;
@@ -515,7 +513,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                         // if settlement of invoice OR Advance payment through Customer
                         if (orderAmount > paidAmount) {
                             // Form callback comments
-                            String notifyComments = callbackComments = "Credit has been successfully received for the TID: " + eventJsonObject.get("parent_tid").toString() + " with amount " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID: " + transactionJsonObject.get("tid").toString();
+                            String notifyComments = callbackComments = "Credit has been successfully received for the TID: " + eventJsonObject.get("parent_tid").toString() + " with amount: " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID: " + transactionJsonObject.get("tid").toString();
 
                             // Update PART PAID payment status
                             novalnetFacade.updatePartPaidStatus(orderNo);
@@ -542,7 +540,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                             return false;
                         }
                     } else if (Arrays.asList(creditPayment).contains(requestPaymentType)) {
-                        callbackComments = "Credit has been successfully received for the TID: " + eventJsonObject.get("parent_tid").toString() + " with amount" + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID:" + transactionJsonObject.get("tid").toString() + ".";
+                        callbackComments = "Credit has been successfully received for the TID: " + eventJsonObject.get("parent_tid").toString() + " with amount: " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID:" + transactionJsonObject.get("tid").toString() + ".";
                         novalnetFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
                         novalnetFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
 
@@ -554,7 +552,12 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                     return false;
                 } else if ("SUBSCRIPTION_STOP".equals(requestPaymentType)) {
 
-                    // UPDATE THE STATUS OF THE USER SUBSCRIPTION
+                    // UPDATE THE STATUS OF THE Transaction
+                } else if ("PAYMENT".equals(eventJsonObject.get("type").toString())) {
+                    paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
+                    novalnetFacade.updateOrderStatus(orderNo, paymentInfoModel);
+                    displayMessage("Novalnet webhook script executed. Status updated for initial transaction");
+                    return false;
                 }
             }
             displayMessage("Novalnet webhook script executed. Status not valid");

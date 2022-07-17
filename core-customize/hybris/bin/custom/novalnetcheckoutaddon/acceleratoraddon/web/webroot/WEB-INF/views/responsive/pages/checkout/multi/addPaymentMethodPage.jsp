@@ -137,7 +137,7 @@
                                                             <br/><br/>
                                                             <div id = "nn_overlay">
                                                             </div>
-                                                            <iframe id='novalnetCreditCardIframe' frameborder='0' scrolling='no'></iframe><br/>
+                                                            <iframe id='novalnetCreditCardIframe' frameborder='0' scrolling='no' style = "min-width: 40%;"></iframe><br/>
                                                             <formElement:formCheckbox
                                                             path="creditcardSaveData"
                                                             idKey="creditcardSaveData"
@@ -160,7 +160,7 @@
                                                         </c:if>
                                                         <div id = "nn_overlay">
                                                         </div>
-                                                        <iframe id="novalnetCreditCardIframe" frameborder="0" scrolling="no"></iframe>
+                                                        <iframe id="novalnetCreditCardIframe" frameborder="0" scrolling="no" style = "min-width: 40%;"></iframe>
 
                                                          <c:if test="${novalnetCreditCardOneClickEnabled == true}">
                                                             <formElement:formCheckbox
@@ -609,6 +609,25 @@
                                                         ${novalnetInstantBankTransfer.novalnetEndUserInfo}<br/>
                                                     </c:if>
                                                     <div class="description novalnet-info-box">${novalnetInstantBankTransfer.description}</div><br/>
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${novalnetOnlineBankTransfer.active == true}">
+                                            <div class="novalnet-select-payment">
+                                                    <form:radiobutton path="selectedPaymentMethodId" id="novalnetOnlineBankTransfer" value="novalnetOnlineBankTransfer" label="${novalnetOnlineBankTransfer.name}"/>
+                                                    &nbsp;&nbsp;
+                                                        <img src="${contextPath}/_ui/addons/novalnetcheckoutaddon/responsive/common/images/novalnetOnlineBankTransfer.png" />
+                                                    </a>&nbsp;&nbsp;
+                                            </div>
+                                            <div id="novalnetOnlineBankTransferPaymentForm" style="display:none;" class="novalnetPaymentForm">
+                                                    <c:if test="${novalnetOnlineBankTransfer.novalnetTestMode == true}">
+                                                        <div id= "testModeText">
+                                                            <spring:theme code="novalnet.testModeText"/><br/>
+                                                        </div></br>
+                                                    </c:if>
+                                                    <c:if test="${novalnetOnlineBankTransfer.novalnetEndUserInfo != null}">
+                                                        ${novalnetOnlineBankTransfer.novalnetEndUserInfo}<br/>
+                                                    </c:if>
+                                                    <div class="description novalnet-info-box">${novalnetOnlineBankTransfer.description}</div><br/>
                                             </div>
                                         </c:if>
                                         <c:if test="${novalnetBancontact.active == true}">
