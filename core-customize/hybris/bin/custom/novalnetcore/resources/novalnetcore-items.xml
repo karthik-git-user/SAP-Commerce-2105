@@ -496,6 +496,25 @@
             </attributes>
         </itemtype>
         
+        <!-- Novalnet Online Bank Transfer configuration -->
+        <itemtype code="NovalnetOnlineBankTransferPaymentMode" extends="StandardPaymentMode" autocreate="true"
+                  generate="true">
+            <attributes>
+                <attribute qualifier="novalnetTestMode" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" initial="false" optional="false"/>
+                </attribute>
+                <attribute qualifier="novalnetEndUserInfo" type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" optional="true"/>
+                </attribute>
+                <attribute autocreate="true" qualifier="novalnetOrderSuccessStatus" type="OrderStatus" generate="true">
+                    <persistence type="property" qualifier="novalnetOrderSuccessStatusPK"/>
+                    <modifiers encrypted="false" search="true" optional="true"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+        
         <!-- Novalnet Bancontact configuration -->
         <itemtype code="NovalnetBancontactPaymentMode" extends="StandardPaymentMode" autocreate="true"
                   generate="true">
