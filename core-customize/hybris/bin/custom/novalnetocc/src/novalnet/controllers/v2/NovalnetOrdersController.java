@@ -190,7 +190,7 @@ public class NovalnetOrdersController
     private CartModel cartModel;
     private String password;
    
-    
+    private static final String PAYMENT_AUTHORIZE = "AUTHORIZE";
 
 	@Resource(name = "novalnetOrderFacade")
     NovalnetOrderFacade novalnetOrderFacade;
@@ -241,7 +241,7 @@ public class NovalnetOrdersController
 			
 		if("create_order".equals(action)) {
 			Map<String, Object> requsetDeatils = formPaymentRequest(requestObject, action, emailAddress, orderAmountCent, currency, languageCode);
-        	StringBuilder response = sendRequest(requsetDeatils.get("paygateURL"), requsetDeatils.get("jsonString"));
+        	StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());
 			responseString = response.toString();
 		} else {
 			responseString = getTransactionDetails(requestObject, languageCode);
@@ -715,7 +715,7 @@ public class NovalnetOrdersController
 	
 		
 		Map<String, Object> requsetDeatils = formPaymentRequest(requestObject, action, emailAddress, orderAmountCent, currency, languageCode);
-        StringBuilder response = sendRequest(requsetDeatils.get("paygateURL"), requsetDeatils.get("jsonString"));
+        StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());
         JSONObject tomJsonObject = new JSONObject(response.toString());
         JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
         JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
