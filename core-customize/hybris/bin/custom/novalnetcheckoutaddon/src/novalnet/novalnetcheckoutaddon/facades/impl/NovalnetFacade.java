@@ -12,6 +12,7 @@
 package novalnet.novalnetcheckoutaddon.facades;
 
 import java.lang.*;
+import static java.lang.String.format;
 import java.io.*;
 
 import java.util.Map;
