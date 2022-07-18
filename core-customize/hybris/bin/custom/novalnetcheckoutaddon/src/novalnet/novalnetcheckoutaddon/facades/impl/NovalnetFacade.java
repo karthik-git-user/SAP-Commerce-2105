@@ -39,6 +39,7 @@ import de.hybris.platform.core.model.order.CartModel;
 import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.core.model.user.UserModel;
 import de.hybris.platform.core.model.order.OrderModel;
+import de.hybris.platform.core.model.order.delivery.DeliveryModeModel;
 import de.hybris.platform.core.model.order.payment.PaymentInfoModel;
 import de.hybris.platform.core.model.user.AddressModel;
 import de.hybris.platform.core.model.order.payment.PaymentModeModel;
@@ -48,6 +49,7 @@ import de.hybris.platform.commercefacades.order.data.OrderData;
 import de.hybris.platform.orderhistory.model.OrderHistoryEntryModel;
 import de.hybris.platform.commercefacades.user.data.AddressData;
 import de.hybris.platform.commerceservices.enums.CustomerType;
+import de.hybris.platform.commerceservices.service.data.CommerceCheckoutParameter;
 import de.hybris.platform.servicelayer.dto.converter.Converter;
 
 import de.hybris.platform.order.InvalidCartException;
@@ -101,6 +103,8 @@ import java.net.Inet6Address;
 import java.net.UnknownHostException;
 import java.util.Base64;
 
+import org.springframework.beans.factory.annotation.Required;
+
 /**
  * NovalnetFacade
  */
@@ -118,6 +122,8 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
 
     @Resource
     private Converter<AddressData, AddressModel> addressReverseConverter;
+
+    protected String defaultFreeDeliveryModeCode;
 
 
     /**
@@ -1023,5 +1029,42 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         orderModel.setPaymentStatus(PaymentStatus.PARTPAID);
 
         this.getModelService().save(orderModel);
+    }
+
+    @Override
+    public boolean setDeliveryModeIfAvailable() {
+        CartModel cart = getCart();
+        if (cart == null) {
+          return false;
+        }
+        if (cart.isMarketplaceOrder()) {
+          return setDefaultFreeDeliveryMode(cart);
+        }
+        return superSetDeliveryModeIfAvailable();
+    }
+
+    protected boolean setDefaultFreeDeliveryMode(CartModel sessionCart) {
+      DeliveryModeModel defaultFreeDeliveryMode = getDeliveryService().getDeliveryModeForCode(defaultFreeDeliveryModeCode);
+        if (defaultFreeDeliveryMode == null) {
+          throw new IllegalStateException(
+              format("No default free delivery mode [%s] found for the marketplace cart", defaultFreeDeliveryModeCode));
+        }
+
+        CommerceCheckoutParameter checkoutParameter = new CommerceCheckoutParameter();
+        checkoutParameter.setEnableHooks(true);
+        checkoutParameter.setCart(sessionCart);
+        checkoutParameter.setDeliveryMode(defaultFreeDeliveryMode);
+        getCommerceCheckoutService().setDeliveryMode(checkoutParameter);
+
+        return true;
+    }
+
+    protected boolean superSetDeliveryModeIfAvailable() {
+        return super.setDeliveryModeIfAvailable();
+    }
+
+    @Required
+    public void setDefaultFreeDeliveryModeCode(String defaultFreeDeliveryModeCode) {
+        this.defaultFreeDeliveryModeCode = defaultFreeDeliveryModeCode;
     }
 }
