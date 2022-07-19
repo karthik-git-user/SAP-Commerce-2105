@@ -327,6 +327,8 @@ public class NovalnetOrdersController
 		String customerNo 			= JaloSession.getCurrentSession().getUser().getPK().toString();
 		String currentPayment 		= requestObject.get("paymentType").toString();
 
+		String payment = currentPayment.equals("CREDITCARD") ? "novalnetCreditCard" : (currentPayment.equals("DIRECT_DEBIT_SEPA") ? "novalnetDirectDebitSepa" :(currentPayment.equals("PAYPAL") ? "novalnetPayPal": ""));
+
 		LOG.info("request_object66");
 		LOG.info(requestObject.toString());
 
@@ -384,7 +386,7 @@ public class NovalnetOrdersController
 		transactionParameters.put("system_name", "SAP Commerce Cloud");
 		transactionParameters.put("system_version", "2105-NN1.0.1");
 		
-		if ("novalnetCreditCard".equals(currentPayment)) {
+		if ("novalnetCreditCard".equals(payment)) {
 
 			JSONObject paymentObject = new JSONObject(requestObject.getJSONObject("paymentData").toString());
         	LOG.info("payment_object66");
@@ -403,7 +405,7 @@ public class NovalnetOrdersController
             }
 
 
-		} else if ("novalnetPayPal".equals(currentPayment)) {
+		} else if ("novalnetPayPal".equals(payment)) {
 
 			NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
 			if (novalnetPaymentMethod.getNovalnetTestMode()) {
@@ -416,7 +418,7 @@ public class NovalnetOrdersController
                  verify_payment_data = true;
             }
 
-		} else if ("novalnetDirectDebitSepa".equals(currentPayment)) {
+		} else if ("novalnetDirectDebitSepa".equals(payment)) {
 
 			JSONObject paymentObject = new JSONObject(requestObject.getJSONObject("paymentData").toString());
             NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
@@ -591,11 +593,7 @@ public class NovalnetOrdersController
 		customParameters.put("lang", languageCode);
 		dataParameters.put("transaction", transactionParameters);
 		dataParameters.put("custom", customParameters);
-
-
 		String jsonString = gson.toJson(dataParameters);
-		LOG.info("request1111+");
-		LOG.info(jsonString);
 		String url = "https://payport.novalnet.de/v2/transaction/details";
 		StringBuilder response = sendRequest(url, jsonString);
 		JSONObject tomJsonObject = new JSONObject(response.toString());
@@ -627,6 +625,8 @@ public class NovalnetOrdersController
 	public StringBuilder sendRequest(String url, String jsonString) {
         StringBuilder response = new StringBuilder();
         try {
+        	LOG.info("request sent to novalnet");
+			LOG.info(jsonString);
             String urly = url;
             URL obj = new URL(urly);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -658,6 +658,9 @@ public class NovalnetOrdersController
         } catch (IOException ex) {
             LOG.error("IOException ", ex);
         }
+
+        LOG.info("response recieved from novalnet");
+		LOG.info(response.toString());
 
         return response;
 
