@@ -379,7 +379,7 @@ public class NovalnetOrdersController
 		customerParameters.put("shipping", shippingParameters);
 		customParameters.put("lang", languageCode);
 
-		transactionParameters.put("payment_type", getPaymentType(requestObject.get("paymentType").toString()));
+		transactionParameters.put("payment_type", currentPayment);
 		transactionParameters.put("currency", currency);
 		transactionParameters.put("amount", orderAmountCent);
 		transactionParameters.put("create_token", 1);
