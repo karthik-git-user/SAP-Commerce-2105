@@ -332,7 +332,7 @@ public class NovalnetOrdersController
 		LOG.info("request_object66");
 		LOG.info(requestObject.toString());
 
-		PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(currentPayment);
+		PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(payment);
 
     	JSONObject billingObject = new JSONObject(requestObject.getJSONObject("billingAddress").toString());
 		JSONObject countryObject = new JSONObject(billingObject.getJSONObject("country").toString());
