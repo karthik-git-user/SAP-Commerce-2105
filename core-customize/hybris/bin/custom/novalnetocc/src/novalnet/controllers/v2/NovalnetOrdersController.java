@@ -594,11 +594,11 @@ public class NovalnetOrdersController
 		dataParameters.put("transaction", transactionParameters);
 		dataParameters.put("custom", customParameters);
 		String jsonString = gson.toJson(dataParameters);
-		String url = "https://payport.novalnet.de/v2/transaction/details";
+		String url = "https://payport.novalnet.de/v2/transaction/update";
 		StringBuilder response = sendRequest(url, jsonString);
-		JSONObject tomJsonObject = new JSONObject(response.toString());
-		syncmirakl(tomJsonObject, orderNumber);
-		response.toString();
+		// JSONObject tomJsonObject = new JSONObject(response.toString());
+		// syncmirakl(tomJsonObject, orderNumber);
+		// response.toString();
     }
 
 
