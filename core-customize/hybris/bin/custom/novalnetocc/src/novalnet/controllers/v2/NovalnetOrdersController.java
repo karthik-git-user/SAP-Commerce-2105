@@ -1,115 +1,58 @@
 package novalnet.controllers.v2;
 
-import de.hybris.platform.acceleratorfacades.order.AcceleratorCheckoutFacade;
-import de.hybris.platform.acceleratorfacades.payment.data.PaymentSubscriptionResultData;
-import de.hybris.platform.acceleratorservices.payment.data.PaymentData;
-import de.hybris.platform.acceleratorservices.payment.data.PaymentErrorField;
-import de.hybris.platform.acceleratorocc.exceptions.PaymentProviderException;
-import novalnet.controllers.InvalidPaymentInfoException;
 import novalnet.controllers.NoCheckoutCartException;
-import novalnet.controllers.UnsupportedRequestException;
 import de.hybris.platform.order.InvalidCartException;
 import de.hybris.platform.commercewebservicescommons.dto.order.OrderWsDTO;
-import de.hybris.platform.acceleratorocc.dto.payment.SopPaymentDetailsWsDTO;
-import de.hybris.platform.acceleratorocc.payment.facade.CommerceWebServicesPaymentFacade;
-import de.hybris.platform.acceleratorocc.validator.SopPaymentDetailsValidator;
 import de.hybris.platform.commercefacades.order.CheckoutFacade;
-import de.hybris.platform.commercefacades.order.data.CCPaymentInfoData;
 import de.hybris.platform.commercefacades.order.data.OrderData;
-import de.hybris.platform.commercefacades.storelocator.data.PointOfServiceDataList;
-import de.hybris.platform.commercefacades.user.UserFacade;
 import de.hybris.platform.commerceservices.order.CommerceCartModificationException;
 import de.hybris.platform.commerceservices.request.mapping.annotation.RequestMappingOverride;
 import de.hybris.platform.commerceservices.request.mapping.annotation.ApiVersion;
-import de.hybris.platform.commercewebservicescommons.dto.order.CartModificationListWsDTO;
 import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO;
-import de.hybris.platform.commercewebservicescommons.dto.store.PointOfServiceListWsDTO;
 import de.hybris.platform.commercewebservicescommons.errors.exceptions.PaymentAuthorizationException;
 import de.hybris.platform.commercewebservicescommons.annotation.SiteChannelRestriction;
-import de.hybris.platform.webservicescommons.errors.exceptions.WebserviceValidationException;
 import de.hybris.platform.webservicescommons.mapping.DataMapper;
-import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdUserIdAndCartIdParam;
 import de.hybris.platform.webservicescommons.swagger.ApiFieldsParam;
 import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdAndUserIdParam;
-import de.hybris.platform.commercefacades.order.data.CartModificationDataList;
 import de.hybris.platform.core.model.user.AddressModel;
-import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.store.BaseStoreModel;
-import de.hybris.platform.commercefacades.order.CartFacade;
-import de.hybris.platform.commercewebservicescommons.strategies.CartLoaderStrategy;
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.math.BigDecimal;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import springfox.documentation.annotations.ApiIgnore;
 
 import static de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper.DEFAULT_LEVEL;
 import de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper;
 import de.hybris.platform.store.services.BaseStoreService;
 import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.servicelayer.search.SearchResult;
-import java.net.URLConnection;
-import java.net.HttpURLConnection;
-import java.io.ObjectOutputStream;
 import java.net.URL;
 
-import org.apache.log4j.Logger;
-import org.xml.sax.SAXException;
 import org.json.JSONObject;
-import org.json.JSONArray;
-
 import java.net.MalformedURLException;
 
 import java.nio.charset.StandardCharsets;
 
-import java.net.InetAddress;
-import java.net.Inet4Address;
-import java.net.Inet6Address;
-import java.net.UnknownHostException;
 import java.util.Base64;
 import java.util.Locale;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
-
-import java.lang.reflect.Type;
-
 import java.io.*;
 
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
@@ -125,13 +68,9 @@ import de.hybris.platform.core.model.user.UserModel;
 import de.hybris.platform.core.enums.OrderStatus;
 import de.hybris.platform.core.enums.PaymentStatus;
 import de.hybris.platform.payment.model.PaymentTransactionModel;
-import de.hybris.platform.commercefacades.i18n.I18NFacade;
 import de.hybris.platform.commerceservices.strategies.CheckoutCustomerStrategy;
-import de.hybris.platform.servicelayer.session.SessionService;
-import de.hybris.platform.order.CartService;
 import de.hybris.platform.order.PaymentModeService;
 import de.hybris.platform.commercefacades.order.OrderFacade;
-import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 import de.hybris.platform.servicelayer.search.FlexibleSearchQuery;
 import de.hybris.platform.servicelayer.dto.converter.Converter;
 import de.hybris.platform.commercefacades.user.data.AddressData;
@@ -140,12 +79,10 @@ import de.hybris.platform.commercefacades.order.data.CartData;
 import de.hybris.platform.core.model.c2l.CountryModel;
 import de.hybris.platform.core.model.order.OrderModel;
 import de.hybris.platform.order.CartFactory;
-import de.hybris.platform.order.CartService;
 import de.hybris.platform.order.CalculationService;
 import de.hybris.platform.converters.Populator;
 import de.hybris.platform.servicelayer.i18n.CommonI18NService;
 import de.hybris.platform.jalo.JaloSession;
-import org.springframework.beans.factory.annotation.Required;
 import de.novalnet.order.NovalnetOrderFacade;
 import de.novalnet.beans.NnResponseData;
 import novalnet.dto.payment.NnResponseWsDTO;
@@ -170,21 +107,6 @@ public class NovalnetOrdersController
 	
 	protected static final String DEFAULT_FIELD_SET = FieldSetLevelHelper.DEFAULT_LEVEL;
 	
-	private BaseStoreService baseStoreService;
-    private SessionService sessionService;
-    private CartService cartService;
-    private OrderFacade orderFacade;
-    private CheckoutFacade checkoutFacade;
-    private CheckoutCustomerStrategy checkoutCustomerStrategy;
-    private ModelService modelService;
-    private FlexibleSearchService flexibleSearchService;
-    private Converter<AddressData, AddressModel> addressReverseConverter;
-    private Converter<CountryModel, CountryData> countryConverter;
-    private Converter<OrderModel, OrderData> orderConverter;
-    private CartFactory cartFactory;
-    private CalculationService calculationService;
-    private Populator<AddressModel, AddressData> addressPopulator;
-    private CommonI18NService commonI18NService;
     private BaseStoreModel baseStore;
     private CartData cartData;
     private CartModel cartModel;
@@ -201,7 +123,6 @@ public class NovalnetOrdersController
     @Resource
     private PaymentModeService paymentModeService;
 	
-	private static final String PAYMENT_MAPPING = "accountHolderName,cardNumber,cardType,cardTypeData(code),expiryMonth,expiryYear,issueNumber,startMonth,startYear,subscriptionId,defaultPaymentInfo,saved,billingAddress(titleCode,firstName,lastName,line1,line2,town,postalCode,country(isocode),region(isocode),defaultAddress)";
 	protected static final String API_COMPATIBILITY_B2C_CHANNELS = "api.compatibility.b2c.channels";
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
 	@RequestMapping(value = "/users/{userId}/orders", method = RequestMethod.POST)
@@ -212,7 +133,7 @@ public class NovalnetOrdersController
 	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
 	@ApiBaseSiteIdAndUserIdParam
 	public OrderWsDTO placeOrder(
-			@ApiParam(value = "credit card hash", required = false) @RequestParam final String reqJsonString,
+			@ApiParam(value = "json string include billing deatils and payment details", required = false) @RequestParam final String reqJsonString,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
@@ -382,7 +303,7 @@ public class NovalnetOrdersController
 		transactionParameters.put("payment_type", currentPayment);
 		transactionParameters.put("currency", currency);
 		transactionParameters.put("amount", orderAmountCent);
-		transactionParameters.put("create_token", 1);
+		// transactionParameters.put("create_token", 1);
 		transactionParameters.put("system_name", "SAP Commerce Cloud");
 		transactionParameters.put("system_version", "2105-NN1.0.1");
 		
@@ -478,8 +399,6 @@ public class NovalnetOrdersController
 		dataParameters.put("custom", customParameters);
 
 		String jsonString = gson.toJson(dataParameters);
-		LOG.info("request1111+");
-		LOG.info(jsonString);
 		String url = "https://payport.novalnet.de/v2/transaction/details";
 		StringBuilder response = sendRequest(url, jsonString);
 		return response.toString();
@@ -596,9 +515,6 @@ public class NovalnetOrdersController
 		String jsonString = gson.toJson(dataParameters);
 		String url = "https://payport.novalnet.de/v2/transaction/update";
 		StringBuilder response = sendRequest(url, jsonString);
-		// JSONObject tomJsonObject = new JSONObject(response.toString());
-		// syncmirakl(tomJsonObject, orderNumber);
-		// response.toString();
     }
 
 
@@ -616,8 +532,6 @@ public class NovalnetOrdersController
 	
 		// Update the payment status for completed payments
 		orderModel.setPaymentStatus(PaymentStatus.PAID);
-	
-        
         novalnetOrderFacade.getModelService().save(orderModel);
 
     }
@@ -688,7 +602,7 @@ public class NovalnetOrdersController
 	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
 	@ApiBaseSiteIdAndUserIdParam
 	public NnResponseWsDTO getRedirectURL(
-			@ApiParam(value = "credit card hash", required = true) @RequestParam final String reqJsonString,
+			@ApiParam(value = "billing details and payment details", required = true) @RequestParam final String reqJsonString,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
@@ -733,131 +647,6 @@ public class NovalnetOrdersController
 		responseData.setRedirectURL(redirectURL);
 		return dataMapper.map(responseData, NnResponseWsDTO.class, fields);
 	}
-	
-	
-	
-	/**
-     * Sync data to mirakl
-     *
-     * @param novalnetJsonObject Order code of the order
-     */
-    public void syncmirakl(JSONObject tomJsonObject, String orderCode) {
-        JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
-		JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
-		JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
-		JSONObject billingJsonObject = customerJsonObject.getJSONObject("billing");
-		JSONObject shippingJsonObject = customerJsonObject.getJSONObject("billing");
-		if(customerJsonObject.has("shipping")) {
-			shippingJsonObject = customerJsonObject.getJSONObject("shipping");
-			if(shippingJsonObject.has("same_as_billing") && shippingJsonObject.get("same_as_billing").toString().equals("1") ){
-				shippingJsonObject = customerJsonObject.getJSONObject("billing");
-			}
-		}
-		
-        final Map<String, Object> customerParameters = new HashMap<String, Object>();
-        final Map<String, Object> billingParameters = new HashMap<String, Object>();
-        final Map<String, Object> shippingParameters = new HashMap<String, Object>();
-        final Map<String, Object> paymentinfoParameters= new HashMap<String, Object>();
-        final Map<String, Object> dataParameters = new HashMap<String, Object>();
-        
-        dataParameters.put("commercial_id", orderCode);
-        dataParameters.put("scored", true);
-        dataParameters.put("shipping_zone_code", "testshippingzone");
-
-        customerParameters.put("civility", "Dr");
-        customerParameters.put("firstname", customerJsonObject.get("first_name"));
-        customerParameters.put("lastname", customerJsonObject.get("last_name"));
-        customerParameters.put("email", customerJsonObject.get("email"));
-        customerParameters.put("customer_id", customerJsonObject.get("customer_no"));
-        
-        billingParameters.put("civility", "Dr");
-        billingParameters.put("firstname", customerJsonObject.get("first_name"));
-        billingParameters.put("lastname", customerJsonObject.get("last_name"));
-        billingParameters.put("street_1", billingJsonObject.get("street"));
-        billingParameters.put("city", billingJsonObject.get("city"));
-        billingParameters.put("zip_code", billingJsonObject.get("zip"));
-        billingParameters.put("country_iso_code", billingJsonObject.get("country_code"));
-        billingParameters.put("country", "Germany");
-        billingParameters.put("company", "Novalnet");
-        billingParameters.put("state", "IDF");
-        billingParameters.put("phone", "0619874662");
-        billingParameters.put("phone_secondary", "0123456789");
-        billingParameters.put("street_2", "Escalier A");
-        
-        shippingParameters.put("civility", "Dr");
-        shippingParameters.put("firstname", customerJsonObject.get("first_name"));
-        shippingParameters.put("lastname", customerJsonObject.get("last_name"));
-        shippingParameters.put("street_1", shippingJsonObject.get("street"));
-        shippingParameters.put("city", shippingJsonObject.get("city"));
-        shippingParameters.put("zip_code", shippingJsonObject.get("zip"));
-        shippingParameters.put("country_iso_code", shippingJsonObject.get("country_code"));
-        shippingParameters.put("country", "Germany");
-        shippingParameters.put("company", "Novalnet");
-        shippingParameters.put("state", "IDF");
-        shippingParameters.put("phone", "0619874662");
-        shippingParameters.put("phone_secondary", "0123456789");
-        shippingParameters.put("street_2", "Escalier A");
-        
-        paymentinfoParameters.put("payment_type", "NOVALNET_"+transactionJsonObject.get("payment_type"));
-        paymentinfoParameters.put("imprint_number", transactionJsonObject.get("tid"));
-        
-        customerParameters.put("billing_address", billingParameters);
-        customerParameters.put("shipping_address", shippingParameters);
-        dataParameters.put("customer", customerParameters);
-        dataParameters.put("payment_info", paymentinfoParameters);
-        
-        Gson gson = new GsonBuilder().create();
-        String jsonString = gson.toJson(dataParameters);
-        String url = "https://xtcommerce6.novalnet.de/mirakl_api_handler.php";        
-        miraklSendRequest(url, jsonString);
-
-    }
-    
-    
-     public void miraklSendRequest(String url, String jsonString) {
-        final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
-        String password = baseStore.getNovalnetPaymentAccessKey().trim();
-        StringBuilder response = new StringBuilder();
-
-        try {
-            String urly = url;
-            URL obj = new URL(urly);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            LOG.info("teststring");
-            LOG.info(jsonString);
-            byte[] postData = jsonString.getBytes(StandardCharsets.UTF_8);
-            LOG.info(postData);
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/json");
-            con.setRequestProperty("Charset", "utf-8");
-            con.setRequestProperty("Accept", "application/json");
-            con.setRequestProperty("Authorization", "665177a1-78b9-44c9-8a93-a2c8dc11680c");
-
-            con.setDoOutput(true);
-            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-            wr.write(postData);
-            wr.flush();
-            wr.close();
-            int responseCode = con.getResponseCode();
-            LOG.info("+++response1+++");
-            LOG.info("+++response code+++"+responseCode);
-            LOG.info("+++response+++");
-            BufferedReader iny = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String output;
-
-
-            while ((output = iny.readLine()) != null) {
-                response.append(output);
-            }
-            iny.close();
-        } catch (MalformedURLException ex) {
-            LOG.error("MalformedURLException ", ex);
-        } catch (IOException ex) {
-            LOG.error("IOException ", ex);
-        }
-    }
-    
     
     @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
 	@RequestMapping(value = "/users/{userId}/novalnet/payment/config", method = RequestMethod.GET)
@@ -865,7 +654,7 @@ public class NovalnetOrdersController
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
-	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
+	@ApiOperation(nickname = "paymentConfig", value = "return payment configuration", notes = "return payment configuration stored in Backend")
 	@ApiBaseSiteIdAndUserIdParam
 	public NnConfigWsDTO getPaymentConfig(
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
@@ -910,7 +699,7 @@ public class NovalnetOrdersController
 	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
 	@ApiBaseSiteIdAndUserIdParam
 	public NnPaymentDetailsWsDTO getPaymentDetails(
-			@ApiParam(value = "credit card hash", required = true) @RequestParam final String orderno,
+			@ApiParam(value = "order no", required = true) @RequestParam final String orderno,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
