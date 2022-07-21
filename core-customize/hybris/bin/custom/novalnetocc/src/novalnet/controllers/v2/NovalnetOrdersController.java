@@ -26,6 +26,11 @@ import org.apache.log4j.Logger;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.http.HttpStatus;
 
 import io.swagger.annotations.Api;
@@ -41,7 +46,7 @@ import java.net.URL;
 
 import org.json.JSONObject;
 import java.net.MalformedURLException;
-
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 
 import java.util.Base64;
