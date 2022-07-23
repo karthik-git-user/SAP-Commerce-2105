@@ -140,7 +140,7 @@ public class NovalnetOrdersController
 	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
 	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
 	@ApiBaseSiteIdAndUserIdParam
-	public OrderWsDTO placeOrder(
+	public void placeOrder(
 			@ApiParam(value =
 			"Request body parameter that contains details such as the name on the card (accountHolderName), the card number (cardNumber), the card type (cardType.code), "
 					+ "the month of the expiry date (expiryMonth), the year of the expiry date (expiryYear), whether the payment details should be saved (saved), whether the payment details "
@@ -154,76 +154,76 @@ public class NovalnetOrdersController
 		requestData.get("action");
 		LOG.info("action recieved from request : " + requestData.get("action"));
 
-		JSONObject requestObject = new JSONObject(reqJsonString.toString());
-		cartData = novalnetOrderFacade.loadCart(requestObject.get("cartId").toString());
-		cartModel = novalnetOrderFacade.getCart();
-		baseStore = novalnetOrderFacade.getBaseStoreModel();
+		// JSONObject requestObject = new JSONObject(reqJsonString.toString());
+		// cartData = novalnetOrderFacade.loadCart(requestObject.get("cartId").toString());
+		// cartModel = novalnetOrderFacade.getCart();
+		// baseStore = novalnetOrderFacade.getBaseStoreModel();
 
-		String action 				= requestObject.get("action").toString();
-		final String emailAddress 	= JaloSession.getCurrentSession().getUser().getLogin();
-		String responseString = "";
+		// String action 				= requestObject.get("action").toString();
+		// final String emailAddress 	= JaloSession.getCurrentSession().getUser().getLogin();
+		// String responseString = "";
 
-		final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
-		String totalAmount 			= formatAmount(String.valueOf(cartData.getTotalPriceWithTax().getValue()));
-		DecimalFormat decimalFormat = new DecimalFormat("##.##");
-		String orderAmount 			= decimalFormat.format(Float.parseFloat(totalAmount));
-		float floatAmount 			= Float.parseFloat(orderAmount);
-		BigDecimal orderAmountCents = BigDecimal.valueOf(floatAmount).multiply(BigDecimal.valueOf(100));
-		Integer orderAmountCent 	= orderAmountCents.intValue();
-		final String currency 	  	= cartData.getTotalPriceWithTax().getCurrencyIso();
-		final Locale language	  	= JaloSession.getCurrentSession().getSessionContext().getLocale();
-		final String languageCode 	= language.toString().toUpperCase();
+		// final UserModel currentUser = novalnetOrderFacade.getCurrentUserForCheckout();
+		// String totalAmount 			= formatAmount(String.valueOf(cartData.getTotalPriceWithTax().getValue()));
+		// DecimalFormat decimalFormat = new DecimalFormat("##.##");
+		// String orderAmount 			= decimalFormat.format(Float.parseFloat(totalAmount));
+		// float floatAmount 			= Float.parseFloat(orderAmount);
+		// BigDecimal orderAmountCents = BigDecimal.valueOf(floatAmount).multiply(BigDecimal.valueOf(100));
+		// Integer orderAmountCent 	= orderAmountCents.intValue();
+		// final String currency 	  	= cartData.getTotalPriceWithTax().getCurrencyIso();
+		// final Locale language	  	= JaloSession.getCurrentSession().getSessionContext().getLocale();
+		// final String languageCode 	= language.toString().toUpperCase();
 
-		password = baseStore.getNovalnetPaymentAccessKey().trim();
+		// password = baseStore.getNovalnetPaymentAccessKey().trim();
 			
-		if("create_order".equals(action)) {
-			Map<String, Object> requsetDeatils = formPaymentRequest(requestObject, action, emailAddress, orderAmountCent, currency, languageCode);
-        	StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());
-			responseString = response.toString();
-		} else {
-			responseString = getTransactionDetails(requestObject, languageCode);
-		}
+		// if("create_order".equals(action)) {
+		// 	Map<String, Object> requsetDeatils = formPaymentRequest(requestObject, action, emailAddress, orderAmountCent, currency, languageCode);
+  //       	StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());
+		// 	responseString = response.toString();
+		// } else {
+		// 	responseString = getTransactionDetails(requestObject, languageCode);
+		// }
 
-		JSONObject tomJsonObject 	= new JSONObject(responseString);
-		JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
+		// JSONObject tomJsonObject 	= new JSONObject(responseString);
+		// JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
         
-        if(!String.valueOf("100").equals(resultJsonObject.get("status_code").toString())) {
-			final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
-			 LOG.info("Error message recieved from novalnet for cart id: " + requestObject.get("cartId").toString() + " " + statMessage);
-			throw new PaymentAuthorizationException();
-		}
+  //       if(!String.valueOf("100").equals(resultJsonObject.get("status_code").toString())) {
+		// 	final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
+		// 	 LOG.info("Error message recieved from novalnet for cart id: " + requestObject.get("cartId").toString() + " " + statMessage);
+		// 	throw new PaymentAuthorizationException();
+		// }
 
-		JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
-		String[] successStatus = {"CONFIRMED", "ON_HOLD", "PENDING"};
+		// JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
+		// String[] successStatus = {"CONFIRMED", "ON_HOLD", "PENDING"};
 
-        if (Arrays.asList(successStatus).contains(transactionJsonObject.get("status").toString())) {
+  //       if (Arrays.asList(successStatus).contains(transactionJsonObject.get("status").toString())) {
 		
-			JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
-			JSONObject billingJsonObject = customerJsonObject.getJSONObject("billing");
+		// 	JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
+		// 	JSONObject billingJsonObject = customerJsonObject.getJSONObject("billing");
 	        
-	        final AddressModel billingAddress = novalnetOrderFacade.getModelService().create(AddressModel.class);
+	 //        final AddressModel billingAddress = novalnetOrderFacade.getModelService().create(AddressModel.class);
 			
-			billingAddress.setFirstname(customerJsonObject.get("first_name").toString());
-			billingAddress.setLastname(customerJsonObject.get("last_name").toString());
-			if (billingJsonObject.has("street")) {
-				billingAddress.setLine1(billingJsonObject.get("street").toString());
-			}
-			billingAddress.setLine2("");
-			billingAddress.setTown(billingJsonObject.get("city").toString());
-			billingAddress.setPostalcode(billingJsonObject.get("zip").toString());
-			billingAddress.setCountry(novalnetOrderFacade.getCommonI18NService().getCountry(billingJsonObject.get("country_code").toString()));
-			billingAddress.setEmail(emailAddress);
-			billingAddress.setOwner(cartModel);
+		// 	billingAddress.setFirstname(customerJsonObject.get("first_name").toString());
+		// 	billingAddress.setLastname(customerJsonObject.get("last_name").toString());
+		// 	if (billingJsonObject.has("street")) {
+		// 		billingAddress.setLine1(billingJsonObject.get("street").toString());
+		// 	}
+		// 	billingAddress.setLine2("");
+		// 	billingAddress.setTown(billingJsonObject.get("city").toString());
+		// 	billingAddress.setPostalcode(billingJsonObject.get("zip").toString());
+		// 	billingAddress.setCountry(novalnetOrderFacade.getCommonI18NService().getCountry(billingJsonObject.get("country_code").toString()));
+		// 	billingAddress.setEmail(emailAddress);
+		// 	billingAddress.setOwner(cartModel);
 
-			String payment = (transactionJsonObject.get("payment_type").toString()).equals("CREDITCARD") ? "novalnetCreditCard" : ((transactionJsonObject.get("payment_type").toString()).equals("DIRECT_DEBIT_SEPA") ? "novalnetDirectDebitSepa" :((transactionJsonObject.get("payment_type").toString()).equals("PAYPAL") ? "novalnetPayPal": ""));
+		// 	String payment = (transactionJsonObject.get("payment_type").toString()).equals("CREDITCARD") ? "novalnetCreditCard" : ((transactionJsonObject.get("payment_type").toString()).equals("DIRECT_DEBIT_SEPA") ? "novalnetDirectDebitSepa" :((transactionJsonObject.get("payment_type").toString()).equals("PAYPAL") ? "novalnetPayPal": ""));
 
-			OrderData orderData = createOrder(transactionJsonObject, payment, billingAddress, emailAddress, currentUser, orderAmountCent, currency, languageCode);
-	        return dataMapper.map(orderData, OrderWsDTO.class, fields);
-	    } else {
-	    	final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
-			 LOG.info("Error message recieved from novalnet for cart id: " + requestObject.get("cartId").toString() + " " + statMessage);
-			throw new PaymentAuthorizationException();
-	    }
+		// 	OrderData orderData = createOrder(transactionJsonObject, payment, billingAddress, emailAddress, currentUser, orderAmountCent, currency, languageCode);
+	 //        return dataMapper.map(orderData, OrderWsDTO.class, fields);
+	 //    } else {
+	 //    	final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
+		// 	 LOG.info("Error message recieved from novalnet for cart id: " + requestObject.get("cartId").toString() + " " + statMessage);
+		// 	throw new PaymentAuthorizationException();
+	 //    }
 	}
 	
 	public List<OrderModel> getOrderInfoModel(String orderCode) {
