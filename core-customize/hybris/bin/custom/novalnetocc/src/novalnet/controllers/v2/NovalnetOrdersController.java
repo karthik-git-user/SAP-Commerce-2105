@@ -93,6 +93,7 @@ import de.novalnet.beans.NnResponseData;
 import novalnet.dto.payment.NnResponseWsDTO;
 import de.novalnet.beans.NnPaymentDetailsData;
 import novalnet.dto.payment.NnPaymentDetailsWsDTO;
+import novalnet.dto.payment.NnRequestWsDTO;
 import de.novalnet.beans.NnCreditCardData;
 import de.novalnet.beans.NnDirectDebitSepaData;
 import de.novalnet.beans.NnPayPalData;
@@ -127,6 +128,8 @@ public class NovalnetOrdersController
     
     @Resource
     private PaymentModeService paymentModeService;
+
+    private static final String REQUEST_MAPPING = "paymentType,action,cartId,billingAddress(titleCode,firstName,lastName,line1,line2,town,postalCode,country(isocode),region(isocode),paymentData(panHash, uniqId))";
 	
 	protected static final String API_COMPATIBILITY_B2C_CHANNELS = "api.compatibility.b2c.channels";
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
@@ -138,10 +141,18 @@ public class NovalnetOrdersController
 	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
 	@ApiBaseSiteIdAndUserIdParam
 	public OrderWsDTO placeOrder(
-			@ApiParam(value = "json string include billing deatils and payment details", required = false) @RequestParam final String reqJsonString,
+			@ApiParam(value =
+			"Request body parameter that contains details such as the name on the card (accountHolderName), the card number (cardNumber), the card type (cardType.code), "
+					+ "the month of the expiry date (expiryMonth), the year of the expiry date (expiryYear), whether the payment details should be saved (saved), whether the payment details "
+					+ "should be set as default (defaultPaymentInfo), and the billing address (billingAddress.firstName, billingAddress.lastName, billingAddress.titleCode, billingAddress.country.isocode, "
+					+ "billingAddress.line1, billingAddress.line2, billingAddress.town, billingAddress.postalCode, billingAddress.region.isocode)\n\nThe DTO is in XML or .json format.", required = true) @RequestBody final NnRequestWsDTO orderRequest,
 			@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
+
+		NnRequestData requestData = getDataMapper().map(orderRequest, NnRequestData.class, REQUEST_MAPPING);
+		requestData.get("action");
+		LOG.info("action recieved from request : " + requestData.get("action"));
 
 		JSONObject requestObject = new JSONObject(reqJsonString.toString());
 		cartData = novalnetOrderFacade.loadCart(requestObject.get("cartId").toString());
