@@ -70,6 +70,81 @@
             <description>Transaction Comments</description>
         </property>
     </bean>
+
+    <bean class="novalnet.dto.payment.NnRequestWsDTO">
+        <property name="paymentType" type="String">
+            <description>Payment method</description>
+        </property>
+        <property name="action" type="String">
+            <description>Process to be done</description>
+        </property>
+        <property name="cartId" type="String">
+            <description>Cart Id</description>
+        </property>
+        <property name="tid" type="String">
+            <description>Transaction Id</description>
+        </property>
+        <property name="novalnetPayPal" type="novalnet.dto.payment.NnBillingWsDTO">
+            <description>Billing details</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnBillingWsDTO">
+        <property name="titleCode" type="String">
+            <description>Title for user</description>
+        </property>
+        <property name="firstName" type="String">
+            <description>User first name</description>
+        </property>
+        <property name="lastName" type="String">
+            <description>User last name</description>
+        </property>
+        <property name="line1" type="String">
+            <description>Address Line 1</description>
+        </property>
+        <property name="line2" type="String">
+            <description>Address Line 2</description>
+        </property>
+        <property name="postalCode" type="String">
+            <description>Address Postal Code</description>
+        </property>
+        <property name="town" type="String">
+            <description>Address town</description>
+        </property>
+        <property name="country" type="novalnet.dto.payment.NnCountryWsDTO">
+            <description>Address Country</description>
+        </property>
+        <property name="region" type="novalnet.dto.payment.NnRegionWsDTO">
+            <description>Address region</description>
+        </property>
+        <property name="paymentData" type="novalnet.dto.payment.NnPaymentsWsDTO">
+            <description>Payment details</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnCountryWsDTO">
+        <property name="isocode" type="String">
+            <description>Country iso code</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnRegionWsDTO">
+        <property name="isocode" type="String">
+            <description>Region iso code</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnPaymentsWsDTO">
+        <property name="panHash" type="String">
+            <description>Credit Card PanHash</description>
+        </property>
+        <property name="uniqId" type="String">
+            <description>Credit Card Unique ID</description>
+        </property>
+        <property name="iban" type="String">
+            <description>Direct Debit SEPA IBAN</description>
+        </property>
+    </bean>
     
 
 </beans>

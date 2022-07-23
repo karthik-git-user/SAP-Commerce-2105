@@ -254,10 +254,6 @@ public class NovalnetOrdersController
 		String currentPayment 		= requestObject.get("paymentType").toString();
 
 		String payment = currentPayment.equals("CREDITCARD") ? "novalnetCreditCard" : (currentPayment.equals("DIRECT_DEBIT_SEPA") ? "novalnetDirectDebitSepa" :(currentPayment.equals("PAYPAL") ? "novalnetPayPal": ""));
-
-		LOG.info("request_object66");
-		LOG.info(requestObject.toString());
-
 		PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(payment);
 
     	JSONObject billingObject = new JSONObject(requestObject.getJSONObject("billingAddress").toString());
@@ -315,8 +311,6 @@ public class NovalnetOrdersController
 		if ("novalnetCreditCard".equals(payment)) {
 
 			JSONObject paymentObject = new JSONObject(requestObject.getJSONObject("paymentData").toString());
-        	LOG.info("payment_object66");
-			LOG.info(paymentObject.toString());
 			paymentParameters.put("pan_hash", paymentObject.get("panHash").toString());
 			paymentParameters.put("unique_id", paymentObject.get("uniqId").toString());
 			NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
