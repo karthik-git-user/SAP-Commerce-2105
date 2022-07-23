@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.http.HttpStatus;
@@ -97,6 +98,7 @@ import novalnet.dto.payment.NnRequestWsDTO;
 import de.novalnet.beans.NnCreditCardData;
 import de.novalnet.beans.NnDirectDebitSepaData;
 import de.novalnet.beans.NnPayPalData;
+import de.novalnet.beans.NnRequestData;
 import de.novalnet.beans.NnPaymentData;
 import de.novalnet.beans.NnConfigData;
 import novalnet.dto.payment.NnConfigWsDTO;
@@ -150,7 +152,7 @@ public class NovalnetOrdersController
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 
-		NnRequestData requestData = getDataMapper().map(orderRequest, NnRequestData.class, REQUEST_MAPPING);
+		NnRequestData requestData = dataMapper.map(orderRequest, NnRequestData.class, REQUEST_MAPPING);
 		requestData.get("action");
 		LOG.info("action recieved from request : " + requestData.get("action"));
 
