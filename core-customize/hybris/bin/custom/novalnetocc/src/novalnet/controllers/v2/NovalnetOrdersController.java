@@ -136,9 +136,8 @@ public class NovalnetOrdersController
 	
 	protected static final String API_COMPATIBILITY_B2C_CHANNELS = "api.compatibility.b2c.channels";
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-	@PostMapping(value = "/users/{userId}/orders", consumes = { MediaType.APPLICATION_JSON_VALUE,
+	@PostMapping(value = "/users/{userId}/novalnet/orders", consumes = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE })
-	@RequestMappingOverride
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
