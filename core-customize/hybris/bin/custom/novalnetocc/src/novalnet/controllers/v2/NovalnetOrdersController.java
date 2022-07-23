@@ -153,8 +153,8 @@ public class NovalnetOrdersController
 	{
 
 		NnRequestData requestData = dataMapper.map(orderRequest, NnRequestData.class, REQUEST_MAPPING);
-		requestData.get("action");
-		LOG.info("action recieved from request : " + requestData.get("action"));
+		requestData.getAction();
+		LOG.info("action recieved from request : " + requestData.getAction());
 
 		// JSONObject requestObject = new JSONObject(reqJsonString.toString());
 		// cartData = novalnetOrderFacade.loadCart(requestObject.get("cartId").toString());
