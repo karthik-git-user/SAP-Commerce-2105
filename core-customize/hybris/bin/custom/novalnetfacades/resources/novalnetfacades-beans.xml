@@ -22,6 +22,7 @@
 		<property name="cartId" type="String"/>
 		<property name="tid" type="String"/>
 		<property name="billingAddress" type="de.novalnet.beans.NnBillingData"/>
+		<property name="paymentData" type="de.novalnet.beans.NnPaymentsData"/>
 	</bean>
 
 	<bean class="de.novalnet.beans.NnCreditCardData">
@@ -51,7 +52,7 @@
 		<property name="town" type="String"/>
 		<property name="country" type="de.novalnet.beans.NnCountryData"/>
 		<property name="region" type="de.novalnet.beans.NnRegionData"/>
-		<property name="paymentData" type="de.novalnet.beans.NnPaymentsData"/>
+		
 	</bean>
 
 	<bean class="de.novalnet.beans.NnCountryData">

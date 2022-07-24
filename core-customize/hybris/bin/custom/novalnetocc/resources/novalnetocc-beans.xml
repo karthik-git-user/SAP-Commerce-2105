@@ -87,6 +87,9 @@
         <property name="billingAddress" type="novalnet.dto.payment.NnBillingWsDTO">
             <description>Billing details</description>
         </property>
+        <property name="paymentData" type="novalnet.dto.payment.NnPaymentsWsDTO">
+            <description>Payment details</description>
+        </property>
     </bean>
 
     <bean class="novalnet.dto.payment.NnBillingWsDTO">
@@ -117,9 +120,7 @@
         <property name="region" type="novalnet.dto.payment.NnRegionWsDTO">
             <description>Address region</description>
         </property>
-        <property name="paymentData" type="novalnet.dto.payment.NnPaymentsWsDTO">
-            <description>Payment details</description>
-        </property>
+        
     </bean>
 
     <bean class="novalnet.dto.payment.NnCountryWsDTO">
