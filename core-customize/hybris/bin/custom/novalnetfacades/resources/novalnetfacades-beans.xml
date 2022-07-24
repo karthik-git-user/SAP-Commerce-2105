@@ -21,6 +21,7 @@
 		<property name="action" type="String"/>
 		<property name="cartId" type="String"/>
 		<property name="tid" type="String"/>
+		<property name="returnUrl" type="String"/>
 		<property name="billingAddress" type="de.novalnet.beans.NnBillingData"/>
 		<property name="paymentData" type="de.novalnet.beans.NnPaymentsData"/>
 	</bean>

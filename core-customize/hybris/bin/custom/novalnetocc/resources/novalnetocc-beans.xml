@@ -84,6 +84,9 @@
         <property name="tid" type="String">
             <description>Transaction Id</description>
         </property>
+        <property name="returnUrl" type="String">
+            <description>return url</description>
+        </property>
         <property name="billingAddress" type="novalnet.dto.payment.NnBillingWsDTO">
             <description>Billing details</description>
         </property>

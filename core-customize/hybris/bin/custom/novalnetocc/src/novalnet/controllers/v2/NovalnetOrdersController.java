@@ -290,7 +290,7 @@ public class NovalnetOrdersController
 		String street1 		= billingData.getLine1();
 		String street2 		= billingData.getLine2();
 		String town 		= billingData.getTown();
-		String zip 			= billingData.getPpostalCode();
+		String zip 			= billingData.getPostalCode();
 		String countryCode 	= countryData.getIsocode();
 
 		Gson gson = new GsonBuilder().create();
