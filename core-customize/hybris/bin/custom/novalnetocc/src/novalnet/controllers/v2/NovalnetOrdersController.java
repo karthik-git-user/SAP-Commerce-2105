@@ -159,7 +159,7 @@ public class NovalnetOrdersController
 		LOG.info("action recieved from request : " + requestData.getAction());
 
 		// JSONObject requestObject = new JSONObject(reqJsonString.toString());
-		cartData = novalnetOrderFacade.loadCart(requestObject.getCartId());
+		cartData = novalnetOrderFacade.loadCart(requestData.getCartId());
 		cartModel = novalnetOrderFacade.getCart();
 		baseStore = novalnetOrderFacade.getBaseStoreModel();
 
