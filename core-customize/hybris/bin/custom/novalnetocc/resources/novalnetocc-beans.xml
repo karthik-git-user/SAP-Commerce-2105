@@ -84,7 +84,7 @@
         <property name="tid" type="String">
             <description>Transaction Id</description>
         </property>
-        <property name="novalnetPayPal" type="novalnet.dto.payment.NnBillingWsDTO">
+        <property name="billingAddress" type="novalnet.dto.payment.NnBillingWsDTO">
             <description>Billing details</description>
         </property>
     </bean>
