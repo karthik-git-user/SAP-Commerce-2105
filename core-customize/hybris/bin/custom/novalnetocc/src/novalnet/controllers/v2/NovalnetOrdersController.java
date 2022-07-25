@@ -627,8 +627,6 @@ public class NovalnetOrdersController
 			throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
 	{
 		NnRequestData requestData = dataMapper.map(orderRequest, NnRequestData.class, fields);
-		// JSONObject requestObject = new JSONObject(reqJsonString.toString());
-
 		cartData  = novalnetOrderFacade.loadCart(requestData.getCartId());
 		cartModel = novalnetOrderFacade.getCart();
 		baseStore = novalnetOrderFacade.getBaseStoreModel();
@@ -712,11 +710,10 @@ public class NovalnetOrdersController
 
 	@Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
 	@RequestMapping(value = "/users/{userId}/novalnet/paymentDetails", method = RequestMethod.POST)
-	@RequestMappingOverride
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
-	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
+	@ApiOperation(nickname = "paymnetdeatils", value = "Payment Details.", notes = "Payment details for the order")
 	@ApiBaseSiteIdAndUserIdParam
 	public NnPaymentDetailsWsDTO getPaymentDetails(
 			@ApiParam(value = "order no", required = true) @RequestParam final String orderno,
