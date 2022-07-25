@@ -161,7 +161,6 @@ public class NovalnetOrdersController
 		requestData.getAction();
 		LOG.info("action recieved from request : " + requestData.getAction());
 
-		// JSONObject requestObject = new JSONObject(reqJsonString.toString());
 		cartData = novalnetOrderFacade.loadCart(requestData.getCartId());
 		cartModel = novalnetOrderFacade.getCart();
 		baseStore = novalnetOrderFacade.getBaseStoreModel();
@@ -182,9 +181,6 @@ public class NovalnetOrdersController
 		final String languageCode 	= language.toString().toUpperCase();
 
 		password = baseStore.getNovalnetPaymentAccessKey().trim();
-
-		// NnBillingData billingData =  requestData.getBillingAddress();
-		// LOG.info("billing first name: " + billingData.getFirstName());
 			
 		if("create_order".equals(action)) {
 			Map<String, Object> requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
@@ -280,10 +276,6 @@ public class NovalnetOrdersController
 		NnBillingData billingData =  requestData.getBillingAddress();
 		NnCountryData countryData =  billingData.getCountry();
 		NnRegionData regionData   =  billingData.getRegion();
-
-    	// JSONObject billingObject = new JSONObject(requestObject.getJSONObject("billingAddress").toString());
-		// JSONObject countryObject = new JSONObject(billingObject.getJSONObject("country").toString());
-		// JSONObject regionObject  = new JSONObject(billingObject.getJSONObject("region").toString());
 
 		String firstName 	= billingData.getFirstName();
 		String lastName 	= billingData.getLastName();
@@ -623,7 +615,7 @@ public class NovalnetOrdersController
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	@SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
-	@ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
+	@ApiOperation(nickname = "redirecturl", value = "redirect url", notes = "Get the third party url for customer to pay")
 	@ApiBaseSiteIdAndUserIdParam
 	public NnResponseWsDTO getRedirectURL(
 			@ApiParam(value =
