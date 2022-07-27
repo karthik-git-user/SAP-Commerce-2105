@@ -509,7 +509,7 @@ public class NovalnetOrdersController
         final OrderProcessModel orderProcess = new OrderProcessModel();
 		orderProcess.setOrder(orderModel);
 
-        marketplace.executeAction(orderProcessModel);
+        marketplace.executeAction(orderProcess);
 
 		NovalnetCallbackInfoModel novalnetCallbackInfo = new NovalnetCallbackInfoModel();
         novalnetCallbackInfo.setPaymentType(payment);
