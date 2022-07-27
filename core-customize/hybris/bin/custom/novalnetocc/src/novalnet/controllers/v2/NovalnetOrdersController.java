@@ -70,6 +70,7 @@ import de.hybris.novalnet.core.model.NovalnetCallbackInfoModel;
 import de.hybris.platform.core.model.order.payment.PaymentModeModel;
 import de.hybris.platform.payment.model.PaymentTransactionEntryModel;
 import de.hybris.platform.orderhistory.model.OrderHistoryEntryModel;
+import de.hybris.platform.orderprocessing.model.OrderProcessModel;
 import de.hybris.platform.core.model.order.CartModel;
 import de.hybris.platform.core.model.user.UserModel;
 import de.hybris.platform.core.enums.OrderStatus;
@@ -109,6 +110,8 @@ import de.novalnet.beans.NnConfigData;
 import novalnet.dto.payment.NnConfigWsDTO;
 import java.text.NumberFormat;
 import java.text.DecimalFormat;
+
+import com.mirakl.hybris.fulfilmentprocess.actions.order.CreateMarketplaceOrderAction;
 
 @Controller
 @RequestMapping(value = "/{baseSiteId}")
@@ -501,6 +504,12 @@ public class NovalnetOrdersController
 		
         long callbackInfoTid = Long.parseLong(transactionJsonObject.get("tid").toString());
         int orderPaidAmount = orderAmountCent;
+
+        CreateMarketplaceOrderAction marketplace = new CreateMarketplaceOrderAction();
+        final OrderProcessModel orderProcess = new OrderProcessModel();
+		orderProcess.setOrder(orderModel);
+
+        marketplace.executeAction(orderProcessModel);
 
 		NovalnetCallbackInfoModel novalnetCallbackInfo = new NovalnetCallbackInfoModel();
         novalnetCallbackInfo.setPaymentType(payment);

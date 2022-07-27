@@ -15,6 +15,7 @@
         <requires-extension name="acceleratorwebservicesaddon"/>
         <requires-extension name="commercefacades"/>
         <requires-extension name="novalnetfacades"/>
+        <requires-extension name="miraklfulfilmentprocess"/>
                 		
         
         <coremodule generated="true" manager="novalnet.jalo.NovalnetoccManager" packageroot="novalnet"/>
