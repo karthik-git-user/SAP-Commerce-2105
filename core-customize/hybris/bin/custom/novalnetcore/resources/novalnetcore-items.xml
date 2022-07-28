@@ -124,6 +124,11 @@
                     <persistence type="property"/>
                     <modifiers encrypted="false" initial="false" optional="false"/>
                 </attribute>
+                <attribute qualifier="novalnetZeroAmountBooking" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" initial="false" optional="false"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                </attribute>
             </attributes>
         </itemtype>
 
@@ -168,11 +173,6 @@
                     <persistence type="property"/>
                     <modifiers encrypted="false" initial="false" optional="false"/>
                     <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
-                </attribute>
-                <attribute qualifier="novalnetZeroAmountBooking" type="java.lang.Boolean">
-                    <persistence type="property"/>
-                    <modifiers encrypted="false" initial="false" optional="false"/>
-                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
                 </attribute>
             </attributes>
         </itemtype>
