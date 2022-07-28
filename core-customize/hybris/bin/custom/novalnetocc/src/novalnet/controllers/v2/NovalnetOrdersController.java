@@ -344,6 +344,11 @@ public class NovalnetOrdersController
                  verify_payment_data = true;
             }
 
+            if(novalnetPaymentMethod.getNovalnetZeroAmountBooking() == true) {
+            	transactionParameters.put("amount", 0);
+				transactionParameters.put("create_token", 1);
+            }
+
 
 		} else if ("novalnetPayPal".equals(payment)) {
 
@@ -356,6 +361,11 @@ public class NovalnetOrdersController
 
             if (PAYMENT_AUTHORIZE.equals(novalnetPaymentMethod.getNovalnetOnholdAction().toString()) && orderAmountCent >= onholdOrderAmount) {
                  verify_payment_data = true;
+            }
+
+            if(novalnetPaymentMethod.getNovalnetZeroAmountBooking() == true) {
+            	transactionParameters.put("amount", 0);
+				transactionParameters.put("create_token", 1);
             }
 
 		} else if ("novalnetDirectDebitSepa".equals(payment)) {
@@ -373,6 +383,11 @@ public class NovalnetOrdersController
 
             if (PAYMENT_AUTHORIZE.equals(novalnetPaymentMethod.getNovalnetOnholdAction().toString()) && orderAmountCent >= onholdOrderAmount) {
                  verify_payment_data = true;
+            }
+
+            if(novalnetPaymentMethod.getNovalnetZeroAmountBooking() == true) {
+            	transactionParameters.put("amount", 0);
+				transactionParameters.put("create_token", 1);
             }
 
         } 
