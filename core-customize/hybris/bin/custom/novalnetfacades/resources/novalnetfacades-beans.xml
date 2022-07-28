@@ -41,6 +41,7 @@
 	<bean class="de.novalnet.beans.NnPaymentDetailsData">
 		<property name="status" type="String"/>
 		<property name="comments" type="String"/>
+		<property name="tid" type="String"/>
 	</bean>
 
 	<bean class="de.novalnet.beans.NnBillingData">

@@ -169,6 +169,11 @@
                     <modifiers encrypted="false" initial="false" optional="false"/>
                     <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
                 </attribute>
+                <attribute qualifier="novalnetZeroAmountBooking" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" initial="false" optional="false"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                </attribute>
             </attributes>
         </itemtype>
 
@@ -196,6 +201,11 @@
                     <modifiers encrypted="false" optional="true"/>
                 </attribute>
                 <attribute qualifier="novalnetOneClickShopping" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" initial="false" optional="false"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                </attribute>
+                <attribute qualifier="novalnetZeroAmountBooking" type="java.lang.Boolean">
                     <persistence type="property"/>
                     <modifiers encrypted="false" initial="false" optional="false"/>
                     <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
@@ -241,6 +251,11 @@
                     <persistence type="property"/>
                     <modifiers encrypted="false" initial="false" optional="false"/>
                     <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+                </attribute>
+                <attribute qualifier="novalnetZeroAmountBooking" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" initial="false" optional="false"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
                 </attribute>
                 <attribute qualifier="novalnetStandardLabelCss" type="java.lang.String">
                     <persistence type="property">

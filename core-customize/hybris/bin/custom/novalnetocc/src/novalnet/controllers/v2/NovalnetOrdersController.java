@@ -446,7 +446,7 @@ public class NovalnetOrdersController
 		paymentInfoModel.setDuplicate(Boolean.FALSE);
 		paymentInfoModel.setSaved(Boolean.TRUE);
 		paymentInfoModel.setUser(currentUser);
-		paymentInfoModel.setPaymentInfo("Novalnet Transaction ID : "+ transactionJsonObject.get("tid").toString());
+		paymentInfoModel.setPaymentInfo(transactionJsonObject.get("tid").toString());
 		paymentInfoModel.setOrderHistoryNotes("Novalnet Transaction ID : "+ transactionJsonObject.get("tid").toString());
 		paymentInfoModel.setPaymentProvider(payment);
 		paymentInfoModel.setPaymentGatewayStatus(transactionJsonObject.get("status").toString());
@@ -496,7 +496,7 @@ public class NovalnetOrdersController
         OrderHistoryEntryModel orderEntry = novalnetOrderFacade.getModelService().create(OrderHistoryEntryModel.class);
 		orderEntry.setTimestamp(new Date());
 		orderEntry.setOrder(orderModel);
-		orderEntry.setDescription("Tid : " + transactionJsonObject.get("tid").toString());
+		orderEntry.setDescription("Novalnet Transaction ID : " + transactionJsonObject.get("tid").toString());
 		orderModel.setPaymentInfo(paymentInfoModel);
         novalnetOrderFacade.getModelService().saveAll(orderModel, orderEntry);
 		updateOrderStatus(orderNumber, paymentInfoModel);
@@ -734,6 +734,7 @@ public class NovalnetOrdersController
 		NnPaymentDetailsData paymentDetailsData = new NnPaymentDetailsData();
 		paymentDetailsData.setStatus(paymentInfoModel.getPaymentGatewayStatus());
 		paymentDetailsData.setComments(paymentInfoModel.getOrderHistoryNotes());
+		paymentDetailsData.setTid(paymentInfoModel.getPaymentInfo().toString());
 		return dataMapper.map(paymentDetailsData, NnPaymentDetailsWsDTO.class, fields);
 	}
 	
