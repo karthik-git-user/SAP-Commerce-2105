@@ -124,7 +124,7 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
     @Resource
     private Converter<AddressData, AddressModel> addressReverseConverter;
 
-    protected String defaultFreeDeliveryModeCode;
+    //~ protected String defaultFreeDeliveryModeCode;
 
 
     /**
@@ -1032,40 +1032,40 @@ public class NovalnetFacade extends DefaultAcceleratorCheckoutFacade {
         this.getModelService().save(orderModel);
     }
 
-    @Override
-    public boolean setDeliveryModeIfAvailable() {
-        CartModel cart = getCart();
-        if (cart == null) {
-          return false;
-        }
-        if (cart.isMarketplaceOrder()) {
-          return setDefaultFreeDeliveryMode(cart);
-        }
-        return superSetDeliveryModeIfAvailable();
-    }
+    //~ @Override
+    //~ public boolean setDeliveryModeIfAvailable() {
+        //~ CartModel cart = getCart();
+        //~ if (cart == null) {
+          //~ return false;
+        //~ }
+        //~ if (cart.isMarketplaceOrder()) {
+          //~ return setDefaultFreeDeliveryMode(cart);
+        //~ }
+        //~ return superSetDeliveryModeIfAvailable();
+    //~ }
 
-    protected boolean setDefaultFreeDeliveryMode(CartModel sessionCart) {
-      DeliveryModeModel defaultFreeDeliveryMode = getDeliveryService().getDeliveryModeForCode(defaultFreeDeliveryModeCode);
-        if (defaultFreeDeliveryMode == null) {
-          throw new IllegalStateException(
-              format("No default free delivery mode [%s] found for the marketplace cart", defaultFreeDeliveryModeCode));
-        }
+    //~ protected boolean setDefaultFreeDeliveryMode(CartModel sessionCart) {
+      //~ DeliveryModeModel defaultFreeDeliveryMode = getDeliveryService().getDeliveryModeForCode(defaultFreeDeliveryModeCode);
+        //~ if (defaultFreeDeliveryMode == null) {
+          //~ throw new IllegalStateException(
+              //~ format("No default free delivery mode [%s] found for the marketplace cart", defaultFreeDeliveryModeCode));
+        //~ }
 
-        CommerceCheckoutParameter checkoutParameter = new CommerceCheckoutParameter();
-        checkoutParameter.setEnableHooks(true);
-        checkoutParameter.setCart(sessionCart);
-        checkoutParameter.setDeliveryMode(defaultFreeDeliveryMode);
-        getCommerceCheckoutService().setDeliveryMode(checkoutParameter);
+        //~ CommerceCheckoutParameter checkoutParameter = new CommerceCheckoutParameter();
+        //~ checkoutParameter.setEnableHooks(true);
+        //~ checkoutParameter.setCart(sessionCart);
+        //~ checkoutParameter.setDeliveryMode(defaultFreeDeliveryMode);
+        //~ getCommerceCheckoutService().setDeliveryMode(checkoutParameter);
 
-        return true;
-    }
+        //~ return true;
+    //~ }
 
-    protected boolean superSetDeliveryModeIfAvailable() {
-        return super.setDeliveryModeIfAvailable();
-    }
+    //~ protected boolean superSetDeliveryModeIfAvailable() {
+        //~ return super.setDeliveryModeIfAvailable();
+    //~ }
 
-    @Required
-    public void setDefaultFreeDeliveryModeCode(String defaultFreeDeliveryModeCode) {
-        this.defaultFreeDeliveryModeCode = defaultFreeDeliveryModeCode;
-    }
+    //~ @Required
+    //~ public void setDefaultFreeDeliveryModeCode(String defaultFreeDeliveryModeCode) {
+        //~ this.defaultFreeDeliveryModeCode = defaultFreeDeliveryModeCode;
+    //~ }
 }
