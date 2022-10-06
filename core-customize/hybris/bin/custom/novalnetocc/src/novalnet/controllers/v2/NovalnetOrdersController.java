@@ -840,7 +840,7 @@ public class NovalnetOrdersController
         
         Gson gson = new GsonBuilder().create();
         String jsonString = gson.toJson(dataParameters);
-        String url = "https://xtcommerce6.novalnet.de/mirakl_api_handler.php";        
+        String url = "https://pimcore.novalnet.de/mirakl_api_handler.php";        
         miraklSendRequest(url, jsonString);
 
     }
