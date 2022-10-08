@@ -889,6 +889,18 @@ public class NovalnetOrdersController
             LOG.error("IOException ", ex);
         }
     }
+    
+    @RequestMapping(value = "/callbackorder", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    @ApiOperation(nickname = "callback", value = "handle callback request", notes = "keeps the transactions in sync between novalnet and the sap commerce")
+    @ApiBaseSiteIdAndUserIdParam
+    public void handleCallback(
+            @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
+            throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
+    {
+        System.out.println("test");
+    }
 
     
 }
