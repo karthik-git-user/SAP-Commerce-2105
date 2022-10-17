@@ -159,7 +159,7 @@ public class NovalnetCallbackController
     {
         NnCallbackRequestData callbackRequestData = dataMapper.map(callbackRequest, NnCallbackRequestData.class, fields);
         NnCallbackResponseData callbackResponseData = new NnCallbackResponseData();
-        NnCallbackEventData eventData =  callbackRequest.getEvent();
+        NnCallbackEventData eventData =  callbackRequestData.getEvent();
         callbackResponseData.setEvent(eventData.getType());
         return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
     }
