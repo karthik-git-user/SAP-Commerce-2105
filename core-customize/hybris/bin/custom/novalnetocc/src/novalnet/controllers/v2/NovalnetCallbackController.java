@@ -107,8 +107,8 @@ import de.novalnet.beans.NnCountryData;
 import de.novalnet.beans.NnRegionData;
 import de.novalnet.beans.NnPaymentData;
 import de.novalnet.beans.NnPaymentsData;
-import de.novalnet.beans.NnCalbackRequestData;
 import de.novalnet.beans.NnConfigData;
+import de.novalnet.beans.NnCallbackEventData;
 import de.novalnet.beans.NnCallbackResponseData;
 import novalnet.dto.payment.NnConfigWsDTO;
 import novalnet.dto.payment.NnCallbackResponseWsDTO;
@@ -150,13 +150,13 @@ public class NovalnetCallbackController
     @ResponseBody
     @ApiOperation(nickname = "callback", value = "handle callback request", notes = "keeps the transactions in sync between novalnet and the sap commerce")
     @ApiBaseSiteIdAndUserIdParam
-    public void handleCallback(
+    public NnCallbackResponseWsDTO handleCallback(
 			@ApiParam(value =
     "Request body parameter that contains callback request", required = true) @RequestBody final NnCallbackRequestWsDTO callbackRequest,
             @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
             throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
     {
-        NnCalbackRequestData callbackRequestData = dataMapper.map(callbackRequest, NnCalbackRequestData.class, fields);
+        NnCallbackRequestData callbackRequestData = dataMapper.map(callbackRequest, NnCallbackRequestData.class, fields);
         NnCallbackResponseData callbackResponseData = new NnCallbackResponseData();
         NnCallbackEventData eventData =  callbackRequest.getEvent();
         callbackResponseData.setEvent(eventData.getType());
