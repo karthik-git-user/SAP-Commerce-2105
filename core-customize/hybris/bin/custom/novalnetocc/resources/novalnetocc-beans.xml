@@ -97,6 +97,146 @@
             <description>Payment details</description>
         </property>
     </bean>
+    
+    <bean class="novalnet.dto.payment.NnCallbackRequestWsDTO">
+        <property name="event" type="novalnet.dto.payment.NnCallbackEventWsDTO">
+            <description>Callback event data</description>
+        </property>
+        <property name="result" type="novalnet.dto.payment.NnCallbackResultWsDTO">
+            <description>Callback result data</description>
+        </property>
+        <property name="transaction" type="novalnet.dto.payment.NnCallbackTransactionWsDTO">
+            <description>Callback Transaction data</description>
+        </property>
+<!--
+        <property name="event" type="novalnet.dto.payment.NnCallbackCustomerWsDTO">
+            <description>Callback Customer data</description>
+        </property>
+-->
+        <property name="custom" type="novalnet.dto.payment.NnCallbackCustomWsDTO">
+            <description>Callback Custom data</description>
+        </property>
+        <property name="merchant" type="novalnet.dto.payment.NnCallbackMerchantWsDTO">
+            <description>Callback Merchant data</description>
+        </property>
+    </bean>
+    
+    <bean class="novalnet.dto.payment.NnCallbackMerchantWsDTO">
+		<property name="vendor" type="String">
+            <description>Your Merchant ID</description>
+        </property>
+		<property name="project" type="String">
+            <description>Your Project ID</description>
+        </property>
+	</bean>
+	
+    <bean class="novalnet.dto.payment.NnCallbackResponseWsDTO">
+		<property name="event" type="String">
+            <description>Your Merchant ID</description>
+        </property>
+	</bean>
+	
+    <bean class="novalnet.dto.payment.NnCallbackEventWsDTO">
+		<property name="type" type="String">
+            <description>Event type</description>
+        </property>
+		<property name="checksum" type="String">
+            <description>checksum for the callback request</description>
+        </property>
+        <property name="tid" type="String">
+            <description>Transaction ID</description>
+        </property>
+        <property name="parent_tid" type="String">
+            <description>Parent Transaction ID</description>
+        </property>
+	</bean>
+	
+    <bean class="novalnet.dto.payment.NnCallbackCustomWsDTO">
+		<property name="input1" type="String">
+            <description>Input Key 1</description>
+        </property>
+		<property name="inputval1" type="String">
+            <description>Input Value 1</description>
+        </property>
+        <property name="input2" type="String">
+            <description>Input key 2</description>
+        </property>
+        <property name="inputval2" type="String">
+            <description>Input key 2</description>
+        </property>
+	</bean>
+	
+	<bean class="novalnet.dto.payment.NnCallbackResultWsDTO">
+		<property name="status_text" type="String">
+            <description>Callback result status text</description>
+        </property>
+		<property name="status" type="String">
+            <description>Callback result status</description>
+        </property>
+        <property name="status_code" type="String">
+            <description>Callback result status code</description>
+        </property>
+        <property name="additional_message" type="String">
+            <description>Additional message about the transaction</description>
+        </property>
+	</bean>
+	
+	<bean class="novalnet.dto.payment.NnCallbackTransactionWsDTO">
+		<property name="tid" type="String">
+            <description>17 digit unique Novalnet transaction ID</description>
+        </property>
+		<property name="status" type="String">
+            <description>The current status of the payment</description>
+        </property>
+        <property name="payment_type" type="String">
+            <description>Transaction`s Payment type (defined in Novalnet)</description>
+        </property>
+        <property name="amount" type="String">
+            <description>Transaction`s amount that going to be charged from the customer.</description>
+        </property>
+        <property name="currency" type="String">
+            <description>The currency in which the transaction is being processed. The three-character currency code as defined in ISO-4217.</description>
+        </property>
+        <property name="order_no" type="String">
+            <description>Order`s unique identifier received from the shop</description>
+        </property>
+        <property name="test_mode" type="String">
+            <description>Denotes the processing mode of the transaction.</description>
+        </property>
+        <property name="date" type="String">
+            <description>Transaction date (incl. time)</description>
+        </property>
+        <property name="due_date" type="String">
+            <description>Date by which the customer must settle the payment</description>
+        </property>
+        <property name="bank_details" type="novalnet.dto.payment.NnCallbackBankDetailsWsDTO">
+            <description>Date by which the customer must settle the payment</description>
+        </property>
+	</bean>
+	
+	<bean class="novalnet.dto.payment.NnCallbackBankDetailsWsDTO">
+		<property name="bank_account" type="String">
+            <description>Bank account number</description>
+        </property>
+		<property name="bank_code" type="String">
+            <description>Bank code</description>
+        </property>
+        <property name="bank_name" type="String">
+            <description>Bank name</description>
+        </property>
+        <property name="bank_place" type="String">
+            <description>Place of the bank</description>
+        </property>
+        <property name="account_holder" type="String">
+            <description>Name of the bank account holder</description>
+        </property>
+        <property name="iban" type="String">
+            <description>IBAN (International Bank Account Number) of the bank account holder</description>
+        </property>
+        <property name="bic" type="String">
+            <description>BIC (Bank Identifier Code) of the bank account holder</description>
+        </property>
+	</bean>
 
     <bean class="novalnet.dto.payment.NnBillingWsDTO">
         <property name="titleCode" type="String">

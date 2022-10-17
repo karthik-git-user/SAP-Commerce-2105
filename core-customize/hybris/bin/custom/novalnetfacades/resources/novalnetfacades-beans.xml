@@ -25,7 +25,65 @@
 		<property name="billingAddress" type="de.novalnet.beans.NnBillingData"/>
 		<property name="paymentData" type="de.novalnet.beans.NnPaymentsData"/>
 	</bean>
+	
+	<bean class="de.novalnet.beans.NnCallbackRequestData">
+		<property name="event" type="de.novalnet.beans.NnCallbackEventData"/>
+		<property name="result" type="de.novalnet.beans.NnCallbackResultData"/>
+		<property name="transaction" type="de.novalnet.beans.NnCallbackTransactionData"/>
+		<property name="custom" type="de.novalnet.beans.NnCallbackCustomData"/>
+		<property name="merchant" type="de.novalnet.beans.NnCallbackMerchantData"/>
+	</bean>
 
+	<bean class="de.novalnet.beans.NnCallbackEventData">
+		<property name="type" type="String"/>
+		<property name="checksum" type="String"/>
+		<property name="tid" type="String"/>
+		<property name="parent_tid" type="String"/>
+	</bean>
+	
+	<bean class="de.novalnet.beans.NnCallbackResultData">
+		<property name="status_text" type="String"/>
+		<property name="status" type="String"/>
+		<property name="status_code" type="String"/>
+		<property name="additional_message" type="String"/>
+	</bean>
+	
+	<bean class="de.novalnet.beans.NnCallbackTransactionData">
+		<property name="tid" type="String"/>
+		<property name="status" type="String"/>
+		<property name="payment_type" type="String"/>
+		<property name="amount" type="String"/>
+		<property name="currency" type="String"/>
+		<property name="order_no" type="String"/>
+		<property name="test_mode" type="String"/>
+		<property name="date" type="String"/>
+		<property name="due_date" type="String"/>
+		<property name="bank_details" type="de.novalnet.beans.NnCallbackBankDetailsData"/>
+	</bean>
+	
+	<bean class="de.novalnet.beans.NnCallbackMerchantData">
+		<property name="vendor" type="String"/>
+		<property name="project" type="String"/>
+	</bean>
+	
+	<bean class="de.novalnet.beans.NnCallbackCustomData">
+		<property name="input1" type="String"/>
+		<property name="inputval1" type="String"/>
+		<property name="input2" type="String"/>
+		<property name="inputval2" type="String"/>
+	</bean>
+	
+	
+	<bean class="de.novalnet.beans.NnCallbackBankDetailsData">
+		<property name="bank_account" type="Boolean"/>
+		<property name="bank_code" type="Boolean"/>
+		<property name="bank_name" type="Boolean"/>
+		<property name="bank_place" type="Boolean"/>
+		<property name="account_holder" type="Boolean"/>
+		<property name="iban" type="Boolean"/>
+		<property name="bic" type="Boolean"/>
+	</bean>
+	
 	<bean class="de.novalnet.beans.NnCreditCardData">
 		<property name="active" type="Boolean"/>
 	</bean>
@@ -59,6 +117,10 @@
 
 	<bean class="de.novalnet.beans.NnCountryData">
 		<property name="isocode" type="String"/>
+	</bean>
+	
+	<bean class="de.novalnet.beans.NnCallbackResponseData">
+		<property name="event" type="String"/>
 	</bean>
 
 	<bean class="de.novalnet.beans.NnRegionData">
