@@ -174,13 +174,6 @@ public class NovalnetCallbackController
 			callbackResponseData.setMessage(ipCheck);
 			return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
 		}
-		
-		//~ String mandate = checkmandateParams(callbackRequestData);
-		
-		//~ if(errorFlag) {
-			//~ callbackResponseData.setMessage(mandate);
-			//~ return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
-		//~ }
         
         callbackResponseData.setMessage("Callback recieved");
         return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
@@ -188,8 +181,19 @@ public class NovalnetCallbackController
     }
     
     public static String checkmandateParams(NnCallbackRequestData callbackRequestData) {
+		Map<String, String[]> mandate = new HashMap<String, String[]>();
+		String[] eventParams = {"type", "checksum", "tid"};
+		String[] merchantParams = {"vendor", "project"};
+		String[] transactionParams = {"tid", "payment_type", "status"};
+		String[] resultParams = {"status"};
+		paymentTypes.put("event", eventParams);
+		paymentTypes.put("mercahnt", eventParams);
+		paymentTypes.put("transaction", eventParams);
+		paymentTypes.put("result", eventParams);
 		
+		return "";
 	}
+	
     public static String checkIP(HttpServletRequest request) {
 		
         String vendorScriptHostIpAddress = "";
