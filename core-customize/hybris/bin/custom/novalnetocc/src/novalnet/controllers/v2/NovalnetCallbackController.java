@@ -180,21 +180,21 @@ public class NovalnetCallbackController
         
     }
     
-    public static String checkmandateParams(NnCallbackRequestData callbackRequestData) {
+    public String checkmandateParams(NnCallbackRequestData callbackRequestData) {
 		Map<String, String[]> mandate = new HashMap<String, String[]>();
 		String[] eventParams = {"type", "checksum", "tid"};
 		String[] merchantParams = {"vendor", "project"};
 		String[] transactionParams = {"tid", "payment_type", "status"};
 		String[] resultParams = {"status"};
-		paymentTypes.put("event", eventParams);
-		paymentTypes.put("mercahnt", eventParams);
-		paymentTypes.put("transaction", eventParams);
-		paymentTypes.put("result", eventParams);
+		mandate.put("event", eventParams);
+		mandate.put("mercahnt", eventParams);
+		mandate.put("transaction", eventParams);
+		mandate.put("result", eventParams);
 		
 		return "";
 	}
 	
-    public static String checkIP(HttpServletRequest request) {
+    public String checkIP(HttpServletRequest request) {
 		
         String vendorScriptHostIpAddress = "";
         final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
