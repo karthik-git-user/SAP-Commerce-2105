@@ -120,7 +120,7 @@
 	</bean>
 	
 	<bean class="de.novalnet.beans.NnCallbackResponseData">
-		<property name="event" type="String"/>
+		<property name="message" type="String"/>
 	</bean>
 
 	<bean class="de.novalnet.beans.NnRegionData">

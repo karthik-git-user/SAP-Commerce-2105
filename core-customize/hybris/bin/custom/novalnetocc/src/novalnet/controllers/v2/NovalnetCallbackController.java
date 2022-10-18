@@ -136,6 +136,8 @@ public class NovalnetCallbackController
     private String password;
    
     private static final String PAYMENT_AUTHORIZE = "AUTHORIZE";
+    public static final int REQUEST_IP = 4;
+    private boolean testMode = false;
 
     @Resource(name = "novalnetOrderFacade")
     NovalnetOrderFacade novalnetOrderFacade;
@@ -161,13 +163,16 @@ public class NovalnetCallbackController
             throws UnknownHostException
     {
 		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
+		NnCallbackResponseData callbackResponseData = new NnCallbackResponseData();
         NnCallbackRequestData callbackRequestData = dataMapper.map(callbackRequest, NnCallbackRequestData.class, fields);
+        String vendorScriptHostIpAddress = "";
         
         try {
 			InetAddress address = InetAddress.getByName("pay-nn.de"); //Novalnet vendor script host
 			vendorScriptHostIpAddress = address.getHostAddress();
 		} catch (UnknownHostException e) {
-			throw new UnknownHostException(e);
+			callbackResponseData.setMessage("error while fetching novalnet IP address : " + e);
+			return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
 		}
 		
 		String callerIp = request.getHeader("HTTP_X_FORWARDED_FOR");
@@ -177,14 +182,18 @@ public class NovalnetCallbackController
 		}
 		
 		testMode = baseStore.getNovalnetVendorscriptTestMode();
+		LOG.info("novalnet vecdor script test mode : " + testMode);
+		
+		if (!vendorScriptHostIpAddress.equals(callerIp) && !testMode) {
+			callbackResponseData.setMessage("Novalnet webhook received. Unauthorised access from the IP " + callerIp);
+			return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
+		}
         
-        LOG.info("novalnet vecdor script test mode : " + testMode);
         
         
-        NnCallbackResponseData callbackResponseData = new NnCallbackResponseData();
+        
         NnCallbackEventData eventData =  callbackRequestData.getEvent();
-        callbackResponseData.setEvent(eventData.getType());
-        return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
+        
     }
 
     

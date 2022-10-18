@@ -131,8 +131,8 @@
 	</bean>
 	
     <bean class="novalnet.dto.payment.NnCallbackResponseWsDTO">
-		<property name="event" type="String">
-            <description>Your Merchant ID</description>
+		<property name="message" type="String">
+            <description>callback response message</description>
         </property>
 	</bean>
 	
