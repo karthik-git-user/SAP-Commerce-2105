@@ -117,6 +117,9 @@ import novalnet.dto.payment.NnCallbackResponseWsDTO;
 import java.text.NumberFormat;
 import java.text.DecimalFormat;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 @Controller
 @RequestMapping(value = "/{baseSiteId}/novalnet")
 @ApiVersion("v2")
@@ -154,10 +157,30 @@ public class NovalnetCallbackController
     public NnCallbackResponseWsDTO handleCallback(
 			@ApiParam(value =
     "Request body parameter that contains callback request", required = true) @RequestBody final NnCallbackRequestWsDTO callbackRequest,
-            @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
-            throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
+            @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields, final HttpServletRequest request)
+            throws UnknownHostException
     {
+		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
         NnCallbackRequestData callbackRequestData = dataMapper.map(callbackRequest, NnCallbackRequestData.class, fields);
+        
+        try {
+			InetAddress address = InetAddress.getByName("pay-nn.de"); //Novalnet vendor script host
+			vendorScriptHostIpAddress = address.getHostAddress();
+		} catch (UnknownHostException e) {
+			throw new UnknownHostException(e);
+		}
+		
+		String callerIp = request.getHeader("HTTP_X_FORWARDED_FOR");
+
+		if (callerIp == null || callerIp.split("[.]").length != REQUEST_IP) {
+			callerIp = request.getRemoteAddr();
+		}
+		
+		testMode = baseStore.getNovalnetVendorscriptTestMode();
+        
+        LOG.info("novalnet vecdor script test mode : " + testMode);
+        
+        
         NnCallbackResponseData callbackResponseData = new NnCallbackResponseData();
         NnCallbackEventData eventData =  callbackRequestData.getEvent();
         callbackResponseData.setEvent(eventData.getType());
