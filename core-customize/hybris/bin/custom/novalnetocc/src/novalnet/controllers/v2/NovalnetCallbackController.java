@@ -167,20 +167,29 @@ public class NovalnetCallbackController
 		
 		NnCallbackResponseData callbackResponseData = new NnCallbackResponseData();
         NnCallbackRequestData callbackRequestData = dataMapper.map(callbackRequest, NnCallbackRequestData.class, fields);
+        
         String ipCheck = checkIP(request);
         
         if(errorFlag) {
 			callbackResponseData.setMessage(ipCheck);
 			return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
 		}
+		
+		//~ String mandate = checkmandateParams(callbackRequestData);
+		
+		//~ if(errorFlag) {
+			//~ callbackResponseData.setMessage(mandate);
+			//~ return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
+		//~ }
         
-        
-        
-        
-        NnCallbackEventData eventData =  callbackRequestData.getEvent();
+        callbackResponseData.setMessage("Callback recieved");
+        return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
         
     }
     
+    public static String checkmandateParams(NnCallbackRequestData callbackRequestData) {
+		
+	}
     public static String checkIP(HttpServletRequest request) {
 		
         String vendorScriptHostIpAddress = "";
