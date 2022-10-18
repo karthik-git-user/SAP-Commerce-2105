@@ -119,6 +119,7 @@ import java.text.DecimalFormat;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(value = "/{baseSiteId}/novalnet")
@@ -138,6 +139,7 @@ public class NovalnetCallbackController
     private static final String PAYMENT_AUTHORIZE = "AUTHORIZE";
     public static final int REQUEST_IP = 4;
     private boolean testMode = false;
+    private boolean errorFlag = false;
 
     @Resource(name = "novalnetOrderFacade")
     NovalnetOrderFacade novalnetOrderFacade;
@@ -162,17 +164,34 @@ public class NovalnetCallbackController
             @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields, final HttpServletRequest request)
             throws UnknownHostException
     {
-		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
+		
 		NnCallbackResponseData callbackResponseData = new NnCallbackResponseData();
         NnCallbackRequestData callbackRequestData = dataMapper.map(callbackRequest, NnCallbackRequestData.class, fields);
+        String ipCheck = checkIP(request);
+        
+        if(errorFlag) {
+			callbackResponseData.setMessage(ipCheck);
+			return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
+		}
+        
+        
+        
+        
+        NnCallbackEventData eventData =  callbackRequestData.getEvent();
+        
+    }
+    
+    public static String checkIP(HttpServletRequest request) {
+		
         String vendorScriptHostIpAddress = "";
+        final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
         
         try {
 			InetAddress address = InetAddress.getByName("pay-nn.de"); //Novalnet vendor script host
 			vendorScriptHostIpAddress = address.getHostAddress();
 		} catch (UnknownHostException e) {
-			callbackResponseData.setMessage("error while fetching novalnet IP address : " + e);
-			return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
+			errorFlag = true;
+			return "error while fetching novalnet IP address : " + e;
 		}
 		
 		String callerIp = request.getHeader("HTTP_X_FORWARDED_FOR");
@@ -185,15 +204,11 @@ public class NovalnetCallbackController
 		LOG.info("novalnet vecdor script test mode : " + testMode);
 		
 		if (!vendorScriptHostIpAddress.equals(callerIp) && !testMode) {
-			callbackResponseData.setMessage("Novalnet webhook received. Unauthorised access from the IP " + callerIp);
-			return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
+			errorFlag = true;
+			return "Novalnet webhook received. Unauthorised access from the IP " + callerIp;
 		}
-        
-        
-        
-        
-        NnCallbackEventData eventData =  callbackRequestData.getEvent();
-        
+		
+		return "";
     }
 
     
