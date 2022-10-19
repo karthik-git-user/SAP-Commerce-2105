@@ -109,8 +109,11 @@ import de.novalnet.beans.NnPaymentData;
 import de.novalnet.beans.NnPaymentsData;
 import de.novalnet.beans.NnConfigData;
 import de.novalnet.beans.NnCallbackEventData;
+import de.novalnet.beans.NnCallbackMerchantData;
+import de.novalnet.beans.NnCallbackResultData;
 import de.novalnet.beans.NnCallbackRequestData;
-import de.novalnet.beans.NnCallbackResponseData;
+import de.novalnet.beans.NnCallbackRequestData;
+import de.novalnet.beans.NnCallbackTransactionData;
 import novalnet.dto.payment.NnConfigWsDTO;
 import novalnet.dto.payment.NnCallbackResponseWsDTO;
 
