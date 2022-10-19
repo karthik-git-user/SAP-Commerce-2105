@@ -112,7 +112,7 @@ import de.novalnet.beans.NnCallbackEventData;
 import de.novalnet.beans.NnCallbackMerchantData;
 import de.novalnet.beans.NnCallbackResultData;
 import de.novalnet.beans.NnCallbackRequestData;
-import de.novalnet.beans.NnCallbackRequestData;
+import de.novalnet.beans.NnCallbackResponseData;
 import de.novalnet.beans.NnCallbackTransactionData;
 import novalnet.dto.payment.NnConfigWsDTO;
 import novalnet.dto.payment.NnCallbackResponseWsDTO;
@@ -200,9 +200,9 @@ public class NovalnetCallbackController
         NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
         NnCallbackResultData resultData =  callbackRequestData.getResult();
         
-        if(!eventData.isEmpty() && !merchantData.isEmpty() && !transactionData.isEmpty() && !resultData.isEmpty()) {
+        if(!("").equals(eventData) && !("").equals(merchantData) && !("").equals(transactionData) && !("").equals(resultData)) {
 			
-			if(!("").equals(eventData.getType()) && !("").equals(eventData.getChecksum()) && !("").equals(eventData.getTid()) && !("").equals(merchantData.getVendor()) && !("").equals(merchantData.getProject()) && !("").equals(transactionData.getTid()) && !("").equals(transactionData.getPayment_type()) && !("").equals(transactionData.getStatus()) && !("").equals(resultData.getstatus()) ) {
+			if(!("").equals(eventData.getType()) && !("").equals(eventData.getChecksum()) && !("").equals(eventData.getTid()) && !("").equals(merchantData.getVendor()) && !("").equals(merchantData.getProject()) && !("").equals(transactionData.getTid()) && !("").equals(transactionData.getPayment_type()) && !("").equals(transactionData.getStatus()) && !("").equals(resultData.getStatus()) ) {
 				return "Mandatory paramsa are recieved";
 			} else {
 				errorFlag = true;
