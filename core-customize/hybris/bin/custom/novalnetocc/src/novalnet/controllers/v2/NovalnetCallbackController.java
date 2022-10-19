@@ -210,19 +210,14 @@ public class NovalnetCallbackController
         NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
         NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
         NnCallbackResultData resultData =  callbackRequestData.getResult();
-        
-        if(!("").equals(eventData) && !("").equals(merchantData) && !("").equals(transactionData) && !("").equals(resultData)) {
 			
-			if(!("").equals(eventData.getType()) && !("").equals(eventData.getChecksum()) && !("").equals(eventData.getTid()) && !("").equals(merchantData.getVendor()) && !("").equals(merchantData.getProject()) && !("").equals(transactionData.getTid()) && !("").equals(transactionData.getPayment_type()) && !("").equals(transactionData.getStatus()) && !("").equals(resultData.getStatus()) ) {
-				return "Mandatory params are recieved";
-			} else {
-				errorFlag = true;
-				return "Mandatory params are empty in callback request";
-			}
+		if(!("").equals(eventData.getType()) && !("").equals(eventData.getChecksum()) && !("").equals(eventData.getTid()) && !("").equals(merchantData.getVendor()) && !("").equals(merchantData.getProject()) && !("").equals(transactionData.getTid()) && !("").equals(transactionData.getPayment_type()) && !("").equals(transactionData.getStatus()) && !("").equals(resultData.getStatus()) ) {
+			return "Mandatory params are recieved";
 		} else {
 			errorFlag = true;
 			return "Mandatory params are empty in callback request";
 		}
+		
 	}
 	
     public String checkIP(HttpServletRequest request) {
