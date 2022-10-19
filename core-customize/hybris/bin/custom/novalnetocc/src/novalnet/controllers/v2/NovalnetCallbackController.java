@@ -124,6 +124,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import javax.servlet.http.HttpServletRequest;
 
+import java.security.MessageDigest;
+
 @Controller
 @RequestMapping(value = "/{baseSiteId}/novalnet")
 @ApiVersion("v2")
@@ -188,6 +190,15 @@ public class NovalnetCallbackController
 		} else {
 			LOG.info(mandateCheck);
 		}
+		
+		String Checksum = validateChecksum(callbackRequestData);
+		
+		if(errorFlag) {
+			callbackResponseData.setMessage(Checksum);
+			return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
+		} else {
+			LOG.info(Checksum);
+		}
         
         return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
         
@@ -203,7 +214,7 @@ public class NovalnetCallbackController
         if(!("").equals(eventData) && !("").equals(merchantData) && !("").equals(transactionData) && !("").equals(resultData)) {
 			
 			if(!("").equals(eventData.getType()) && !("").equals(eventData.getChecksum()) && !("").equals(eventData.getTid()) && !("").equals(merchantData.getVendor()) && !("").equals(merchantData.getProject()) && !("").equals(transactionData.getTid()) && !("").equals(transactionData.getPayment_type()) && !("").equals(transactionData.getStatus()) && !("").equals(resultData.getStatus()) ) {
-				return "Mandatory paramsa are recieved";
+				return "Mandatory params are recieved";
 			} else {
 				errorFlag = true;
 				return "Mandatory params are empty in callback request";
@@ -243,6 +254,50 @@ public class NovalnetCallbackController
 		
 		return "IP validation passed for Callback request";
     }
+    
+    public String validateChecksum(NnCallbackRequestData callbackRequestData) {
+		
+		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
+        
+        NnCallbackEventData eventData =  callbackRequestData.getEvent();
+        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
+        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
+        NnCallbackResultData resultData =  callbackRequestData.getResult();
+
+		String tokenString = eventData.getTid() + eventData.getType() + resultData.getStatus() + transactionData.getAmount() + transactionData.getCurrency();
+
+		if (!"".equals(baseStore.getNovalnetPaymentAccessKey())) {
+			tokenString += new StringBuilder(baseStore.getNovalnetPaymentAccessKey().trim()).reverse().toString();
+		}
+
+		String createdHash = "";
+		
+		try{
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			byte[] hash = digest.digest(tokenString.getBytes(StandardCharsets.UTF_8));
+			StringBuffer hexString = new StringBuffer();
+
+			for (int i = 0; i < hash.length; i++) {
+				String hex = Integer.toHexString(0xff & hash[i]);
+				if(hex.length() == 1) {
+					hexString.append('0');
+				}
+				hexString.append(hex);
+			}
+
+			createdHash =  hexString.toString();
+		} catch(RuntimeException ex) {
+			errorFlag = true;
+			return "RuntimeException while generating checksum " + ex;
+		}
+
+		if ( !eventData.getChecksum().equals(createdHash) ) {
+			errorFlag = true;
+			return "While notifying some data has been changed. The hash check failed";
+		} else {
+			return "Chacksum validated for the callback request";
+		}
+	}
 
     
 }
