@@ -126,6 +126,7 @@ import java.net.UnknownHostException;
 import javax.servlet.http.HttpServletRequest;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @Controller
 @RequestMapping(value = "/{baseSiteId}/novalnet")
@@ -251,7 +252,7 @@ public class NovalnetCallbackController
 		return "IP validation passed for Callback request";
     }
     
-    public String validateChecksum(NnCallbackRequestData callbackRequestData) {
+    public String validateChecksum(NnCallbackRequestData callbackRequestData) throws NoSuchAlgorithmException {
 		
 		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
         
