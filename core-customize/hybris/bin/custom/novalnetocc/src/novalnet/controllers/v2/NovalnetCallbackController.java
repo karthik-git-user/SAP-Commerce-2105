@@ -173,39 +173,42 @@ public class NovalnetCallbackController
         if(errorFlag) {
 			callbackResponseData.setMessage(ipCheck);
 			return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
+		} else {
+			LOG.info(ipCheck);
 		}
 		
 		String mandateCheck = checkmandateParams(callbackRequestData);
+		
+		if(errorFlag) {
+			callbackResponseData.setMessage(mandateCheck);
+			return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
+		} else {
+			LOG.info(mandateCheck);
+		}
         
-        callbackResponseData.setMessage("Callback recieved " + mandateCheck);
         return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
         
     }
     
     public String checkmandateParams(NnCallbackRequestData callbackRequestData) {
-		Map<String, String[]> mandate = new HashMap<String, String[]>();
-		String[] eventParams = {"type", "checksum", "tid"};
-		String[] merchantParams = {"vendor", "project"};
-		String[] transactionParams = {"tid", "payment_type", "status"};
-		String[] resultParams = {"status"};
-		mandate.put("event", eventParams);
-		mandate.put("mercahnt", eventParams);
-		mandate.put("transaction", eventParams);
-		mandate.put("result", eventParams);
-		
-		//~ NnCallbackResponseData callbackResponseData = new NnCallbackResponseData();
-        //~ NnCallbackEventData eventData =  callbackRequestData.getEvent();
-        //~ callbackResponseData.setEvent(eventData.getType());
-        //~ return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
-		
-		
-			if(callbackRequestData.getEvent() && callbackRequestData.getEvent().getType() && callbackRequestData.getEvent().getChecksum() && callbackRequestData.getEvent().getTid() ) {
-				return "test";
+        
+        NnCallbackEventData eventData =  callbackRequestData.getEvent();
+        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
+        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
+        NnCallbackResultData resultData =  callbackRequestData.getResult();
+        
+        if(!eventData.isEmpty() && !merchantData.isEmpty() && !transactionData.isEmpty() && !resultData.isEmpty()) {
+			
+			if(!("").equals(eventData.getType()) && !("").equals(eventData.getChecksum()) && !("").equals(eventData.getTid()) && !("").equals(merchantData.getVendor()) && !("").equals(merchantData.getProject()) && !("").equals(transactionData.getTid()) && !("").equals(transactionData.getPayment_type()) && !("").equals(transactionData.getStatus()) && !("").equals(resultData.getstatus()) ) {
+				return "Mandatory paramsa are recieved";
 			} else {
-				return "false";
+				errorFlag = true;
+				return "Mandatory params are empty in callback request";
 			}
-		
-		
+		} else {
+			errorFlag = true;
+			return "Mandatory params are empty in callback request";
+		}
 	}
 	
     public String checkIP(HttpServletRequest request) {
@@ -235,7 +238,7 @@ public class NovalnetCallbackController
 			return "Novalnet webhook received. Unauthorised access from the IP " + callerIp;
 		}
 		
-		return "";
+		return "IP validation passed for Callback request";
     }
 
     
