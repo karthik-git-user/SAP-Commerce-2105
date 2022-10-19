@@ -169,7 +169,7 @@ public class NovalnetCallbackController
 			@ApiParam(value =
     "Request body parameter that contains callback request", required = true) @RequestBody final NnCallbackRequestWsDTO callbackRequest,
             @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields, final HttpServletRequest request)
-            throws UnknownHostException
+            throws UnknownHostException, NoSuchAlgorithmException
     {
 		
 		NnCallbackResponseData callbackResponseData = new NnCallbackResponseData();
