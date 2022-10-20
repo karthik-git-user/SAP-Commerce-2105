@@ -174,9 +174,8 @@ public class NovalnetCallbackController
 		
 		NnCallbackResponseData callbackResponseData = new NnCallbackResponseData();
         NnCallbackRequestData callbackRequestData = dataMapper.map(callbackRequest, NnCallbackRequestData.class, fields);
-        LOG.info("ipcheck error flag 0: " + errorFlag);
         String ipCheck = checkIP(request);
-        LOG.info("ipcheck error flag 6: " + errorFlag);
+
         if(errorFlag) {
 			callbackResponseData.setMessage(ipCheck);
 			return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
@@ -212,8 +211,10 @@ public class NovalnetCallbackController
         NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
         NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
         NnCallbackResultData resultData =  callbackRequestData.getResult();
+
+        if()
 			
-		if(!("").equals(eventData.getType()) && !("").equals(eventData.getChecksum()) && !("").equals(eventData.getTid()) && !("").equals(merchantData.getVendor()) && !("").equals(merchantData.getProject()) && !("").equals(transactionData.getTid()) && !("").equals(transactionData.getPayment_type()) && !("").equals(transactionData.getStatus()) && !("").equals(resultData.getStatus()) ) {
+		if(eventData.getType() != null && eventData.getChecksum() != null && eventData.getTid() != null && merchantData.getVendor() != null && merchantData.getProject() != null && transactionData.getTid() != null && transactionData.getPayment_type() != null && transactionData.getStatus() != null && resultData.getStatus() != null ) {
 			return "Mandatory params are recieved";
 		} else {
 			errorFlag = true;
@@ -223,7 +224,7 @@ public class NovalnetCallbackController
 	}
 	
     public String checkIP(HttpServletRequest request) {
-		LOG.info("ipcheck error flag 1: " + errorFlag);
+		
         String vendorScriptHostIpAddress = "";
         final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
         
@@ -235,15 +236,13 @@ public class NovalnetCallbackController
 			return "error while fetching novalnet IP address : " + e;
 		}
 		
-		LOG.info("ipcheck error flag 2: " + errorFlag);
-		
 		String callerIp = request.getHeader("HTTP_X_FORWARDED_FOR");
 
 		if (callerIp == null || callerIp.split("[.]").length != REQUEST_IP) {
 			callerIp = request.getRemoteAddr();
 		}
 		
-		LOG.info("ipcheck error flag 3: " + errorFlag);
+		
 		testMode = baseStore.getNovalnetVendorscriptTestMode();
 		LOG.info("novalnet vecdor script test mode : " + testMode);
 		
@@ -251,7 +250,7 @@ public class NovalnetCallbackController
 			errorFlag = true;
 			return "Novalnet webhook received. Unauthorised access from the IP " + callerIp;
 		}
-		LOG.info("ipcheck error flag 4: " + errorFlag);
+		
 		
 		return "IP validation passed for Callback request";
     }
