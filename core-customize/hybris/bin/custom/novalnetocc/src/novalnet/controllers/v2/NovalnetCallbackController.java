@@ -211,8 +211,6 @@ public class NovalnetCallbackController
         NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
         NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
         NnCallbackResultData resultData =  callbackRequestData.getResult();
-
-        if()
 			
 		if(eventData.getType() != null && eventData.getChecksum() != null && eventData.getTid() != null && merchantData.getVendor() != null && merchantData.getProject() != null && transactionData.getTid() != null && transactionData.getPayment_type() != null && transactionData.getStatus() != null && resultData.getStatus() != null ) {
 			return "Mandatory params are recieved";
