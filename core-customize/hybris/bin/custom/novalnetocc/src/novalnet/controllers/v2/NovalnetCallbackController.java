@@ -174,9 +174,9 @@ public class NovalnetCallbackController
 		
 		NnCallbackResponseData callbackResponseData = new NnCallbackResponseData();
         NnCallbackRequestData callbackRequestData = dataMapper.map(callbackRequest, NnCallbackRequestData.class, fields);
-        
+        LOG.info("ipcheck error flag 0: " + errorFlag);
         String ipCheck = checkIP(request);
-        
+        LOG.info("ipcheck error flag 6: " + errorFlag);
         if(errorFlag) {
 			callbackResponseData.setMessage(ipCheck);
 			return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
@@ -223,7 +223,7 @@ public class NovalnetCallbackController
 	}
 	
     public String checkIP(HttpServletRequest request) {
-		
+		LOG.info("ipcheck error flag 1: " + errorFlag);
         String vendorScriptHostIpAddress = "";
         final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
         
@@ -235,12 +235,15 @@ public class NovalnetCallbackController
 			return "error while fetching novalnet IP address : " + e;
 		}
 		
+		LOG.info("ipcheck error flag 2: " + errorFlag);
+		
 		String callerIp = request.getHeader("HTTP_X_FORWARDED_FOR");
 
 		if (callerIp == null || callerIp.split("[.]").length != REQUEST_IP) {
 			callerIp = request.getRemoteAddr();
 		}
 		
+		LOG.info("ipcheck error flag 3: " + errorFlag);
 		testMode = baseStore.getNovalnetVendorscriptTestMode();
 		LOG.info("novalnet vecdor script test mode : " + testMode);
 		
@@ -248,6 +251,7 @@ public class NovalnetCallbackController
 			errorFlag = true;
 			return "Novalnet webhook received. Unauthorised access from the IP " + callerIp;
 		}
+		LOG.info("ipcheck error flag 4: " + errorFlag);
 		
 		return "IP validation passed for Callback request";
     }
