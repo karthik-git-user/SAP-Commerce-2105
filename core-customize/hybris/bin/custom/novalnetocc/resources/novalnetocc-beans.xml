@@ -210,7 +210,28 @@
             <description>Date by which the customer must settle the payment</description>
         </property>
         <property name="bank_details" type="novalnet.dto.payment.NnCallbackBankDetailsWsDTO">
-            <description>Date by which the customer must settle the payment</description>
+            <description>DThis objects contains the Bank details to which customer has to transfer the transaction amount</description>
+        </property>
+        <property name="bank_details" type="novalnet.dto.payment.NnCallbackRefundWsDTO">
+            <description>This objects contains the refund details for the transaction</description>
+        </property>
+	</bean>
+	
+	<bean class="novalnet.dto.payment.NnCallbackRefundWsDTO">
+		<property name="amount" type="String">
+            <description>Refund amount</description>
+        </property>
+		<property name="currency" type="String">
+            <description>refund currency</description>
+        </property>
+        <property name="bank_name" type="String">
+            <description>Bank name</description>
+        </property>
+        <property name="payment_type" type="String">
+            <description>Refund done with payment type</description>
+        </property>
+        <property name="tid" type="String">
+            <description>Transaction ID for the refund</description>
         </property>
 	</bean>
 	

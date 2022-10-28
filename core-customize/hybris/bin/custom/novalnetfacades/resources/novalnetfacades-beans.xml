@@ -57,13 +57,22 @@
 		<property name="order_no" type="String"/>
 		<property name="test_mode" type="String"/>
 		<property name="date" type="String"/>
+		<property name="refunded_amount" type="String"/>
 		<property name="due_date" type="String"/>
 		<property name="bank_details" type="de.novalnet.beans.NnCallbackBankDetailsData"/>
+		<property name="bank_details" type="de.novalnet.beans.NnCallbackRefundData"/>
 	</bean>
 	
 	<bean class="de.novalnet.beans.NnCallbackMerchantData">
 		<property name="vendor" type="String"/>
 		<property name="project" type="String"/>
+	</bean>
+	
+	<bean class="de.novalnet.beans.NnCallbackRefundData">
+		<property name="amount" type="String"/>
+		<property name="currency" type="String"/>
+		<property name="payment_type" type="String"/>
+		<property name="tid" type="String"/>
 	</bean>
 	
 	<bean class="de.novalnet.beans.NnCallbackCustomData">

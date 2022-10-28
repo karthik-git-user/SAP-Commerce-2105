@@ -1,8 +1,8 @@
 INSERT_UPDATE NovalnetCreditCardPaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code);novalnetStandardLabelCss;novalnetStandardInputCss;novalnetStandardCss
 ;novalnetCreditCard;Kredit- / Debitkarte;Credit/Debit Cards;Der Betrag wird Ihrer Kredit-/Debitkarte belastet; The amount will be debited from your credit/debit card;false;PaymentInfo;false;COMPLETED;"font-family: Raleway,Helvetica Neue,Verdana,Arial,sans-serif;font-size: 13px;font-weight: 600;color: #636363;line-height: 1.5;color:red";"color: #636363;font-family: Helvetica Neue,Verdana,Arial,sans-serif;font-size: 14px;";
 
-INSERT_UPDATE NovalnetDirectDebitSepaPaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code);novalnetOneClickShopping
-;novalnetDirectDebitSepa;Lastschrift SEPA;Direct Debit SEPA;Der Betrag wird durch Novalnet von Ihrem Konto abgebucht;The amount will be debited from your account by Novalnet;false;PaymentInfo;false;COMPLETED;true
+INSERT_UPDATE NovalnetDirectDebitSepaPaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code);novalnetOneClickShopping;novalnetZeroAmountBooking
+;novalnetDirectDebitSepa;Lastschrift SEPA;Direct Debit SEPA;Der Betrag wird durch Novalnet von Ihrem Konto abgebucht;The amount will be debited from your account by Novalnet;false;PaymentInfo;false;COMPLETED;true;false
 
 INSERT_UPDATE NovalnetGuaranteedDirectDebitSepaPaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code);novalnetMinimumGuaranteeAmount
 ;novalnetGuaranteedDirectDebitSepa;SEPA-Lastschrift mit Zahlungsgarantie;Direct Debit SEPA with payment guarantee;Der Betrag wird durch Novalnet von Ihrem Konto abgebucht;The amount will be debited from your account by Novalnet;false;PaymentInfo;false;COMPLETED;999

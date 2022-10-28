@@ -200,6 +200,157 @@ public class NovalnetCallbackController
 		} else {
 			LOG.info(Checksum);
 		}
+		
+		Map<String, String> capturePayments = new HashMap<String, String>();
+		capturePayments.put("CREDITCARD", "CREDITCARD");
+		capturePayments.put("INVOICE", "INVOICE");
+		capturePayments.put("GUARANTEED_INVOICE", "GUARANTEED_INVOICE");
+		capturePayments.put("DIRECT_DEBIT_SEPA", "DIRECT_DEBIT_SEPA");
+		capturePayments.put("GUARANTEED_DIRECT_DEBIT_SEPA", "GUARANTEED_DIRECT_DEBIT_SEPA");
+		capturePayments.put("PAYPAL", "PAYPAL");
+
+		Map<String, String> cancelPayments = new HashMap<String, String>();
+		cancelPayments.put("CREDITCARD", "CREDITCARD");
+		cancelPayments.put("INVOICE", "INVOICE");
+		cancelPayments.put("GUARANTEED_INVOICE", "GUARANTEED_INVOICE");
+		cancelPayments.put("DIRECT_DEBIT_SEPA", "DIRECT_DEBIT_SEPA");
+		cancelPayments.put("GUARANTEED_DIRECT_DEBIT_SEPA", "GUARANTEED_DIRECT_DEBIT_SEPA");
+		cancelPayments.put("PAYPAL", "PAYPAL");
+		cancelPayments.put("PRZELEWY24", "PRZELEWY24");
+
+		Map<String, String> updatePayments = new HashMap<String, String>();
+		updatePayments.put("CREDITCARD", "CREDITCARD");
+		updatePayments.put("INVOICE_START", "INVOICE_START");
+		updatePayments.put("PREPAYMENT", "PREPAYMENT");
+		updatePayments.put("GUARANTEED_INVOICE", "GUARANTEED_INVOICE");
+		updatePayments.put("DIRECT_DEBIT_SEPA", "DIRECT_DEBIT_SEPA");
+		updatePayments.put("GUARANTEED_DIRECT_DEBIT_SEPA", "GUARANTEED_DIRECT_DEBIT_SEPA");
+		updatePayments.put("PAYPAL", "PAYPAL");
+		updatePayments.put("PRZELEWY24", "PRZELEWY24");
+		updatePayments.put("CASHPAYMENT", "CASHPAYMENT");
+		updatePayments.put("POSTFINANCE", "POSTFINANCE");
+		updatePayments.put("POSTFINANCE_CARD", "POSTFINANCE_CARD");
+
+		Map<String, String> refundPayments = new HashMap<String, String>();
+		refundPayments.put("CREDITCARD_BOOKBACK", "CREDITCARD_BOOKBACK");
+		refundPayments.put("REFUND_BY_BANK_TRANSFER_EU", "REFUND_BY_BANK_TRANSFER_EU");
+		refundPayments.put("PAYPAL_BOOKBACK", "PAYPAL_BOOKBACK");
+		refundPayments.put("PRZELEWY24_REFUND", "PRZELEWY24_REFUND");
+		refundPayments.put("CASHPAYMENT_REFUND", "CASHPAYMENT_REFUND");
+		refundPayments.put("POSTFINANCE_REFUND", "POSTFINANCE_REFUND");
+		refundPayments.put("GUARANTEED_INVOICE_BOOKBACK", "GUARANTEED_INVOICE_BOOKBACK");
+		refundPayments.put("GUARANTEED_SEPA_BOOKBACK", "GUARANTEED_SEPA_BOOKBACK");
+
+		Map<String, String> creditPayments = new HashMap<String, String>();
+		creditPayments.put("INVOICE_CREDIT", "INVOICE_CREDIT");
+		creditPayments.put("CREDIT_ENTRY_CREDITCARD", "CREDIT_ENTRY_CREDITCARD");
+		creditPayments.put("CREDIT_ENTRY_SEPA", "CREDIT_ENTRY_SEPA");
+		creditPayments.put("DEBT_COLLECTION_SEPA", "DEBT_COLLECTION_SEPA");
+		creditPayments.put("DEBT_COLLECTION_CREDITCARD", "DEBT_COLLECTION_CREDITCARD");
+		creditPayments.put("GUARANTEED_DEBT_COLLECTION", "GUARANTEED_DEBT_COLLECTION");
+		creditPayments.put("CASHPAYMENT_CREDIT", "CASHPAYMENT_CREDIT");
+		creditPayments.put("ONLINE_TRANSFER_CREDIT", "ONLINE_TRANSFER_CREDIT");
+		creditPayments.put("MULTIBANCO_CREDIT", "MULTIBANCO_CREDIT");
+		creditPayments.put("CREDIT_ENTRY_DE", "CREDIT_ENTRY_DE");
+
+
+		// Type of PAYMENTS available
+		Map<String, String> initialPayments = new HashMap<String, String>();
+		initialPayments.put("CREDITCARD", "CREDITCARD");
+		initialPayments.put("INVOICE_START", "INVOICE_START");
+		initialPayments.put("GUARANTEED_INVOICE", "GUARANTEED_INVOICE");
+		initialPayments.put("DIRECT_DEBIT_SEPA", "DIRECT_DEBIT_SEPA");
+		initialPayments.put("GUARANTEED_DIRECT_DEBIT_SEPA", "GUARANTEED_DIRECT_DEBIT_SEPA");
+		initialPayments.put("GUARANTEED_INSTALLMENT_PAYMENT", "GUARANTEED_INSTALLMENT_PAYMENT");
+		initialPayments.put("PAYPAL", "PAYPAL");
+		initialPayments.put("ONLINE_TRANSFER", "ONLINE_TRANSFER");
+		initialPayments.put("ONLINE_BANK_TRANSFER", "ONLINE_BANK_TRANSFER");
+		initialPayments.put("IDEAL", "IDEAL");
+		initialPayments.put("EPS", "EPS");
+		initialPayments.put("PAYSAFECARD", "PAYSAFECARD");
+		initialPayments.put("GIROPAY", "GIROPAY");
+		initialPayments.put("PRZELEWY24", "PRZELEWY24");
+		initialPayments.put("CASHPAYMENT", "CASHPAYMENT");
+		initialPayments.put("POSTFINANCE", "POSTFINANCE");
+		initialPayments.put("POSTFINANCE_CARD", "POSTFINANCE_CARD");
+
+		// Type of CHARGEBACKS available
+		Map<String, String> chargebackPayments = new HashMap<String, String>();
+		chargebackPayments.put("RETURN_DEBIT_SEPA", "RETURN_DEBIT_SEPA");
+		chargebackPayments.put("REVERSAL", "REVERSAL");
+		chargebackPayments.put("CREDITCARD_CHARGEBACK", "CREDITCARD_CHARGEBACK");
+		chargebackPayments.put("PAYPAL_CHARGEBACK", "PAYPAL_CHARGEBACK");
+
+
+		// Type of CREDIT_ENTRY PAYMENT/COLLECTIONS available
+		Map<String, String> collectionPayments = new HashMap<String, String>();
+		collectionPayments.put("INVOICE_CREDIT", "INVOICE_CREDIT");
+		collectionPayments.put("CREDIT_ENTRY_CREDITCARD", "CREDIT_ENTRY_CREDITCARD");
+		collectionPayments.put("CREDIT_ENTRY_SEPA", "CREDIT_ENTRY_SEPA");
+		collectionPayments.put("GUARANTEED_CREDIT_ENTRY_SEPA", "GUARANTEED_CREDIT_ENTRY_SEPA");
+		collectionPayments.put("DEBT_COLLECTION_SEPA", "DEBT_COLLECTION_SEPA");
+		collectionPayments.put("DEBT_COLLECTION_CREDITCARD", "DEBT_COLLECTION_CREDITCARD");
+		collectionPayments.put("GUARANTEED_DEBT_COLLECTION", "GUARANTEED_DEBT_COLLECTION");
+		collectionPayments.put("CASHPAYMENT_CREDIT", "CASHPAYMENT_CREDIT");
+		collectionPayments.put("DEBT_COLLECTION_DE", "DEBT_COLLECTION_DE");
+
+		// Payment types for each payment method
+		Map<String, String[]> paymentTypes = new HashMap<String, String[]>();
+		String[] creditCardPaymentTypes = {"CREDITCARD", "CREDITCARD_CHARGEBACK", "CREDITCARD_BOOKBACK", "TRANSACTION_CANCELLATION", "CREDIT_ENTRY_CREDITCARD", "DEBT_COLLECTION_CREDITCARD"};
+		String[] directDebitSepaPaymentTypes = {"DIRECT_DEBIT_SEPA", "RETURN_DEBIT_SEPA", "REFUND_BY_BANK_TRANSFER_EU", "TRANSACTION_CANCELLATION", "CREDIT_ENTRY_SEPA", "DEBT_COLLECTION_SEPA"};
+		String[] invoicePaymentTypes = {"INVOICE_START", "INVOICE_CREDIT", "TRANSACTION_CANCELLATION", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE", "INVOICE"};
+		String[] prepaymentPaymentTypes = {"PREPAYMENT", "INVOICE_CREDIT", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE"};
+		String[] multibancoPaymentTypes = {"MULTIBANCO", "MULTIBANCO_CREDIT"};
+		String[] payPalPaymentTypes = {"PAYPAL", "PAYPAL_BOOKBACK", "REFUND_BY_BANK_TRANSFER_EU"};
+		String[] instantBankTransferPaymentTypes = {"ONLINE_TRANSFER", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
+		String[] onlineBankTransferPaymentTypes = {"ONLINE_BANK_TRANSFER", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
+		String[] bancontactPaymentTypes = {"BANCONTACT", "REFUND_BY_BANK_TRANSFER_EU"};
+		String[] idealPaymentTypes = {"IDEAL", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
+		String[] epsPaymentTypes = {"EPS", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
+		String[] giropayPaymentTypes = {"GIROPAY", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
+		String[] przelewy24PaymentTypes = {"PRZELEWY24", "PRZELEWY24_REFUND"};
+		String[] cashpaymentPaymentTypes = {"CASHPAYMENT", "CASHPAYMENT_REFUND", "CASHPAYMENT_CREDIT"};
+		String[] postFinancePaymentTypes = {"POSTFINANCE", "POSTFINANCE_REFUND"};
+		String[] postFinanceCardPaymentTypes = {"POSTFINANCE_CARD", "POSTFINANCE_REFUND"};
+		String[] guaranteedInvoicePaymentTypes = {"GUARANTEED_INVOICE", "GUARANTEED_INVOICE_BOOKBACK"};
+		String[] guaranteedDirectDebitSepaPaymentTypes = {"GUARANTEED_DIRECT_DEBIT_SEPA", "GUARANTEED_SEPA_BOOKBACK"};
+
+		paymentTypes.put("novalnetCreditCard", creditCardPaymentTypes);
+		paymentTypes.put("novalnetDirectDebitSepa", directDebitSepaPaymentTypes);
+		paymentTypes.put("novalnetInvoice", invoicePaymentTypes);
+		paymentTypes.put("novalnetPrepayment", prepaymentPaymentTypes);
+		paymentTypes.put("novalnetPayPal", payPalPaymentTypes);
+		paymentTypes.put("novalnetInstantBankTransfer", instantBankTransferPaymentTypes);
+		paymentTypes.put("novalnetOnlineBankTransfer", onlineBankTransferPaymentTypes);
+		paymentTypes.put("novalnetIdeal", idealPaymentTypes);
+		paymentTypes.put("novalnetEps", epsPaymentTypes);
+		paymentTypes.put("novalnetGiropay", giropayPaymentTypes);
+		paymentTypes.put("novalnetPrzelewy24", przelewy24PaymentTypes);
+		paymentTypes.put("novalnetBarzahlen", cashpaymentPaymentTypes);
+		paymentTypes.put("novalnetPostFinance", postFinancePaymentTypes);
+		paymentTypes.put("novalnetPostFinanceCard", postFinanceCardPaymentTypes);
+		paymentTypes.put("novalnetGuaranteedDirectDebitSepa", guaranteedDirectDebitSepaPaymentTypes);
+		paymentTypes.put("novalnetGuaranteedInvoice", guaranteedInvoicePaymentTypes);
+		paymentTypes.put("novalnetMultibanco", multibancoPaymentTypes);
+		paymentTypes.put("novalnetBancontact", bancontactPaymentTypes);
+		
+		NnCallbackEventData eventData =  callbackRequestData.getEvent();
+        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
+        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
+        NnCallbackResultData resultData =  callbackRequestData.getResult();
+		
+		Map<String, String> capturedRequiredParams = new HashMap<String, String>();
+		capturedRequiredParams.put("vendor", merchantData.getVendor());
+		capturedRequiredParams.put("payment_type", transactionData.getPayment_type());
+		capturedRequiredParams.put("tid", transactionData.getTid());
+		capturedRequiredParams.put(STATUS_LITERAL, transactionData.getStatus());
+		
+		String requestEventype = eventData.getType();
+		String requestPaymentType = transactionData.getPayment_type();
+		if("TRANSACTION_REFUND".equals(requestEventype)) {
+			 refundRequestPaymentType = transactionJsonObject.getJSONObject("refund");
+			 requestPaymentType = refundRequestPaymentType.get("payment_type").toString();
+		}
         
         return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
         
@@ -211,12 +362,22 @@ public class NovalnetCallbackController
         NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
         NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
         NnCallbackResultData resultData =  callbackRequestData.getResult();
+        
+        try {
 			
-		if(eventData.getType() != null && eventData.getChecksum() != null && eventData.getTid() != null && merchantData.getVendor().toString() != null && merchantData.getProject() != null && transactionData.getTid() != null && transactionData.getPayment_type() != null && transactionData.getStatus() != null && resultData.getStatus() != null ) {
-			return "Mandatory params are recieved";
-		} else {
+			if(eventData.getType() != null && eventData.getChecksum() != null && eventData.getTid() != null && merchantData.getVendor() != null && merchantData.getProject() != null && transactionData.getTid() != null && transactionData.getPayment_type() != null && transactionData.getStatus() != null && resultData.getStatus() != null ) {
+				if (!("".equals(transactionData.getTid())) && transactionData.getTid().toString().length() != 17) {
+                    errorFlag = true;
+					return "TID is not valid";
+                }
+				return "Mandatory params are recieved";
+			} else {
+				errorFlag = true;
+				return "Mandatory params are empty in callback request";
+			}
+		} catch(RuntimeException ex) {
 			errorFlag = true;
-			return "Mandatory params are empty in callback request";
+			return "Mandatory params validation failed " + ex;
 		}
 		
 	}
