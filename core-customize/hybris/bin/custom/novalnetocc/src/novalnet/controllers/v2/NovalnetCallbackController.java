@@ -143,9 +143,12 @@ public class NovalnetCallbackController
     private CartData cartData;
     private CartModel cartModel;
     private String password;
-    public String requestPaymentType;
+    public String requestPaymentType = "";
     public String callbackComments;
     public String transactionStatus;
+    public Date currentDate = new Date();
+    public long amountToBeFormat = 0;
+    public BigDecimal formattedAmount = 0;
    
     private static final String PAYMENT_AUTHORIZE = "AUTHORIZE";
     public static final int REQUEST_IP = 4;
@@ -343,14 +346,17 @@ public class NovalnetCallbackController
 		capturedRequiredParams.put("vendor", merchantData.getVendor());
 		capturedRequiredParams.put("payment_type", transactionData.getPayment_type());
 		capturedRequiredParams.put("tid", transactionData.getTid());
-		capturedRequiredParams.put(STATUS_LITERAL, transactionData.getStatus());
+		capturedRequiredParams.put("status", transactionData.getStatus());
 		
 		String requestEventype = eventData.getType();
 		String requestPaymentType = transactionData.getPayment_type();
 		String response = "";
 		String[] refundType = {"CHARGEBACK", "TRANSACTION_REFUND"};
 
-		transactionStatus = transactionData.getStaus();
+		long amountToBeFormat = Integer.parseInt(transactionData.getAmount().toString());
+        BigDecimal formattedAmount = new BigDecimal(amountToBeFormat).movePointLeft(2);
+
+		transactionStatus = transactionData.getStatus();
 
 		if (Arrays.asList(refundType).contains(eventData.getType())) {
 			 response = performRefund(callbackRequestData);
@@ -366,58 +372,11 @@ public class NovalnetCallbackController
 
 
     public String performCredit(NnCallbackRequestData callbackRequestData) {
-    	
-    	// String[] creditPayment = {"CREDIT_ENTRY_CREDITCARD", "CREDIT_ENTRY_SEPA", "DEBT_COLLECTION_SEPA", "DEBT_COLLECTION_CREDITCARD", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE"};
-     //    String[] creditPaymentType = {"INVOICE_CREDIT", "CASHPAYMENT_CREDIT", "MULTIBANCO_CREDIT"};
 
-     //    if (Arrays.asList(creditPaymentType).contains(requestPaymentType)) {
-     //        // if settlement of invoice OR Advance payment through Customer
-     //        if (orderAmount > paidAmount) {
-     //            // Form callback comments
-     //            String notifyComments = callbackComments = "Credit has been successfully received for the TID: " + eventJsonObject.get("parent_tid").toString() + " with amount: " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID: " + transactionJsonObject.get("tid").toString();
-
-     //            // Update PART PAID payment status
-     //            novalnetFacade.updatePartPaidStatus(orderNo);
-
-     //            // Update Callback info
-     //            novalnetFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
-
-     //            // Full amount paid by the customer
-     //            if (totalAmount >= orderAmount) {
-     //                // Update Callback order status
-     //                novalnetFacade.updateCallbackOrderStatus(orderNo, paymentType);
-
-     //                // Customer paid greater than the order amount
-     //                if (totalAmount > orderAmount) {
-     //                    notifyComments += ". Customer paid amount is greater than order amount.";
-     //                }
-     //            }
-
-     //            // Update callback comments
-     //            novalnetFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
-
-     //            // Send notification email
-     //            sendEmail(notifyComments, toEmailAddress);
-     //            return false;
-     //        }
-     //    } else if (Arrays.asList(creditPayment).contains(requestPaymentType)) {
-     //        callbackComments = "Credit has been successfully received for the TID: " + eventJsonObject.get("parent_tid").toString() + " with amount: " + formattedAmount + " " + transactionJsonObject.get(CURRENCY_LITERAL).toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID:" + transactionJsonObject.get("tid").toString() + ".";
-     //        novalnetFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
-     //        novalnetFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
-
-     //        // Send notification email
-     //        sendEmail(callbackComments, toEmailAddress);
-     //        return false;
-     //    } 
+    	return "";
     }
 
     public String performRefund(NnCallbackRequestData callbackRequestData) {
-
-    	final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.gParent_tid());
-
-    	String orderNo = orderReference.get(0).getOrderNo();
-
-
 
     	NnCallbackEventData eventData =  callbackRequestData.getEvent();
         NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
@@ -426,6 +385,8 @@ public class NovalnetCallbackController
         NnCallbackRefundData refundData =  transactionData.getRefund();
 
 		requestPaymentType = refundData.getPayment_type();
+		final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.gParent_tid());
+    	String orderNo = orderReference.get(0).getOrderNo();
 
     	if(("TRANSACTION_REFUND".equals(eventData.getType()) && !refundPayments.containsValue(requestPaymentType)) || ("CHARGEBACK".equals(requestEventype) && !chargebackPayments.containsValue(requestPaymentType))) {
 
@@ -442,13 +403,13 @@ public class NovalnetCallbackController
 	        String stidMsg = ". The subsequent TID: ";
 
 	        if(Arrays.asList(chargeBackPaymentType).contains(requestPaymentType)) {
-	            callbackComments = "Chargeback executed successfully for the TID: " + eventJsonObject.get("parent_tid").toString() + " amount: " + formattedAmount + " " + transactionJsonObject.getCurrency() + " on " + currentDate.toString() + stidMsg + transactionJsonObject.getTid().toString();
+	            callbackComments = "Chargeback executed successfully for the TID: " + eventData.getParent_tid().toString() + " amount: " + formattedAmount + " " + transactionData.getCurrency() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
 	        } else if("REVERSAL".equals(requestPaymentType)) {
-	            callbackComments = "Chargeback executed for reversal of TID:" + eventJsonObject.get("parent_tid").toString() + " with the amount  " + formattedAmount + " " + transactionJsonObject.getCurrency().toString() + " on " + currentDate.toString() + stidMsg + transactionJsonObject.getTid().toString();
+	            callbackComments = "Chargeback executed for reversal of TID:" + eventData.getParent_tid().toString() + " with the amount  " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
 	        } else if("RETURN_DEBIT_SEPA".equals(requestPaymentType)) {
-	            callbackComments = "Chargeback executed for return debit of TID:" + eventJsonObject.get("parent_tid").toString() + " with the amount  " + formattedAmount + " " + transactionJsonObject.getCurrency().toString() + " on " + currentDate.toString() + stidMsg + transactionJsonObject.getTid().toString();
+	            callbackComments = "Chargeback executed for return debit of TID:" + eventData.getParent_tid().toString() + " with the amount  " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
 	        } else {
-	            callbackComments =  "Refund has been initiated for the TID " + eventJsonObject.get("parent_tid").toString() + " with the amount : " + refundFormattedAmount + " " + transactionJsonObject.getCurrency().toString() + ". New TID: " + transactionJsonObject.getTid().toString();
+	            callbackComments =  "Refund has been initiated for the TID " + eventData.getParent_tid().toString() + " with the amount : " + refundFormattedAmount + " " + transactionData.getCurrency().toString() + ". New TID: " + transactionData.getTid().toString();
 	        }
 
 	        // Update callback comments
