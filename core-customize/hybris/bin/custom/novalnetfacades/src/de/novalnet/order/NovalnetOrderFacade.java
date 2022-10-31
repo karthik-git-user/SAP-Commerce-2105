@@ -47,6 +47,7 @@ import de.hybris.platform.commerceservices.order.CommerceCheckoutService;
 import de.hybris.platform.commerceservices.service.data.CommerceCheckoutParameter;
 import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsListWsDTO;
 import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsDTO;
+import de.hybris.platform.orderhistory.model.OrderHistoryEntryModel;
 import de.hybris.platform.converters.Populator;
 import de.hybris.platform.core.enums.OrderStatus;
 import de.hybris.platform.core.model.c2l.CountryModel;
@@ -439,6 +440,29 @@ public class NovalnetOrderFacade {
 
         // Save the updated models
         this.getModelService().saveAll(paymentInfoModel, orderEntry);
+    }
+
+    /**
+     * Get order model
+     *
+     * @param orderCode Order code of the order
+     * @return SearchResult
+     */
+    public List<OrderModel> getOrderInfoModel(String orderCode) {
+        // Initialize StringBuilder
+        StringBuilder query = new StringBuilder();
+
+        // Select query for fetch OrderModel
+        query.append("SELECT {pk} from {" + OrderModel._TYPECODE + "} where {" + OrderModel.CODE
+                + "} = ?code");
+        FlexibleSearchQuery executeQuery = new FlexibleSearchQuery(query.toString());
+
+        // Add query parameter
+        executeQuery.addQueryParameter("code", orderCode);
+
+        // Execute query
+        SearchResult<OrderModel> result = getFlexibleSearchService().search(executeQuery);
+        return result.getResult();
     }
 
     /**
