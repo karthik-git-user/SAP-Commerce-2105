@@ -212,7 +212,7 @@
         <property name="bank_details" type="novalnet.dto.payment.NnCallbackBankDetailsWsDTO">
             <description>DThis objects contains the Bank details to which customer has to transfer the transaction amount</description>
         </property>
-        <property name="bank_details" type="novalnet.dto.payment.NnCallbackRefundWsDTO">
+        <property name="refund" type="novalnet.dto.payment.NnCallbackRefundWsDTO">
             <description>This objects contains the refund details for the transaction</description>
         </property>
 	</bean>
