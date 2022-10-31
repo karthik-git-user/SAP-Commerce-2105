@@ -60,7 +60,7 @@
 		<property name="refunded_amount" type="String"/>
 		<property name="due_date" type="String"/>
 		<property name="bank_details" type="de.novalnet.beans.NnCallbackBankDetailsData"/>
-		<property name="bank_details" type="de.novalnet.beans.NnCallbackRefundData"/>
+		<property name="refund" type="de.novalnet.beans.NnCallbackRefundData"/>
 	</bean>
 	
 	<bean class="de.novalnet.beans.NnCallbackMerchantData">

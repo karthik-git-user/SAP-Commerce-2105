@@ -312,9 +312,11 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                     return false;
                 }
             }
+
             String requestEventype = eventJsonObject.get("type").toString();
             JSONObject refundRequestPaymentType = new JSONObject();
             String requestPaymentType = transactionJsonObject.get("payment_type").toString();
+            
             if("TRANSACTION_REFUND".equals(requestEventype)) {
                  refundRequestPaymentType = transactionJsonObject.getJSONObject("refund");
                  requestPaymentType = refundRequestPaymentType.get("payment_type").toString();

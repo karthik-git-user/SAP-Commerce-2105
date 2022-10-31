@@ -413,6 +413,34 @@ public class NovalnetOrderFacade {
 		return YSanitizer.sanitize(input);
 	}
 
+     /**
+     * Update Order comments
+     *
+     * @param comments  Formed comments
+     * @param orderCode Order code of the order
+     * @param transactionStatus transaction status for the order
+     */
+    public void updateCallbackComments(String comments, String orderCode, String transactionStatus) {
+        List<NovalnetPaymentInfoModel> paymentInfo = getNovalnetPaymentInfo(orderCode);
+
+        // Update NovalnetPaymentInfo Order entry notes
+        NovalnetPaymentInfoModel paymentInfoModel = this.getModelService().get(paymentInfo.get(0).getPk());
+        String previousComments = paymentInfoModel.getOrderHistoryNotes();
+        paymentInfoModel.setOrderHistoryNotes(previousComments + "<br><br>" + comments);
+        paymentInfoModel.setPaymentGatewayStatus(transactionStatus);
+        List<OrderModel> orderInfoModel = getOrderInfoModel(orderCode);
+
+        // Update OrderHistoryEntries
+        OrderModel orderModel = this.getModelService().get(orderInfoModel.get(0).getPk());
+        OrderHistoryEntryModel orderEntry = this.getModelService().create(OrderHistoryEntryModel.class);
+        orderEntry.setTimestamp(new Date());
+        orderEntry.setOrder(orderModel);
+        orderEntry.setDescription(comments);
+
+        // Save the updated models
+        this.getModelService().saveAll(paymentInfoModel, orderEntry);
+    }
+
     /**
      * Get Novalnet payment info model
      *
