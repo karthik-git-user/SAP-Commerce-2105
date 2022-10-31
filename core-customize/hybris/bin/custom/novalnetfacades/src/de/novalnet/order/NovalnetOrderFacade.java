@@ -25,7 +25,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import de.hybris.platform.commercewebservicescommons.errors.exceptions.RequestParameterException;
-import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
 import de.hybris.platform.payment.enums.PaymentTransactionType;
 import de.hybris.platform.payment.dto.TransactionStatus;
 import de.hybris.platform.payment.model.PaymentTransactionEntryModel;
@@ -59,6 +58,8 @@ import de.hybris.platform.core.model.user.AddressModel;
 import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.core.model.c2l.CurrencyModel;
 import de.hybris.platform.core.model.user.TitleModel;
+import de.hybris.novalnet.core.model.NovalnetCallbackInfoModel;
+import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
 import de.hybris.platform.order.CalculationService;
 import de.hybris.platform.order.CartFactory;
 import de.hybris.platform.order.CartService;
@@ -99,6 +100,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
 /**
  * Facade for setting shipping options on marketplace order entries
  */
@@ -446,6 +448,29 @@ public class NovalnetOrderFacade {
     public NovalnetPaymentInfoModel getPaymentModel(final List<NovalnetPaymentInfoModel> paymentInfo) {
         final NovalnetPaymentInfoModel paymentModel = this.getModelService().get(paymentInfo.get(0).getPk());
         return paymentModel;
+    }
+
+    /**
+     * Get callback info model
+     *
+     * @param transactionId Transaction ID of the order
+     * @return SearchResult
+     */
+    public List<NovalnetCallbackInfoModel> getCallbackInfo(String transactionId) {
+        // Initialize StringBuilder
+        StringBuilder query = new StringBuilder();
+
+        // Select query for fetch NovalnetCallbackInfoModel
+        query.append("SELECT {pk} from {" + NovalnetCallbackInfoModel._TYPECODE + "} where {" + NovalnetCallbackInfoModel.ORGINALTID
+                + "} = ?transctionId");
+        FlexibleSearchQuery executeQuery = new FlexibleSearchQuery(query.toString());
+
+        // Add query parameter
+        executeQuery.addQueryParameter("transctionId", transactionId);
+
+        // Execute query
+        SearchResult<NovalnetCallbackInfoModel> result = getFlexibleSearchService().search(executeQuery);
+        return result.getResult();
     }
     
 }
