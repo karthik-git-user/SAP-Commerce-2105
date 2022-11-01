@@ -148,7 +148,7 @@ public class NovalnetCallbackController
     public String transactionStatus;
     public Date currentDate = new Date();
     public long amountToBeFormat = 0;
-    public BigDecimal formattedAmount = 0;
+    public BigDecimal formattedAmount = new BigDecimal(0);
    
     private static final String PAYMENT_AUTHORIZE = "AUTHORIZE";
     public static final int REQUEST_IP = 4;
@@ -385,10 +385,10 @@ public class NovalnetCallbackController
         NnCallbackRefundData refundData =  transactionData.getRefund();
 
 		requestPaymentType = refundData.getPayment_type();
-		final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.gParent_tid());
+		final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
     	String orderNo = orderReference.get(0).getOrderNo();
 
-    	if(("TRANSACTION_REFUND".equals(eventData.getType()) && !refundPayments.containsValue(requestPaymentType)) || ("CHARGEBACK".equals(requestEventype) && !chargebackPayments.containsValue(requestPaymentType))) {
+    	if(!refundPayments.containsValue(requestPaymentType) ||  !chargebackPayments.containsValue(requestPaymentType)) {
 
 	    	String[] chargeBackPaymentType = {"CREDITCARD_CHARGEBACK", "PAYPAL_CHARGEBACK", "RETURN_DEBIT_SEPA", "REVERSAL"};
 	        BigDecimal refundFormattedAmount = new BigDecimal(0);
