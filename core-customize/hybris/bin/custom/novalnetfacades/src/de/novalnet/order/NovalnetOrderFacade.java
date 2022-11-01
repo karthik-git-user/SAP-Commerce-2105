@@ -50,6 +50,7 @@ import de.hybris.platform.commercewebservicescommons.dto.order.PaymentDetailsWsD
 import de.hybris.platform.orderhistory.model.OrderHistoryEntryModel;
 import de.hybris.platform.converters.Populator;
 import de.hybris.platform.core.enums.OrderStatus;
+import de.hybris.platform.core.enums.PaymentStatus;
 import de.hybris.platform.core.model.c2l.CountryModel;
 import de.hybris.platform.core.model.order.AbstractOrderEntryModel;
 import de.hybris.platform.core.model.order.CartModel;
@@ -63,6 +64,7 @@ import de.hybris.novalnet.core.model.NovalnetCallbackInfoModel;
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
 import de.hybris.platform.order.CalculationService;
 import de.hybris.platform.order.CartFactory;
+import de.hybris.platform.order.PaymentModeService;
 import de.hybris.platform.order.CartService;
 import de.hybris.platform.order.InvalidCartException;
 import de.hybris.platform.order.exceptions.CalculationException;
@@ -102,6 +104,30 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
+import de.hybris.novalnet.core.model.NovalnetPaymentRefInfoModel;
+import de.hybris.novalnet.core.model.NovalnetDirectDebitSepaPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetGuaranteedDirectDebitSepaPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetGuaranteedInvoicePaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetPayPalPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetCreditCardPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetInvoicePaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetPrepaymentPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetBarzahlenPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetInstantBankTransferPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetOnlineBankTransferPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetBancontactPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetMultibancoPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetIdealPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetEpsPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetGiropayPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetPrzelewy24PaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetPostFinanceCardPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetPostFinancePaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetCallbackInfoModel;
+
+
+
 /**
  * Facade for setting shipping options on marketplace order entries
  */
@@ -136,6 +162,9 @@ public class NovalnetOrderFacade {
 	
 	@Resource(name = "userFacade")
 	private UserFacade userFacade;
+
+    @Resource
+    private PaymentModeService paymentModeService;
 	
 	public static final String ADDRESS_DOES_NOT_EXIST = "Address with given id: '%s' doesn't exist or belong to another user";
 	private static final String OBJECT_NAME_ADDRESS_ID = "addressId";
@@ -466,6 +495,41 @@ public class NovalnetOrderFacade {
     }
 
     /**
+     * Update OrderStatus of the order
+     *
+     * @param orderCode Order code of the order
+     */
+    public void updatePartPaidStatus(String orderCode) {
+        List<OrderModel> orderInfoModel = getOrderInfoModel(orderCode);
+
+        // Update Part paid status
+        OrderModel orderModel = this.getModelService().get(orderInfoModel.get(0).getPk());
+        orderModel.setPaymentStatus(PaymentStatus.PARTPAID);
+
+        this.getModelService().save(orderModel);
+    }
+
+    /**
+     * Update callback info model
+     *
+     * @param callbackTid     Transaction Id of the executed callback
+     * @param orderReference  Order reference list
+     * @param orderPaidAmount Total paid amount
+     */
+    public void updateCallbackInfo(long callbackTid, List<NovalnetCallbackInfoModel> orderReference, int orderPaidAmount) {
+        NovalnetCallbackInfoModel callbackInfoModel = this.getModelService().get(orderReference.get(0).getPk());
+
+        // Update Callback TID
+        callbackInfoModel.setCallbackTid(callbackTid);
+
+        // Update Paid amount
+        callbackInfoModel.setPaidAmount(orderPaidAmount);
+
+        // Save the updated model
+        this.getModelService().save(callbackInfoModel);
+    }
+
+    /**
      * Get Novalnet payment info model
      *
      * @param orderCode Order code of the order
@@ -489,6 +553,57 @@ public class NovalnetOrderFacade {
         SearchResult<NovalnetPaymentInfoModel> result = getFlexibleSearchService().search(executeQuery);
         return result.getResult();
 
+    }
+
+    /**
+     * update the callback order status
+     *
+     * @param orderCode Order code of the order
+     * @param paymentMethod name of the payment method
+     */
+    public void updateCallbackOrderStatus(String orderCode, String paymentMethod)
+    {
+        List<OrderModel> orderInfoModel = getOrderInfoModel(orderCode);
+
+        // Update OrderHistoryEntries
+        OrderModel orderModel = this.getModelService().get(orderInfoModel.get(0).getPk());
+        PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(paymentMethod);
+        
+        if("novalnetInvoice".equals(paymentMethod)) 
+        {
+            final NovalnetInvoicePaymentModeModel novalnetPaymentMethod = (NovalnetInvoicePaymentModeModel) paymentModeModel;
+            orderModel.setStatus(novalnetPaymentMethod.getNovalnetCallbackOrderStatus());
+        }
+        else if("novalnetMultibanco".equals(paymentMethod)) 
+        {
+            final NovalnetMultibancoPaymentModeModel novalnetPaymentMethod = (NovalnetMultibancoPaymentModeModel) paymentModeModel;
+            orderModel.setStatus(novalnetPaymentMethod.getNovalnetCallbackOrderStatus());
+        }
+        else if("novalnetPrepayment".equals(paymentMethod)) 
+        {
+            final NovalnetPrepaymentPaymentModeModel novalnetPaymentMethod = (NovalnetPrepaymentPaymentModeModel) paymentModeModel;
+            orderModel.setStatus(novalnetPaymentMethod.getNovalnetCallbackOrderStatus());
+        }
+        else if("novalnetBarzahlen".equals(paymentMethod)) 
+        {
+            final NovalnetBarzahlenPaymentModeModel novalnetPaymentMethod = (NovalnetBarzahlenPaymentModeModel) paymentModeModel;
+            orderModel.setStatus(novalnetPaymentMethod.getNovalnetCallbackOrderStatus());
+        }
+        else if("novalnetPayPal".equals(paymentMethod)) 
+        {
+            final NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
+            orderModel.setStatus(novalnetPaymentMethod.getNovalnetOrderSuccessStatus());
+        }
+        else if("novalnetPrzelewy24".equals(paymentMethod)) 
+        {
+            final NovalnetPrzelewy24PaymentModeModel novalnetPaymentMethod = (NovalnetPrzelewy24PaymentModeModel) paymentModeModel;
+            orderModel.setStatus(novalnetPaymentMethod.getNovalnetOrderSuccessStatus());
+        }
+        
+        
+        orderModel.setPaymentStatus(PaymentStatus.PAID);
+
+        this.getModelService().save(orderModel);
     }
 
     /**

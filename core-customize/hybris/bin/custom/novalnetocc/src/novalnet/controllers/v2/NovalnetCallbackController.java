@@ -373,7 +373,71 @@ public class NovalnetCallbackController
 
     public String performCredit(NnCallbackRequestData callbackRequestData) {
 
-    	return "";
+    	NnCallbackEventData eventData =  callbackRequestData.getEvent();
+        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
+        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
+        NnCallbackResultData resultData =  callbackRequestData.getResult();
+        NnCallbackRefundData refundData =  transactionData.getRefund();
+
+        final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
+    	String orderNo = orderReference.get(0).getOrderNo();
+
+    	int amountInCents = Integer.parseInt(transactionData.getAmount().toString());
+
+        int paidAmount = orderReference.get(0).getPaidAmount();
+
+        int orderAmount = orderReference.get(0).getOrderAmount();
+
+        int totalAmount = paidAmount + amountInCents;
+
+        String paymentType = orderReference.get(0).getPaymentType();
+        
+        String notifyComments = "";
+
+        long callbackTid = Long.parseLong(transactionData.getTid().toString());
+
+    	String[] creditPayment = {"CREDIT_ENTRY_CREDITCARD", "CREDIT_ENTRY_SEPA", "DEBT_COLLECTION_SEPA", "DEBT_COLLECTION_CREDITCARD", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE"};
+        String[] creditPaymentType = {"INVOICE_CREDIT", "CASHPAYMENT_CREDIT", "MULTIBANCO_CREDIT"};
+
+        if (Arrays.asList(creditPaymentType).contains(requestPaymentType)) {
+            // if settlement of invoice OR Advance payment through Customer
+            if (orderAmount > paidAmount) {
+                // Form callback comments
+                String notifyComments = callbackComments = "Credit has been successfully received for the TID: " + eventData.getParent_tid().toString() + " with amount: " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID: " + transactionData.getTid().toString();
+
+                // Update PART PAID payment status
+                novalnetOrderFacade.updatePartPaidStatus(orderNo);
+
+                // Update Callback info
+                novalnetOrderFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
+
+                // Full amount paid by the customer
+                if (totalAmount >= orderAmount) {
+                    // Update Callback order status
+                    novalnetOrderFacade.updateCallbackOrderStatus(orderNo, paymentType);
+
+                    // Customer paid greater than the order amount
+                    if (totalAmount > orderAmount) {
+                        notifyComments += ". Customer paid amount is greater than order amount.";
+                    }
+                }
+
+                // Update callback comments
+                novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
+
+                // Send notification email
+                sendEmail(notifyComments, toEmailAddress);
+                return false;
+            }
+        } else if (Arrays.asList(creditPayment).contains(requestPaymentType)) {
+            callbackComments = "Credit has been successfully received for the TID: " + eventData.getParent_tid().toString() + " with amount: " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID:" + transactionData.getTid().toString() + ".";
+            novalnetFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
+            novalnetFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
+
+            // Send notification email
+            sendEmail(callbackComments, toEmailAddress);
+            return false;
+        } 
     }
 
     public String performRefund(NnCallbackRequestData callbackRequestData) {
