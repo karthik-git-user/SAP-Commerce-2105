@@ -396,7 +396,7 @@ public class NovalnetCallbackController
     	String orderNo = orderReference.get(0).getOrderNo();
 
     	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
-    	NovalnetPaymentInfoModel paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
+    	NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
     	paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
         novalnetOrderFacade.updateOrderStatus(orderNo, paymentInfoModel);
         return "Novalnet webhook script executed. Status updated for initial transaction";
@@ -410,9 +410,9 @@ public class NovalnetCallbackController
 
         final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
     	String orderNo = orderReference.get(0).getOrderNo();
-    	NovalnetPaymentInfoModel paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
+    	
     	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
-
+		NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
         callbackComments = (("75".equals(paymentInfo.get(0).getPaymentGatewayStatus())) && "GUARANTEED_INVOICE".equals(requestPaymentType)) ? "The transaction has been confirmed successfully for the TID:" + transactionData.getTid().toString() + "and the due date updated as" + transactionData.getDue_date().toString() + "This is processed as a guarantee payment" : "The transaction has been confirmed on " + currentDate.toString();
 
         novalnetOrderFacade.updatePaymentInfo(paymentInfo, transactionData.getStatus().toString());
@@ -505,10 +505,9 @@ public class NovalnetCallbackController
             novalnetOrderFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
             novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
             return callbackComments;
-            // Send notification email
-            // sendEmail(callbackComments, toEmailAddress);
-            // return false;
         } 
+
+        return "no action executed for credit";
     }
 
     public String performRefund(NnCallbackRequestData callbackRequestData) {
