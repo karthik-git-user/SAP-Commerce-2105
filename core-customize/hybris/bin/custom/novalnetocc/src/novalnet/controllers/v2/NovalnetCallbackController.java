@@ -461,6 +461,9 @@ public class NovalnetCallbackController
             return "Novalnet webhook script executed. Not applicable for this process";
             // return false;
         }
+
+        return "Novalnet webhook script executed. Not action executed  for transaction update";
+
     }
 
     public String performStatusUpdate(NnCallbackRequestData callbackRequestData) {

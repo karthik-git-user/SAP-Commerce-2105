@@ -316,7 +316,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
             String requestEventype = eventJsonObject.get("type").toString();
             JSONObject refundRequestPaymentType = new JSONObject();
             String requestPaymentType = transactionJsonObject.get("payment_type").toString();
-            
+
             if("TRANSACTION_REFUND".equals(requestEventype)) {
                  refundRequestPaymentType = transactionJsonObject.getJSONObject("refund");
                  requestPaymentType = refundRequestPaymentType.get("payment_type").toString();
@@ -448,7 +448,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                         }
                     }
 
-                    if (Arrays.asList(pendingPaymentType).contains(requestPaymentType)) {   // IF PAYMENT MADE ON REAL TIME (NOT THROUGH SUBSCRIPTION RENEWAL)
+                    if (Arrays.asList(pendingPaymentType).contains(requestPaymentType)) {
 
                         if (orderAmount > paidAmount) {
                             String[] statusPending = {"PENDING"};
@@ -474,10 +474,7 @@ public class NovalnetCallbackHandler implements BeforeControllerHandlerAdaptee {
                         displayMessage("Novalnet webhook script executed. Not applicable for this process");
                         return false;
                     }
-
-                }
-                //Incoming of a chargeback
-                else if (Arrays.asList(refundType).contains(eventJsonObject.get("type").toString())) {
+                } else if (Arrays.asList(refundType).contains(eventJsonObject.get("type").toString())) {
                     // Form callback comments
                     String[] chargeBackPaymentType = {"CREDITCARD_CHARGEBACK", "PAYPAL_CHARGEBACK", "RETURN_DEBIT_SEPA", "REVERSAL"};
                     BigDecimal refundFormattedAmount = new BigDecimal(0);
