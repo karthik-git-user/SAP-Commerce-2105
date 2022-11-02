@@ -402,7 +402,7 @@ public class NovalnetCallbackController
 
         int totalAmount = paidAmount + amountInCents;
 
-        long callbackTid = Long.parseLong(transactionJsonObject.get("tid").toString());
+        long callbackTid = Long.parseLong(transactionData.getTid().toString());
 
     	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
     	NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
