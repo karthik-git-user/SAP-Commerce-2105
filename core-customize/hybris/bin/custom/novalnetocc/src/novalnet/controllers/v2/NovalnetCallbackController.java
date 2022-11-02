@@ -356,6 +356,8 @@ public class NovalnetCallbackController
 		long amountToBeFormat = Integer.parseInt(transactionData.getAmount().toString());
         BigDecimal formattedAmount = new BigDecimal(amountToBeFormat).movePointLeft(2);
 
+        String[] pendingPaymentType = {"PAYPAL", "PRZELEWY24", "POSTFINANCE_CARD", "POSTFINANCE"};
+
 		transactionStatus = transactionData.getStatus();
 
 		if (Arrays.asList(refundType).contains(eventData.getType())) {
@@ -368,12 +370,19 @@ public class NovalnetCallbackController
 			response = performTransactionCapture(callbackRequestData);
 		} else if ("PAYMENT".equals(eventData.getType())) {
 			response = performStatusUpdate(callbackRequestData);
+		} else if ("TRANSACTION_UPDATE".equals(eventData.getType())) {
+			response = performTransacrionUpdate(callbackRequestData);
 		}
 
         
         callbackResponseData.setMessage(response);
 		return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
         
+    }
+
+    public String performTransacrionUpdate(NnCallbackRequestData callbackRequestData) {
+
+    	return "";
     }
 
     public String performStatusUpdate(NnCallbackRequestData callbackRequestData) {
