@@ -359,9 +359,15 @@ public class NovalnetCallbackController
 		transactionStatus = transactionData.getStatus();
 
 		if (Arrays.asList(refundType).contains(eventData.getType())) {
-			 response = performRefund(callbackRequestData);
+			response = performRefund(callbackRequestData);
 		} else if ("CREDIT".equals(eventData.getType())) {
-			 response = performCredit(callbackRequestData);
+			response = performCredit(callbackRequestData);
+		} else if ("TRANSACTION_CANCEL".equals(eventData.getType())) {
+			response = performTransactionCancel(callbackRequestData);
+		} else if ("TRANSACTION_CAPTURE".equals(eventData.getType())) {
+			response = performTransactionCapture(callbackRequestData);
+		} else if ("PAYMENT".equals(eventData.getType())) {
+			response = performStatusUpdate(callbackRequestData);
 		}
 
         
@@ -370,6 +376,63 @@ public class NovalnetCallbackController
         
     }
 
+    public String performStatusUpdate(NnCallbackRequestData callbackRequestData) {
+
+    	NnCallbackEventData eventData =  callbackRequestData.getEvent();
+        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
+        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
+        NnCallbackResultData resultData =  callbackRequestData.getResult();
+
+        final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
+    	String orderNo = orderReference.get(0).getOrderNo();
+
+    	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
+    	NovalnetPaymentInfoModel paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
+    	paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
+        novalnetOrderFacade.updateOrderStatus(orderNo, paymentInfoModel);
+        return "Novalnet webhook script executed. Status updated for initial transaction";
+    }
+
+    public String performTransactionCapture(NnCallbackRequestData callbackRequestData) {
+    	NnCallbackEventData eventData =  callbackRequestData.getEvent();
+        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
+        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
+        NnCallbackResultData resultData =  callbackRequestData.getResult();
+
+        final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
+    	String orderNo = orderReference.get(0).getOrderNo();
+    	NovalnetPaymentInfoModel paymentInfoModel = novalnetFacade.getPaymentModel(paymentInfo);
+    	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
+
+        callbackComments = (("75".equals(paymentInfo.get(0).getPaymentGatewayStatus())) && "GUARANTEED_INVOICE".equals(requestPaymentType)) ? "The transaction has been confirmed successfully for the TID:" + transactionData.getTid().toString() + "and the due date updated as" + transactionData.getDue_date().toString() + "This is processed as a guarantee payment" : "The transaction has been confirmed on " + currentDate.toString();
+
+        novalnetOrderFacade.updatePaymentInfo(paymentInfo, transactionData.getStatus().toString());
+        paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
+        novalnetOrderFacade.updateOrderStatus(orderNo, paymentInfoModel);
+        novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
+        return callbackComments;
+        // sendEmail(callbackComments, toEmailAddress);
+    }
+
+
+    public String performTransactionCancel(NnCallbackRequestData callbackRequestData) {
+    	NnCallbackEventData eventData =  callbackRequestData.getEvent();
+        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
+        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
+        NnCallbackResultData resultData =  callbackRequestData.getResult();
+
+        final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
+    	String orderNo = orderReference.get(0).getOrderNo();
+
+    	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
+
+        callbackComments = "The transaction has been canceled on " + currentDate.toString();
+        novalnetOrderFacade.updatePaymentInfo(paymentInfo, transactionData.getStatus().toString());
+        novalnetOrderFacade.updateCancelStatus(orderNo);
+        novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
+        return callbackComments;
+        // sendEmail(callbackComments, toEmailAddress);
+    }
 
     public String performCredit(NnCallbackRequestData callbackRequestData) {
 
@@ -377,7 +440,6 @@ public class NovalnetCallbackController
         NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
         NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
         NnCallbackResultData resultData =  callbackRequestData.getResult();
-        NnCallbackRefundData refundData =  transactionData.getRefund();
 
         final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
     	String orderNo = orderReference.get(0).getOrderNo();
@@ -403,7 +465,7 @@ public class NovalnetCallbackController
             // if settlement of invoice OR Advance payment through Customer
             if (orderAmount > paidAmount) {
                 // Form callback comments
-                String notifyComments = callbackComments = "Credit has been successfully received for the TID: " + eventData.getParent_tid().toString() + " with amount: " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID: " + transactionData.getTid().toString();
+                notifyComments = callbackComments = "Credit has been successfully received for the TID: " + eventData.getParent_tid().toString() + " with amount: " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID: " + transactionData.getTid().toString();
 
                 // Update PART PAID payment status
                 novalnetOrderFacade.updatePartPaidStatus(orderNo);
@@ -424,19 +486,19 @@ public class NovalnetCallbackController
 
                 // Update callback comments
                 novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
-
+                return callbackComments;
                 // Send notification email
-                sendEmail(notifyComments, toEmailAddress);
-                return false;
+                // sendEmail(notifyComments, toEmailAddress);
+                // return false;
             }
         } else if (Arrays.asList(creditPayment).contains(requestPaymentType)) {
             callbackComments = "Credit has been successfully received for the TID: " + eventData.getParent_tid().toString() + " with amount: " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID:" + transactionData.getTid().toString() + ".";
-            novalnetFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
-            novalnetFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
-
+            novalnetOrderFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
+            novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
+            return callbackComments;
             // Send notification email
-            sendEmail(callbackComments, toEmailAddress);
-            return false;
+            // sendEmail(callbackComments, toEmailAddress);
+            // return false;
         } 
     }
 
