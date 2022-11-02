@@ -44,6 +44,7 @@
 	<bean class="de.novalnet.beans.NnCallbackResultData">
 		<property name="status_text" type="String"/>
 		<property name="status" type="String"/>
+		<property name="status_desc" type="String"/>
 		<property name="status_code" type="String"/>
 		<property name="additional_message" type="String"/>
 	</bean>

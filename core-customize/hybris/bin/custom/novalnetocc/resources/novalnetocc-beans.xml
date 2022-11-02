@@ -176,6 +176,9 @@
         <property name="status_code" type="String">
             <description>Callback result status code</description>
         </property>
+        <property name="status_desc" type="String">
+            <description>Callback result status description</description>
+        </property>
         <property name="additional_message" type="String">
             <description>Additional message about the transaction</description>
         </property>

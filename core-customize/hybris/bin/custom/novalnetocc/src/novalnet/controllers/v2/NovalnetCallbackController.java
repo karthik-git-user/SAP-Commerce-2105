@@ -391,14 +391,18 @@ public class NovalnetCallbackController
         NnCallbackResultData resultData =  callbackRequestData.getResult();
 
         final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
-        
+
     	String orderNo = orderReference.get(0).getOrderNo();
 
     	int paidAmount = orderReference.get(0).getPaidAmount();
 
         int orderAmount = orderReference.get(0).getOrderAmount();
 
+        int amountInCents = Integer.parseInt(transactionData.getAmount().toString());
+
         int totalAmount = paidAmount + amountInCents;
+
+        long callbackTid = Long.parseLong(transactionJsonObject.get("tid").toString());
 
     	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
     	NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
@@ -455,7 +459,7 @@ public class NovalnetCallbackController
                 return callbackComments;
             }
             return "Novalnet webhook script executed. Not applicable for this process";
-            return false;
+            // return false;
         }
     }
 
