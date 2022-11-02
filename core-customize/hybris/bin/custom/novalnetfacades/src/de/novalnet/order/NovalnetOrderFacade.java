@@ -106,6 +106,8 @@ import java.util.stream.Collectors;
 
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
 import de.hybris.novalnet.core.model.NovalnetPaymentRefInfoModel;
+import de.hybris.platform.core.model.order.payment.PaymentModeModel;
+
 import de.hybris.novalnet.core.model.NovalnetDirectDebitSepaPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetGuaranteedDirectDebitSepaPaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetGuaranteedInvoicePaymentModeModel;
