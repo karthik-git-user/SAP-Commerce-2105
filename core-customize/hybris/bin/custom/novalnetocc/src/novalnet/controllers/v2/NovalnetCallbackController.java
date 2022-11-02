@@ -382,7 +382,81 @@ public class NovalnetCallbackController
 
     public String performTransacrionUpdate(NnCallbackRequestData callbackRequestData) {
 
-    	return "";
+    	String[] pendingPaymentType = {"PAYPAL", "PRZELEWY24", "POSTFINANCE_CARD", "POSTFINANCE"};
+        String[] processPaymentType = {"DIRECT_DEBIT_SEPA", "INVOICE_START", "GUARANTEED_DIRECT_DEBIT_SEPA", "GUARANTEED_INVOICE", "CREDITCARD", "PAYPAL"};
+
+        NnCallbackEventData eventData =  callbackRequestData.getEvent();
+        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
+        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
+        NnCallbackResultData resultData =  callbackRequestData.getResult();
+
+        final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
+        
+    	String orderNo = orderReference.get(0).getOrderNo();
+
+    	int paidAmount = orderReference.get(0).getPaidAmount();
+
+        int orderAmount = orderReference.get(0).getOrderAmount();
+
+        int totalAmount = paidAmount + amountInCents;
+
+    	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
+    	NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
+
+    	if (Arrays.asList(processPaymentType).contains(requestPaymentType) && "PENDING".equals(paymentInfo.get(0).getPaymentGatewayStatus())) {
+
+            if ("ON_HOLD".equals(transactionData.getStatus().toString())) {
+
+                callbackComments = "The transaction status has been changed from pending to on-hold for the TID:  " + transactionData.getTid().toString() + " on " + currentDate.toString();
+                novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
+                novalnetOrderFacade.updatePaymentInfo(paymentInfo, transactionData.getStatus().toString());
+                paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
+                novalnetOrderFacade.updateOrderStatus(orderNo, paymentInfoModel);
+                // sendEmail(callbackComments, toEmailAddress);
+                // return false;
+                return callbackComments;
+            } else if ("CONFIRMED".equals(transactionData.getStatus().toString())) {
+                callbackComments = (("75".equals(paymentInfo.get(0).getPaymentGatewayStatus())) && "GUARANTEED_INVOICE".equals(requestPaymentType)) ? "The transaction has been confirmed successfully for the TID: " + transactionData.getTid().toString() + "and the due date updated as" + transactionData.getDue_date().toString() + "This is processed as a guarantee payment" : "The transaction has been confirmed on " + currentDate.toString();
+
+                novalnetOrderFacade.updatePaymentInfo(paymentInfo, transactionData.getStatus().toString());
+                paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
+                novalnetOrderFacade.updateOrderStatus(orderNo, paymentInfoModel);
+                novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
+                // sendEmail(callbackComments, toEmailAddress);
+                // return false;
+                return callbackComments;
+            } else {
+            	return "no actions done for transaction update";
+            }
+        }
+
+        if (Arrays.asList(pendingPaymentType).contains(requestPaymentType)) {
+
+            if (orderAmount > paidAmount) {
+                String[] statusPending = {"PENDING"};
+                if (Arrays.asList(statusPending).contains(paymentInfo.get(0).getPaymentGatewayStatus()) && "CONFIRMED".equals(transactionData.getStatus().toString())) {
+                        callbackComments = "The transaction has been confirmed successfully for the TID: " + transactionData.getTid().toString() + " with amount: " + formattedAmount + " " + transactionData.getCurrency() + " on " + currentDate.toString();
+                        novalnetOrderFacade.updatePaymentInfo(paymentInfo, transactionData.getStatus().toString());
+                        paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
+                        novalnetOrderFacade.updateOrderStatus(orderNo, paymentInfoModel);
+                } else {
+                    String reasonText = !("".equals(resultData.getStatus_desc().toString())) ? resultData.getStatus_desc().toString() : (!("".equals(resultData.getStatus().toString())) ? resultData.getStatus_text().toString() : "Payment could not be completed");
+                    callbackComments = "The transaction has been cancelled due to:" + reasonText;
+                    novalnetOrderFacade.updatePaymentInfo(paymentInfo, transactionData.getStatus().toString());
+                    novalnetOrderFacade.updateCancelStatus(orderNo);
+                }
+                // Update callback comments
+                novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
+                // Update Callback info
+                novalnetOrderFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
+                // Send notification email
+                // sendEmail(callbackComments, toEmailAddress);
+                // return false;
+                return callbackComments;
+            }
+            return "Novalnet webhook script executed. Not applicable for this process";
+            return false;
+        }
     }
 
     public String performStatusUpdate(NnCallbackRequestData callbackRequestData) {
@@ -397,6 +471,7 @@ public class NovalnetCallbackController
 
     	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
     	NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
+
     	paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
         novalnetOrderFacade.updateOrderStatus(orderNo, paymentInfoModel);
         return "Novalnet webhook script executed. Status updated for initial transaction";
