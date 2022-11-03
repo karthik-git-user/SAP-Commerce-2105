@@ -184,8 +184,9 @@ public class NovalnetOrdersController
         password = baseStore.getNovalnetPaymentAccessKey().trim();
             
         if("create_order".equals(action)) {
+            Map<String, Object> requsetDeatils = new Map<String, Object>();
             try {
-                Map<String, Object> requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
+                requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
             } catch (Exception e) {
                 throw new NovalnetPaymentException("Payment method is not valid or active");
             }
@@ -674,9 +675,9 @@ public class NovalnetOrdersController
         final String languageCode   = language.toString().toUpperCase();
 
         password = baseStore.getNovalnetPaymentAccessKey().trim();
-    
+        Map<String, Object> requsetDeatils = new Map<String, Object>();
         try {
-            Map<String, Object> requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
+            requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
         } catch (Exception e) {
             throw new NovalnetPaymentException("Payment method is not valid or active");
         }
