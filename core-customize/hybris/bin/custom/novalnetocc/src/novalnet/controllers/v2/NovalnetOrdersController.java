@@ -678,9 +678,9 @@ public class NovalnetOrdersController
     
         try {
             Map<String, Object> requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
-        } catch (NovalnetPaymentException ex) {
-            LOG.error("NovalnetPaymentException ", ex);
-            return new NovalnetPaymentException(ex);
+        } catch () {
+            LOG.error(" NovalnetPaymentException ", + error);
+            throw new NovalnetPaymentException(error);
         }
         StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());
         JSONObject tomJsonObject = new JSONObject(response.toString());
