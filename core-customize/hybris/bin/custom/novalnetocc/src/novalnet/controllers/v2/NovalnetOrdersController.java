@@ -512,7 +512,7 @@ public class NovalnetOrdersController
         orderEntry.setDescription("Novalnet Transaction ID : " + transactionJsonObject.get("tid").toString());
         orderModel.setPaymentInfo(paymentInfoModel);
         novalnetOrderFacade.getModelService().saveAll(orderModel, orderEntry);
-        updateOrderStatus(orderNumber, paymentInfoModel);
+        novalnetOrderFacade.updateOrderStatus(orderNumber, paymentInfoModel);
         createTransactionUpdate(transactionJsonObject.get("tid").toString(), orderNumber, languageCode);
         
         long callbackInfoTid = Long.parseLong(transactionJsonObject.get("tid").toString());
@@ -547,25 +547,6 @@ public class NovalnetOrdersController
         String jsonString = gson.toJson(dataParameters);
         String url = "https://payport.novalnet.de/v2/transaction/update";
         StringBuilder response = sendRequest(url, jsonString);
-    }
-
-
-    /**
-     * Update order status
-     *
-     * @param orderCode Order code of the order
-     * @param paymentInfoModel payment configurations
-     */
-    public void updateOrderStatus(String orderCode, NovalnetPaymentInfoModel paymentInfoModel) {
-        List<OrderModel> orderInfoModel = getOrderInfoModel(orderCode);
-
-        OrderModel orderModel = novalnetOrderFacade.getModelService().get(orderInfoModel.get(0).getPk());
-        orderModel.setStatus(OrderStatus.COMPLETED);
-    
-        // Update the payment status for completed payments
-        orderModel.setPaymentStatus(PaymentStatus.PAID);
-        novalnetOrderFacade.getModelService().save(orderModel);
-
     }
     
     public StringBuilder sendRequest(String url, String jsonString) {
