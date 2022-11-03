@@ -286,7 +286,7 @@ public class NovalnetOrdersController
             throw new NovalnetPaymentException("Payment method is not valid");
         }
 
-        if (Arrays.asList(supportedPaymentTypes).contains(payment)) {
+        if (!Arrays.asList(supportedPaymentTypes).contains(payment)) {
             throw new NovalnetPaymentException("Currently the payment method is not supported");
         }
 
@@ -349,7 +349,7 @@ public class NovalnetOrdersController
             paymentParameters.put("unique_id", paymentData.getUniqId());
             NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
 
-            if (novalnetPaymentMethod.getActive()) {
+            if (!novalnetPaymentMethod.getActive()) {
                 throw new NovalnetPaymentException("Payment method is not active");
             }
 
@@ -373,7 +373,7 @@ public class NovalnetOrdersController
 
             NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
 
-            if (novalnetPaymentMethod.getActive()) {
+            if (!novalnetPaymentMethod.getActive()) {
                 throw new NovalnetPaymentException("Payment method is not active");
             }
 
@@ -396,7 +396,7 @@ public class NovalnetOrdersController
             NnPaymentsData paymentData  =  requestData.getPaymentData();
             NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
 
-            if (novalnetPaymentMethod.getActive()) {
+            if (!novalnetPaymentMethod.getActive()) {
                 throw new NovalnetPaymentException("Payment method is not active");
             }
 
