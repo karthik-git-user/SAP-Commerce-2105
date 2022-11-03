@@ -12,9 +12,9 @@ public class NovalnetPaymentException extends Exception
 	/**
 	 * @param message
 	 */
-	public NovalnetPaymentException(final String message)
+	public NovalnetPaymentException(String message)
 	{
-		super("Payment method is not active or not valid");
+		super(message);
 	}
 
 }
