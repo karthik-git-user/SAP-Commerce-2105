@@ -186,10 +186,10 @@ public class NovalnetOrdersController
         if("create_order".equals(action)) {
             try {
                 Map<String, Object> requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
-            } catch (NovalnetPaymentException ex) {
-                LOG.error("NovalnetPaymentException ", ex);
-                return new NovalnetPaymentException(ex);
-            }
+            } catch () {
+            LOG.error("NvalnetPaymentException");
+            throw new NovalnetPaymentException();
+        }
             StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());
             responseString = response.toString();
         } else {
@@ -284,11 +284,13 @@ public class NovalnetOrdersController
         String[] supportedPaymentTypes = {"novalnetCreditCard", "novalnetDirectDebitSepa", "novalnetPayPal"};
 
         if("".equals(payment)) {
-            throw new NovalnetPaymentException("Payment method is not valid");
+            LOG.error("Payment method is not valid");
+            throw new NovalnetPaymentException();
         }
 
         if (Arrays.asList(supportedPaymentTypes).contains(payment)) {
-            throw new NovalnetPaymentException("Currently the payment method is not supported");
+            LOG.error("Currently the payment method is not supported");
+            throw new NovalnetPaymentException();
         }
 
         PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(payment);
@@ -351,7 +353,8 @@ public class NovalnetOrdersController
             NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
 
             if (novalnetPaymentMethod.getActive()) {
-                throw new NovalnetPaymentException("Payment method is not active");
+                LOG.error("Payment method is not active");
+                throw new NovalnetPaymentException();
             }
 
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
@@ -375,7 +378,8 @@ public class NovalnetOrdersController
             NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
 
             if (novalnetPaymentMethod.getActive()) {
-                throw new NovalnetPaymentException("Payment method is not active");
+                LOG.error("Payment method is not active");
+                throw new NovalnetPaymentException();
             }
 
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
@@ -398,7 +402,8 @@ public class NovalnetOrdersController
             NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
 
             if (novalnetPaymentMethod.getActive()) {
-                throw new NovalnetPaymentException("Payment method is not active");
+                LOG.error("Payment method is not active");
+                throw new NovalnetPaymentException();
             }
 
             String accountHolder = billingData.getFirstName() + ' ' + billingData.getLastName();
@@ -679,8 +684,8 @@ public class NovalnetOrdersController
         try {
             Map<String, Object> requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
         } catch () {
-            LOG.error(" NovalnetPaymentException ", + error);
-            throw new NovalnetPaymentException(error);
+            LOG.error("NvalnetPaymentException");
+            throw new NovalnetPaymentException();
         }
         StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());
         JSONObject tomJsonObject = new JSONObject(response.toString());
