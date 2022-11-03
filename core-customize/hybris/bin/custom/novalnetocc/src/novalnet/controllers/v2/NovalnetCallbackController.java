@@ -408,8 +408,9 @@ public class NovalnetCallbackController
 
     	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
     	NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
-
-    	if (Arrays.asList(processPaymentType).contains(requestPaymentType) && "PENDING".equals(paymentInfo.get(0).getPaymentGatewayStatus())) {
+        LOG.info("payment type recievd in request2 " + requestPaymentType);
+    	LOG.info("payment info steatus  " + paymentInfo.get(0).getPaymentGatewayStatus());
+        if (Arrays.asList(processPaymentType).contains(transactionData.getPayment_type()) && "PENDING".equals(paymentInfo.get(0).getPaymentGatewayStatus())) {
 
             if ("ON_HOLD".equals(transactionData.getStatus().toString())) {
 
@@ -436,7 +437,7 @@ public class NovalnetCallbackController
             }
         }
 
-        if (Arrays.asList(pendingPaymentType).contains(requestPaymentType)) {
+        if (Arrays.asList(pendingPaymentType).contains(transactionData.getPayment_type())) {
 
             if (orderAmount > paidAmount) {
                 String[] statusPending = {"PENDING"};
