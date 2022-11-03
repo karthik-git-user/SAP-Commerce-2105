@@ -143,7 +143,6 @@ public class NovalnetCallbackController
     private CartData cartData;
     private CartModel cartModel;
     private String password;
-    public String requestPaymentType = "";
     public String callbackComments;
     public String transactionStatus;
     public Date currentDate = new Date();
@@ -347,10 +346,6 @@ public class NovalnetCallbackController
 		capturedRequiredParams.put("payment_type", transactionData.getPayment_type());
 		capturedRequiredParams.put("tid", transactionData.getTid());
 		capturedRequiredParams.put("status", transactionData.getStatus());
-		
-		String requestEventype = eventData.getType();
-		String requestPaymentType = transactionData.getPayment_type().toString();
-		LOG.info("payment type recievd in request " + requestPaymentType);
 
 		String response = "";
 		String[] refundType = {"CHARGEBACK", "TRANSACTION_REFUND"};
@@ -408,8 +403,7 @@ public class NovalnetCallbackController
 
     	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
     	NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
-        LOG.info("payment type recievd in request2 " + requestPaymentType);
-    	LOG.info("payment info steatus  " + paymentInfo.get(0).getPaymentGatewayStatus());
+        
         if (Arrays.asList(processPaymentType).contains(transactionData.getPayment_type()) && "PENDING".equals(paymentInfo.get(0).getPaymentGatewayStatus())) {
 
             if ("ON_HOLD".equals(transactionData.getStatus().toString())) {
@@ -423,7 +417,7 @@ public class NovalnetCallbackController
                 // return false;
                 return callbackComments;
             } else if ("CONFIRMED".equals(transactionData.getStatus().toString())) {
-                callbackComments = (("75".equals(paymentInfo.get(0).getPaymentGatewayStatus())) && "GUARANTEED_INVOICE".equals(requestPaymentType)) ? "The transaction has been confirmed successfully for the TID: " + transactionData.getTid().toString() + "and the due date updated as" + transactionData.getDue_date().toString() + "This is processed as a guarantee payment" : "The transaction has been confirmed on " + currentDate.toString();
+                callbackComments = (("75".equals(paymentInfo.get(0).getPaymentGatewayStatus())) && "GUARANTEED_INVOICE".equals(transactionData.getPayment_type())) ? "The transaction has been confirmed successfully for the TID: " + transactionData.getTid().toString() + "and the due date updated as" + transactionData.getDue_date().toString() + "This is processed as a guarantee payment" : "The transaction has been confirmed on " + currentDate.toString();
 
                 novalnetOrderFacade.updatePaymentInfo(paymentInfo, transactionData.getStatus().toString());
                 paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
@@ -498,7 +492,7 @@ public class NovalnetCallbackController
     	
     	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
 		NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
-        callbackComments = (("75".equals(paymentInfo.get(0).getPaymentGatewayStatus())) && "GUARANTEED_INVOICE".equals(requestPaymentType)) ? "The transaction has been confirmed successfully for the TID:" + transactionData.getTid().toString() + "and the due date updated as" + transactionData.getDue_date().toString() + "This is processed as a guarantee payment" : "The transaction has been confirmed on " + currentDate.toString();
+        callbackComments = (("75".equals(paymentInfo.get(0).getPaymentGatewayStatus())) && "GUARANTEED_INVOICE".equals(transactionData.getPayment_type())) ? "The transaction has been confirmed successfully for the TID:" + transactionData.getTid().toString() + "and the due date updated as" + transactionData.getDue_date().toString() + "This is processed as a guarantee payment" : "The transaction has been confirmed on " + currentDate.toString();
 
         novalnetOrderFacade.updatePaymentInfo(paymentInfo, transactionData.getStatus().toString());
         paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
@@ -555,7 +549,7 @@ public class NovalnetCallbackController
     	String[] creditPayment = {"CREDIT_ENTRY_CREDITCARD", "CREDIT_ENTRY_SEPA", "DEBT_COLLECTION_SEPA", "DEBT_COLLECTION_CREDITCARD", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE"};
         String[] creditPaymentType = {"INVOICE_CREDIT", "CASHPAYMENT_CREDIT", "MULTIBANCO_CREDIT"};
 
-        if (Arrays.asList(creditPaymentType).contains(requestPaymentType)) {
+        if (Arrays.asList(creditPaymentType).contains(transactionData.getPayment_type())) {
             // if settlement of invoice OR Advance payment through Customer
             if (orderAmount > paidAmount) {
                 // Form callback comments
@@ -585,7 +579,7 @@ public class NovalnetCallbackController
                 // sendEmail(notifyComments, toEmailAddress);
                 // return false;
             }
-        } else if (Arrays.asList(creditPayment).contains(requestPaymentType)) {
+        } else if (Arrays.asList(creditPayment).contains(transactionData.getPayment_type())) {
             callbackComments = "Credit has been successfully received for the TID: " + eventData.getParent_tid().toString() + " with amount: " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID:" + transactionData.getTid().toString() + ".";
             novalnetOrderFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
             novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
@@ -603,11 +597,11 @@ public class NovalnetCallbackController
         NnCallbackResultData resultData =  callbackRequestData.getResult();
         NnCallbackRefundData refundData =  transactionData.getRefund();
 
-		requestPaymentType = refundData.getPayment_type();
+		String requestPaymentType = refundData.getPayment_type();
 		final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
     	String orderNo = orderReference.get(0).getOrderNo();
 
-    	if(!refundPayments.containsValue(requestPaymentType) ||  !chargebackPayments.containsValue(requestPaymentType)) {
+    	if(refundPayments.containsValue(requestPaymentType) ||  chargebackPayments.containsValue(requestPaymentType)) {
 
 	    	String[] chargeBackPaymentType = {"CREDITCARD_CHARGEBACK", "PAYPAL_CHARGEBACK", "RETURN_DEBIT_SEPA", "REVERSAL"};
 	        BigDecimal refundFormattedAmount = new BigDecimal(0);
