@@ -350,6 +350,8 @@ public class NovalnetCallbackController
 		
 		String requestEventype = eventData.getType();
 		String requestPaymentType = transactionData.getPayment_type();
+		LOG.info("payment type recievd in request " + requestPaymentType);
+
 		String response = "";
 		String[] refundType = {"CHARGEBACK", "TRANSACTION_REFUND"};
 
