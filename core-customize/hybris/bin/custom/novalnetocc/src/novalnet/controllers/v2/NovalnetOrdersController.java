@@ -1,6 +1,7 @@
 package novalnet.controllers.v2;
 
 import novalnet.controllers.NoCheckoutCartException;
+import novalnet.controllers.NovalnetPaymentException;
 import de.hybris.platform.order.InvalidCartException;
 import de.hybris.platform.commercewebservicescommons.dto.order.OrderWsDTO;
 import de.hybris.platform.commercefacades.order.CheckoutFacade;
@@ -157,9 +158,8 @@ public class NovalnetOrdersController
             + "should be set as default (defaultPaymentInfo), and the billing address (billingAddress.firstName, billingAddress.lastName, billingAddress.titleCode, billingAddress.country.isocode, "
             + "billingAddress.line1, billingAddress.line2, billingAddress.town, billingAddress.postalCode, billingAddress.region.isocode)\n\nThe DTO is in XML or .json format.", required = true) @RequestBody final NnRequestWsDTO orderRequest,
     @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
-    throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
+    throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException, NovalnetPaymentException
     {
-
         NnRequestData requestData = dataMapper.map(orderRequest, NnRequestData.class, fields);
         requestData.getAction();
         cartData = novalnetOrderFacade.loadCart(requestData.getCartId());
@@ -253,7 +253,7 @@ public class NovalnetOrdersController
         return result.getResult();
     }
 
-    public Map<String, Object> formPaymentRequest(NnRequestData requestData, String action, String emailAddress, Integer orderAmountCent, String currency, String languageCode) {
+    public Map<String, Object> formPaymentRequest(NnRequestData requestData, String action, String emailAddress, Integer orderAmountCent, String currency, String languageCode) throws NovalnetPaymentException {
 
         final Map<String, Object> transactionParameters = new HashMap<String, Object>();
         final Map<String, Object> merchantParameters    = new HashMap<String, Object>();
@@ -275,6 +275,17 @@ public class NovalnetOrdersController
         String currentPayment       = requestData.getPaymentType();
 
         String payment = currentPayment.equals("CREDITCARD") ? "novalnetCreditCard" : (currentPayment.equals("DIRECT_DEBIT_SEPA") ? "novalnetDirectDebitSepa" :(currentPayment.equals("PAYPAL") ? "novalnetPayPal": ""));
+
+        String[] supportedPaymentTypes = {"novalnetCreditCard", "novalnetDirectDebitSepa", "novalnetPayPal"};
+
+        if("".equals(payment)) {
+            throw new PaymentAuthorizationException("Payment method is not valid");
+        }
+
+        if (Arrays.asList(supportedPaymentTypes).contains(payment)) {
+            throw new PaymentAuthorizationException("Currently the payment method is not supported");
+        }
+
         PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(payment);
 
         NnBillingData billingData =  requestData.getBillingAddress();
@@ -333,6 +344,11 @@ public class NovalnetOrdersController
             paymentParameters.put("pan_hash", paymentData.getPanHash());
             paymentParameters.put("unique_id", paymentData.getUniqId());
             NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
+
+            if (novalnetPaymentMethod.getActive()) {
+                throw new PaymentAuthorizationException("Payment method is not active");
+            }
+
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
             }
@@ -352,6 +368,11 @@ public class NovalnetOrdersController
         } else if ("novalnetPayPal".equals(payment)) {
 
             NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
+
+            if (novalnetPaymentMethod.getActive()) {
+                throw new PaymentAuthorizationException("Payment method is not active");
+            }
+
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;
             }
@@ -370,6 +391,11 @@ public class NovalnetOrdersController
         } else if ("novalnetDirectDebitSepa".equals(payment)) {
             NnPaymentsData paymentData  =  requestData.getPaymentData();
             NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
+
+            if (novalnetPaymentMethod.getActive()) {
+                throw new PaymentAuthorizationException("Payment method is not active");
+            }
+
             String accountHolder = billingData.getFirstName() + ' ' + billingData.getLastName();
             paymentParameters.put("iban", paymentData.getIban());
             paymentParameters.put("bank_account_holder", accountHolder.replace("&", ""));
