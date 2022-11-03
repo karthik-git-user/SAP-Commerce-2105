@@ -146,8 +146,6 @@ public class NovalnetCallbackController
     public String callbackComments;
     public String transactionStatus;
     public Date currentDate = new Date();
-    public long amountToBeFormat = 0;
-    public BigDecimal formattedAmount = new BigDecimal(0);
    
     private static final String PAYMENT_AUTHORIZE = "AUTHORIZE";
     public static final int REQUEST_IP = 4;
@@ -350,8 +348,7 @@ public class NovalnetCallbackController
 		String response = "";
 		String[] refundType = {"CHARGEBACK", "TRANSACTION_REFUND"};
 
-		long amountToBeFormat = Integer.parseInt(transactionData.getAmount().toString());
-        BigDecimal formattedAmount = new BigDecimal(amountToBeFormat).movePointLeft(2);
+		
 
         String[] pendingPaymentType = {"PAYPAL", "PRZELEWY24", "POSTFINANCE_CARD", "POSTFINANCE"};
 
@@ -400,6 +397,9 @@ public class NovalnetCallbackController
         int totalAmount = paidAmount + amountInCents;
 
         long callbackTid = Long.parseLong(transactionData.getTid().toString());
+
+        long amountToBeFormat = Integer.parseInt(transactionData.getAmount().toString());
+        BigDecimal formattedAmount = new BigDecimal(amountToBeFormat).movePointLeft(2);
 
     	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
     	NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
@@ -540,6 +540,9 @@ public class NovalnetCallbackController
 
         int totalAmount = paidAmount + amountInCents;
 
+        long amountToBeFormat = Integer.parseInt(transactionData.getAmount().toString());
+        BigDecimal formattedAmount = new BigDecimal(amountToBeFormat).movePointLeft(2);
+
         String paymentType = orderReference.get(0).getPaymentType();
         
         String notifyComments = "";
@@ -616,11 +619,11 @@ public class NovalnetCallbackController
 	        String stidMsg = ". The subsequent TID: ";
 
 	        if(Arrays.asList(chargeBackPaymentType).contains(requestPaymentType)) {
-	            callbackComments = "Chargeback executed successfully for the TID: " + eventData.getParent_tid().toString() + " amount: " + formattedAmount + " " + transactionData.getCurrency() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
+	            callbackComments = "Chargeback executed successfully for the TID: " + eventData.getParent_tid().toString() + " amount: " + refundFormattedAmount + " " + transactionData.getCurrency() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
 	        } else if("REVERSAL".equals(requestPaymentType)) {
-	            callbackComments = "Chargeback executed for reversal of TID:" + eventData.getParent_tid().toString() + " with the amount  " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
+	            callbackComments = "Chargeback executed for reversal of TID:" + eventData.getParent_tid().toString() + " with the amount  " + refundFormattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
 	        } else if("RETURN_DEBIT_SEPA".equals(requestPaymentType)) {
-	            callbackComments = "Chargeback executed for return debit of TID:" + eventData.getParent_tid().toString() + " with the amount  " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
+	            callbackComments = "Chargeback executed for return debit of TID:" + eventData.getParent_tid().toString() + " with the amount  " + refundFormattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
 	        } else {
 	            callbackComments =  "Refund has been initiated for the TID " + eventData.getParent_tid().toString() + " with the amount : " + refundFormattedAmount + " " + transactionData.getCurrency().toString() + ". New TID: " + transactionData.getTid().toString();
 	        }
