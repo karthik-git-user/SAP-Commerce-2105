@@ -462,7 +462,7 @@ public class NovalnetCallbackController
             // return false;
         }
 
-        return "Novalnet webhook script executed. Not action executed  for transaction update";
+        return "Novalnet webhook script executed. No action executed for transaction update";
 
     }
 
@@ -473,7 +473,7 @@ public class NovalnetCallbackController
         NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
         NnCallbackResultData resultData =  callbackRequestData.getResult();
 
-        final List<NovalnetCallbackInfoModel> orderReference =novalnetOrderFacade.getCallbackInfo(transactionData.getTid().toString());
+        final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(transactionData.getTid().toString());
     	String orderNo = orderReference.get(0).getOrderNo();
 
     	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
@@ -490,7 +490,7 @@ public class NovalnetCallbackController
         NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
         NnCallbackResultData resultData =  callbackRequestData.getResult();
 
-        final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
+        final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(transactionData.getTid().toString());
     	String orderNo = orderReference.get(0).getOrderNo();
     	
     	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderReference.get(0).getOrderNo());
