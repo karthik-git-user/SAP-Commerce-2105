@@ -349,7 +349,7 @@ public class NovalnetCallbackController
 		capturedRequiredParams.put("status", transactionData.getStatus());
 		
 		String requestEventype = eventData.getType();
-		String requestPaymentType = transactionData.getPayment_type();
+		String requestPaymentType = transactionData.getPayment_type().toString();
 		LOG.info("payment type recievd in request " + requestPaymentType);
 
 		String response = "";
