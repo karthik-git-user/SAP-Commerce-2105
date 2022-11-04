@@ -145,6 +145,7 @@ public class NovalnetCallbackController
     private String password;
     public String callbackComments;
     public String transactionStatus;
+    public String requestPaymentType;
     public Date currentDate = new Date();
    
     private static final String PAYMENT_AUTHORIZE = "AUTHORIZE";
@@ -348,7 +349,7 @@ public class NovalnetCallbackController
         String response = "";
 		String[] refundType = {"CHARGEBACK", "TRANSACTION_REFUND"};
 		String referenceTid = transactionData.getTid();
-		String requestPaymentType = transactionData.getPayment_type();
+		requestPaymentType = transactionData.getPayment_type();
 
         if("TRANSACTION_REFUND".equals(eventData.getType())) {
         	refundData =  transactionData.getRefund();
@@ -584,7 +585,6 @@ public class NovalnetCallbackController
 
     public String performRefund(NnCallbackRequestData callbackRequestData) {
     	
-		String requestPaymentType = refundData.getPayment_type();
 		final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
     	String orderNo = orderReference.get(0).getOrderNo();
 
