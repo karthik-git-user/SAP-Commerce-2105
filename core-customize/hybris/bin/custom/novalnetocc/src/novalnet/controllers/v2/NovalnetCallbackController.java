@@ -360,7 +360,7 @@ public class NovalnetCallbackController
 
         if ((chargebackPayments.containsValue(requestPaymentType) || collectionPayments.containsValue(requestPaymentType)) || creditPayments.containsValue(requestPaymentType) || refundPayments.containsValue(requestPaymentType)) {
             
-            referenceTid = eventJsonObject.get("parent_tid").toString();
+            referenceTid = eventData.getParent_tid();
 
             if(referenceTid.length() != 17) {
             	callbackResponseData.setMessage("Parent TID is not Valid");
