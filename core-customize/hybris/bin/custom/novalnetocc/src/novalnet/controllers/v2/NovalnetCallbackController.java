@@ -603,11 +603,11 @@ public class NovalnetCallbackController
 	        String stidMsg = ". The subsequent TID: ";
 
 	        if(Arrays.asList(chargeBackPaymentType).contains(requestPaymentType)) {
-	            callbackComments = "Chargeback executed successfully for the TID: " + eventData.getParent_tid().toString() + " amount: " + refundFormattedAmount + " " + transactionData.getCurrency() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
+	            callbackComments = "Chargeback executed successfully for the TID: " + eventData.getParent_tid().toString() + " amount: " + formattedAmount + " " + transactionData.getCurrency() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
 	        } else if("REVERSAL".equals(requestPaymentType)) {
-	            callbackComments = "Chargeback executed for reversal of TID:" + eventData.getParent_tid().toString() + " with the amount  " + refundFormattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
+	            callbackComments = "Chargeback executed for reversal of TID:" + eventData.getParent_tid().toString() + " with the amount  " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
 	        } else if("RETURN_DEBIT_SEPA".equals(requestPaymentType)) {
-	            callbackComments = "Chargeback executed for return debit of TID:" + eventData.getParent_tid().toString() + " with the amount  " + refundFormattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
+	            callbackComments = "Chargeback executed for return debit of TID:" + eventData.getParent_tid().toString() + " with the amount  " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
 	        } else {
 	            callbackComments =  "Refund has been initiated for the TID " + eventData.getParent_tid().toString() + " with the amount : " + refundFormattedAmount + " " + transactionData.getCurrency().toString() + ". New TID: " + transactionData.getTid().toString();
 	        }
