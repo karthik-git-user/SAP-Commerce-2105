@@ -162,6 +162,12 @@ public class NovalnetCallbackController
     public Map<String, String> collectionPayments = new HashMap<String, String>();
 	public Map<String, String[]> paymentTypes = new HashMap<String, String[]>();
 
+	public NnCallbackEventData eventData =  new NnCallbackEventData();
+    public NnCallbackMerchantData merchantData =  new NnCallbackMerchantData();
+    public NnCallbackTransactionData transactionData =  new NnCallbackTransactionData();
+    public NnCallbackResultData resultData =  new NnCallbackResultData();
+     public NnCallbackRefundData refundData =  new NnCallbackRefundData();
+
     @Resource(name = "novalnetOrderFacade")
     NovalnetOrderFacade novalnetOrderFacade;
     
@@ -334,23 +340,44 @@ public class NovalnetCallbackController
 		paymentTypes.put("novalnetMultibanco", multibancoPaymentTypes);
 		paymentTypes.put("novalnetBancontact", bancontactPaymentTypes);
 		
-		NnCallbackEventData eventData =  callbackRequestData.getEvent();
-        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
-        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
-        NnCallbackResultData resultData =  callbackRequestData.getResult();
-		
-		Map<String, String> capturedRequiredParams = new HashMap<String, String>();
-		capturedRequiredParams.put("vendor", merchantData.getVendor());
-		capturedRequiredParams.put("payment_type", transactionData.getPayment_type());
-		capturedRequiredParams.put("tid", transactionData.getTid());
-		capturedRequiredParams.put("status", transactionData.getStatus());
+		eventData 		=  callbackRequestData.getEvent();
+        merchantData 	=  callbackRequestData.getMerchant();
+        transactionData =  callbackRequestData.getTransaction();
+        resultData 		=  callbackRequestData.getResult();
 
-		String response = "";
+        String response = "";
 		String[] refundType = {"CHARGEBACK", "TRANSACTION_REFUND"};
+		String referenceTid = transactionData.getTid()
+		String requestPaymentType = transactionData.getPayment_type()
 
+        if(Arrays.asList(refundType).contains(eventData.getType())) {
+        	refundData =  transactionData.getRefund();
+        	requestPaymentType = refundData.getPayment_type();
+        }
 		
 
         String[] pendingPaymentType = {"PAYPAL", "PRZELEWY24", "POSTFINANCE_CARD", "POSTFINANCE"};
+
+        if ((chargebackPayments.containsValue(requestPaymentType) || collectionPayments.containsValue(requestPaymentType)) || creditPayments.containsValue(requestPaymentType) || refundPayments.containsValue(requestPaymentType)) {
+            
+            referenceTid = eventJsonObject.get("parent_tid").toString();
+
+            if(referenceTid.length() != 17) {
+            	callbackResponseData.setMessage("Parent TID is not Valid");
+				return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
+            }
+        }
+
+        final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(transactionData.getTid().toString());
+        String paymentType = orderReference.get(0).getPaymentType();
+        String[] suppotedCallbackPaymentTypes = paymentTypes.get(paymentType);
+
+
+        // Validate order's payment method with requested payment type
+        if (!Arrays.asList(suppotedCallbackPaymentTypes).contains(requestPaymentType)) {
+        	callbackResponseData.setMessage("Novalnet webhook executed. Payment type mismatched");
+			return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
+        }
 
 		transactionStatus = transactionData.getStatus();
 
@@ -368,7 +395,6 @@ public class NovalnetCallbackController
 			response = performTransacrionUpdate(callbackRequestData);
 		}
 
-        
         callbackResponseData.setMessage(response);
 		return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
         
@@ -378,11 +404,6 @@ public class NovalnetCallbackController
 
     	String[] pendingPaymentType = {"PAYPAL", "PRZELEWY24", "POSTFINANCE_CARD", "POSTFINANCE"};
         String[] processPaymentType = {"DIRECT_DEBIT_SEPA", "INVOICE_START", "GUARANTEED_DIRECT_DEBIT_SEPA", "GUARANTEED_INVOICE", "CREDITCARD", "PAYPAL"};
-
-        NnCallbackEventData eventData =  callbackRequestData.getEvent();
-        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
-        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
-        NnCallbackResultData resultData =  callbackRequestData.getResult();
 
         final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(transactionData.getTid().toString());
 
@@ -413,8 +434,6 @@ public class NovalnetCallbackController
                 novalnetOrderFacade.updatePaymentInfo(paymentInfo, transactionData.getStatus().toString());
                 paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
                 novalnetOrderFacade.updateOrderStatus(orderNo, paymentInfoModel);
-                // sendEmail(callbackComments, toEmailAddress);
-                // return false;
                 return callbackComments;
             } else if ("CONFIRMED".equals(transactionData.getStatus().toString())) {
                 callbackComments = (("75".equals(paymentInfo.get(0).getPaymentGatewayStatus())) && "GUARANTEED_INVOICE".equals(transactionData.getPayment_type())) ? "The transaction has been confirmed successfully for the TID: " + transactionData.getTid().toString() + "and the due date updated as" + transactionData.getDue_date().toString() + "This is processed as a guarantee payment" : "The transaction has been confirmed on " + currentDate.toString();
@@ -423,8 +442,6 @@ public class NovalnetCallbackController
                 paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
                 novalnetOrderFacade.updateOrderStatus(orderNo, paymentInfoModel);
                 novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
-                // sendEmail(callbackComments, toEmailAddress);
-                // return false;
                 return callbackComments;
             } else {
             	return "no actions done for transaction update";
@@ -450,13 +467,9 @@ public class NovalnetCallbackController
                 novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
                 // Update Callback info
                 novalnetOrderFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
-                // Send notification email
-                // sendEmail(callbackComments, toEmailAddress);
-                // return false;
                 return callbackComments;
             }
             return "Novalnet webhook script executed. Not applicable for this process";
-            // return false;
         }
 
         return "Novalnet webhook script executed. No action executed for transaction update";
@@ -464,11 +477,6 @@ public class NovalnetCallbackController
     }
 
     public String performStatusUpdate(NnCallbackRequestData callbackRequestData) {
-
-    	NnCallbackEventData eventData =  callbackRequestData.getEvent();
-        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
-        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
-        NnCallbackResultData resultData =  callbackRequestData.getResult();
 
         final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(transactionData.getTid().toString());
     	String orderNo = orderReference.get(0).getOrderNo();
@@ -482,10 +490,6 @@ public class NovalnetCallbackController
     }
 
     public String performTransactionCapture(NnCallbackRequestData callbackRequestData) {
-    	NnCallbackEventData eventData =  callbackRequestData.getEvent();
-        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
-        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
-        NnCallbackResultData resultData =  callbackRequestData.getResult();
 
         final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(transactionData.getTid().toString());
     	String orderNo = orderReference.get(0).getOrderNo();
@@ -499,15 +503,10 @@ public class NovalnetCallbackController
         novalnetOrderFacade.updateOrderStatus(orderNo, paymentInfoModel);
         novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
         return callbackComments;
-        // sendEmail(callbackComments, toEmailAddress);
     }
 
 
     public String performTransactionCancel(NnCallbackRequestData callbackRequestData) {
-    	NnCallbackEventData eventData =  callbackRequestData.getEvent();
-        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
-        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
-        NnCallbackResultData resultData =  callbackRequestData.getResult();
 
         final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(transactionData.getTid().toString());
     	String orderNo = orderReference.get(0).getOrderNo();
@@ -519,15 +518,9 @@ public class NovalnetCallbackController
         novalnetOrderFacade.updateCancelStatus(orderNo);
         novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
         return callbackComments;
-        // sendEmail(callbackComments, toEmailAddress);
     }
 
     public String performCredit(NnCallbackRequestData callbackRequestData) {
-
-    	NnCallbackEventData eventData =  callbackRequestData.getEvent();
-        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
-        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
-        NnCallbackResultData resultData =  callbackRequestData.getResult();
 
         final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
     	String orderNo = orderReference.get(0).getOrderNo();
@@ -578,9 +571,6 @@ public class NovalnetCallbackController
                 // Update callback comments
                 novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
                 return callbackComments;
-                // Send notification email
-                // sendEmail(notifyComments, toEmailAddress);
-                // return false;
             }
         } else if (Arrays.asList(creditPayment).contains(transactionData.getPayment_type())) {
             callbackComments = "Credit has been successfully received for the TID: " + eventData.getParent_tid().toString() + " with amount: " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID:" + transactionData.getTid().toString() + ".";
@@ -593,13 +583,7 @@ public class NovalnetCallbackController
     }
 
     public String performRefund(NnCallbackRequestData callbackRequestData) {
-
-    	NnCallbackEventData eventData =  callbackRequestData.getEvent();
-        NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
-        NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
-        NnCallbackResultData resultData =  callbackRequestData.getResult();
-        NnCallbackRefundData refundData =  transactionData.getRefund();
-
+    	
 		String requestPaymentType = refundData.getPayment_type();
 		final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
     	String orderNo = orderReference.get(0).getOrderNo();
@@ -630,10 +614,6 @@ public class NovalnetCallbackController
 
 	        // Update callback comments
 	        novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
-
-	        // Send notification email
-	        // sendEmail(callbackComments, toEmailAddress);
-
 	        return callbackComments;
 	    } else {
 	    	return "Payment type " + requestPaymentType + " is not supported for event type " + eventData.getType();
