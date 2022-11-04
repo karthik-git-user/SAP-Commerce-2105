@@ -368,7 +368,7 @@ public class NovalnetCallbackController
             }
         }
 
-        final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(transactionData.getTid().toString());
+        final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(referenceTid);
         String paymentType = orderReference.get(0).getPaymentType();
         String[] suppotedCallbackPaymentTypes = paymentTypes.get(paymentType);
 
