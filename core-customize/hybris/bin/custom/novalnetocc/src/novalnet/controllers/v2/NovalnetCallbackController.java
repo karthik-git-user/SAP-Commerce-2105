@@ -350,7 +350,7 @@ public class NovalnetCallbackController
 		String referenceTid = transactionData.getTid();
 		String requestPaymentType = transactionData.getPayment_type();
 
-        if(Arrays.asList(refundType).contains(eventData.getType())) {
+        if("TRANSACTION_REFUND".equals(eventData.getType())) {
         	refundData =  transactionData.getRefund();
         	requestPaymentType = refundData.getPayment_type();
         }
