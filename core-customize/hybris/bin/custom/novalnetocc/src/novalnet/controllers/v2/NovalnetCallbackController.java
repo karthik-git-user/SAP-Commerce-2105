@@ -599,6 +599,9 @@ public class NovalnetCallbackController
 	        // Format the order amount to currency format
 	            refundFormattedAmount = new BigDecimal(refundAmountToBeFormat).movePointLeft(2);
 	        }
+            
+            long amountToBeFormat = Integer.parseInt(transactionData.getAmount().toString());
+            BigDecimal formattedAmount = new BigDecimal(amountToBeFormat).movePointLeft(2);
 
 	        String stidMsg = ". The subsequent TID: ";
 
