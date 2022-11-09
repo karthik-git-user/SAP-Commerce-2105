@@ -736,6 +736,8 @@ public class NovalnetCallbackController
 			return "RuntimeException while generating checksum " + ex;
 		}
 
+		LOG.info("Created hash "+ createdHash);
+
 		if ( !eventData.getChecksum().equals(createdHash) ) {
 			errorFlag = true;
 			return "While notifying some data has been changed. The hash check failed";
