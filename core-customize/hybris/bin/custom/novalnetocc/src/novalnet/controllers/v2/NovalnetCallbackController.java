@@ -308,7 +308,7 @@ public class NovalnetCallbackController
 		String[] invoicePaymentTypes = {"INVOICE_START", "INVOICE_CREDIT", "TRANSACTION_CANCELLATION", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE", "INVOICE"};
 		String[] prepaymentPaymentTypes = {"PREPAYMENT", "INVOICE_CREDIT", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE"};
 		String[] multibancoPaymentTypes = {"MULTIBANCO", "MULTIBANCO_CREDIT"};
-		String[] payPalPaymentTypes = {"PAYPAL", "PAYPAL_BOOKBACK", "REFUND_BY_BANK_TRANSFER_EU"};
+		String[] payPalPaymentTypes = {"PAYPAL", "PAYPAL_BOOKBACK", "PAYPAL_CHARGEBACK", "REFUND_BY_BANK_TRANSFER_EU"};
 		String[] instantBankTransferPaymentTypes = {"ONLINE_TRANSFER", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
 		String[] onlineBankTransferPaymentTypes = {"ONLINE_BANK_TRANSFER", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
 		String[] bancontactPaymentTypes = {"BANCONTACT", "REFUND_BY_BANK_TRANSFER_EU"};
@@ -700,11 +700,11 @@ public class NovalnetCallbackController
 
 		String tokenString = eventData.getTid() + eventData.getType() + resultData.getStatus();
 
-		if (!transactionData.getAmount().isEmpty()) {
+		if (transactionData.getAmount() != null) {
 			tokenString +=  transactionData.getAmount();
 		}
 
-		if (!transactionData.getCurrency().isEmpty()) {
+		if (transactionData.getCurrency() != null) {
 			tokenString +=   transactionData.getCurrency();
 		}
 
