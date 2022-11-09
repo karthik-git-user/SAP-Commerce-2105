@@ -678,6 +678,7 @@ public class NovalnetOrdersController
         String orderAmount          = decimalFormat.format(Float.parseFloat(totalAmount));
         float floatAmount           = Float.parseFloat(orderAmount);
         BigDecimal orderAmountCents = BigDecimal.valueOf(floatAmount).multiply(BigDecimal.valueOf(100));
+        orderAmountCents = orderAmountCents.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         Integer orderAmountCent     = orderAmountCents.intValue();
         final String currency       = cartData.getTotalPriceWithTax().getCurrencyIso();
         final Locale language       = JaloSession.getCurrentSession().getSessionContext().getLocale();
