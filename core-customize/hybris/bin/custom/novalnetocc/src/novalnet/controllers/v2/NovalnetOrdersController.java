@@ -404,10 +404,10 @@ public class NovalnetOrdersController
             String accountHolder = billingData.getFirstName() + ' ' + billingData.getLastName();
             paymentParameters.put("iban", paymentData.getIban());
 
+            String ibanCountry = paymentData.getIban().substring(0,2);
             String[] bicRequiredCountry = {"CH", "MC", "SM", "GB"};
 
-
-            if (Arrays.asList(bicRequiredCountry).contains(deliveryAddress.getCountry().getIsocode())) {
+            if (Arrays.asList(bicRequiredCountry).contains(ibanCountry) {
                 paymentParameters.put("bic", paymentData.getBic());
             }
 

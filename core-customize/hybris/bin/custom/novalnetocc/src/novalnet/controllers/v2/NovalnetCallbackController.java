@@ -268,6 +268,8 @@ public class NovalnetCallbackController
 		creditPayments.put("ONLINE_TRANSFER_CREDIT", "ONLINE_TRANSFER_CREDIT");
 		creditPayments.put("MULTIBANCO_CREDIT", "MULTIBANCO_CREDIT");
 		creditPayments.put("CREDIT_ENTRY_DE", "CREDIT_ENTRY_DE");
+		creditPayments.put("CREDITCARD_REPRESENTMENT", "CREDITCARD_REPRESENTMENT");
+		creditPayments.put("BANK_TRANSFER_BY_END_CUSTOMER", "BANK_TRANSFER_BY_END_CUSTOMER");
 		
 		initialPayments.put("CREDITCARD", "CREDITCARD");
 		initialPayments.put("INVOICE_START", "INVOICE_START");
@@ -303,8 +305,8 @@ public class NovalnetCallbackController
 		collectionPayments.put("DEBT_COLLECTION_DE", "DEBT_COLLECTION_DE");
 
 		// Payment types for each payment method
-		String[] creditCardPaymentTypes = {"CREDITCARD", "CREDITCARD_CHARGEBACK", "CREDITCARD_BOOKBACK", "TRANSACTION_CANCELLATION", "CREDIT_ENTRY_CREDITCARD", "DEBT_COLLECTION_CREDITCARD"};
-		String[] directDebitSepaPaymentTypes = {"DIRECT_DEBIT_SEPA", "RETURN_DEBIT_SEPA", "REFUND_BY_BANK_TRANSFER_EU", "TRANSACTION_CANCELLATION", "CREDIT_ENTRY_SEPA", "DEBT_COLLECTION_SEPA"};
+		String[] creditCardPaymentTypes = {"CREDITCARD", "CREDITCARD_CHARGEBACK", "CREDITCARD_BOOKBACK", "TRANSACTION_CANCELLATION", "CREDIT_ENTRY_CREDITCARD", "DEBT_COLLECTION_CREDITCARD", "CREDITCARD_REPRESENTMENT"};
+		String[] directDebitSepaPaymentTypes = {"DIRECT_DEBIT_SEPA", "RETURN_DEBIT_SEPA", "REFUND_BY_BANK_TRANSFER_EU", "TRANSACTION_CANCELLATION", "CREDIT_ENTRY_SEPA", "DEBT_COLLECTION_SEPA", "BANK_TRANSFER_BY_END_CUSTOMER"};
 		String[] invoicePaymentTypes = {"INVOICE_START", "INVOICE_CREDIT", "TRANSACTION_CANCELLATION", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE", "INVOICE"};
 		String[] prepaymentPaymentTypes = {"PREPAYMENT", "INVOICE_CREDIT", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE"};
 		String[] multibancoPaymentTypes = {"MULTIBANCO", "MULTIBANCO_CREDIT"};
@@ -544,7 +546,7 @@ public class NovalnetCallbackController
 
         long callbackTid = Long.parseLong(transactionData.getTid().toString());
 
-    	String[] creditPayment = {"CREDIT_ENTRY_CREDITCARD", "CREDIT_ENTRY_SEPA", "DEBT_COLLECTION_SEPA", "DEBT_COLLECTION_CREDITCARD", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE"};
+    	String[] creditPayment = {"CREDIT_ENTRY_CREDITCARD", "CREDIT_ENTRY_SEPA", "DEBT_COLLECTION_SEPA", "DEBT_COLLECTION_CREDITCARD", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE", "CREDITCARD_REPRESENTMENT", "BANK_TRANSFER_BY_END_CUSTOMER"};
         String[] creditPaymentType = {"INVOICE_CREDIT", "CASHPAYMENT_CREDIT", "MULTIBANCO_CREDIT"};
 
         if (Arrays.asList(creditPaymentType).contains(transactionData.getPayment_type())) {
@@ -589,17 +591,25 @@ public class NovalnetCallbackController
 		final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
     	String orderNo = orderReference.get(0).getOrderNo();
 
+    	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderNo);
+		NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
+
     	if(refundPayments.containsValue(requestPaymentType) ||  chargebackPayments.containsValue(requestPaymentType)) {
 
 	    	String[] chargeBackPaymentType = {"CREDITCARD_CHARGEBACK", "PAYPAL_CHARGEBACK", "RETURN_DEBIT_SEPA", "REVERSAL"};
 	        BigDecimal refundFormattedAmount = new BigDecimal(0);
 
+	        int amountInCents = Integer.parseInt(transactionData.getAmount().toString());
+
 	        if(!Arrays.asList(chargeBackPaymentType).contains(requestPaymentType)) {
 	            long refundAmountToBeFormat = Integer.parseInt(refundData.getAmount());
 
+	            amountInCents = Integer.parseInt(transactionData.getRefunded_amount().toString());
+
 	        // Format the order amount to currency format
 	            refundFormattedAmount = new BigDecimal(refundAmountToBeFormat).movePointLeft(2);
-	        }
+
+	        } 
             
             long amountToBeFormat = Integer.parseInt(transactionData.getAmount().toString());
             BigDecimal formattedAmount = new BigDecimal(amountToBeFormat).movePointLeft(2);
@@ -614,6 +624,13 @@ public class NovalnetCallbackController
 	            callbackComments = "Chargeback executed for return debit of TID:" + eventData.getParent_tid().toString() + " with the amount  " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
 	        } else {
 	            callbackComments =  "Refund has been initiated for the TID " + eventData.getParent_tid().toString() + " with the amount : " + refundFormattedAmount + " " + transactionData.getCurrency().toString() + ". New TID: " + refundData.getTid().toString();
+	        }
+
+	        int orderAmount = orderReference.get(0).getOrderAmount();
+
+	        if (amountInCents >= orderAmount) {
+	        	novalnetOrderFacade.updatePaymentInfo(paymentInfo, transactionData.getStatus().toString());
+        		novalnetOrderFacade.updateCancelStatus(orderNo);
 	        }
 
 	        // Update callback comments
