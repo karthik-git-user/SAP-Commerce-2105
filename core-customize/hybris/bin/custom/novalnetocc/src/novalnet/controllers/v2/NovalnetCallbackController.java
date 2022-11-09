@@ -487,6 +487,7 @@ public class NovalnetCallbackController
 
     	paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
         novalnetOrderFacade.updateOrderStatus(orderNo, paymentInfoModel);
+        novalnetOrderFacade.updatePaymentInfo(paymentInfo, transactionData.getStatus().toString());
         return "Novalnet webhook script executed. Status updated for initial transaction";
     }
 
@@ -697,10 +698,21 @@ public class NovalnetCallbackController
         NnCallbackTransactionData transactionData =  callbackRequestData.getTransaction();
         NnCallbackResultData resultData =  callbackRequestData.getResult();
 
-		String tokenString = eventData.getTid() + eventData.getType() + resultData.getStatus() + transactionData.getAmount() + transactionData.getCurrency();
+		String tokenString = eventData.getTid() + eventData.getType() + resultData.getStatus();
+
+		if (!"".equals(transactionData.getAmount())) {
+			tokenString +=  transactionData.getAmount();
+		}
+
+		if (!"".equals(transactionData.getCurrency())) {
+			tokenString +=   transactionData.getCurrency();
+		}
 
 		if (!"".equals(baseStore.getNovalnetPaymentAccessKey())) {
 			tokenString += new StringBuilder(baseStore.getNovalnetPaymentAccessKey().trim()).reverse().toString();
+		} else {
+			errorFlag = true;
+			return "Payment Access key is not configured in backend";
 		}
 
 		String createdHash = "";
