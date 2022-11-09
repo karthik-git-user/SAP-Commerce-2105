@@ -625,6 +625,8 @@ public class NovalnetCallbackController
     }
 
     public String checkmandateParams(NnCallbackRequestData callbackRequestData) {
+
+    	errorFlag = false;
         
         NnCallbackEventData eventData =  callbackRequestData.getEvent();
         NnCallbackMerchantData merchantData =  callbackRequestData.getMerchant();
@@ -651,6 +653,8 @@ public class NovalnetCallbackController
 	}
 	
     public String checkIP(HttpServletRequest request) {
+
+    	errorFlag = false;
 		
         String vendorScriptHostIpAddress = "";
         final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
@@ -683,6 +687,8 @@ public class NovalnetCallbackController
     }
     
     public String validateChecksum(NnCallbackRequestData callbackRequestData) throws NoSuchAlgorithmException {
+
+    	errorFlag = false;
 		
 		final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
         
