@@ -700,11 +700,11 @@ public class NovalnetCallbackController
 
 		String tokenString = eventData.getTid() + eventData.getType() + resultData.getStatus();
 
-		if (!"".equals(transactionData.getAmount())) {
+		if (!transactionData.getAmount().isEmpty()) {
 			tokenString +=  transactionData.getAmount();
 		}
 
-		if (!"".equals(transactionData.getCurrency())) {
+		if (!transactionData.getCurrency().isEmpty()) {
 			tokenString +=   transactionData.getCurrency();
 		}
 
