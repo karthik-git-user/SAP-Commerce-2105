@@ -403,6 +403,15 @@ public class NovalnetOrdersController
 
             String accountHolder = billingData.getFirstName() + ' ' + billingData.getLastName();
             paymentParameters.put("iban", paymentData.getIban());
+
+            String[] bicRequiredCountry = {"CH", "MC", "SM", "GB"};
+
+
+            if (Arrays.asList(bicRequiredCountry).contains(deliveryAddress.getCountry().getIsocode())) {
+                paymentParameters.put("bic", paymentData.getBic());
+            }
+
+
             paymentParameters.put("bank_account_holder", accountHolder.replace("&", ""));
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
                 testMode = 1;

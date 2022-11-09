@@ -315,6 +315,9 @@
         <property name="iban" type="String">
             <description>Direct Debit SEPA IBAN</description>
         </property>
+        <property name="bic" type="String">
+            <description>Direct Debit SEPA BIC</description>
+        </property>
     </bean>
     
 

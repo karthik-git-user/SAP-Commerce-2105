@@ -141,6 +141,7 @@
 		<property name="panHash" type="String"/>
 		<property name="uniqId" type="String"/>
 		<property name="iban" type="String"/>
+		<property name="bic" type="String"/>
 	</bean>
 
 </beans>
