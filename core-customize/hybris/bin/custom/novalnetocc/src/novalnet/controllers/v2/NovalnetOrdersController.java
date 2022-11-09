@@ -346,12 +346,19 @@ public class NovalnetOrdersController
         
         if ("novalnetCreditCard".equals(payment)) {
             NnPaymentsData paymentData  =  requestData.getPaymentData();
-            paymentParameters.put("pan_hash", paymentData.getPanHash());
-            paymentParameters.put("unique_id", paymentData.getUniqId());
+
+
             NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
 
             if (!novalnetPaymentMethod.getActive()) {
                 throw new NovalnetPaymentException("Payment method is not active");
+            }
+
+            if(paymentData.getPanHash() != null && paymentData.getUniqId() != null) {
+                paymentParameters.put("pan_hash", paymentData.getPanHash());
+                paymentParameters.put("unique_id", paymentData.getUniqId());
+            } else {
+                throw new NovalnetPaymentException("Panhash and UniqId is reuired to process payment");
             }
 
             if (novalnetPaymentMethod.getNovalnetTestMode()) {
@@ -402,13 +409,22 @@ public class NovalnetOrdersController
             }
 
             String accountHolder = billingData.getFirstName() + ' ' + billingData.getLastName();
-            paymentParameters.put("iban", paymentData.getIban());
+
+            if(paymentData.getIban() != null) {
+                paymentParameters.put("iban", paymentData.getIban());
+            } else {
+                throw new NovalnetPaymentException("IBAN is required to process payment");
+            }
 
             String ibanCountry = paymentData.getIban().substring(0,2);
             String[] bicRequiredCountry = {"CH", "MC", "SM", "GB"};
 
-            if (Arrays.asList(bicRequiredCountry).contains(ibanCountry) {
-                paymentParameters.put("bic", paymentData.getBic());
+            if (Arrays.asList(bicRequiredCountry).contains(ibanCountry)) {
+                if(paymentData.getBic() != null) {
+                    paymentParameters.put("bic", paymentData.getBic());
+                } else {
+                    throw new NovalnetPaymentException("BIC is required to process payment");
+                }
             }
 
 
