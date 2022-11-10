@@ -70,6 +70,8 @@
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
                                           qualifier="novalnetInlineCC"/>
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
+                                          qualifier="novalnetEnforce3D"/>
+                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
                                           qualifier="novalnetOneClickShopping"/>
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
                                           qualifier="novalnetZeroAmountBooking"/>

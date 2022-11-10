@@ -32,6 +32,18 @@
 		<property name="transaction" type="de.novalnet.beans.NnCallbackTransactionData"/>
 		<property name="custom" type="de.novalnet.beans.NnCallbackCustomData"/>
 		<property name="merchant" type="de.novalnet.beans.NnCallbackMerchantData"/>
+		<property name="collection" type="de.novalnet.beans.NnCallbackCollectionData"/>
+	</bean>
+
+	<bean class="de.novalnet.beans.NnCallbackCollectionData">
+		<property name="amount" type="String"/>
+		<property name="claim_amount" type="String"/>
+		<property name="claim_charges" type="String"/>
+		<property name="claim_fee" type="String"/>
+		<property name="currency" type="String"/>
+		<property name="date" type="String"/>
+		<property name="reference" type="String"/>
+		<property name="claim_fee" type="String"/>
 	</bean>
 
 	<bean class="de.novalnet.beans.NnCallbackEventData">

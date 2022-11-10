@@ -112,6 +112,9 @@
                                                         <c:if test="${novalnetCreditCard.novalnetInlineCC == true}">
                                                             <input type="hidden" id="novalnetInlineCC" value=1/>
                                                         </c:if>
+                                                        <c:if test="${novalnetCreditCard.novalnetEnforce3D == true}">
+                                                            <input type="hidden" id="novalnetEnforce3D" value=1/>
+                                                        </c:if>
                                                         <input type="hidden" id="lang" value="${lang}"/>
                                                         <input type="hidden" id="orderAmount" value="${orderAmountCent}"/>
                                                         <input type="hidden" id="currency" value="${currency}"/>

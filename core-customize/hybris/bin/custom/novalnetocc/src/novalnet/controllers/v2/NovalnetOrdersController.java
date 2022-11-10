@@ -365,6 +365,10 @@ public class NovalnetOrdersController
                 testMode = 1;
             }
 
+            if (novalnetPaymentMethod.getNovalnetEnforce3D()) {
+                 transactionParameters.put("enforce_3d", 1);
+            }
+
             onholdOrderAmount = (novalnetPaymentMethod.getNovalnetOnholdAmount() == null) ? 0 : novalnetPaymentMethod.getNovalnetOnholdAmount();
 
             if (PAYMENT_AUTHORIZE.equals(novalnetPaymentMethod.getNovalnetOnholdAction().toString()) && orderAmountCent >= onholdOrderAmount) {

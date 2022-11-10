@@ -278,12 +278,17 @@ ACC.novalnetcheckoutaddon = {
     loadIframe : function () {
 
         var inline = 0;
+        var novalnetEnforce3D = 0;
         var testMode;
         var sameAsBilling = 0;
         var bill_to_country;
 
         if($('#novalnetInlineCC').length) {
             inline = 1;
+        }
+
+        if($('#novalnetEnforce3D').length) {
+            novalnetEnforce3D = 1;
         }
 
         if($('#useDeliveryAddress').is(":checked")) {
@@ -347,6 +352,8 @@ ACC.novalnetcheckoutaddon = {
 
                 // Set to 1 to make you Iframe input container more compact (default - 0)
                 inline: inline,
+
+
 
                 // Add the style (css) here for either the whole Iframe contanier or for particular label/input field
                 style: {
@@ -459,7 +466,9 @@ ACC.novalnetcheckoutaddon = {
                 currency: $("#currency").val(),
 
                 // Set to 1 for the TEST transaction (default - 0).
-                test_mode: testMode
+                test_mode: testMode,
+
+                enforce_3d: novalnetEnforce3D
             }
         }
         NovalnetUtility.createCreditCardForm(configurationObject);

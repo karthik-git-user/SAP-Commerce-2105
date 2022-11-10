@@ -247,6 +247,11 @@
                     <modifiers encrypted="false" initial="false" optional="false"/>
                     <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
                 </attribute>
+                <attribute qualifier="novalnetEnforce3D" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" initial="false" optional="false"/>
+                    <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+                </attribute>
                 <attribute qualifier="novalnetOneClickShopping" type="java.lang.Boolean">
                     <persistence type="property"/>
                     <modifiers encrypted="false" initial="false" optional="false"/>

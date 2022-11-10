@@ -119,6 +119,36 @@
         <property name="merchant" type="novalnet.dto.payment.NnCallbackMerchantWsDTO">
             <description>Callback Merchant data</description>
         </property>
+        <property name="collection" type="novalnet.dto.payment.NnCallbackCollectionWsDTO">
+            <description>Callback Collection data</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnCallbackCollectionWsDTO">
+        <property name="amount" type="String">
+            <description>Collection amount</description>
+        </property>
+        <property name="claim_amount" type="String">
+            <description>Collection Claim amount</description>
+        </property>
+         <property name="claim_charges" type="String">
+            <description>Collection Claim charges</description>
+        </property>
+         <property name="claim_fee" type="String">
+            <description>Collection Claim fee</description>
+        </property>
+         <property name="currency" type="String">
+            <description>Collection Claim currency</description>
+        </property>
+         <property name="date" type="String">
+            <description>Collection Claim date</description>
+        </property>
+         <property name="reference" type="String">
+            <description>Collection Claim reference </description>
+        </property>
+        <property name="status_text" type="String">
+            <description>Collection Claim status</description>
+        </property>
     </bean>
     
     <bean class="novalnet.dto.payment.NnCallbackMerchantWsDTO">

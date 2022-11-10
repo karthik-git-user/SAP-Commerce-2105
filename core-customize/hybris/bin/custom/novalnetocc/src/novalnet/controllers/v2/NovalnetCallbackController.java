@@ -116,8 +116,10 @@ import de.novalnet.beans.NnCallbackRequestData;
 import de.novalnet.beans.NnCallbackResponseData;
 import de.novalnet.beans.NnCallbackTransactionData;
 import de.novalnet.beans.NnCallbackRefundData;
+import de.novalnet.beans.NnCallbackCollectionData;
 import novalnet.dto.payment.NnConfigWsDTO;
 import novalnet.dto.payment.NnCallbackResponseWsDTO;
+import novalnet.dto.payment.NnCallbackCollectionWsDTO;
 
 import java.text.NumberFormat;
 import java.text.DecimalFormat;
@@ -167,7 +169,8 @@ public class NovalnetCallbackController
     public NnCallbackMerchantData merchantData =  new NnCallbackMerchantData();
     public NnCallbackTransactionData transactionData =  new NnCallbackTransactionData();
     public NnCallbackResultData resultData =  new NnCallbackResultData();
-     public NnCallbackRefundData refundData =  new NnCallbackRefundData();
+    public NnCallbackRefundData refundData =  new NnCallbackRefundData();
+    public NnCallbackCollectionData collectionData =  new NnCallbackCollectionData();
 
     @Resource(name = "novalnetOrderFacade")
     NovalnetOrderFacade novalnetOrderFacade;
@@ -305,24 +308,24 @@ public class NovalnetCallbackController
 		collectionPayments.put("DEBT_COLLECTION_DE", "DEBT_COLLECTION_DE");
 
 		// Payment types for each payment method
-		String[] creditCardPaymentTypes = {"CREDITCARD", "CREDITCARD_CHARGEBACK", "CREDITCARD_BOOKBACK", "TRANSACTION_CANCELLATION", "CREDIT_ENTRY_CREDITCARD", "DEBT_COLLECTION_CREDITCARD", "CREDITCARD_REPRESENTMENT"};
-		String[] directDebitSepaPaymentTypes = {"DIRECT_DEBIT_SEPA", "RETURN_DEBIT_SEPA", "REFUND_BY_BANK_TRANSFER_EU", "TRANSACTION_CANCELLATION", "CREDIT_ENTRY_SEPA", "DEBT_COLLECTION_SEPA", "BANK_TRANSFER_BY_END_CUSTOMER"};
-		String[] invoicePaymentTypes = {"INVOICE_START", "INVOICE_CREDIT", "TRANSACTION_CANCELLATION", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE", "INVOICE"};
-		String[] prepaymentPaymentTypes = {"PREPAYMENT", "INVOICE_CREDIT", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE"};
-		String[] multibancoPaymentTypes = {"MULTIBANCO", "MULTIBANCO_CREDIT"};
-		String[] payPalPaymentTypes = {"PAYPAL", "PAYPAL_BOOKBACK", "PAYPAL_CHARGEBACK", "REFUND_BY_BANK_TRANSFER_EU"};
-		String[] instantBankTransferPaymentTypes = {"ONLINE_TRANSFER", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
-		String[] onlineBankTransferPaymentTypes = {"ONLINE_BANK_TRANSFER", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
-		String[] bancontactPaymentTypes = {"BANCONTACT", "REFUND_BY_BANK_TRANSFER_EU"};
-		String[] idealPaymentTypes = {"IDEAL", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
-		String[] epsPaymentTypes = {"EPS", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
-		String[] giropayPaymentTypes = {"GIROPAY", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT"};
-		String[] przelewy24PaymentTypes = {"PRZELEWY24", "PRZELEWY24_REFUND"};
-		String[] cashpaymentPaymentTypes = {"CASHPAYMENT", "CASHPAYMENT_REFUND", "CASHPAYMENT_CREDIT"};
-		String[] postFinancePaymentTypes = {"POSTFINANCE", "POSTFINANCE_REFUND"};
-		String[] postFinanceCardPaymentTypes = {"POSTFINANCE_CARD", "POSTFINANCE_REFUND"};
-		String[] guaranteedInvoicePaymentTypes = {"GUARANTEED_INVOICE", "GUARANTEED_INVOICE_BOOKBACK"};
-		String[] guaranteedDirectDebitSepaPaymentTypes = {"GUARANTEED_DIRECT_DEBIT_SEPA", "GUARANTEED_SEPA_BOOKBACK"};
+		String[] creditCardPaymentTypes = {"CREDITCARD", "CREDITCARD_CHARGEBACK", "CREDITCARD_BOOKBACK", "TRANSACTION_CANCELLATION", "CREDIT_ENTRY_CREDITCARD", "DEBT_COLLECTION_CREDITCARD", "CREDITCARD_REPRESENTMENT", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2", "SUBMISSION_TO_COLLECTION_AGENCY"};
+		String[] directDebitSepaPaymentTypes = {"DIRECT_DEBIT_SEPA", "RETURN_DEBIT_SEPA", "REFUND_BY_BANK_TRANSFER_EU", "TRANSACTION_CANCELLATION", "CREDIT_ENTRY_SEPA", "DEBT_COLLECTION_SEPA", "BANK_TRANSFER_BY_END_CUSTOMER", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2", "SUBMISSION_TO_COLLECTION_AGENCY"};
+		String[] invoicePaymentTypes = {"INVOICE_START", "INVOICE_CREDIT", "TRANSACTION_CANCELLATION", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE", "INVOICE", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2", "SUBMISSION_TO_COLLECTION_AGENCY"};
+		String[] prepaymentPaymentTypes = {"PREPAYMENT", "INVOICE_CREDIT", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE", "SUBMISSION_TO_COLLECTION_AGENCY"};
+		String[] multibancoPaymentTypes = {"MULTIBANCO", "MULTIBANCO_CREDIT", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2", "SUBMISSION_TO_COLLECTION_AGENCY"};
+		String[] payPalPaymentTypes = {"PAYPAL", "PAYPAL_BOOKBACK", "PAYPAL_CHARGEBACK", "REFUND_BY_BANK_TRANSFER_EU", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2", "CREDIT_ENTRY_DE", "SUBMISSION_TO_COLLECTION_AGENCY"};
+		String[] instantBankTransferPaymentTypes = {"ONLINE_TRANSFER", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2", "SUBMISSION_TO_COLLECTION_AGENCY"};
+		String[] onlineBankTransferPaymentTypes = {"ONLINE_BANK_TRANSFER", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2", "SUBMISSION_TO_COLLECTION_AGENCY"};
+		String[] bancontactPaymentTypes = {"BANCONTACT", "REFUND_BY_BANK_TRANSFER_EU", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2", "SUBMISSION_TO_COLLECTION_AGENCY"};
+		String[] idealPaymentTypes = {"IDEAL", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2", "SUBMISSION_TO_COLLECTION_AGENCY"};
+		String[] epsPaymentTypes = {"EPS", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2"};
+		String[] giropayPaymentTypes = {"GIROPAY", "REFUND_BY_BANK_TRANSFER_EU", "CREDIT_ENTRY_DE", "REVERSAL", "DEBT_COLLECTION_DE", "ONLINE_TRANSFER_CREDIT", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2"};
+		String[] przelewy24PaymentTypes = {"PRZELEWY24", "PRZELEWY24_REFUND", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2"};
+		String[] cashpaymentPaymentTypes = {"CASHPAYMENT", "CASHPAYMENT_REFUND", "CASHPAYMENT_CREDIT", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2", "SUBMISSION_TO_COLLECTION_AGENCY"};
+		String[] postFinancePaymentTypes = {"POSTFINANCE", "POSTFINANCE_REFUND", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2", "SUBMISSION_TO_COLLECTION_AGENCY"};
+		String[] postFinanceCardPaymentTypes = {"POSTFINANCE_CARD", "POSTFINANCE_REFUND", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2", "SUBMISSION_TO_COLLECTION_AGENCY"};
+		String[] guaranteedInvoicePaymentTypes = {"GUARANTEED_INVOICE", "GUARANTEED_INVOICE_BOOKBACK", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2", "SUBMISSION_TO_COLLECTION_AGENCY"};
+		String[] guaranteedDirectDebitSepaPaymentTypes = {"GUARANTEED_DIRECT_DEBIT_SEPA", "GUARANTEED_SEPA_BOOKBACK", "PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2", "SUBMISSION_TO_COLLECTION_AGENCY"};
 
 		paymentTypes.put("novalnetCreditCard", creditCardPaymentTypes);
 		paymentTypes.put("novalnetDirectDebitSepa", directDebitSepaPaymentTypes);
@@ -360,6 +363,7 @@ public class NovalnetCallbackController
 		
 
         String[] pendingPaymentType = {"PAYPAL", "PRZELEWY24", "POSTFINANCE_CARD", "POSTFINANCE"};
+        String[] reminderPaymentType = {"PAYMENT_REMINDER_1", "PAYMENT_REMINDER_2"};
 
         if ((chargebackPayments.containsValue(requestPaymentType) || collectionPayments.containsValue(requestPaymentType)) || creditPayments.containsValue(requestPaymentType) || refundPayments.containsValue(requestPaymentType)) {
             
@@ -396,7 +400,11 @@ public class NovalnetCallbackController
 			response = performStatusUpdate(callbackRequestData);
 		} else if ("TRANSACTION_UPDATE".equals(eventData.getType())) {
 			response = performTransacrionUpdate(callbackRequestData);
-		}
+		} else if (Arrays.asList(refundType).contains(eventData.getType())) {
+			response = performReminderUpdate(callbackRequestData);
+		} else if ("SUBMISSION_TO_COLLECTION_AGENCY".equals(eventData.getType())) {
+			response = performCollectionUpdate(callbackRequestData);
+		} 
 
         callbackResponseData.setMessage(response);
 		return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
@@ -477,6 +485,30 @@ public class NovalnetCallbackController
 
         return "Novalnet webhook script executed. No action executed for transaction update";
 
+    }
+
+    public String performReminderUpdate(NnCallbackRequestData callbackRequestData) {
+
+    	final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(transactionData.getTid().toString());
+    	String orderNo = orderReference.get(0).getOrderNo();
+
+    	callbackComments = (eventData.getType() == "PAYMENT_REMINDER_1") ? "Payment Reminder 1 has been sent to the customer" : "Payment Reminder 2 has been sent to the customer" ;
+
+    	novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
+        return callbackComments;
+    }
+
+    public String performCollectionUpdate(NnCallbackRequestData callbackRequestData) {
+
+    	collectionData =  callbackRequestData.getCollection();
+
+    	final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(transactionData.getTid().toString());
+    	String orderNo = orderReference.get(0).getOrderNo();
+
+    	callbackComments = "The transaction has been submitted to the collection agency. Collection Reference: " + collectionData.getReference();
+
+    	novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
+        return callbackComments;
     }
 
     public String performStatusUpdate(NnCallbackRequestData callbackRequestData) {
