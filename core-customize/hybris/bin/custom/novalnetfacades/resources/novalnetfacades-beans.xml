@@ -43,7 +43,7 @@
 		<property name="currency" type="String"/>
 		<property name="date" type="String"/>
 		<property name="reference" type="String"/>
-		<property name="claim_fee" type="String"/>
+		<property name="status_text" type="String"/>
 	</bean>
 
 	<bean class="de.novalnet.beans.NnCallbackEventData">
