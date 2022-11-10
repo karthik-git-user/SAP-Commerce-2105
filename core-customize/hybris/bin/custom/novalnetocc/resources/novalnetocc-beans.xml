@@ -212,6 +212,9 @@
         <property name="due_date" type="String">
             <description>Date by which the customer must settle the payment</description>
         </property>
+        <property name="refunded_amount" type="String">
+            <description>Total amount refunded</description>
+        </property>
         <property name="bank_details" type="novalnet.dto.payment.NnCallbackBankDetailsWsDTO">
             <description>DThis objects contains the Bank details to which customer has to transfer the transaction amount</description>
         </property>
