@@ -823,6 +823,7 @@ public class NovalnetOrderFacade {
     public Map<String, Object> getBackendConfiguration(String type, String paymentMethod) {
 
         final Map<String, Object> responeParameters     = new HashMap<String, Object>();
+        PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(paymentMethod);
 
         if(type.equals("payment")) {
 
@@ -868,7 +869,7 @@ public class NovalnetOrderFacade {
             responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
             responeParameters.put("test_mode", novalnetPaymentMethod.getDescription());
         } else {
-            final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
+            final BaseStoreModel baseStore = getBaseStoreModel();
             responeParameters.put("client_key", baseStore.getNovalnetClientKey());
         }
 
