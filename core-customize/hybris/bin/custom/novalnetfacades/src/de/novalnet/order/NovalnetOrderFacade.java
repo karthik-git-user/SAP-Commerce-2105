@@ -827,11 +827,12 @@ public class NovalnetOrderFacade {
 
         if(type.equals("payment")) {
 
-            NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
+           
 
             if ("novalnetCreditCard".equals(paymentMethod)) {
+                 NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
             } else if ("novalnetDirectDebitSepa".equals(paymentMethod)) {
-                return novalnetPaymentMethod.getNovalnetOrderSuccessStatus();
+                NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
             } else if ("novalnetGuaranteedDirectDebitSepa".equals(paymentMethod)) {
                 NovalnetGuaranteedDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetGuaranteedDirectDebitSepaPaymentModeModel) paymentModeModel;
             } else if ("novalnetInvoice".equals(paymentMethod)) {
@@ -862,7 +863,7 @@ public class NovalnetOrderFacade {
                 NovalnetEpsPaymentModeModel novalnetPaymentMethod = (NovalnetEpsPaymentModeModel) paymentModeModel;
             } else if ("novalnetGiropay".equals(paymentMethod)) {
                 NovalnetGiropayPaymentModeModel novalnetPaymentMethod = (NovalnetGiropayPaymentModeModel) paymentModeModel;
-            } else if ("novalnetPrzelewy24".equals(paymentMethod)) {
+            } else {
                 NovalnetPrzelewy24PaymentModeModel novalnetPaymentMethod = (NovalnetPrzelewy24PaymentModeModel) paymentModeModel;
             }
 
