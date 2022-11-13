@@ -875,7 +875,6 @@ public class NovalnetOrderFacade {
                 responeParameters.put("description", novalnetPaymentMethod.getDescription());
                 responeParameters.put("onhold_amount", novalnetPaymentMethod.getNovalnetOnholdAmount());
                 responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction());
-                responeParameters.put("due_date", novalnetPaymentMethod.getNovalnetDueDate());
      
             } else if ("novalnetPrepayment".equals(paymentMethod)) {
                 NovalnetPrepaymentPaymentModeModel novalnetPaymentMethod = (NovalnetPrepaymentPaymentModeModel) paymentModeModel;

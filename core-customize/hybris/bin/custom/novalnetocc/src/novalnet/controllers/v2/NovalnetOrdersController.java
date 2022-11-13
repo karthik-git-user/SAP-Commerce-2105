@@ -67,9 +67,26 @@ import com.google.gson.GsonBuilder;
 import java.io.*;
 
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
-import de.hybris.novalnet.core.model.NovalnetCreditCardPaymentModeModel;
+
 import de.hybris.novalnet.core.model.NovalnetDirectDebitSepaPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetGuaranteedDirectDebitSepaPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetGuaranteedInvoicePaymentModeModel;
 import de.hybris.novalnet.core.model.NovalnetPayPalPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetCreditCardPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetInvoicePaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetPrepaymentPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetBarzahlenPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetInstantBankTransferPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetOnlineBankTransferPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetBancontactPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetMultibancoPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetIdealPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetEpsPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetGiropayPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetPrzelewy24PaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetPostFinanceCardPaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetPostFinancePaymentModeModel;
+
 import de.hybris.novalnet.core.model.NovalnetCallbackInfoModel;
 import de.hybris.platform.core.model.order.payment.PaymentModeModel;
 import de.hybris.platform.payment.model.PaymentTransactionEntryModel;
