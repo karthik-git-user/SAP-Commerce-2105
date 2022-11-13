@@ -827,8 +827,9 @@ public class NovalnetOrderFacade {
 
         if(type.equals("payment")) {
 
+            NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
+
             if ("novalnetCreditCard".equals(paymentMethod)) {
-                NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
             } else if ("novalnetDirectDebitSepa".equals(paymentMethod)) {
                 return novalnetPaymentMethod.getNovalnetOrderSuccessStatus();
             } else if ("novalnetGuaranteedDirectDebitSepa".equals(paymentMethod)) {
