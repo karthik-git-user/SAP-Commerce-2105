@@ -736,37 +736,53 @@ public class NovalnetOrdersController
     @SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
     @ApiOperation(nickname = "paymentConfig", value = "return payment configuration", notes = "return payment configuration stored in Backend")
     @ApiBaseSiteIdAndUserIdParam
-    public NnConfigWsDTO getPaymentConfig(
+    public String getPaymentConfig(
             @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
             throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
     {
-        final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
-        PaymentModeModel directDebitSepaPaymentModeModel = paymentModeService.getPaymentModeForCode("novalnetDirectDebitSepa");
-        NovalnetDirectDebitSepaPaymentModeModel novalnetDirectDebitSepaPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) directDebitSepaPaymentModeModel;
-        PaymentModeModel payPalPaymentModeModel = paymentModeService.getPaymentModeForCode("novalnetPayPal");
-        NovalnetPayPalPaymentModeModel novalnetPayPalPaymentMethod = (NovalnetPayPalPaymentModeModel) payPalPaymentModeModel;
-        PaymentModeModel creditCardPaymentModeModel = paymentModeService.getPaymentModeForCode("novalnetCreditCard");
-        NovalnetCreditCardPaymentModeModel novalnetCreditCardPaymentMethod = (NovalnetCreditCardPaymentModeModel) creditCardPaymentModeModel;
+        // final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
+        // PaymentModeModel directDebitSepaPaymentModeModel = paymentModeService.getPaymentModeForCode("novalnetDirectDebitSepa");
+        // NovalnetDirectDebitSepaPaymentModeModel novalnetDirectDebitSepaPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) directDebitSepaPaymentModeModel;
+        // PaymentModeModel payPalPaymentModeModel = paymentModeService.getPaymentModeForCode("novalnetPayPal");
+        // NovalnetPayPalPaymentModeModel novalnetPayPalPaymentMethod = (NovalnetPayPalPaymentModeModel) payPalPaymentModeModel;
+        // PaymentModeModel creditCardPaymentModeModel = paymentModeService.getPaymentModeForCode("novalnetCreditCard");
+        // NovalnetCreditCardPaymentModeModel novalnetCreditCardPaymentMethod = (NovalnetCreditCardPaymentModeModel) creditCardPaymentModeModel;
 
-        NnCreditCardData creditCardData = new NnCreditCardData();
-        creditCardData.setActive(novalnetCreditCardPaymentMethod.getActive());
+        // NnCreditCardData creditCardData = new NnCreditCardData();
+        // creditCardData.setActive(novalnetCreditCardPaymentMethod.getActive());
 
-        NnDirectDebitSepaData directDebitSepaData = new NnDirectDebitSepaData();
-        directDebitSepaData.setActive(novalnetDirectDebitSepaPaymentMethod.getActive());
+        // NnDirectDebitSepaData directDebitSepaData = new NnDirectDebitSepaData();
+        // directDebitSepaData.setActive(novalnetDirectDebitSepaPaymentMethod.getActive());
 
-        NnPayPalData payPalData = new NnPayPalData();
-        payPalData.setActive(novalnetPayPalPaymentMethod.getActive());
+        // NnPayPalData payPalData = new NnPayPalData();
+        // payPalData.setActive(novalnetPayPalPaymentMethod.getActive());
 
-        NnPaymentData paymentData = new NnPaymentData();
-        paymentData.setNovalnetCreditCard(creditCardData);
-        paymentData.setNovalnetDirectDebitSepa(directDebitSepaData);
-        paymentData.setNovalnetPayPal(payPalData);
+        // NnPaymentData paymentData = new NnPaymentData();
+        // paymentData.setNovalnetCreditCard(creditCardData);
+        // paymentData.setNovalnetDirectDebitSepa(directDebitSepaData);
+        // paymentData.setNovalnetPayPal(payPalData);
 
-        NnConfigData configData = new NnConfigData();
-        configData.setPaymentinfo(paymentData);
-        configData.setNovalnetClienKey(baseStore.getNovalnetClientKey());
+        // NnConfigData configData = new NnConfigData();
+        // configData.setPaymentinfo(paymentData);
+        // configData.setNovalnetClienKey(baseStore.getNovalnetClientKey());
 
-        return dataMapper.map(configData, NnConfigWsDTO.class, fields);
+        // return dataMapper.map(configData, NnConfigWsDTO.class, fields);
+
+        Map<String, Object> responseDeatils = new HashMap<String, Object>();
+        Map<String, Object> dataParameters  = new HashMap<String, Object>();
+        Gson gson = new GsonBuilder().create();
+        String[] paymentTypes = {"novalnetCreditCard", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice", "novalnetPrepayment", "novalnetMultibanco", "novalnetBarzahlen", "novalnetPayPal", "novalnetInstantBankTransfer", "novalnetOnlineBankTransfer", "novalnetBancontact", "novalnetPostFinanceCard", "novalnetPostFinance", "novalnetIdeal", "novalnetEps", "novalnetGiropay", "novalnetPrzelewy24"};
+
+        for (String payment : paymentTypes) {
+            dataParameters  = new HashMap<String, Object>();
+            responseDeatils = getBackendConfiguration("payment", payment);
+            dataParameters.put(payment, responseDeatils);
+        }
+
+        
+        String jsonString = gson.toJson(dataParameters);
+
+        return jsonString
     }
 
 
