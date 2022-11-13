@@ -775,7 +775,7 @@ public class NovalnetOrdersController
 
         for (String payment : paymentTypes) {
             dataParameters  = new HashMap<String, Object>();
-            responseDeatils = getBackendConfiguration("payment", payment);
+            responseDeatils = novalnetOrderFacade.getBackendConfiguration("payment", payment);
             dataParameters.put(payment, responseDeatils);
         }
 
