@@ -833,11 +833,9 @@ public class NovalnetOrdersController
         String[] paymentTypes = {"novalnetCreditCard", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice", "novalnetPrepayment", "novalnetMultibanco", "novalnetBarzahlen", "novalnetPayPal", "novalnetInstantBankTransfer", "novalnetOnlineBankTransfer", "novalnetBancontact", "novalnetPostFinanceCard", "novalnetPostFinance", "novalnetIdeal", "novalnetEps", "novalnetGiropay", "novalnetPrzelewy24"};
 
         for (String payment : paymentTypes) {
-            dataParameters  = new HashMap<String, Object>();
             responseDeatils = novalnetOrderFacade.getBackendConfiguration("payment", payment);
             dataParameters.put(payment, responseDeatils);
         }
-
         
         String jsonString = gson.toJson(dataParameters);
 
