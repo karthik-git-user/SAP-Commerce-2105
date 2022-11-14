@@ -368,7 +368,11 @@ public class NovalnetOrdersController
 
         Map<String, String> responseDeatils = novalnetOrderFacade.getBackendConfiguration("payment", payment);
 
-        if (responseDeatils.get("active").toString() == "false") {
+        LOG.info("payment name " + payment);
+
+        LOG.info("payment active " + responseDeatils.get("active"));
+
+        if (responseDeatils.get("active").toString() == false) {
             throw new NovalnetPaymentException("Payment method is not active");
         }
 
