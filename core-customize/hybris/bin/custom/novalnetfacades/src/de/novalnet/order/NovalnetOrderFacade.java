@@ -898,7 +898,7 @@ public class NovalnetOrderFacade {
                 responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
                 responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
-                responeParameters.put("due_date", novalnetPaymentMethod.getNovalnetBarzahlenslipExpiryDate());
+                responeParameters.put("due_date", novalnetPaymentMethod.getNovalnetBarzahlenslipExpiryDate().toString());
      
             } else if ("novalnetPayPal".equals(paymentMethod)) {
                 NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
