@@ -830,147 +830,147 @@ public class NovalnetOrderFacade {
             if ("novalnetCreditCard".equals(paymentMethod)) {
                  NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
-                responeParameters.put("onhold_amount", novalnetPaymentMethod.getNovalnetOnholdAmount());
-                responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
+                responeParameters.put("onhold_amount", novalnetPaymentMethod.getNovalnetOnholdAmount().toString());
+                responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction().toString());
 
             } else if ("novalnetDirectDebitSepa".equals(paymentMethod)) {
                 NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
-                responeParameters.put("onhold_amount", novalnetPaymentMethod.getNovalnetOnholdAmount());
-                responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction());
-                responeParameters.put("due_date", novalnetPaymentMethod.getNovalnetDueDate());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
+                responeParameters.put("onhold_amount", novalnetPaymentMethod.getNovalnetOnholdAmount().toString());
+                responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction().toString());
+                responeParameters.put("due_date", novalnetPaymentMethod.getNovalnetDueDate().toString());
 
             } else if ("novalnetGuaranteedDirectDebitSepa".equals(paymentMethod)) {
                 NovalnetGuaranteedDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetGuaranteedDirectDebitSepaPaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
-                responeParameters.put("onhold_amount", novalnetPaymentMethod.getNovalnetOnholdAmount());
-                responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction());
-                responeParameters.put("due_date", novalnetPaymentMethod.getNovalnetDueDate());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
+                responeParameters.put("onhold_amount", novalnetPaymentMethod.getNovalnetOnholdAmount().toString());
+                responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction().toString());
+                responeParameters.put("due_date", novalnetPaymentMethod.getNovalnetDueDate().toString());
      
             } else if ("novalnetInvoice".equals(paymentMethod)) {
                 NovalnetInvoicePaymentModeModel novalnetPaymentMethod = (NovalnetInvoicePaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
-                responeParameters.put("onhold_amount", novalnetPaymentMethod.getNovalnetOnholdAmount());
-                responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction());
-                responeParameters.put("due_date", novalnetPaymentMethod.getNovalnetDueDate());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
+                responeParameters.put("onhold_amount", novalnetPaymentMethod.getNovalnetOnholdAmount().toString());
+                responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction().toString());
+                responeParameters.put("due_date", novalnetPaymentMethod.getNovalnetDueDate().toString());
 
      
             } else if ("novalnetGuaranteedInvoice".equals(paymentMethod)) {
                 NovalnetGuaranteedInvoicePaymentModeModel novalnetPaymentMethod = (NovalnetGuaranteedInvoicePaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
-                responeParameters.put("onhold_amount", novalnetPaymentMethod.getNovalnetOnholdAmount());
-                responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
+                responeParameters.put("onhold_amount", novalnetPaymentMethod.getNovalnetOnholdAmount().toString());
+                responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction().toString());
      
             } else if ("novalnetPrepayment".equals(paymentMethod)) {
                 NovalnetPrepaymentPaymentModeModel novalnetPaymentMethod = (NovalnetPrepaymentPaymentModeModel) paymentModeModel;
 
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
-                responeParameters.put("due_date", novalnetPaymentMethod.getNovalnetDueDate());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
+                responeParameters.put("due_date", novalnetPaymentMethod.getNovalnetDueDate().toString());
      
             } else if ("novalnetMultibanco".equals(paymentMethod)) {
                 NovalnetMultibancoPaymentModeModel novalnetPaymentMethod = (NovalnetMultibancoPaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
      
             } else if ("novalnetBarzahlen".equals(paymentMethod)) {
                 NovalnetBarzahlenPaymentModeModel novalnetPaymentMethod = (NovalnetBarzahlenPaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
                 responeParameters.put("due_date", novalnetPaymentMethod.getNovalnetBarzahlenslipExpiryDate());
      
             } else if ("novalnetPayPal".equals(paymentMethod)) {
                 NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
-                responeParameters.put("onhold_amount", novalnetPaymentMethod.getNovalnetOnholdAmount());
-                responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
+                responeParameters.put("onhold_amount", novalnetPaymentMethod.getNovalnetOnholdAmount().toString());
+                responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction().toString());
      
             } else if ("novalnetInstantBankTransfer".equals(paymentMethod)) {
                 NovalnetInstantBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetInstantBankTransferPaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
      
             } else if ("novalnetOnlineBankTransfer".equals(paymentMethod)) {
                 NovalnetOnlineBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetOnlineBankTransferPaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
      
             }  else if ("novalnetBancontact".equals(paymentMethod)) {
                 NovalnetBancontactPaymentModeModel novalnetPaymentMethod = (NovalnetBancontactPaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
      
             } else if ("novalnetPostFinanceCard".equals(paymentMethod)) {
                 NovalnetPostFinanceCardPaymentModeModel novalnetPaymentMethod = (NovalnetPostFinanceCardPaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
      
             } else if ("novalnetPostFinance".equals(paymentMethod)) {
                 NovalnetPostFinancePaymentModeModel novalnetPaymentMethod = (NovalnetPostFinancePaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
      
             } else if ("novalnetIdeal".equals(paymentMethod)) {
                 NovalnetIdealPaymentModeModel novalnetPaymentMethod = (NovalnetIdealPaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
      
             } else if ("novalnetEps".equals(paymentMethod)) {
                 NovalnetEpsPaymentModeModel novalnetPaymentMethod = (NovalnetEpsPaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
      
             } else if ("novalnetGiropay".equals(paymentMethod)) {
                 NovalnetGiropayPaymentModeModel novalnetPaymentMethod = (NovalnetGiropayPaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
      
             } else if ("novalnetPrzelewy24".equals(paymentMethod)) {
                 NovalnetPrzelewy24PaymentModeModel novalnetPaymentMethod = (NovalnetPrzelewy24PaymentModeModel) paymentModeModel;
 
-                responeParameters.put("active", novalnetPaymentMethod.getActive());
-                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode());
-                responeParameters.put("description", novalnetPaymentMethod.getDescription());
+                responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
+                responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
+                responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
      
             }
 
