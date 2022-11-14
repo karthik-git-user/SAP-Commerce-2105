@@ -372,7 +372,7 @@ public class NovalnetOrdersController
 
         LOG.info("payment active " + responseDeatils.get("active"));
 
-        if (responseDeatils.get("active").toString() == false) {
+        if (responseDeatils.get("active").toString() == "false") {
             throw new NovalnetPaymentException("Payment method is not active");
         }
 
