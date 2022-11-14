@@ -1,9 +1,0 @@
-#Ant properties
-builddate=20211122 1550
-description=miraklpromotions
-group.id=com.mirakl.hybris
-module.name=mirakl-connector-module
-name=miraklpromotions
-releasedate=20211122 1550
-vendor=mirakl
-version=3.1.0

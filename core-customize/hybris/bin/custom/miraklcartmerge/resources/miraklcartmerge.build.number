@@ -1,9 +1,0 @@
-#Ant properties
-builddate=20211122 1550
-description=miraklcartmerge
-group.id=com.mirakl.hybris
-module.name=mirakl-connector-module
-name=miraklcartmerge
-releasedate=20211122 1550
-vendor=mirakl
-version=3.1.0

@@ -196,22 +196,6 @@
     <extension name='cloudhotfolder' />-->
     
 
-<!--
-    <extension name='mirakladdon' />  
-	<extension name='miraklfacades' />        
-	<extension name='miraklservices' />    
-	<extension name='miraklfulfilmentprocess' />    
-	<extension name='miraklwebservices' />
-	<extension name='miraklpromotions' />
-	<extension name='miraklcatalogintegrator' />
-	<extension name='miraklcatalogmanager' />
-	<extension name='miraklsampledataaddon' />
-	<extension name='miraklcsbackoffice' />
-	<extension name='miraklmediaconversion' />
-	<extension name='miraklbackofficeaddon' />
-	<extension name='miraklchannelsaddon' />
-    <extension name='miraklocc' />
--->
 
 <!--
 	<extension name="sapdigitalpaymentaddon" />  
