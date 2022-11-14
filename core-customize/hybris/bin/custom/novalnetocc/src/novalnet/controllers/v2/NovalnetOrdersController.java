@@ -381,7 +381,7 @@ public class NovalnetOrdersController
         String[] onholdSupportedPaymentTypes = {"novalnetCreditCard", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice",  "novalnetPayPal"};
 
          if (Arrays.asList(onholdSupportedPaymentTypes).contains(payment)) {
-            onholdOrderAmount = (responseDeatils.get("onhold_amount") == null) ? 0 : responseDeatils.get("onhold_amount").toString();
+            onholdOrderAmount = (responseDeatils.get("onhold_amount") == null) ? 0 : Integer.parseInt(responseDeatils.get("onhold_amount").toString());
 
             if (PAYMENT_AUTHORIZE.equals(responseDeatils.get("onhold_action").toString()) && orderAmountCent >= onholdOrderAmount) {
                  verify_payment_data = true;
@@ -391,7 +391,7 @@ public class NovalnetOrdersController
         String[] dueDatePaymentTypes = {"novalnetBarzahlen", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice",  "novalnetPrepayment"};
 
         if (Arrays.asList(dueDatePaymentTypes).contains(payment)) {
-            Integer dueDate = responseDeatils.get("due_date").toString();
+            Integer dueDate = Integer.parseInt(responseDeatils.get("due_date").toString());
             if (dueDate != null && dueDate > 7) {
                 transactionParameters.put("due_date", formatDate(dueDate));
             }
@@ -413,10 +413,6 @@ public class NovalnetOrdersController
 
         } else if ("novalnetDirectDebitSepa".equals(payment)) {
             NnPaymentsData paymentData  =  requestData.getPaymentData();
-
-            if (!novalnetPaymentMethod.getActive()) {
-                throw new NovalnetPaymentException("Payment method is not active");
-            }
 
             String accountHolder = billingData.getFirstName() + ' ' + billingData.getLastName();
 
