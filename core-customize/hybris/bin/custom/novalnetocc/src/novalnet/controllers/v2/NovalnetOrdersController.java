@@ -366,7 +366,7 @@ public class NovalnetOrdersController
         transactionParameters.put("system_name", "SAP Commerce Cloud");
         transactionParameters.put("system_version", "2105-NN1.0.1");
 
-        Map<String, Object> responseDeatils = novalnetOrderFacade.getBackendConfiguration("payment", payment);
+        Map<String, String> responseDeatils = novalnetOrderFacade.getBackendConfiguration("payment", payment);
 
         if (responseDeatils.get("active").toString() == "false") {
             throw new NovalnetPaymentException("Payment method is not active");
@@ -827,7 +827,7 @@ public class NovalnetOrdersController
 
         // return dataMapper.map(configData, NnConfigWsDTO.class, fields);
 
-        Map<String, Object> responseDeatils = new HashMap<String, Object>();
+        Map<String, String> responseDeatils = new HashMap<String, String>();
         Map<String, Object> dataParameters  = new HashMap<String, Object>();
         Gson gson = new GsonBuilder().create();
         String[] paymentTypes = {"novalnetCreditCard", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice", "novalnetPrepayment", "novalnetMultibanco", "novalnetBarzahlen", "novalnetPayPal", "novalnetInstantBankTransfer", "novalnetOnlineBankTransfer", "novalnetBancontact", "novalnetPostFinanceCard", "novalnetPostFinance", "novalnetIdeal", "novalnetEps", "novalnetGiropay", "novalnetPrzelewy24"};

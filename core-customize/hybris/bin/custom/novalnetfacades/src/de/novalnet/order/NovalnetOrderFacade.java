@@ -820,9 +820,9 @@ public class NovalnetOrderFacade {
         return result.getResult();
     }
 
-    public Map<String, Object> getBackendConfiguration(String type, String paymentMethod) {
+    public Map<String, String> getBackendConfiguration(String type, String paymentMethod) {
 
-        final Map<String, Object> responeParameters     = new HashMap<String, Object>();
+        final Map<String, String> responeParameters = new HashMap<String, String>();
         PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(paymentMethod);
 
         if(type.equals("payment")) {
