@@ -207,22 +207,12 @@
 	
 	<extension name="acceleratorwebservicesaddon" />  
 	<extension name="acceleratorfacades"/>
-<!--
-	<extension name='novalnetcore' />
-	<extension name='novalnetocc' />
--->
+
 	<extension name='novalnetcore' />
 	<extension name='novalnetocc' />
 	<extension name='novalnetfacades' />
 	<extension name='novalnetbackoffice' />
-    <!-- <extension name='novalnetcheckoutaddon' /> -->
-<!--
-	<extension name='novalnetcheckoutaddon' />
-	<extension name='novalnetbackoffice' />
--->
-<!--
-	<extension name="ycommercewebservices"/>
--->
+
 
   </extensions>
 </hybrisconfig>
