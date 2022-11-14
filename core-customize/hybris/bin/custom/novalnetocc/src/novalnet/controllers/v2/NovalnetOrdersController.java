@@ -368,11 +368,11 @@ public class NovalnetOrdersController
 
         Map<String, Object> responseDeatils = novalnetOrderFacade.getBackendConfiguration("payment", payment);
 
-        if (!responseDeatils.get("active")) {
+        if (responseDeatils.get("active").toString() == "false") {
             throw new NovalnetPaymentException("Payment method is not active");
         }
 
-        if (responseDeatils.get("test_mode")) {
+        if (responseDeatils.get("test_mode").toString() == "true") {
             testMode = 1;
         }
 
@@ -381,7 +381,7 @@ public class NovalnetOrdersController
         String[] onholdSupportedPaymentTypes = {"novalnetCreditCard", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice",  "novalnetPayPal"};
 
          if (Arrays.asList(onholdSupportedPaymentTypes).contains(payment)) {
-            onholdOrderAmount = (responseDeatils.get("onhold_amount") == null) ? 0 : responseDeatils.get("onhold_amount");
+            onholdOrderAmount = (responseDeatils.get("onhold_amount") == null) ? 0 : responseDeatils.get("onhold_amount").toString();
 
             if (PAYMENT_AUTHORIZE.equals(responseDeatils.get("onhold_action").toString()) && orderAmountCent >= onholdOrderAmount) {
                  verify_payment_data = true;
@@ -391,7 +391,7 @@ public class NovalnetOrdersController
         String[] dueDatePaymentTypes = {"novalnetBarzahlen", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice",  "novalnetPrepayment"};
 
         if (Arrays.asList(dueDatePaymentTypes).contains(payment)) {
-            Integer dueDate = responseDeatils.get("due_date");
+            Integer dueDate = responseDeatils.get("due_date").toString();
             if (dueDate != null && dueDate > 7) {
                 transactionParameters.put("due_date", formatDate(dueDate));
             }
@@ -407,7 +407,7 @@ public class NovalnetOrdersController
                 throw new NovalnetPaymentException("Panhash and UniqId is reuired to process payment");
             }
 
-            if (responseDeatils.get("enforce_3d")) {
+            if (responseDeatils.get("enforce_3d").toString() == "true") {
                  transactionParameters.put("enforce_3d", 1);
             }
 
