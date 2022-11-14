@@ -297,7 +297,7 @@ public class NovalnetOrdersController
         Integer testMode            = 0;
         Integer onholdOrderAmount   = 0;
         String customerNo           = JaloSession.getCurrentSession().getUser().getPK().toString();
-        String currentPayment = "ONLINE_TRANSFER";
+        String currentPayment       = requestData.getPaymentType();
 
         String payment = currentPayment.equals("CREDITCARD") ? "novalnetCreditCard" :(currentPayment.equals("DIRECT_DEBIT_SEPA") ? "novalnetDirectDebitSepa" :(currentPayment.equals("PAYPAL") ? "novalnetPayPal": (currentPayment.equals("GUARANTEED_DIRECT_DEBIT_SEPA") ? "novalnetGuaranteedDirectDebitSepa" : (currentPayment.equals("INVOICE") ? "novalnetInvoice":(currentPayment.equals("GUARANTEED_INVOICE") ? "novalnetGuaranteedInvoice":(currentPayment.equals("PREPAYMENT") ? "novalnetPrepayment":(currentPayment.equals("MULTIBANCO") ? "novalnetMultibanco":(currentPayment.equals("CASHPAYMENT") ? "novalnetBarzahlen":(currentPayment.equals("ONLINE_TRANSFER") ? "novalnetOnlineBankTransfer":((currentPayment.equals("ONLINE_TRANSFER") ? "novalnetInstantBankTransfer":(currentPayment.equals("BANCONTACT") ? "novalnetBancontact":(currentPayment.equals("POSTFINANCE_CARD") ? "novalnetPostFinanceCard":(currentPayment.equals("POSTFINANCE") ? "novalnetPostFinance":(currentPayment.equals("IDEAL") ? "novalnetIdeal":(currentPayment.equals("EPS") ? "novalnetEps":(currentPayment.equals("GIROPAY") ? "novalnetGiropay":(currentPayment.equals("PRZELEWY24") ? "novalnetPrzelewy24":""))))))))))))))))));
 
