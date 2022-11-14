@@ -372,7 +372,8 @@ public class NovalnetOrdersController
 
         LOG.info("payment active " + responseDeatils.get("active"));
 
-        if (responseDeatils.get("active").toString() == "false") {
+        if (responseDeatils.get("active").equals("false")) {
+            LOG.info(payment + " payment method is inactive ");
             throw new NovalnetPaymentException("Payment method is not active");
         }
 
@@ -408,6 +409,7 @@ public class NovalnetOrdersController
                 paymentParameters.put("pan_hash", paymentData.getPanHash());
                 paymentParameters.put("unique_id", paymentData.getUniqId());
             } else {
+                LOG.info("Panhash and UniqId is reuired to process payment" + payment);
                 throw new NovalnetPaymentException("Panhash and UniqId is reuired to process payment");
             }
 
