@@ -378,10 +378,14 @@ public class NovalnetOrdersController
         }
 
         if (responseDeatils.get("test_mode").toString() == "true") {
+
+
             testMode = 1;
         }
 
         transactionParameters.put("test_mode", testMode);
+
+        LOG.info(payment + " testmode is  " +testMode);
 
         String[] onholdSupportedPaymentTypes = {"novalnetCreditCard", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice",  "novalnetPayPal"};
 
@@ -391,8 +395,11 @@ public class NovalnetOrdersController
             if (PAYMENT_AUTHORIZE.equals(responseDeatils.get("onhold_action").toString()) && orderAmountCent >= onholdOrderAmount) {
                  verify_payment_data = true;
             }
+
+ LOG.info(payment + " onhold inside  ");
         }
 
+ LOG.info(payment + " onhold is  " + verify_payment_data);
         String[] dueDatePaymentTypes = {"novalnetBarzahlen", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice",  "novalnetPrepayment"};
 
         if (Arrays.asList(dueDatePaymentTypes).contains(payment)) {
@@ -403,11 +410,17 @@ public class NovalnetOrdersController
         }
         
         if ("novalnetCreditCard".equals(payment)) {
+
+            LOG.info(payment + " inside payment data  ");
             NnPaymentsData paymentData  =  requestData.getPaymentData();
 
             if(paymentData.getPanHash() != null && paymentData.getUniqId() != null) {
                 paymentParameters.put("pan_hash", paymentData.getPanHash());
                 paymentParameters.put("unique_id", paymentData.getUniqId());
+
+LOG.info(payment + "  payment data  hash " + paymentData.getPanHash());
+LOG.info(payment + " inside payment uniqid  " + paymentData.getUniqId());
+
             } else {
                 LOG.info("Panhash and UniqId is reuired to process payment" + payment);
                 throw new NovalnetPaymentException("Panhash and UniqId is reuired to process payment");
@@ -416,6 +429,8 @@ public class NovalnetOrdersController
             if (responseDeatils.get("enforce_3d").toString() == "true") {
                  transactionParameters.put("enforce_3d", 1);
             }
+
+            LOG.info(payment + " inside payment enforce_3d  " + responseDeatils.get("enforce_3d"));
 
         } else if ("novalnetDirectDebitSepa".equals(payment)) {
             NnPaymentsData paymentData  =  requestData.getPaymentData();
