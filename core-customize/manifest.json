@@ -1,5 +1,5 @@
 {
-    "commerceSuiteVersion": "2105",
+    "commerceSuiteVersion": "2205",
     "enableImageProcessingService": true,
     "extensions": [
         "cloudmediaconversion",  
@@ -105,12 +105,7 @@
 			"addon":"acceleratorwebservicesaddon",
 			"storefront":"commercewebservices",
 			"template":"commercewebservices"
-		},
-        {
-            "addon": "novalnetcheckoutaddon",
-            "storefront": "yacceleratorstorefront",
-            "template": "yacceleratorstorefront"
-        }
+		}
     ],
     "aspects": [
         {
