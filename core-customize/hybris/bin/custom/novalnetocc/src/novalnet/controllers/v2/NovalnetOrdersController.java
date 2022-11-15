@@ -649,7 +649,7 @@ LOG.info(payment + " inside payment uniqid  " + paymentData.getUniqId());
         orderEntry.setOrder(orderModel);
         orderEntry.setDescription("Novalnet Transaction ID : " + transactionJsonObject.get("tid").toString());
         orderModel.setPaymentInfo(paymentInfoModel);
-        novalnetOrderFacade.getModelService().saveAll(orderModel, orderEntry, cartModel);
+        novalnetOrderFacade.getModelService().saveAll(orderModel, orderEntry);
         novalnetOrderFacade.updateOrderStatus(orderNumber, paymentInfoModel);
         createTransactionUpdate(transactionJsonObject.get("tid").toString(), orderNumber, languageCode);
         
