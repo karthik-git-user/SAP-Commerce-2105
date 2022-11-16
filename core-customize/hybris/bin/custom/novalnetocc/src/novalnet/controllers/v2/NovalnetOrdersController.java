@@ -135,7 +135,7 @@ import java.text.DecimalFormat;
 // import com.mirakl.hybris.fulfilmentprocess.actions.order.CreateMarketplaceOrderAction;
 
 @Controller
-@RequestMapping(value = "/{baseSiteId}")
+@RequestMapping(value = "/{baseSiteId}/users/{userId}/novalnet/orders")
 @ApiVersion("v2")
 @Api(tags = "Novalnet Carts")
 public class NovalnetOrdersController 
@@ -164,7 +164,7 @@ public class NovalnetOrdersController
     
     protected static final String API_COMPATIBILITY_B2C_CHANNELS = "api.compatibility.b2c.channels";
     @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-    @PostMapping(value = "/users/{userId}/novalnet/orders", consumes = { MediaType.APPLICATION_JSON_VALUE,
+    @PostMapping(value = "/placeOrder", consumes = { MediaType.APPLICATION_JSON_VALUE,
     MediaType.APPLICATION_XML_VALUE })
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -745,7 +745,7 @@ LOG.info(payment + " inside payment uniqid  " + paymentData.getUniqId());
     }
     
     @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-    @PostMapping(value = "/users/{userId}/novalnet/payment", consumes = { MediaType.APPLICATION_JSON_VALUE,
+    @PostMapping(value = "/getRedirectURL", consumes = { MediaType.APPLICATION_JSON_VALUE,
     MediaType.APPLICATION_XML_VALUE })
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -806,18 +806,18 @@ LOG.info(payment + " inside payment uniqid  " + paymentData.getUniqId());
         return dataMapper.map(responseData, NnResponseWsDTO.class, fields);
     }
     
-    @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-    @RequestMapping(value = "/users/{userId}/novalnet/payment/config", method = RequestMethod.GET)
-    @RequestMappingOverride
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    @SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
-    @ApiOperation(nickname = "paymentConfig", value = "return payment configuration", notes = "return payment configuration stored in Backend")
-    @ApiBaseSiteIdAndUserIdParam
-    public String getPaymentConfig(
-            @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
-            throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
-    {
+    // @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
+    // @RequestMapping(value = "/users/{userId}/novalnet/payment/config", method = RequestMethod.GET)
+    // @RequestMappingOverride
+    // @ResponseStatus(HttpStatus.CREATED)
+    // @ResponseBody
+    // @SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
+    // @ApiOperation(nickname = "paymentConfig", value = "return payment configuration", notes = "return payment configuration stored in Backend")
+    // @ApiBaseSiteIdAndUserIdParam
+    // public String getPaymentConfig(
+    //         @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
+    //         throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
+    // {
         // final BaseStoreModel baseStore = novalnetOrderFacade.getBaseStoreModel();
         // PaymentModeModel directDebitSepaPaymentModeModel = paymentModeService.getPaymentModeForCode("novalnetDirectDebitSepa");
         // NovalnetDirectDebitSepaPaymentModeModel novalnetDirectDebitSepaPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) directDebitSepaPaymentModeModel;
@@ -840,7 +840,7 @@ LOG.info(payment + " inside payment uniqid  " + paymentData.getUniqId());
         // paymentData.setNovalnetDirectDebitSepa(directDebitSepaData);
         // paymentData.setNovalnetPayPal(payPalData);
 
-        NnConfigData configData = novalnetOrderFacade.getPaymentConfiguration();
+        // NnConfigData configData = novalnetOrderFacade.getPaymentConfiguration();
         // // configData.setPaymentinfo(paymentData);
         // // configData.setNovalnetClienKey(baseStore.getNovalnetClientKey());
 
@@ -858,12 +858,12 @@ LOG.info(payment + " inside payment uniqid  " + paymentData.getUniqId());
         
         // String jsonString = gson.toJson(dataParameters);
 
-        return dataMapper.map(configData, NnConfigWsDTO.class, fields);
-    }
+    //     return dataMapper.map(configData, NnConfigWsDTO.class, fields);
+    // }
 
 
     @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-    @RequestMapping(value = "/users/{userId}/novalnet/paymentDetails", method = RequestMethod.POST)
+    @RequestMapping(value = "/paymentDetails", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     @SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)

@@ -53,6 +53,10 @@
             <description>Novalnet Prepayment Configuration</description>
         </property>
 
+        <property name="novalnetBancontact" type="novalnet.dto.payment.NnBancontactWsDTO">
+            <description>Novalnet Bancontact Configuration</description>
+        </property>
+
         <property name="novalnetBarzahlen" type="novalnet.dto.payment.NnBarzahlenWsDTO">
             <description>Novalnet Barzahlen Configuration</description>
         </property>

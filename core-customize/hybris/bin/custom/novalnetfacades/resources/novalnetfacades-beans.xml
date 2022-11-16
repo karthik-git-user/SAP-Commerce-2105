@@ -18,6 +18,7 @@
 		<property name="novalnetInvoice" type="de.novalnet.beans.NnInvoiceData"/>
 		<property name="novalnetGuaranteedInvoice" type="de.novalnet.beans.NnGuaranteedInvoiceData"/>
 		<property name="novalnetPrepayment" type="de.novalnet.beans.NnPrepaymentData"/>
+		<property name="novalnetBancontact" type="de.novalnet.beans.NnBancontactData"/>
 		<property name="novalnetBarzahlen" type="de.novalnet.beans.NnBarzahlenData"/>
 		<property name="novalnetInstantBankTransfer" type="de.novalnet.beans.NnInstantBankTransferData"/>
 		<property name="novalnetOnlineBankTransfer" type="de.novalnet.beans.NnOnlineBankTransferData"/>
@@ -191,6 +192,12 @@
 	</bean>
 
 	<bean class="de.novalnet.beans.NnInstantBankTransferData">
+		<property name="active" type="Boolean"/>
+		<property name="test_mode" type="Boolean"/>
+		<property name="description" type="String"/>
+	</bean>
+
+	<bean class="de.novalnet.beans.NnBancontactData">
 		<property name="active" type="Boolean"/>
 		<property name="test_mode" type="Boolean"/>
 		<property name="description" type="String"/>
