@@ -42,6 +42,49 @@
         <property name="novalnetPayPal" type="novalnet.dto.payment.NnPayPalWsDTO">
             <description>Novalnet PayPal Configuration</description>
         </property>
+        <property name="novalnetGuaranteedDirectDebitSepa" type="novalnet.dto.payment.NnGuaranteedDirectDebitSepaWsDTO">
+            <description>Novalnet GuaranteedDirectDebitSepa Configuration</description>
+        </property>
+        <property name="novalnetInvoice" type="novalnet.dto.payment.NnInvoiceWsDTO">
+            <description>Novalnet Invoice Configuration</description>
+        </property>
+
+        <property name="novalnetPrepayment" type="novalnet.dto.payment.NnPrepaymentWsDTO">
+            <description>Novalnet Prepayment Configuration</description>
+        </property>
+
+        <property name="novalnetBarzahlen" type="novalnet.dto.payment.NnBarzahlenWsDTO">
+            <description>Novalnet Barzahlen Configuration</description>
+        </property>
+        <property name="novalnetInstantBankTransfer" type="novalnet.dto.payment.NnInstantBankTransferWsDTO">
+            <description>Novalnet InstantBankTransfer Configuration</description>
+        </property>
+        <property name="novalnetOnlineBankTransfer" type="novalnet.dto.payment.NnOnlineBankTransferWsDTO">
+            <description>Novalnet OnlineBankTransfer Configuration</description>
+        </property>
+        <property name="novalnetMultibanco" type="novalnet.dto.payment.NnMultibancoWsDTO">
+            <description>Novalnet Multibanco Configuration</description>
+        </property>
+        <property name="novalnetIdeal" type="novalnet.dto.payment.NnIdealDTO">
+            <description>Novalnet Ideal Configuration</description>
+        </property>
+
+        <property name="novalnetEps" type="novalnet.dto.payment.NnEpsWsDTO">
+            <description>Novalnet Eps Configuration</description>
+        </property>
+        <property name="novalnetGiropay" type="novalnet.dto.payment.NnGiropayWsDTO">
+            <description>Novalnet Giropay Configuration</description>
+        </property>
+        <property name="novalnetPrzelewy24" type="novalnet.dto.payment.NnPrzelewy24WsDTO">
+            <description>Novalnet Przelewy24 Configuration</description>
+        </property>
+        <property name="novalnetPostFinanceCard" type="novalnet.dto.payment.NnPostFinanceCardWsDTO">
+            <description>Novalnet PostFinanceCard Configuration</description>
+        </property>
+        <property name="novalnetPostFinance" type="novalnet.dto.payment.NnPostFinanceWsDTO">
+            <description>Novalnet PostFinanceData Configuration</description>
+        </property>
+
     </bean>
     
     <bean class="novalnet.dto.payment.NnCreditCardWsDTO">
