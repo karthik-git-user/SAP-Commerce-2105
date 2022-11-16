@@ -840,25 +840,25 @@ LOG.info(payment + " inside payment uniqid  " + paymentData.getUniqId());
         // paymentData.setNovalnetDirectDebitSepa(directDebitSepaData);
         // paymentData.setNovalnetPayPal(payPalData);
 
-        // NnConfigData configData = new NnConfigData();
-        // configData.setPaymentinfo(paymentData);
-        // configData.setNovalnetClienKey(baseStore.getNovalnetClientKey());
+        NnConfigData configData = novalnetOrderFacade.getPaymentConfiguration();
+        // // configData.setPaymentinfo(paymentData);
+        // // configData.setNovalnetClienKey(baseStore.getNovalnetClientKey());
 
-        // return dataMapper.map(configData, NnConfigWsDTO.class, fields);
+        // // return dataMapper.map(configData, NnConfigWsDTO.class, fields);
 
-        Map<String, String> responseDeatils = new HashMap<String, String>();
-        Map<String, Object> dataParameters  = new HashMap<String, Object>();
-        Gson gson = new GsonBuilder().create();
-        String[] paymentTypes = {"novalnetCreditCard", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice", "novalnetPrepayment", "novalnetMultibanco", "novalnetBarzahlen", "novalnetPayPal", "novalnetInstantBankTransfer", "novalnetOnlineBankTransfer", "novalnetBancontact", "novalnetPostFinanceCard", "novalnetPostFinance", "novalnetIdeal", "novalnetEps", "novalnetGiropay", "novalnetPrzelewy24"};
+        // Map<String, String> responseDeatils = new HashMap<String, String>();
+        // Map<String, Object> dataParameters  = new HashMap<String, Object>();
+        // Gson gson = new GsonBuilder().create();
+        // String[] paymentTypes = {"novalnetCreditCard", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice", "novalnetPrepayment", "novalnetMultibanco", "novalnetBarzahlen", "novalnetPayPal", "novalnetInstantBankTransfer", "novalnetOnlineBankTransfer", "novalnetBancontact", "novalnetPostFinanceCard", "novalnetPostFinance", "novalnetIdeal", "novalnetEps", "novalnetGiropay", "novalnetPrzelewy24"};
 
-        for (String payment : paymentTypes) {
-            responseDeatils = novalnetOrderFacade.getBackendConfiguration("payment", payment);
-            dataParameters.put(payment, responseDeatils);
-        }
+        // for (String payment : paymentTypes) {
+        //     responseDeatils = novalnetOrderFacade.getPaymentConfiguration();
+        //     dataParameters.put(payment, responseDeatils);
+        // }
         
-        String jsonString = gson.toJson(dataParameters);
+        // String jsonString = gson.toJson(dataParameters);
 
-        return jsonString;
+        return dataMapper.map(configData, NnConfigWsDTO.class, fields);
     }
 
 

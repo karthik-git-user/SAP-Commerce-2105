@@ -84,12 +84,26 @@
         <property name="novalnetPostFinance" type="novalnet.dto.payment.NnPostFinanceWsDTO">
             <description>Novalnet PostFinanceData Configuration</description>
         </property>
-
     </bean>
     
     <bean class="novalnet.dto.payment.NnCreditCardWsDTO">
         <property name="active" type="Boolean">
             <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+        <property name="onhold_amount" type="String">
+            <description>amount above which transaction should be palecd in onhold</description>
+        </property>
+        <property name="onhold_action" type="String">
+            <description>Direct Capture or hold the transaction</description>
+        </property>
+        <property name="enforce_3d" type="Integer">
+            <description>Enforce 3D secure for all the transaction</description>
         </property>
     </bean>
 
@@ -97,11 +111,248 @@
         <property name="active" type="Boolean">
             <description>Specify wether payment is active or not</description>
         </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+        <property name="onhold_amount" type="String">
+            <description>amount above which transaction should be palecd in onhold</description>
+        </property>
+        <property name="onhold_action" type="String">
+            <description>Direct Capture or hold the transaction</description>
+        </property>
+        <property name="due_date" type="Integer">
+            <description>when the amount should be debited form customer account</description>
+        </property>
     </bean>
 
     <bean class="novalnet.dto.payment.NnPayPalWsDTO">
         <property name="active" type="Boolean">
             <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+        <property name="onhold_amount" type="String">
+            <description>amount above which transaction should be palecd in onhold</description>
+        </property>
+        <property name="onhold_action" type="String">
+            <description>Direct Capture or hold the transaction</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnGuaranteedDirectDebitSepaWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+        <property name="onhold_amount" type="String">
+            <description>amount above which transaction should be palecd in onhold</description>
+        </property>
+        <property name="onhold_action" type="String">
+            <description>Direct Capture or hold the transaction</description>
+        </property>
+        <property name="due_date" type="Integer">
+            <description>when the amount should be debited from the customer</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnGuaranteedInvoiceWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+        <property name="onhold_amount" type="String">
+            <description>amount above which transaction should be palecd in onhold</description>
+        </property>
+        <property name="onhold_action" type="String">
+            <description>Direct Capture or hold the transaction</description>
+        </property>
+        <property name="due_date" type="Integer">
+            <description>Customer should credit the amount within</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnInvoiceWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+        <property name="onhold_amount" type="String">
+            <description>amount above which transaction should be palecd in onhold</description>
+        </property>
+        <property name="onhold_action" type="String">
+            <description>Direct Capture or hold the transaction</description>
+        </property>
+        <property name="due_date" type="Integer">
+            <description>Customer should credit the amount within</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnPrepaymentWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+        <property name="due_date" type="Integer">
+            <description>Customer should credit the amount within</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnMultibancoWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnBarzahlenWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnInstantBankTransferWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnOnlineBankTransferWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnBancontactWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnPostFinanceCardWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnPostFinanceWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnIdealWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnEpsWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnGiropayWsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
+        </property>
+    </bean>
+
+    <bean class="novalnet.dto.payment.NnPrzelewy24WsDTO">
+        <property name="active" type="Boolean">
+            <description>Specify wether payment is active or not</description>
+        </property>
+        <property name="test_mode" type="Boolean">
+            <description>Test mode for the payment</description>
+        </property>
+        <property name="description" type="String">
+            <description>Payment description</description>
         </property>
     </bean>
 
