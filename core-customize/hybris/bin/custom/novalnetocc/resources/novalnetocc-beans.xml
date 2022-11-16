@@ -65,7 +65,7 @@
         <property name="novalnetMultibanco" type="novalnet.dto.payment.NnMultibancoWsDTO">
             <description>Novalnet Multibanco Configuration</description>
         </property>
-        <property name="novalnetIdeal" type="novalnet.dto.payment.NnIdealDTO">
+        <property name="novalnetIdeal" type="novalnet.dto.payment.NnIdealWsDTO">
             <description>Novalnet Ideal Configuration</description>
         </property>
 
