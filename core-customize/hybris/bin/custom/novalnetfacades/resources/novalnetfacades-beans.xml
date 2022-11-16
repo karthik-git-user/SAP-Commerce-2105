@@ -169,14 +169,6 @@
 		<property name="description" type="String"/>
 		<property name="onhold_amount" type="Integer"/>
 		<property name="onhold_action" type="String"/>
-	</bean>
-
-	<bean class="de.novalnet.beans.NnInvoiceData">
-		<property name="active" type="Boolean"/>
-		<property name="test_mode" type="Boolean"/>
-		<property name="description" type="String"/>
-		<property name="onhold_amount" type="Integer"/>
-		<property name="onhold_action" type="String"/>
 		<property name="due_date" type="String"/>
 	</bean>
 
@@ -216,19 +208,7 @@
 		<property name="description" type="String"/>
 	</bean>
 
-	<bean class="de.novalnet.beans.NnMultibancoData">
-		<property name="active" type="Boolean"/>
-		<property name="test_mode" type="Boolean"/>
-		<property name="description" type="String"/>
-	</bean>
-
 	<bean class="de.novalnet.beans.NnIdealData">
-		<property name="active" type="Boolean"/>
-		<property name="test_mode" type="Boolean"/>
-		<property name="description" type="String"/>
-	</bean>
-
-	<bean class="de.novalnet.beans.NnEpsData">
 		<property name="active" type="Boolean"/>
 		<property name="test_mode" type="Boolean"/>
 		<property name="description" type="String"/>
