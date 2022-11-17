@@ -913,7 +913,7 @@ public class NovalnetOrderFacade {
                 guaranteedInvoiceData.setTest_mode(novalnetPaymentMethod.getNovalnetTestMode());
                 guaranteedInvoiceData.setDescription(novalnetPaymentMethod.getDescription().toString());
                 guaranteedInvoiceData.setOnhold_amount((novalnetPaymentMethod.getNovalnetOnholdAmount().toString() == null) ? 0 : Integer.parseInt(novalnetPaymentMethod.getNovalnetOnholdAmount().toString()));
-                guaranteedInvoiceData.setOnhold_action(novalnetPaymentMethod.getNovalnetOnholdAction());
+                guaranteedInvoiceData.setOnhold_action(novalnetPaymentMethod.getNovalnetOnholdAction().toString());
 
                 paymentData.setNovalnetGuaranteedInvoice(guaranteedInvoiceData);
 
