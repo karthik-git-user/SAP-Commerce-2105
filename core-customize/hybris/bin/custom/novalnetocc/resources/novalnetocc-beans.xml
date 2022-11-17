@@ -190,9 +190,6 @@
         <property name="onhold_action" type="String">
             <description>Direct Capture or hold the transaction</description>
         </property>
-        <property name="due_date" type="Integer">
-            <description>Customer should credit the amount within</description>
-        </property>
     </bean>
 
     <bean class="novalnet.dto.payment.NnInvoiceWsDTO">
