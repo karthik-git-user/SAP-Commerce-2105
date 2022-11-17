@@ -882,12 +882,12 @@ public class NovalnetOrderFacade {
                 NovalnetGuaranteedDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetGuaranteedDirectDebitSepaPaymentModeModel) paymentModeModel;
                  NnGuaranteedDirectDebitSepaData guaranteedDirectDebitSepaData = new NnGuaranteedDirectDebitSepaData();
 
-                guaranteedDirectDebitSepaData.setActive(novalnetPaymentMethod);
+                guaranteedDirectDebitSepaData.setActive(novalnetPaymentMethod.getActive());
                 guaranteedDirectDebitSepaData.setTest_mode(novalnetPaymentMethod.getNovalnetTestMode());
                 guaranteedDirectDebitSepaData.setDescription(novalnetPaymentMethod.getDescription().toString());
                 guaranteedDirectDebitSepaData.setOnhold_amount((novalnetPaymentMethod.getNovalnetOnholdAmount().toString() == null) ? 0 : Integer.parseInt(novalnetPaymentMethod.getNovalnetOnholdAmount().toString()));
                 guaranteedDirectDebitSepaData.setOnhold_action(novalnetPaymentMethod.getNovalnetOnholdAction().toString());
-                guaranteedDirectDebitSepaData.setDue_date((novalnetPaymentMethod.getNovalnetDueDate().toString() == null) ? "2" : Integer.parseInt(novalnetPaymentMethod.getNovalnetDueDate().toString()));
+                guaranteedDirectDebitSepaData.setDue_date((novalnetPaymentMethod.getNovalnetDueDate().toString() == null) ? 2 : Integer.parseInt(novalnetPaymentMethod.getNovalnetDueDate().toString()));
 
                 paymentData.setNovalnetGuaranteedDirectDebitSepa(guaranteedDirectDebitSepaData);
      
