@@ -243,7 +243,6 @@ public class NovalnetConfigController
         NnPrepaymentData prepaymentData                                 = new NnPrepaymentData();
         NnMultibancoData multibancoData                                 = new NnMultibancoData();
         NnBarzahlenData barzahlenData                                   = new NnBarzahlenData();
-        NnPayPalData payPalData                                         = new NnPayPalData();
         NnInstantBankTransferData instantBankTransferData               = new NnInstantBankTransferData();
         NnOnlineBankTransferData onlineBankTransferData                 = new NnOnlineBankTransferData();
         NnBancontactData bancontactData                                 = new NnBancontactData();
