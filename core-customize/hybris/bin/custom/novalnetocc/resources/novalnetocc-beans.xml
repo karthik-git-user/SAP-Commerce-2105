@@ -45,6 +45,9 @@
         <property name="novalnetGuaranteedDirectDebitSepa" type="novalnet.dto.payment.NnGuaranteedDirectDebitSepaWsDTO">
             <description>Novalnet GuaranteedDirectDebitSepa Configuration</description>
         </property>
+        <property name="novalnetGuaranteedInvoice" type="novalnet.dto.payment.NnGuaranteedInvoiceWsDTO">
+            <description>Novalnet GuaranteedDirectDebitSepa Configuration</description>
+        </property>
         <property name="novalnetInvoice" type="novalnet.dto.payment.NnInvoiceWsDTO">
             <description>Novalnet Invoice Configuration</description>
         </property>
