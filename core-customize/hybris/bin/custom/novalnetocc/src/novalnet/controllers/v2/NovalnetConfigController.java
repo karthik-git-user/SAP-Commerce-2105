@@ -406,7 +406,7 @@ public class NovalnetConfigController
         
         // String jsonString = gson.toJson(dataParameters);
 
-        return dataMapper.map(configData, NnConfigWsDTO.class, fields);
+        // return dataMapper.map(configData, NnConfigWsDTO.class, fields);
     }
 
 }
