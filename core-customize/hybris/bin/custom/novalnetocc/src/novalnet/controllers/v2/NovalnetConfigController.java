@@ -132,6 +132,22 @@ import novalnet.dto.payment.NnConfigWsDTO;
 import java.text.NumberFormat;
 import java.text.DecimalFormat;
 
+import de.novalnet.beans.NnGuaranteedDirectDebitSepaData;
+import de.novalnet.beans.NnGuaranteedInvoiceData;
+import de.novalnet.beans.NnInvoiceData;
+import de.novalnet.beans.NnPrepaymentData;
+import de.novalnet.beans.NnBarzahlenData;
+import de.novalnet.beans.NnInstantBankTransferData;
+import de.novalnet.beans.NnOnlineBankTransferData;
+import de.novalnet.beans.NnBancontactData;
+import de.novalnet.beans.NnMultibancoData;
+import de.novalnet.beans.NnIdealData;
+import de.novalnet.beans.NnEpsData;
+import de.novalnet.beans.NnGiropayData;
+import de.novalnet.beans.NnPrzelewy24Data;
+import de.novalnet.beans.NnPostFinanceCardData;
+import de.novalnet.beans.NnPostFinanceData;
+
 // import com.mirakl.hybris.fulfilmentprocess.actions.order.CreateMarketplaceOrderAction;
 
 @Controller
@@ -278,7 +294,7 @@ public class NovalnetConfigController
         prepaymentData.setActive(novalnetPrepaymentPaymentMethod.getActive());
         prepaymentData.setTest_mode(novalnetPrepaymentPaymentMethod.getNovalnetTestMode());
         prepaymentData.setDescription(novalnetPrepaymentPaymentMethod.getDescription().toString());
-        prepaymentData.setDue_date((novalnetPrepaymentPaymentMethod.getNovalnetDueDate().toString() == null) ? 7 : Integer.parseInt(novalnetPaymentMethod.getNovalnetDueDate().toString()));
+        prepaymentData.setDue_date((novalnetPrepaymentPaymentMethod.getNovalnetDueDate().toString() == null) ? 7 : Integer.parseInt(novalnetPrepaymentPaymentMethod.getNovalnetDueDate().toString()));
 
         multibancoData.setActive(novalnetMultibancoPaymentMethod.getActive());
         multibancoData.setTest_mode(novalnetMultibancoPaymentMethod.getNovalnetTestMode());
@@ -292,7 +308,7 @@ public class NovalnetConfigController
         payPalData.setActive(novalnetPayPalPaymentMethod.getActive());
         payPalData.setTest_mode(novalnetPayPalPaymentMethod.getNovalnetTestMode());
         payPalData.setDescription(novalnetPayPalPaymentMethod.getDescription().toString());
-        payPalData.setOnhold_amount((novalnetPayPalPaymentMethod.getNovalnetOnholdAmount().toString() == null) ? 0 : Integer.parseInt(novalnetPaymentMethod.getNovalnetOnholdAmount().toString()));
+        payPalData.setOnhold_amount((novalnetPayPalPaymentMethod.getNovalnetOnholdAmount().toString() == null) ? 0 : Integer.parseInt(novalnetPayPalPaymentMethod.getNovalnetOnholdAmount().toString()));
         payPalData.setOnhold_action(novalnetPayPalPaymentMethod.getNovalnetOnholdAction().toString());
 
         instantBankTransferData.setActive(novalnetInstantBankTransferPaymentMethod.getActive());
