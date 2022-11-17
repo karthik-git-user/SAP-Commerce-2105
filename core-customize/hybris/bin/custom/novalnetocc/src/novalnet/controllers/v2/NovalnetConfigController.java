@@ -200,7 +200,11 @@ public class NovalnetConfigController
         // paymentData.setNovalnetDirectDebitSepa(directDebitSepaData);
         // paymentData.setNovalnetPayPal(payPalData);
 
-        NnConfigData configData = novalnetOrderFacade.getPaymentConfiguration();
+        
+        
+        NnConfigData configData = new NnConfigData();
+
+        configData = novalnetOrderFacade.getPaymentConfiguration();
         // // configData.setPaymentinfo(paymentData);
         // // configData.setNovalnetClienKey(baseStore.getNovalnetClientKey());
 
