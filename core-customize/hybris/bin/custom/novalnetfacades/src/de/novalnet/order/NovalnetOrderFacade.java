@@ -991,13 +991,13 @@ public class NovalnetOrderFacade {
             }  else if ("novalnetBancontact".equals(paymentMethod)) {
                 NovalnetBancontactPaymentModeModel novalnetPaymentMethod = (NovalnetBancontactPaymentModeModel) paymentModeModel;
 
-                NnOnlineBankTransferData onlineBankTransferData = new NnOnlineBankTransferData();
+                NnBancontactData bancontactData = new NnBancontactData();
 
-                onlineBankTransferData.setActive(novalnetPaymentMethod.getActive());
-                onlineBankTransferData.setTest_mode(novalnetPaymentMethod.getNovalnetTestMode());
-                onlineBankTransferData.setDescription(novalnetPaymentMethod.getDescription().toString());
+                bancontactData.setActive(novalnetPaymentMethod.getActive());
+                bancontactData.setTest_mode(novalnetPaymentMethod.getNovalnetTestMode());
+                bancontactData.setDescription(novalnetPaymentMethod.getDescription().toString());
 
-                paymentData.setNovalnetBancontact(onlineBankTransferData);
+                paymentData.setNovalnetBancontact(bancontactData);
      
             } else if ("novalnetPostFinanceCard".equals(paymentMethod)) {
                 NovalnetPostFinanceCardPaymentModeModel novalnetPaymentMethod = (NovalnetPostFinanceCardPaymentModeModel) paymentModeModel;
@@ -1013,13 +1013,13 @@ public class NovalnetOrderFacade {
             } else if ("novalnetPostFinance".equals(paymentMethod)) {
                 NovalnetPostFinancePaymentModeModel novalnetPaymentMethod = (NovalnetPostFinancePaymentModeModel) paymentModeModel;
 
-                NnPostFinanceCardData postFinanceCardData = new NnPostFinanceCardData();
+                NnPostFinanceData postFinanceData = new NnPostFinanceData();
 
-                postFinanceCardData.setActive(novalnetPaymentMethod.getActive());
-                postFinanceCardData.setTest_mode(novalnetPaymentMethod.getNovalnetTestMode());
-                postFinanceCardData.setDescription(novalnetPaymentMethod.getDescription().toString());
+                postFinanceData.setActive(novalnetPaymentMethod.getActive());
+                postFinanceData.setTest_mode(novalnetPaymentMethod.getNovalnetTestMode());
+                postFinanceData.setDescription(novalnetPaymentMethod.getDescription().toString());
 
-                paymentData.setNovalnetPostFinance(postFinanceCardData);
+                paymentData.setNovalnetPostFinance(postFinanceData);
      
             } else if ("novalnetIdeal".equals(paymentMethod)) {
                 NovalnetIdealPaymentModeModel novalnetPaymentMethod = (NovalnetIdealPaymentModeModel) paymentModeModel;
@@ -1063,7 +1063,7 @@ public class NovalnetOrderFacade {
                 przelewy24Data.setTest_mode(novalnetPaymentMethod.getNovalnetTestMode());
                 przelewy24Data.setDescription(novalnetPaymentMethod.getDescription().toString());
 
-                paymentData.setNovalnetGiropay(przelewy24Data);
+                paymentData.setNovalnetPrzelewy24(przelewy24Data);
             }
         }
 

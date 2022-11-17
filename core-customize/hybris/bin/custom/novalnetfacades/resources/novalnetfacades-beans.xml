@@ -136,7 +136,7 @@
 		<property name="description" type="String"/>
 		<property name="onhold_amount" type="Integer"/>
 		<property name="onhold_action" type="String"/>
-		<property name="due_date" type="String"/>
+		<property name="due_date" type="Integer"/>
 	</bean>
 
 	<bean class="de.novalnet.beans.NnPayPalData">
@@ -153,7 +153,7 @@
 		<property name="description" type="String"/>
 		<property name="onhold_amount" type="Integer"/>
 		<property name="onhold_action" type="String"/>
-		<property name="due_date" type="String"/>
+		<property name="due_date" type="Integer"/>
 	</bean>
 
 	<bean class="de.novalnet.beans.NnGuaranteedInvoiceData">
@@ -170,7 +170,7 @@
 		<property name="description" type="String"/>
 		<property name="onhold_amount" type="Integer"/>
 		<property name="onhold_action" type="String"/>
-		<property name="due_date" type="String"/>
+		<property name="due_date" type="Integer"/>
 	</bean>
 
 	<bean class="de.novalnet.beans.NnPrepaymentData">
@@ -179,7 +179,7 @@
 		<property name="description" type="String"/>
 		<property name="onhold_amount" type="Integer"/>
 		<property name="onhold_action" type="String"/>
-		<property name="due_date" type="String"/>
+		<property name="due_date" type="Integer"/>
 	</bean>
 
 	<bean class="de.novalnet.beans.NnBarzahlenData">
@@ -188,7 +188,7 @@
 		<property name="description" type="String"/>
 		<property name="onhold_amount" type="Integer"/>
 		<property name="onhold_action" type="String"/>
-		<property name="due_date" type="String"/>
+		<property name="due_date" type="Integer"/>
 	</bean>
 
 	<bean class="de.novalnet.beans.NnInstantBankTransferData">
