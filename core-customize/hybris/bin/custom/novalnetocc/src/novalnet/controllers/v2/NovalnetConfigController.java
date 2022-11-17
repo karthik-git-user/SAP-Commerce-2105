@@ -183,7 +183,7 @@ public class NovalnetConfigController
     
     
     @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_CLIENT", "ROLE_CUSTOMERMANAGERGROUP", "ROLE_TRUSTED_CLIENT" })
-    @RequestMapping(value = "/users/{userId}/novalnet/payment/config", method = RequestMethod.GET)
+    @RequestMapping(value = "/details", method = RequestMethod.GET)
     @RequestMappingOverride
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
