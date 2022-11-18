@@ -259,41 +259,41 @@ public class NovalnetConfigController
         creditCardData.setActive(novalnetCreditCardPaymentMethod.getActive());
         creditCardData.setTest_mode(novalnetCreditCardPaymentMethod.getNovalnetTestMode());
         creditCardData.setDescription(novalnetCreditCardPaymentMethod.getDescription());
-        creditCardData.setOnhold_amount((novalnetCreditCardPaymentMethod.getNovalnetOnholdAmount().toString() == null) ? 0 : Integer.parseInt(novalnetCreditCardPaymentMethod.getNovalnetOnholdAmount().toString()));
+        creditCardData.setOnhold_amount((novalnetCreditCardPaymentMethod.getNovalnetOnholdAmount() == null) ? 0 : Integer.parseInt(novalnetCreditCardPaymentMethod.getNovalnetOnholdAmount().toString()));
         creditCardData.setOnhold_action(novalnetCreditCardPaymentMethod.getNovalnetOnholdAction().toString());
         creditCardData.setEnforce_3d(novalnetCreditCardPaymentMethod.getNovalnetEnforce3D());
 
         directDebitSepaData.setActive(novalnetDirectDebitSepaPaymentMethod.getActive());
         directDebitSepaData.setTest_mode(novalnetDirectDebitSepaPaymentMethod.getNovalnetTestMode());
         directDebitSepaData.setDescription(novalnetDirectDebitSepaPaymentMethod.getDescription().toString());
-        directDebitSepaData.setOnhold_amount((novalnetDirectDebitSepaPaymentMethod.getNovalnetOnholdAmount().toString() == null) ? 0 : Integer.parseInt(novalnetDirectDebitSepaPaymentMethod.getNovalnetOnholdAmount().toString()));
+        directDebitSepaData.setOnhold_amount((novalnetDirectDebitSepaPaymentMethod.getNovalnetOnholdAmount() == null) ? 0 : Integer.parseInt(novalnetDirectDebitSepaPaymentMethod.getNovalnetOnholdAmount().toString()));
         directDebitSepaData.setOnhold_action(novalnetDirectDebitSepaPaymentMethod.getNovalnetOnholdAction().toString());
-        directDebitSepaData.setDue_date((novalnetDirectDebitSepaPaymentMethod.getNovalnetDueDate().toString() == null) ? 2 : Integer.parseInt(novalnetDirectDebitSepaPaymentMethod.getNovalnetDueDate().toString()));
+        directDebitSepaData.setDue_date((novalnetDirectDebitSepaPaymentMethod.getNovalnetDueDate() == null) ? 2 : Integer.parseInt(novalnetDirectDebitSepaPaymentMethod.getNovalnetDueDate().toString()));
 
         guaranteedDirectDebitSepaData.setActive(novalnetGuaranteedDirectDebitSepaPaymentMethod.getActive());
         guaranteedDirectDebitSepaData.setTest_mode(novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetTestMode());
         guaranteedDirectDebitSepaData.setDescription(novalnetGuaranteedDirectDebitSepaPaymentMethod.getDescription().toString());
-        guaranteedDirectDebitSepaData.setOnhold_amount((novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetOnholdAmount().toString() == null) ? 0 : Integer.parseInt(novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetOnholdAmount().toString()));
+        guaranteedDirectDebitSepaData.setOnhold_amount((novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetOnholdAmount() == null) ? 0 : Integer.parseInt(novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetOnholdAmount().toString()));
         guaranteedDirectDebitSepaData.setOnhold_action(novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetOnholdAction().toString());
-        guaranteedDirectDebitSepaData.setDue_date((novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetDueDate().toString() == null) ? 2 : Integer.parseInt(novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetDueDate().toString()));
+        guaranteedDirectDebitSepaData.setDue_date((novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetDueDate() == null) ? 2 : Integer.parseInt(novalnetGuaranteedDirectDebitSepaPaymentMethod.getNovalnetDueDate().toString()));
 
         invoiceData.setActive(novalnetInvoicePaymentMethod.getActive());
         invoiceData.setTest_mode(novalnetInvoicePaymentMethod.getNovalnetTestMode());
         invoiceData.setDescription(novalnetInvoicePaymentMethod.getDescription().toString());
-        invoiceData.setOnhold_amount((novalnetInvoicePaymentMethod.getNovalnetOnholdAmount().toString() == null) ? 0 : Integer.parseInt(novalnetInvoicePaymentMethod.getNovalnetOnholdAmount().toString()));
+        invoiceData.setOnhold_amount((novalnetInvoicePaymentMethod.getNovalnetOnholdAmount() == null) ? 0 : Integer.parseInt(novalnetInvoicePaymentMethod.getNovalnetOnholdAmount().toString()));
         invoiceData.setOnhold_action(novalnetInvoicePaymentMethod.getNovalnetOnholdAction().toString());
-        invoiceData.setDue_date((novalnetInvoicePaymentMethod.getNovalnetDueDate().toString() == null) ? 2 : Integer.parseInt(novalnetInvoicePaymentMethod.getNovalnetDueDate().toString()));
+        invoiceData.setDue_date((novalnetInvoicePaymentMethod.getNovalnetDueDate() == null) ? 2 : Integer.parseInt(novalnetInvoicePaymentMethod.getNovalnetDueDate().toString()));
 
         guaranteedInvoiceData.setActive(novalnetGuaranteedInvoicePaymentMethod.getActive());
         guaranteedInvoiceData.setTest_mode(novalnetGuaranteedInvoicePaymentMethod.getNovalnetTestMode());
         guaranteedInvoiceData.setDescription(novalnetGuaranteedInvoicePaymentMethod.getDescription().toString());
-        guaranteedInvoiceData.setOnhold_amount((novalnetGuaranteedInvoicePaymentMethod.getNovalnetOnholdAmount().toString() == null) ? 0 : Integer.parseInt(novalnetGuaranteedInvoicePaymentMethod.getNovalnetOnholdAmount().toString()));
+        guaranteedInvoiceData.setOnhold_amount((novalnetGuaranteedInvoicePaymentMethod.getNovalnetOnholdAmount() == null) ? 0 : Integer.parseInt(novalnetGuaranteedInvoicePaymentMethod.getNovalnetOnholdAmount().toString()));
         guaranteedInvoiceData.setOnhold_action(novalnetGuaranteedInvoicePaymentMethod.getNovalnetOnholdAction().toString());
 
         prepaymentData.setActive(novalnetPrepaymentPaymentMethod.getActive());
         prepaymentData.setTest_mode(novalnetPrepaymentPaymentMethod.getNovalnetTestMode());
         prepaymentData.setDescription(novalnetPrepaymentPaymentMethod.getDescription().toString());
-        prepaymentData.setDue_date((novalnetPrepaymentPaymentMethod.getNovalnetDueDate().toString() == null) ? 7 : Integer.parseInt(novalnetPrepaymentPaymentMethod.getNovalnetDueDate().toString()));
+        prepaymentData.setDue_date((novalnetPrepaymentPaymentMethod.getNovalnetDueDate() == null) ? 7 : Integer.parseInt(novalnetPrepaymentPaymentMethod.getNovalnetDueDate().toString()));
 
         multibancoData.setActive(novalnetMultibancoPaymentMethod.getActive());
         multibancoData.setTest_mode(novalnetMultibancoPaymentMethod.getNovalnetTestMode());
@@ -307,7 +307,7 @@ public class NovalnetConfigController
         payPalData.setActive(novalnetPayPalPaymentMethod.getActive());
         payPalData.setTest_mode(novalnetPayPalPaymentMethod.getNovalnetTestMode());
         payPalData.setDescription(novalnetPayPalPaymentMethod.getDescription().toString());
-        payPalData.setOnhold_amount((novalnetPayPalPaymentMethod.getNovalnetOnholdAmount().toString() == null) ? 0 : Integer.parseInt(novalnetPayPalPaymentMethod.getNovalnetOnholdAmount().toString()));
+        payPalData.setOnhold_amount((novalnetPayPalPaymentMethod.getNovalnetOnholdAmount() == null) ? 0 : Integer.parseInt(novalnetPayPalPaymentMethod.getNovalnetOnholdAmount().toString()));
         payPalData.setOnhold_action(novalnetPayPalPaymentMethod.getNovalnetOnholdAction().toString());
 
         instantBankTransferData.setActive(novalnetInstantBankTransferPaymentMethod.getActive());
