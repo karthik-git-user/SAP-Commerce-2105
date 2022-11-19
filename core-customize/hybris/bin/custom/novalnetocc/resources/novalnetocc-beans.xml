@@ -109,7 +109,7 @@
         <property name="onhold_action" type="String">
             <description>Direct Capture or hold the transaction</description>
         </property>
-        <property name="enforce_3d" type="Integer">
+        <property name="enforce_3d" type="Boolean">
             <description>Enforce 3D secure for all the transaction</description>
         </property>
     </bean>
