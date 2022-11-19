@@ -6,7 +6,7 @@ package novalnet.controllers;
 /**
  * Thrown when an operation is performed that requires a session cart, which was not yet created.
  */
-public class NovalnetPaymentException extends Exception
+public class NovalnetPaymentException extends RuntimeException
 {
 
 	/**
