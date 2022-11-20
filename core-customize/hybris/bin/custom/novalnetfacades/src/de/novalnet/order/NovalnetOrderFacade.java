@@ -848,7 +848,7 @@ public class NovalnetOrderFacade {
      *           the customer's unique ID
      * @return the default billing address of the user
      */
-    private AddressModel getBillingAddress(final String billingAddressPk)
+    public AddressModel getBillingAddress(final String billingAddressPk)
     {
         return "0".equals(billingAddressPk) ? null : (AddressModel) getModelService().get(PK.parse(billingAddressPk));
     }
