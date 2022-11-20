@@ -603,6 +603,9 @@
         <property name="lastName" type="String">
             <description>User last name</description>
         </property>
+        <property name="addressId" type="String">
+            <description>Address ID</description>
+        </property>
         <property name="line1" type="String">
             <description>Address Line 1</description>
         </property>

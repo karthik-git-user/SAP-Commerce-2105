@@ -261,6 +261,7 @@
 		<property name="titleCode" type="String"/>
 		<property name="firstName" type="String"/>
 		<property name="lastName" type="String"/>
+		<property name="addressId" type="String"/>
 		<property name="line1" type="String"/>
 		<property name="line2" type="String"/>
 		<property name="postalCode" type="String"/>
