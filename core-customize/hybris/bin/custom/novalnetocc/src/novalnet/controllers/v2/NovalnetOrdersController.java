@@ -327,7 +327,7 @@ public class NovalnetOrdersController
         NnBillingData billingData =  requestData.getBillingAddress();
 
         String firstName, lastName, street1, street2, town, zip, countryCode;
-        one = two = three = "";
+        firstName = lastName = street1 = street2 = town = zip = countryCode = "";
         
 
         if(billingData.getAddressId() != null ) {
