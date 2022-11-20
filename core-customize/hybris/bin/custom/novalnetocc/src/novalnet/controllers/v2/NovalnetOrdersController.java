@@ -233,19 +233,28 @@ public class NovalnetOrdersController
         
             JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
             JSONObject billingJsonObject = customerJsonObject.getJSONObject("billing");
-            
-            final AddressModel billingAddress = novalnetOrderFacade.getModelService().create(AddressModel.class);
-            
-            billingAddress.setFirstname(customerJsonObject.get("first_name").toString());
-            billingAddress.setLastname(customerJsonObject.get("last_name").toString());
-            if (billingJsonObject.has("street")) {
-                billingAddress.setLine1(billingJsonObject.get("street").toString());
+
+            AddressModel billingAddress =  new AddressModel();
+
+            NnBillingData billingData =  requestData.getBillingAddress();
+
+            if(billingData.getAddressId() != null ) {
+                billingAddress = novalnetOrderFacade.getBillingAddress(billingData.getAddressId());
+            } else {
+                billingAddress = novalnetOrderFacade.getModelService().create(AddressModel.class);
+                
+                billingAddress.setFirstname(customerJsonObject.get("first_name").toString());
+                billingAddress.setLastname(customerJsonObject.get("last_name").toString());
+                if (billingJsonObject.has("street")) {
+                    billingAddress.setLine1(billingJsonObject.get("street").toString());
+                }
+                billingAddress.setLine2("");
+                billingAddress.setTown(billingJsonObject.get("city").toString());
+                billingAddress.setPostalcode(billingJsonObject.get("zip").toString());
+                billingAddress.setCountry(novalnetOrderFacade.getCommonI18NService().getCountry(billingJsonObject.get("country_code").toString()));
+                billingAddress.setEmail(emailAddress);
             }
-            billingAddress.setLine2("");
-            billingAddress.setTown(billingJsonObject.get("city").toString());
-            billingAddress.setPostalcode(billingJsonObject.get("zip").toString());
-            billingAddress.setCountry(novalnetOrderFacade.getCommonI18NService().getCountry(billingJsonObject.get("country_code").toString()));
-            billingAddress.setEmail(emailAddress);
+
             billingAddress.setOwner(cartModel);
 
             String currentPayment = transactionJsonObject.get("payment_type").toString();
@@ -316,16 +325,35 @@ public class NovalnetOrdersController
         PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(payment);
 
         NnBillingData billingData =  requestData.getBillingAddress();
-        NnCountryData countryData =  billingData.getCountry();
-        NnRegionData regionData   =  billingData.getRegion();
 
-        String firstName    = billingData.getFirstName();
-        String lastName     = billingData.getLastName();
-        String street1      = billingData.getLine1();
-        String street2      = billingData.getLine2();
-        String town         = billingData.getTown();
-        String zip          = billingData.getPostalCode();
-        String countryCode  = countryData.getIsocode();
+        String firstName, lastName, street1, street2, town, zip, countryCode;
+        one = two = three = "";
+        
+
+        if(billingData.getAddressId() != null ) {
+            AddressModel billingAddress = novalnetOrderFacade.getBillingAddress(billingData.getAddressId());
+
+            firstName    = billingAddress.getFirstname();
+            lastName     = billingAddress.getLastname();
+            street1      = billingAddress.getLine1();
+            street2      = billingAddress.getLine2();
+            town         = billingAddress.getTown();
+            zip          = billingAddress.getPostalcode();
+            countryCode  = billingAddress.getCountry().getIsocode();
+        } else {
+
+            NnCountryData countryData =  billingData.getCountry();
+            NnRegionData regionData   =  billingData.getRegion();
+
+            firstName    = billingData.getFirstName();
+            lastName     = billingData.getLastName();
+            street1      = billingData.getLine1();
+            street2      = billingData.getLine2();
+            town         = billingData.getTown();
+            zip          = billingData.getPostalCode();
+            countryCode  = countryData.getIsocode();
+
+        }
 
         Gson gson = new GsonBuilder().create();
 
