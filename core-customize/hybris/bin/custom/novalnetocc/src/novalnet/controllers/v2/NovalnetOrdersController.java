@@ -234,22 +234,33 @@ public class NovalnetOrdersController
         
             JSONObject customerJsonObject = tomJsonObject.getJSONObject("customer");
             JSONObject billingJsonObject = customerJsonObject.getJSONObject("billing");
-            
-            final AddressModel billingAddress = novalnetOrderFacade.getModelService().create(AddressModel.class);
-            
-            billingAddress.setFirstname(customerJsonObject.get("first_name").toString());
-            billingAddress.setLastname(customerJsonObject.get("last_name").toString());
-            if (billingJsonObject.has("street")) {
-                billingAddress.setLine1(billingJsonObject.get("street").toString());
+
+            AddressModel billingAddress =  new AddressModel();
+
+            NnBillingData billingData =  requestData.getBillingAddress();
+
+            if(billingData.getAddressId() != null ) {
+                billingAddress = novalnetOrderFacade.getBillingAddress(billingData.getAddressId());
+            } else {
+                billingAddress = novalnetOrderFacade.getModelService().create(AddressModel.class);
+                
+                billingAddress.setFirstname(customerJsonObject.get("first_name").toString());
+                billingAddress.setLastname(customerJsonObject.get("last_name").toString());
+                if (billingJsonObject.has("street")) {
+                    billingAddress.setLine1(billingJsonObject.get("street").toString());
+                }
+                billingAddress.setLine2("");
+                billingAddress.setTown(billingJsonObject.get("city").toString());
+                billingAddress.setPostalcode(billingJsonObject.get("zip").toString());
+                billingAddress.setCountry(novalnetOrderFacade.getCommonI18NService().getCountry(billingJsonObject.get("country_code").toString()));
+                billingAddress.setEmail(emailAddress);
             }
-            billingAddress.setLine2("");
-            billingAddress.setTown(billingJsonObject.get("city").toString());
-            billingAddress.setPostalcode(billingJsonObject.get("zip").toString());
-            billingAddress.setCountry(novalnetOrderFacade.getCommonI18NService().getCountry(billingJsonObject.get("country_code").toString()));
-            billingAddress.setEmail(emailAddress);
+
             billingAddress.setOwner(cartModel);
 
-            String payment = (transactionJsonObject.get("payment_type").toString()).equals("CREDITCARD") ? "novalnetCreditCard" : ((transactionJsonObject.get("payment_type").toString()).equals("DIRECT_DEBIT_SEPA") ? "novalnetDirectDebitSepa" :((transactionJsonObject.get("payment_type").toString()).equals("PAYPAL") ? "novalnetPayPal": ""));
+            String currentPayment = transactionJsonObject.get("payment_type").toString();
+
+            String payment = currentPayment.equals("CREDITCARD") ? "novalnetCreditCard" :(currentPayment.equals("DIRECT_DEBIT_SEPA") ? "novalnetDirectDebitSepa" :(currentPayment.equals("PAYPAL") ? "novalnetPayPal": (currentPayment.equals("GUARANTEED_DIRECT_DEBIT_SEPA") ? "novalnetGuaranteedDirectDebitSepa" : (currentPayment.equals("INVOICE") ? "novalnetInvoice":(currentPayment.equals("GUARANTEED_INVOICE") ? "novalnetGuaranteedInvoice":(currentPayment.equals("PREPAYMENT") ? "novalnetPrepayment":(currentPayment.equals("MULTIBANCO") ? "novalnetMultibanco":(currentPayment.equals("CASHPAYMENT") ? "novalnetBarzahlen":(currentPayment.equals("ONLINE_TRANSFER") ? "novalnetOnlineBankTransfer":((currentPayment.equals("ONLINE_TRANSFER") ? "novalnetInstantBankTransfer":(currentPayment.equals("BANCONTACT") ? "novalnetBancontact":(currentPayment.equals("POSTFINANCE_CARD") ? "novalnetPostFinanceCard":(currentPayment.equals("POSTFINANCE") ? "novalnetPostFinance":(currentPayment.equals("IDEAL") ? "novalnetIdeal":(currentPayment.equals("EPS") ? "novalnetEps":(currentPayment.equals("GIROPAY") ? "novalnetGiropay":(currentPayment.equals("PRZELEWY24") ? "novalnetPrzelewy24":""))))))))))))))))));
 
             OrderData orderData = createOrder(transactionJsonObject, payment, billingAddress, emailAddress, currentUser, orderAmountCent, currency, languageCode);
             return dataMapper.map(orderData, OrderWsDTO.class, fields);
@@ -313,16 +324,35 @@ public class NovalnetOrdersController
         PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(payment);
 
         NnBillingData billingData =  requestData.getBillingAddress();
-        NnCountryData countryData =  billingData.getCountry();
-        NnRegionData regionData   =  billingData.getRegion();
 
-        String firstName    = billingData.getFirstName();
-        String lastName     = billingData.getLastName();
-        String street1      = billingData.getLine1();
-        String street2      = billingData.getLine2();
-        String town         = billingData.getTown();
-        String zip          = billingData.getPostalCode();
-        String countryCode  = countryData.getIsocode();
+        String firstName, lastName, street1, street2, town, zip, countryCode;
+        firstName = lastName = street1 = street2 = town = zip = countryCode = "";
+        
+
+        if(billingData.getAddressId() != null ) {
+            AddressModel billingAddress = novalnetOrderFacade.getBillingAddress(billingData.getAddressId());
+
+            firstName    = billingAddress.getFirstname();
+            lastName     = billingAddress.getLastname();
+            street1      = billingAddress.getLine1();
+            street2      = billingAddress.getLine2();
+            town         = billingAddress.getTown();
+            zip          = billingAddress.getPostalcode();
+            countryCode  = billingAddress.getCountry().getIsocode();
+        } else {
+
+            NnCountryData countryData =  billingData.getCountry();
+            NnRegionData regionData   =  billingData.getRegion();
+
+            firstName    = billingData.getFirstName();
+            lastName     = billingData.getLastName();
+            street1      = billingData.getLine1();
+            street2      = billingData.getLine2();
+            town         = billingData.getTown();
+            zip          = billingData.getPostalCode();
+            countryCode  = countryData.getIsocode();
+
+        }
 
         Gson gson = new GsonBuilder().create();
 
@@ -440,6 +470,10 @@ public class NovalnetOrdersController
         } 
 
         if(action.equals("get_redirect_url")) {
+            if("".equals(requestData.getReturnUrl())) {
+                throw new NovalnetPaymentException("returnUrl is empty. Please send the mandatorey params");
+            }
+
             transactionParameters.put("return_url", requestData.getReturnUrl());
             transactionParameters.put("error_return_url", requestData.getReturnUrl());
         }
