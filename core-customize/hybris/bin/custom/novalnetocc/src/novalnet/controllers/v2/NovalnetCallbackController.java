@@ -35,9 +35,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import static de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper.DEFAULT_LEVEL;
 import de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper;
@@ -134,7 +135,7 @@ import java.security.NoSuchAlgorithmException;
 @Controller
 @RequestMapping(value = "/{baseSiteId}/novalnet")
 @ApiVersion("v2")
-@Api(tags = "Novalnet Callback")
+@Tag(name = "Novalnet Callback")
 public class NovalnetCallbackController 
 {
     private final static Logger LOG = Logger.getLogger(NovalnetCallbackController.class);
@@ -187,10 +188,10 @@ public class NovalnetCallbackController
     @RequestMapping(value = "/callback", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    @ApiOperation(nickname = "callback", value = "handle callback request", notes = "keeps the transactions in sync between novalnet and the sap commerce")
+    @Operation(operationId = "callback", summary = "handle callback request", description = "keeps the transactions in sync between novalnet and the sap commerce")
     @ApiBaseSiteIdAndUserIdParam
     public NnCallbackResponseWsDTO handleCallback(
-			@ApiParam(value =
+			@Parameter(description =
     "Request body parameter that contains callback request", required = true) @RequestBody final NnCallbackRequestWsDTO callbackRequest,
             @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields, final HttpServletRequest request)
             throws UnknownHostException, NoSuchAlgorithmException
