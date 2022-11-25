@@ -39,9 +39,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import static de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper.DEFAULT_LEVEL;
 import de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper;
@@ -153,7 +154,7 @@ import de.novalnet.beans.NnPostFinanceData;
 @Controller
 @RequestMapping(value = "/{baseSiteId}/novalnet/config")
 @ApiVersion("v2")
-@Api(tags = "Novalnet Carts")
+@Tag(name = "Novalnet Carts")
 public class NovalnetConfigController 
 {
     private final static Logger LOG = Logger.getLogger(NovalnetConfigController.class);
@@ -188,7 +189,7 @@ public class NovalnetConfigController
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     @SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
-    @ApiOperation(nickname = "paymentConfig", value = "return payment configuration", notes = "return payment configuration stored in Backend")
+    @Operation(operationId = "paymentConfig", summary = "return payment configuration", description = "return payment configuration stored in Backend")
     @ApiBaseSiteIdAndUserIdParam
     public NnConfigWsDTO getPaymentConfig(
             @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
