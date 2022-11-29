@@ -328,9 +328,17 @@ public class NovalnetOrdersController
         String firstName, lastName, street1, street2, town, zip, countryCode;
         firstName = lastName = street1 = street2 = town = zip = countryCode = "";
         
+        LOG.info("address id recieved" + billingData.getAddressId());
 
         if(billingData.getAddressId() != null ) {
+
+            LOG.info("in condition to retieve" + billingData.getAddressId());
+
             AddressModel billingAddress = novalnetOrderFacade.getBillingAddress(billingData.getAddressId());
+
+             LOG.info("address model" + billingAddress);
+
+            LOG.info("address retrieved" + billingData.getAddressId());
 
             firstName    = billingAddress.getFirstname();
             lastName     = billingAddress.getLastname();
