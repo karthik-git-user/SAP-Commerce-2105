@@ -239,7 +239,7 @@ public class NovalnetOrdersController
 
             NnBillingData billingData =  requestData.getBillingAddress();
 
-            if(billingData.getAddressId() != null ) {
+            if(billingData != null && billingData.getAddressId() != null ) {
                 billingAddress = novalnetOrderFacade.getBillingAddress(billingData.getAddressId());
             } else {
                 billingAddress = novalnetOrderFacade.getModelService().create(AddressModel.class);
