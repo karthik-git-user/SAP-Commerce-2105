@@ -475,7 +475,15 @@ public class NovalnetOrdersController
 
             paymentParameters.put("bank_account_holder", accountHolder.replace("&", ""));
 
-        } 
+        } else if ("novalnetGuaranteedDirectDebitSepa".equals(payment) || "novalnetGuaranteedInvoice".equals(payment)) {
+            if(paymentData.getDob() != null) {
+                customParameters.put("birth_date", billingData.getDob());
+            }
+
+            if(paymentData.getCompany() != null) {
+                billingParameters.put("company", billingData.getCompany());
+            }
+        }
 
         if(action.equals("get_redirect_url")) {
             if("".equals(requestData.getReturnUrl())) {

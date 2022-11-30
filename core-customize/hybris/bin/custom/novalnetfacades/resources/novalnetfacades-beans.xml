@@ -265,6 +265,8 @@
 		<property name="line1" type="String"/>
 		<property name="line2" type="String"/>
 		<property name="postalCode" type="String"/>
+		<property name="company" type="String"/>
+		<property name="dob" type="String"/>
 		<property name="town" type="String"/>
 		<property name="country" type="de.novalnet.beans.NnCountryData"/>
 		<property name="region" type="de.novalnet.beans.NnRegionData"/>

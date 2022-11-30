@@ -615,6 +615,12 @@
         <property name="postalCode" type="String">
             <description>Address Postal Code</description>
         </property>
+        <property name="company" type="String">
+            <description>Company name</description>
+        </property>
+        <property name="dob" type="String">
+            <description>date of birth format - YYYY-MM-DD</description>
+        </property>
         <property name="town" type="String">
             <description>Address town</description>
         </property>
