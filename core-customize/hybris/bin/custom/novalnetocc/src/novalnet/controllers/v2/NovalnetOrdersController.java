@@ -478,7 +478,7 @@ public class NovalnetOrdersController
         } else if ("novalnetGuaranteedDirectDebitSepa".equals(payment) || "novalnetGuaranteedInvoice".equals(payment)) {
             if(billingData.getDob() != null) {
                 customParameters.put("birth_date", billingData.getDob());
-            }
+            } 
 
             if(billingData.getCompany() != null) {
                 billingParameters.put("company", billingData.getCompany());
