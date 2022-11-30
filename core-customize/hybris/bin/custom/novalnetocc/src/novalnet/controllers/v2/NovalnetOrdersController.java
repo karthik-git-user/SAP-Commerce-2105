@@ -476,11 +476,11 @@ public class NovalnetOrdersController
             paymentParameters.put("bank_account_holder", accountHolder.replace("&", ""));
 
         } else if ("novalnetGuaranteedDirectDebitSepa".equals(payment) || "novalnetGuaranteedInvoice".equals(payment)) {
-            if(paymentData.getDob() != null) {
+            if(billingData.getDob() != null) {
                 customParameters.put("birth_date", billingData.getDob());
             }
 
-            if(paymentData.getCompany() != null) {
+            if(billingData.getCompany() != null) {
                 billingParameters.put("company", billingData.getCompany());
             }
         }
