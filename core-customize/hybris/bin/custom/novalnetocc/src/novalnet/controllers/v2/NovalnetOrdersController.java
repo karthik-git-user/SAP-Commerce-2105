@@ -389,8 +389,7 @@ public class NovalnetOrdersController
             shippingParameters.put("last_name", deliveryAddress.getLastname());
         }
         
-        customerParameters.put("billing", billingParameters);
-        customerParameters.put("shipping", shippingParameters);
+        
         customParameters.put("lang", languageCode);
 
         transactionParameters.put("payment_type", currentPayment);
@@ -425,7 +424,7 @@ public class NovalnetOrdersController
 
         }
 
-        String[] dueDatePaymentTypes = {"novalnetBarzahlen", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice",  "novalnetPrepayment"};
+        String[] dueDatePaymentTypes = {"novalnetBarzahlen", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetPrepayment"};
 
         if (Arrays.asList(dueDatePaymentTypes).contains(payment)) {
             Integer dueDate = Integer.parseInt(responseDeatils.get("due_date").toString());
@@ -451,7 +450,7 @@ public class NovalnetOrdersController
                  transactionParameters.put("enforce_3d", 1);
             }
 
-        } else if ("novalnetDirectDebitSepa".equals(payment)) {
+        } else if ("novalnetDirectDebitSepa".equals(payment) || "novalnetGuaranteedDirectDebitSepa".equals(payment)) {
             NnPaymentsData paymentData  =  requestData.getPaymentData();
 
             String accountHolder = billingData.getFirstName() + ' ' + billingData.getLastName();
@@ -475,14 +474,17 @@ public class NovalnetOrdersController
 
             paymentParameters.put("bank_account_holder", accountHolder.replace("&", ""));
 
-        } else if ("novalnetGuaranteedDirectDebitSepa".equals(payment) || "novalnetGuaranteedInvoice".equals(payment)) {
+        } 
+
+        if ("novalnetGuaranteedDirectDebitSepa".equals(payment) || "novalnetGuaranteedInvoice".equals(payment)) {
             if(billingData.getDob() != null) {
-                customParameters.put("birth_date", billingData.getDob());
+                customerParameters.put("birth_date", billingData.getDob());
             } 
 
             if(billingData.getCompany() != null) {
                 billingParameters.put("company", billingData.getCompany());
             }
+
         }
 
         if(action.equals("get_redirect_url")) {
@@ -493,6 +495,9 @@ public class NovalnetOrdersController
             transactionParameters.put("return_url", requestData.getReturnUrl());
             transactionParameters.put("error_return_url", requestData.getReturnUrl());
         }
+
+        customerParameters.put("billing", billingParameters);
+        customerParameters.put("shipping", shippingParameters);
 
         
 
