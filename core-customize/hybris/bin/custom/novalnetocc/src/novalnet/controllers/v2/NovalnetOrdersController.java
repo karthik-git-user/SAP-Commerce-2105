@@ -209,8 +209,8 @@ public class NovalnetOrdersController
             Map<String, Object> requsetDeatils = new HashMap<String, Object>();
             try {
                 requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
-            } catch (Exception e) {
-                throw new NovalnetPaymentException("Payment method is not valid or active");
+            } catch(RuntimeException ex) {
+                LOG.error("RuntimeException ", ex);
             }
             StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());
             responseString = response.toString();
