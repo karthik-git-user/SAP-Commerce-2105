@@ -378,7 +378,7 @@ public class NovalnetOrdersController
         billingParameters.put("zip", zip);
         billingParameters.put("country_code", countryCode);
 
-        if(deliveryAddress.getLine1().toString().toLowerCase().equals(street1.toLowerCase()) && deliveryAddress.getLine2().toString().toLowerCase().equals(street2.toLowerCase()) && deliveryAddress.getTown().toString().toLowerCase().equals(town.toLowerCase()) &&  deliveryAddress.getPostalcode().toString().equals(zip) && deliveryAddress.getCountry().getIsocode().toString().equals(countryCode)) {
+        if( deliveryAddress.getLine1().toString().toLowerCase().equals(street1.toLowerCase()) && ((deliveryAddress.getLine2() == null && street2 == null) ||(deliveryAddress.getLine2() != null && (deliveryAddress.getLine2().toString().toLowerCase().equals(street2.toLowerCase())))) && deliveryAddress.getTown().toString().toLowerCase().equals(town.toLowerCase()) &&  deliveryAddress.getPostalcode().toString().equals(zip) && deliveryAddress.getCountry().getIsocode().toString().equals(countryCode)) {
             shippingParameters.put("same_as_billing", 1);
         } else {
             shippingParameters.put("street", deliveryAddress.getLine1() + " " + deliveryAddress.getLine2());
@@ -388,7 +388,6 @@ public class NovalnetOrdersController
             shippingParameters.put("first_name", deliveryAddress.getFirstname());
             shippingParameters.put("last_name", deliveryAddress.getLastname());
         }
-        
         
         customParameters.put("lang", languageCode);
 
@@ -405,8 +404,6 @@ public class NovalnetOrdersController
         }
 
         if (responseDeatils.get("test_mode").toString() == "true") {
-
-
             testMode = 1;
         }
 
