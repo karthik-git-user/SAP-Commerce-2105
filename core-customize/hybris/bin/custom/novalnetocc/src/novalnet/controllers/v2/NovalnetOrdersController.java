@@ -590,7 +590,7 @@ public class NovalnetOrdersController
 
         cartModel.setPaymentTransactions(Arrays.asList(paymentTransactionModel));
 
-        novalnetOrderFacade.getModelService().saveAll(cartModel, billingAddress);
+        novalnetOrderFacade.getModelService().saveAll(cartModel);
 
         final OrderData orderData = novalnetOrderFacade.getCheckoutFacade().placeOrder();
         String orderNumber = orderData.getCode();
