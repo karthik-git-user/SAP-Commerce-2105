@@ -474,14 +474,22 @@ public class NovalnetOrdersController
         } 
 
         if ("novalnetGuaranteedDirectDebitSepa".equals(payment) || "novalnetGuaranteedInvoice".equals(payment)) {
-            if(billingData.getDob() != null) {
-                customerParameters.put("birth_date", billingData.getDob());
-            } 
 
-            if(billingData.getCompany() != null) {
-                billingParameters.put("company", billingData.getCompany());
+            boolean isValidDob = novalnetOrderFacade.hasAgeRequirement(billingData.getDob());
+
+            if(shippingParameters.get("shippingParameters") == 1 && countryCode.equals("DE") && isValidDob) {
+                if(billingData.getDob() != null) {
+                    customerParameters.put("birth_date", billingData.getDob());
+                } 
+
+                if(billingData.getCompany() != null) {
+                    billingParameters.put("company", billingData.getCompany());
+                }
+            } else if (responseDeatils.get("force_guarantee")) {
+                transactionParameters.put("payment_type", (currentPayment.equals(GUARANTEED_INVOICE) ? "INVOICE" : "DIRECT_DEBIT_SEPA"));
+            } else {
+                throw new NovalnetPaymentException("Gaurantee payment conditions are not met");
             }
-
         }
 
         if(action.equals("get_redirect_url")) {
