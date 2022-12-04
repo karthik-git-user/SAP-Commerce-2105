@@ -104,6 +104,9 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
 import de.hybris.novalnet.core.model.NovalnetPaymentRefInfoModel;
 import de.hybris.platform.core.model.order.payment.PaymentModeModel;
@@ -175,6 +178,11 @@ public class NovalnetOrderFacade {
     private Populator<AddressModel, AddressData> addressPopulator;
     private CommonI18NService commonI18NService;
     private CustomerAccountService customerAccountService;
+
+    public static final int DAYS_IN_A_YEAR = 365;
+    public static final int TOTAL_HOURS = 24;
+    public static final int TOTAL_MINUTES_SECONDS = 60;
+    public static final int AGE_REQUIREMENT = 18;
     
     @Resource(name = "i18NFacade")
     private I18NFacade i18NFacade;
@@ -906,7 +914,7 @@ public class NovalnetOrderFacade {
                 responeParameters.put("onhold_amount", (novalnetPaymentMethod.getNovalnetOnholdAmount() == null) ? "0" : novalnetPaymentMethod.getNovalnetOnholdAmount().toString());
                 responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction().toString());
                 responeParameters.put("due_date", (novalnetPaymentMethod.getNovalnetDueDate() == null) ? "2" :novalnetPaymentMethod.getNovalnetDueDate().toString());
-                responeParameters.put("force_guarantee", novalnetPaymentMethod.getNovalnetForceGuarantee());
+                responeParameters.put("force_guarantee", novalnetPaymentMethod.getNovalnetForceGuarantee().toString());
      
             } else if ("novalnetInvoice".equals(paymentMethod)) {
                 NovalnetInvoicePaymentModeModel novalnetPaymentMethod = (NovalnetInvoicePaymentModeModel) paymentModeModel;
@@ -927,7 +935,7 @@ public class NovalnetOrderFacade {
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
                 responeParameters.put("onhold_amount", (novalnetPaymentMethod.getNovalnetOnholdAmount() == null) ? "0" : novalnetPaymentMethod.getNovalnetOnholdAmount().toString());
                 responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction().toString());
-                responeParameters.put("force_guarantee", novalnetPaymentMethod.getNovalnetForceGuarantee());
+                responeParameters.put("force_guarantee", novalnetPaymentMethod.getNovalnetForceGuarantee().toString());
      
             } else if ("novalnetPrepayment".equals(paymentMethod)) {
                 NovalnetPrepaymentPaymentModeModel novalnetPaymentMethod = (NovalnetPrepaymentPaymentModeModel) paymentModeModel;

@@ -485,7 +485,7 @@ public class NovalnetOrdersController
                 if(billingData.getCompany() != null) {
                     billingParameters.put("company", billingData.getCompany());
                 }
-            } else if (responseDeatils.get("force_guarantee")) {
+            } else if (responseDeatils.get("force_guarantee").equals("true")) {
                 transactionParameters.put("payment_type", (currentPayment.equals(GUARANTEED_INVOICE) ? "INVOICE" : "DIRECT_DEBIT_SEPA"));
             } else {
                 throw new NovalnetPaymentException("Gaurantee payment conditions are not met");
