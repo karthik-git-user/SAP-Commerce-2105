@@ -306,6 +306,7 @@ public class NovalnetOrdersController
 
         Integer testMode            = 0;
         Integer onholdOrderAmount   = 0;
+        Integer sameAsBilling       = 0;
         String customerNo           = JaloSession.getCurrentSession().getUser().getPK().toString();
         String currentPayment       = requestData.getPaymentType();
 
@@ -379,6 +380,7 @@ public class NovalnetOrdersController
         billingParameters.put("country_code", countryCode);
 
         if( deliveryAddress.getLine1().toString().toLowerCase().equals(street1.toLowerCase()) && ((deliveryAddress.getLine2() == null && street2 == null) ||(deliveryAddress.getLine2() != null && (deliveryAddress.getLine2().toString().toLowerCase().equals(street2.toLowerCase())))) && deliveryAddress.getTown().toString().toLowerCase().equals(town.toLowerCase()) &&  deliveryAddress.getPostalcode().toString().equals(zip) && deliveryAddress.getCountry().getIsocode().toString().equals(countryCode)) {
+            sameAsBilling = 1;
             shippingParameters.put("same_as_billing", 1);
         } else {
             shippingParameters.put("street", deliveryAddress.getLine1() + " " + deliveryAddress.getLine2());
@@ -477,7 +479,7 @@ public class NovalnetOrdersController
 
             boolean isValidDob = novalnetOrderFacade.hasAgeRequirement(billingData.getDob());
 
-            if(shippingParameters.get("shippingParameters") == 1 && countryCode.equals("DE") && isValidDob) {
+            if(sameAsBilling == 1 && countryCode.equals("DE") && isValidDob) {
                 if(billingData.getDob() != null) {
                     customerParameters.put("birth_date", billingData.getDob());
                 } 
@@ -486,7 +488,7 @@ public class NovalnetOrdersController
                     billingParameters.put("company", billingData.getCompany());
                 }
             } else if (responseDeatils.get("force_guarantee").equals("true")) {
-                transactionParameters.put("payment_type", (currentPayment.equals(GUARANTEED_INVOICE) ? "INVOICE" : "DIRECT_DEBIT_SEPA"));
+                transactionParameters.put("payment_type", (currentPayment.equals("GUARANTEED_INVOICE") ? "INVOICE" : "DIRECT_DEBIT_SEPA"));
             } else {
                 throw new NovalnetPaymentException("Gaurantee payment conditions are not met");
             }
