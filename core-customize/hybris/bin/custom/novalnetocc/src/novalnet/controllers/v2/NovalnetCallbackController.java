@@ -582,6 +582,8 @@ public class NovalnetCallbackController
     	String[] creditPayment = {"CREDIT_ENTRY_CREDITCARD", "CREDIT_ENTRY_SEPA", "DEBT_COLLECTION_SEPA", "DEBT_COLLECTION_CREDITCARD", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE", "CREDITCARD_REPRESENTMENT", "BANK_TRANSFER_BY_END_CUSTOMER"};
         String[] creditPaymentType = {"INVOICE_CREDIT", "CASHPAYMENT_CREDIT", "MULTIBANCO_CREDIT"};
 
+		LOG.info("payment type credit : " + transactionData.getPayment_type());
+
         if (Arrays.asList(creditPaymentType).contains(transactionData.getPayment_type())) {
             // if settlement of invoice OR Advance payment through Customer
             if (orderAmount > paidAmount) {
