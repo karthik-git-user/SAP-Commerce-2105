@@ -389,6 +389,8 @@ public class NovalnetCallbackController
 
 		transactionStatus = transactionData.getStatus();
 
+		LOG.info("Webhook request recieved event type" + eventData.getType() + " Payment type recieved " + requestPaymentType);
+
 		if (Arrays.asList(refundType).contains(eventData.getType())) {
 			response = performRefund(callbackRequestData);
 		} else if ("CREDIT".equals(eventData.getType())) {
