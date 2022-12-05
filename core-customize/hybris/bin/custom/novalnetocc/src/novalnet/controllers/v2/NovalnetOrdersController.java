@@ -142,7 +142,7 @@ import java.text.DecimalFormat;
 @Tag(name = "Novalnet Orders")
 public class NovalnetOrdersController 
 {
-    private final static java.util.logging.Logger LOG = Logger.getLogger(NovalnetOrdersController.class);
+    private final static Logger LOG = Logger.getLogger(NovalnetOrdersController.class);
     
     protected static final String DEFAULT_FIELD_SET = FieldSetLevelHelper.DEFAULT_LEVEL;
     
