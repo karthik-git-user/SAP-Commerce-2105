@@ -18,6 +18,7 @@ import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdAndUserIdParam
 import de.hybris.platform.core.model.user.AddressModel;
 import de.hybris.platform.store.BaseStoreModel;
 import javax.annotation.Resource;
+import javax.management.RuntimeErrorException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -211,6 +212,7 @@ public class NovalnetOrdersController
                 requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
             } catch(RuntimeException ex) {
                 LOG.error("RuntimeException ", ex);
+                throw new RuntimeErrorException(ex);
             }
             StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());
             responseString = response.toString();
@@ -831,8 +833,9 @@ public class NovalnetOrdersController
         Map<String, Object> requsetDeatils = new HashMap<String, Object>();
         try {
             requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
-        } catch (Exception e) {
-            throw new NovalnetPaymentException("Payment method is not valid or active");
+        } catch(RuntimeException ex) {
+            LOG.error("RuntimeException ", ex);
+            throw new RuntimeErrorException(ex);
         }
         
         StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());
