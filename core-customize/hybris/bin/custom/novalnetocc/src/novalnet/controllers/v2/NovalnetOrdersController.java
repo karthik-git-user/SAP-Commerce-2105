@@ -413,6 +413,30 @@ public class NovalnetOrdersController
 
         transactionParameters.put("test_mode", testMode);
 
+        if ("novalnetGuaranteedDirectDebitSepa".equals(payment) || "novalnetGuaranteedInvoice".equals(payment)) {
+
+            boolean isValidDob = novalnetOrderFacade.hasAgeRequirement(billingData.getDob());
+            String[] guaranteeRequiredCountry = {"CH", "AT", "DE"};
+            Integer minimumAmount = (responseDeatils.get("guarantee_minimum_amount") == null) ? 0 : Integer.parseInt(responseDeatils.get("guarantee_minimum_amount").toString());
+
+            if(sameAsBilling == 1 && (isValidDob || billingData.getCompany() != null) && Arrays.asList(guaranteeRequiredCountry).contains(countryCode) && orderAmountCent >= minimumAmount) {
+
+                if(billingData.getCompany() != null) {
+                    billingParameters.put("company", billingData.getCompany());
+                }
+
+                if(billingData.getDob() != null) {
+                    customerParameters.put("birth_date", billingData.getDob());
+                } 
+                
+            } else if (responseDeatils.get("force_guarantee").equals("true")) {
+                transactionParameters.put("payment_type", (currentPayment.equals("GUARANTEED_INVOICE") ? "INVOICE" : "DIRECT_DEBIT_SEPA"));
+                payment = payment.equals("novalnetGuaranteedInvoice") ? "novalnetInvoice" : "novalnetGuaranteedDirectDebitSepa";
+            } else {
+                throw new NovalnetPaymentException("Gaurantee payment conditions are not met");
+            }
+        }
+
 
         String[] onholdSupportedPaymentTypes = {"novalnetCreditCard", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice",  "novalnetPayPal"};
 
@@ -472,36 +496,9 @@ public class NovalnetOrdersController
                     throw new NovalnetPaymentException("BIC is required to process payment");
                 }
             }
-
+            
             paymentParameters.put("bank_account_holder", accountHolder.replace("&", ""));
 
-        } 
-
-        if ("novalnetGuaranteedDirectDebitSepa".equals(payment) || "novalnetGuaranteedInvoice".equals(payment)) {
-
-            boolean isValidDob = novalnetOrderFacade.hasAgeRequirement(billingData.getDob());
-            String[] guaranteeRequiredCountry = {"CH", "AT", "DE"};
-            Integer minimumAmount = (responseDeatils.get("guarantee_minimum_amount") == null) ? 0 : Integer.parseInt(responseDeatils.get("guarantee_minimum_amount").toString());
-
-            LOG.info("guarantee minimum amount " + minimumAmount);
-            LOG.info("age limit " + isValidDob);
-            LOG.info("country " + countryCode);
-            LOG.info("sameAsBilling " + sameAsBilling);
-
-            if(sameAsBilling == 1 && isValidDob && Arrays.asList(guaranteeRequiredCountry).contains(countryCode) && orderAmountCent >= minimumAmount) {
-
-                if(billingData.getDob() != null) {
-                    customerParameters.put("birth_date", billingData.getDob());
-                } 
-
-                if(billingData.getCompany() != null) {
-                    billingParameters.put("company", billingData.getCompany());
-                }
-            } else if (responseDeatils.get("force_guarantee").equals("true")) {
-                transactionParameters.put("payment_type", (currentPayment.equals("GUARANTEED_INVOICE") ? "INVOICE" : "DIRECT_DEBIT_SEPA"));
-            } else {
-                throw new NovalnetPaymentException("Gaurantee payment conditions are not met");
-            }
         }
 
         if(action.equals("get_redirect_url")) {
