@@ -167,8 +167,6 @@
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
                                           qualifier="novalnetOrderSuccessStatus"/>
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetCallbackOrderStatus"/>
-                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
                                           qualifier="novalnetOnholdAction"/>
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
                                           qualifier="novalnetOnholdAmount"/>
