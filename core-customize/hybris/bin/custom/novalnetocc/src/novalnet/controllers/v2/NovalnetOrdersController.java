@@ -142,7 +142,7 @@ import java.text.DecimalFormat;
 @Tag(name = "Novalnet Orders")
 public class NovalnetOrdersController 
 {
-    private final static Logger LOG = Logger.getLogger(NovalnetOrdersController.class);
+    private final static java.util.logging.Logger LOG = Logger.getLogger(NovalnetOrdersController.class);
     
     protected static final String DEFAULT_FIELD_SET = FieldSetLevelHelper.DEFAULT_LEVEL;
     
@@ -212,7 +212,7 @@ public class NovalnetOrdersController
                 requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
             } catch(RuntimeException ex) {
                 LOG.error("RuntimeException ", ex);
-                throw new RuntimeErrorException(ex);
+                throw new RuntimeException(ex);
             }
             StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());
             responseString = response.toString();
@@ -480,8 +480,16 @@ public class NovalnetOrdersController
         if ("novalnetGuaranteedDirectDebitSepa".equals(payment) || "novalnetGuaranteedInvoice".equals(payment)) {
 
             boolean isValidDob = novalnetOrderFacade.hasAgeRequirement(billingData.getDob());
+            String[] guaranteeRequiredCountry = {"CH", "AT", "DE"};
+            Integer minimumAmount = (responseDeatils.get("guarantee_minimum_amount") == null) ? 0 : Integer.parseInt(responseDeatils.get("guarantee_minimum_amount").toString());
 
-            if(sameAsBilling == 1 && countryCode.equals("DE") && isValidDob) {
+            LOG.info("guarantee minimum amount " + minimumAmount);
+            LOG.info("age limit " + isValidDob);
+            LOG.info("country " + countryCode);
+            LOG.info("sameAsBilling " + sameAsBilling);
+
+            if(sameAsBilling == 1 && isValidDob && Arrays.asList(guaranteeRequiredCountry).contains(countryCode) && orderAmountCent >= minimumAmount) {
+
                 if(billingData.getDob() != null) {
                     customerParameters.put("birth_date", billingData.getDob());
                 } 
@@ -835,7 +843,7 @@ public class NovalnetOrdersController
             requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
         } catch(RuntimeException ex) {
             LOG.error("RuntimeException ", ex);
-            throw new RuntimeErrorException(ex);
+            throw new RuntimeException(ex);
         }
         
         StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());

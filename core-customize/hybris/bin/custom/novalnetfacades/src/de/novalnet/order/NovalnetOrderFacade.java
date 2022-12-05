@@ -915,6 +915,7 @@ public class NovalnetOrderFacade {
                 responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction().toString());
                 responeParameters.put("due_date", (novalnetPaymentMethod.getNovalnetDueDate() == null) ? "2" :novalnetPaymentMethod.getNovalnetDueDate().toString());
                 responeParameters.put("force_guarantee", novalnetPaymentMethod.getNovalnetForceGuarantee().toString());
+                responeParameters.put("guarantee_minimum_amount", novalnetPaymentMethod.getNovalnetMinimumGuaranteeAmount().toString());
      
             } else if ("novalnetInvoice".equals(paymentMethod)) {
                 NovalnetInvoicePaymentModeModel novalnetPaymentMethod = (NovalnetInvoicePaymentModeModel) paymentModeModel;
@@ -936,6 +937,7 @@ public class NovalnetOrderFacade {
                 responeParameters.put("onhold_amount", (novalnetPaymentMethod.getNovalnetOnholdAmount() == null) ? "0" : novalnetPaymentMethod.getNovalnetOnholdAmount().toString());
                 responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction().toString());
                 responeParameters.put("force_guarantee", novalnetPaymentMethod.getNovalnetForceGuarantee().toString());
+                responeParameters.put("guarantee_minimum_amount", novalnetPaymentMethod.getNovalnetMinimumGuaranteeAmount().toString());
      
             } else if ("novalnetPrepayment".equals(paymentMethod)) {
                 NovalnetPrepaymentPaymentModeModel novalnetPaymentMethod = (NovalnetPrepaymentPaymentModeModel) paymentModeModel;
