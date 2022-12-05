@@ -346,7 +346,7 @@ public class NovalnetOrdersController
             firstName    = billingAddress.getFirstname();
             lastName     = billingAddress.getLastname();
             street1      = billingAddress.getLine1();
-            street2      = billingAddress.getLine2();
+            street2      = (billingAddress.getLine2() != null) ? billingAddress.getLine2() : "";
             town         = billingAddress.getTown();
             zip          = billingAddress.getPostalcode();
             countryCode  = billingAddress.getCountry().getIsocode();
@@ -358,7 +358,7 @@ public class NovalnetOrdersController
             firstName    = billingData.getFirstName();
             lastName     = billingData.getLastName();
             street1      = billingData.getLine1();
-            street2      = billingData.getLine2();
+            street2      = (billingData.getLine2() != null) ? billingData.getLine2() : "";
             town         = billingData.getTown();
             zip          = billingData.getPostalCode();
             countryCode  = countryData.getIsocode();
@@ -496,7 +496,7 @@ public class NovalnetOrdersController
                     throw new NovalnetPaymentException("BIC is required to process payment");
                 }
             }
-            
+
             paymentParameters.put("bank_account_holder", accountHolder.replace("&", ""));
 
         }
