@@ -432,6 +432,7 @@ public class NovalnetOrdersController
             } else if (responseDeatils.get("force_guarantee").equals("true")) {
                 transactionParameters.put("payment_type", (currentPayment.equals("GUARANTEED_INVOICE") ? "INVOICE" : "DIRECT_DEBIT_SEPA"));
                 payment = payment.equals("novalnetGuaranteedInvoice") ? "novalnetInvoice" : "novalnetGuaranteedDirectDebitSepa";
+                responseDeatils = novalnetOrderFacade.getBackendConfiguration("payment", payment);
             } else {
                 throw new NovalnetPaymentException("Gaurantee payment conditions are not met");
             }
@@ -453,7 +454,20 @@ public class NovalnetOrdersController
 
         if (Arrays.asList(dueDatePaymentTypes).contains(payment)) {
             Integer dueDate = Integer.parseInt(responseDeatils.get("due_date").toString());
-            if (dueDate != null && dueDate > 7) {
+
+            Integer sendDueDate = 0;
+
+            if (payment.equals("novalnetInvoice") && dueDate != null && dueDate > 7) {
+                sendDueDate = 1;
+            } else if (payment.equals("novalnetPrepayment") && dueDate != null && dueDate > 7 && dueDate < 28) {
+                sendDueDate = 1;
+            } else if(payment.equals("novalnetBarzahlen") && dueDate != null ) {
+                sendDueDate = 1;
+            }  else if((payment.equals("novalnetDirectDebitSepa") || payment.equals("novalnetGuaranteedDirectDebitSepa"))  && dueDate != null  && dueDate > 2 && dueDate < 14) {
+                sendDueDate = 1;
+            }
+
+            if(sendDueDate == 1) {
                 transactionParameters.put("due_date", formatDate(dueDate));
             }
         }
@@ -706,7 +720,18 @@ public class NovalnetOrdersController
         createTransactionUpdate(transactionJsonObject.get("tid").toString(), orderNumber, languageCode);
         
         long callbackInfoTid = Long.parseLong(transactionJsonObject.get("tid").toString());
-        int orderPaidAmount = orderAmountCent;
+        int orderPaidAmount = 0;
+        String[] bankPayments = {"novalnetInvoice", "novalnetPrepayment", "novalnetBarzahlen", "novalnetGuaranteedDirectDebitSepa", "novalnetGuaranteedInvoice"};
+        boolean isInvoicePrepayment = Arrays.asList(bankPayments).contains(payment);
+
+        String[] pendingStatusCode = {"PENDING"};
+
+        // Check for payment pending payments
+        if (isInvoicePrepayment || Arrays.asList(pendingStatusCode).contains(transactionJsonObject.get("status").toString())) {
+            orderPaidAmount = 0;
+        } else {
+            orderPaidAmount = orderAmountCent;
+        }
 
         NovalnetCallbackInfoModel novalnetCallbackInfo = new NovalnetCallbackInfoModel();
         novalnetCallbackInfo.setPaymentType(payment);
