@@ -381,7 +381,7 @@ public class NovalnetOrdersController
         billingParameters.put("zip", zip);
         billingParameters.put("country_code", countryCode);
 
-        if( deliveryAddress.getLine1().toString().toLowerCase().equals(street1.toLowerCase()) && ((deliveryAddress.getLine2() == null && street2 == null) ||(deliveryAddress.getLine2() != null && (deliveryAddress.getLine2().toString().toLowerCase().equals(street2.toLowerCase())))) && deliveryAddress.getTown().toString().toLowerCase().equals(town.toLowerCase()) &&  deliveryAddress.getPostalcode().toString().equals(zip) && deliveryAddress.getCountry().getIsocode().toString().equals(countryCode)) {
+        if( deliveryAddress.getLine1().toString().toLowerCase().equals(street1.toLowerCase()) && ((deliveryAddress.getLine2() == null && street2.equals("")) || (deliveryAddress.getLine2() != null && (deliveryAddress.getLine2().toString().toLowerCase().equals(street2.toLowerCase())))) && deliveryAddress.getTown().toString().toLowerCase().equals(town.toLowerCase()) &&  deliveryAddress.getPostalcode().toString().equals(zip) && deliveryAddress.getCountry().getIsocode().toString().equals(countryCode)) {
             sameAsBilling = 1;
             shippingParameters.put("same_as_billing", 1);
         } else {
@@ -415,7 +415,13 @@ public class NovalnetOrdersController
 
         if ("novalnetGuaranteedDirectDebitSepa".equals(payment) || "novalnetGuaranteedInvoice".equals(payment)) {
 
-            boolean isValidDob = novalnetOrderFacade.hasAgeRequirement(billingData.getDob());
+            
+            boolean isValidDob = false;
+
+            if(billingData.getDob() != null) {
+                isValidDob = novalnetOrderFacade.hasAgeRequirement(billingData.getDob());
+            }
+
             String[] guaranteeRequiredCountry = {"CH", "AT", "DE"};
             Integer minimumAmount = (responseDeatils.get("guarantee_minimum_amount") == null) ? 0 : Integer.parseInt(responseDeatils.get("guarantee_minimum_amount").toString());
 
