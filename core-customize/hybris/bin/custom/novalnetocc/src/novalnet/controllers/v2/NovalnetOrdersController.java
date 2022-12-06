@@ -437,7 +437,7 @@ public class NovalnetOrdersController
                 
             } else if (responseDeatils.get("force_guarantee").equals("true")) {
                 transactionParameters.put("payment_type", (currentPayment.equals("GUARANTEED_INVOICE") ? "INVOICE" : "DIRECT_DEBIT_SEPA"));
-                payment = payment.equals("novalnetGuaranteedInvoice") ? "novalnetInvoice" : "novalnetGuaranteedDirectDebitSepa";
+                payment = payment.equals("novalnetGuaranteedInvoice") ? "novalnetInvoice" : "novalnetDirectDebitSepa";
                 responseDeatils = novalnetOrderFacade.getBackendConfiguration("payment", payment);
             } else {
                 throw new NovalnetPaymentException("Gaurantee payment conditions are not met");
