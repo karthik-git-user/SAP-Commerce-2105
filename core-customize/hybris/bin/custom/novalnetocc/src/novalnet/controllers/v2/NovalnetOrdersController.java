@@ -212,7 +212,7 @@ public class NovalnetOrdersController
             try {
                 requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
             } catch(Exception ex) {
-                LOG.error("Novalnet Exception", mesage);
+                LOG.error("Novalnet Exception " + mesage);
                 throw new NovalnetPaymentException(message);
             }
             StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());
@@ -851,7 +851,7 @@ public class NovalnetOrdersController
         try {
             requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
         } catch(Exception ex) {
-            LOG.error("Novalnet Exception", mesage);
+            LOG.error("Novalnet Exception " + mesage);
             throw new NovalnetPaymentException(message);
         }
         
