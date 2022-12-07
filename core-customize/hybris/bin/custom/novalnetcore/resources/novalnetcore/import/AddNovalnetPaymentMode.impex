@@ -8,7 +8,7 @@ INSERT_UPDATE NovalnetGuaranteedDirectDebitSepaPaymentMode;code[unique=true];nam
 ;novalnetGuaranteedDirectDebitSepa;SEPA-Lastschrift mit Zahlungsgarantie;Direct Debit SEPA with payment guarantee;Der Betrag wird durch Novalnet von Ihrem Konto abgebucht;The amount will be debited from your account by Novalnet;false;PaymentInfo;false;COMPLETED;999
 
 INSERT_UPDATE NovalnetInvoicePaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code);novalnetCallbackOrderStatus(code)
-;novalnetInvoice;Rechnung;Invoice;Sie erhalten eine E-Mail mit den Bankdaten von Novalnet, um die Zahlung abzuschließen;You will receive an e-mail with the Novalnet account details to complete the payment;false;PaymentInfo;false;PAYMENT_NOT_AUTHORIZED;COMPLETED
+;novalnetInvoice;Kauf auf Rechnung;Invoice;Sie erhalten eine E-Mail mit den Bankdaten von Novalnet, um die Zahlung abzuschließen;You will receive an e-mail with the Novalnet account details to complete the payment;false;PaymentInfo;false;PAYMENT_NOT_AUTHORIZED;COMPLETED
 
 INSERT_UPDATE NovalnetGuaranteedInvoicePaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code);novalnetMinimumGuaranteeAmount
 ;novalnetGuaranteedInvoice;Rechnung mit Zahlungsgarantie;Invoice;Sie erhalten eine E-Mail mit den Bankdaten von Novalnet, um die Zahlung abzuschließen; You will receive an e-mail with the Novalnet account details to complete the payment;false;PaymentInfo;false;PAYMENT_NOT_AUTHORIZED;999

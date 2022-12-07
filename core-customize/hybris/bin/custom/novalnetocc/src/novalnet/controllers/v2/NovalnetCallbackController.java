@@ -467,7 +467,7 @@ public class NovalnetCallbackController
             if (orderAmount > paidAmount) {
                 String[] statusPending = {"PENDING"};
                 if (Arrays.asList(statusPending).contains(paymentInfo.get(0).getPaymentGatewayStatus()) && "CONFIRMED".equals(transactionData.getStatus().toString())) {
-                        callbackComments = "The transaction has been confirmed successfully for the TID: " + transactionData.getTid().toString() + " with amount: " + formattedAmount + " " + transactionData.getCurrency() + " on " + currentDate.toString();
+                        callbackComments = "The transaction has been confirmed on " + currentDate.toString();
                         novalnetOrderFacade.updatePaymentInfo(paymentInfo, transactionData.getStatus().toString());
                         paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
                         novalnetOrderFacade.updateOrderStatus(orderNo, paymentInfoModel);
@@ -659,7 +659,7 @@ public class NovalnetCallbackController
 	        } else if("RETURN_DEBIT_SEPA".equals(requestPaymentType)) {
 	            callbackComments = "Chargeback executed for return debit of TID:" + eventData.getParent_tid().toString() + " with the amount  " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + stidMsg + transactionData.getTid().toString();
 	        } else {
-	            callbackComments =  "Refund has been initiated for the TID " + eventData.getParent_tid().toString() + " with the amount : " + refundFormattedAmount + " " + transactionData.getCurrency().toString() + ". New TID: " + refundData.getTid().toString();
+	            callbackComments =  "Refund has been initiated for the TID " + eventData.getParent_tid().toString() + " with the amount : " + refundFormattedAmount + " " + transactionData.getCurrency().toString() + ". New TID: " + refundData.getTid().toString() + " for the refunded amount";
 	        }
 
 	        int orderAmount = orderReference.get(0).getOrderAmount();
