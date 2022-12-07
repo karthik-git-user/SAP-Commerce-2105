@@ -627,6 +627,7 @@ public class NovalnetCallbackController
     	
 		final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(eventData.getParent_tid());
     	String orderNo = orderReference.get(0).getOrderNo();
+		Integer doStausUpdate = 0;
 
     	final List<NovalnetPaymentInfoModel> paymentInfo = novalnetOrderFacade.getNovalnetPaymentInfo(orderNo);
 		NovalnetPaymentInfoModel paymentInfoModel = novalnetOrderFacade.getPaymentModel(paymentInfo);
@@ -640,12 +641,10 @@ public class NovalnetCallbackController
 
 	        if(!Arrays.asList(chargeBackPaymentType).contains(requestPaymentType)) {
 	            long refundAmountToBeFormat = Integer.parseInt(refundData.getAmount());
-
+				doStausUpdate = 1;
 	            amountInCents = Integer.parseInt(transactionData.getRefunded_amount().toString());
-
-	        // Format the order amount to currency format
+	            // Format the order amount to currency format
 	            refundFormattedAmount = new BigDecimal(refundAmountToBeFormat).movePointLeft(2);
-
 	        } 
             
             long amountToBeFormat = Integer.parseInt(transactionData.getAmount().toString());
@@ -665,7 +664,7 @@ public class NovalnetCallbackController
 
 	        int orderAmount = orderReference.get(0).getOrderAmount();
 
-	        if (amountInCents >= orderAmount) {
+	        if (amountInCents >= orderAmount && doStausUpdate == 1) {
 	        	novalnetOrderFacade.updatePaymentInfo(paymentInfo, transactionData.getStatus().toString());
         		novalnetOrderFacade.updateCancelStatus(orderNo);
 	        }
