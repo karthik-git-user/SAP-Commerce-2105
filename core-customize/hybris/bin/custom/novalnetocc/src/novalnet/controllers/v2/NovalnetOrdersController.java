@@ -377,7 +377,7 @@ public class NovalnetOrdersController
         transactionParameters.put("currency", currency);
         transactionParameters.put("amount", orderAmountCent);
         transactionParameters.put("system_name", "SAP Commerce Cloud");
-        transactionParameters.put("system_version", "2105-NN1.0.1");
+        transactionParameters.put("system_version", "2211-NN1.0.1");
 
         Map<String, String> responseDeatils = novalnetOrderFacade.getBackendConfiguration("payment", payment);
 
