@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { SpartacusModule } from './spartacus/spartacus.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-//~ import { NovalnetPaymentsModule } from "./novalnet-payments/novalnet-payments.module";
+import { NovalnetPaymentsModule } from "./novalnet-payments/novalnet-payments.module";
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { environment } from '../environments/environment';
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     SpartacusModule,
-    //~ NovalnetPaymentsModule,
+    NovalnetPaymentsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
