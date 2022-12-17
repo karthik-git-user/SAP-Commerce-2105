@@ -10,4 +10,4 @@ import { NovalnetCheckoutPaymentAdapter } from "./checkout.adapter";
     }
   ]
 })
-export class NovalnetCheckoutModule {}
+export class NovalnetPaymentsModule {}
