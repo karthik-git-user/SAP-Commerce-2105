@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CheckoutPaymentAdapter } from "@spartacus/core";
+import { CheckoutPaymentAdapter } from '@spartacus/checkout/base/core';
 import { NovalnetCheckoutPaymentAdapter } from "./checkout.adapter";
 
 @NgModule({
