@@ -1,8 +1,3 @@
-import {
-  PaymentDetails,
-  CheckoutPaymentAdapter,
-  CardType
-} from "@spartacus/core";
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { CardType, PaymentDetails } from '@spartacus/cart/base/root';
@@ -30,6 +25,6 @@ export declare class NovalnetCheckoutPaymentAdapter implements CheckoutPaymentAd
     private getParamsForPaymentProvider;
     private extractPaymentDetailsFromHtml;
     private convertToMap;
-    static ɵfac: i0.ɵɵFactoryDeclaration<OccCheckoutPaymentAdapter, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<OccCheckoutPaymentAdapter>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NovalnetCheckoutPaymentAdapter, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NovalnetCheckoutPaymentAdapter>;
 }
