@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { CardType, PaymentDetails } from '@spartacus/cart/base/root';
-import { CheckoutPaymentAdapter } from '@spartacus/checkout/base/core';
+import { CardType, PaymentDetails } from '@spartacus/cart/root';
+import { CheckoutPaymentAdapter } from '@spartacus/checkout/core';
 import { ConverterService, OccEndpointsService } from '@spartacus/core';
 import { Observable } from 'rxjs';
 import * as i0 from "@angular/core";
