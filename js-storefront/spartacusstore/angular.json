@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "mystore2": {
+    "mystore1": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/mystore2",
+            "outputPath": "dist/mystore1",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -82,10 +82,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "mystore2:build:production"
+              "browserTarget": "mystore1:build:production"
             },
             "development": {
-              "browserTarget": "mystore2:build:development"
+              "browserTarget": "mystore1:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -93,7 +93,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "mystore2:build"
+            "browserTarget": "mystore1:build"
           }
         },
         "test": {
@@ -134,5 +134,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "331cdd5e-3eaa-4a0d-b1a9-f5afef4cb57b"
   }
 }
