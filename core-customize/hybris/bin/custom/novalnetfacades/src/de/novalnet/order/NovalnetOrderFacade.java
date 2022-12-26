@@ -158,9 +158,9 @@ import de.novalnet.beans.NnConfigData;
  */
 public class NovalnetOrderFacade {
 
-	private final static Logger LOG = Logger.getLogger(NovalnetOrderFacade.class);
-	
-	private BaseStoreService baseStoreService;
+    private final static Logger LOG = Logger.getLogger(NovalnetOrderFacade.class);
+
+    private BaseStoreService baseStoreService;
     private SessionService sessionService;
     private CartService cartService;
     private OrderFacade orderFacade;
@@ -183,27 +183,27 @@ public class NovalnetOrderFacade {
     public static final int TOTAL_HOURS = 24;
     public static final int TOTAL_MINUTES_SECONDS = 60;
     public static final int AGE_REQUIREMENT = 18;
-    
+
     @Resource(name = "i18NFacade")
     private I18NFacade i18NFacade;
-    
+
     @Resource(name = "cartLoaderStrategy")
-	private CartLoaderStrategy cartLoaderStrategy;
-	
-	@Resource(name = "userFacade")
-	private UserFacade userFacade;
+    private CartLoaderStrategy cartLoaderStrategy;
+
+    @Resource(name = "userFacade")
+    private UserFacade userFacade;
 
     @Resource
     private PaymentModeService paymentModeService;
-	
-	public static final String ADDRESS_DOES_NOT_EXIST = "Address with given id: '%s' doesn't exist or belong to another user";
-	private static final String OBJECT_NAME_ADDRESS_ID = "addressId";
-    
+
+    public static final String ADDRESS_DOES_NOT_EXIST = "Address with given id: '%s' doesn't exist or belong to another user";
+    private static final String OBJECT_NAME_ADDRESS_ID = "addressId";
+
     public BaseStoreModel getBaseStoreModel() {
         return getBaseStoreService().getCurrentBaseStore();
     }
-	
-	public BaseStoreService getBaseStoreService() {
+
+    public BaseStoreService getBaseStoreService() {
         return baseStoreService;
     }
 
@@ -328,21 +328,35 @@ public class NovalnetOrderFacade {
         return addressPopulator;
     }
 
+    /**
+     * Set address populator
+     *
+     * @param addressPopulator
+     */
     public void setAddressPopulator(Populator<AddressModel, AddressData> addressPopulator) {
         this.addressPopulator = addressPopulator;
     }
-    
+
     public void addPaymentDetailsInternal(final NovalnetPaymentInfoModel paymentInfo)
-	{
-		final CustomerModel currentCustomer = getCurrentUserForCheckout();
-		getCustomerAccountService().setDefaultPaymentInfo(currentCustomer, paymentInfo);
-		final CartModel cartModel = getCart();
-		modelService.save(paymentInfo);
+    {
+        final CustomerModel currentCustomer = getCurrentUserForCheckout();
+        getCustomerAccountService().setDefaultPaymentInfo(currentCustomer, paymentInfo);
+        final CartModel cartModel = getCart();
+        modelService.save(paymentInfo);
         cartModel.setPaymentInfo(paymentInfo);
         modelService.save(cartModel);
-	}
-	
-	public PaymentTransactionEntryModel createTransactionEntry(final String requestId, final CartModel cartModel, final int amount, String backendTransactionComments, String currencyCode) {
+    }
+
+    /**
+     * Get Payment transaction entry
+     *
+     * @param requestId
+     * @param cartModel
+     * @param amount
+     * @param backendTransactionComments
+     * @param currencyCode
+     */
+    public PaymentTransactionEntryModel createTransactionEntry(final String requestId, final CartModel cartModel, final int amount, String backendTransactionComments, String currencyCode) {
         final PaymentTransactionEntryModel paymentTransactionEntry = getModelService().create(PaymentTransactionEntryModel.class);
         paymentTransactionEntry.setRequestId(requestId);
         paymentTransactionEntry.setType(PaymentTransactionType.AUTHORIZATION);
@@ -359,83 +373,83 @@ public class NovalnetOrderFacade {
 
         return paymentTransactionEntry;
     }
-    
+
     private CurrencyModel getCurrencyForIsoCode(final String currencyIsoCode) {
         CurrencyModel currencyModel = new CurrencyModel();
         currencyModel.setIsocode(currencyIsoCode);
         currencyModel = getFlexibleSearchService().getModelByExample(currencyModel);
         return currencyModel;
     }
-	
-	public CustomerModel getCurrentUserForCheckout()
-	{
-		return getCheckoutCustomerStrategy().getCurrentUserForCheckout();
-	}
-	
-	protected CommerceCheckoutParameter createCommerceCheckoutParameter(final CartModel cart, final boolean enableHooks)
-	{
-		final CommerceCheckoutParameter parameter = new CommerceCheckoutParameter();
-		parameter.setEnableHooks(enableHooks);
-		parameter.setCart(cart);
-		return parameter;
-	}
-	
-	protected CustomerAccountService getCustomerAccountService()
-	{
-		return customerAccountService;
-	}
 
-	@Required
-	public void setCustomerAccountService(final CustomerAccountService customerAccountService)
-	{
-		this.customerAccountService = customerAccountService;
-	}
-	
-	public boolean hasCheckoutCart()
-	{
-		return getCartFacade().hasSessionCart();
-	}
+    public CustomerModel getCurrentUserForCheckout()
+    {
+        return getCheckoutCustomerStrategy().getCurrentUserForCheckout();
+    }
 
-	public CartModel getCart()
-	{
-		return hasCheckoutCart() ? getCartService().getSessionCart() : null;
-	}
-	
-	protected CartFacade getCartFacade()
-	{
-		return cartFacade;
-	}
+    protected CommerceCheckoutParameter createCommerceCheckoutParameter(final CartModel cart, final boolean enableHooks)
+    {
+        final CommerceCheckoutParameter parameter = new CommerceCheckoutParameter();
+        parameter.setEnableHooks(enableHooks);
+        parameter.setCart(cart);
+        return parameter;
+    }
 
-	@Required
-	public void setCartFacade(final CartFacade cartFacade)
-	{
-		this.cartFacade = cartFacade;
-	}
-	
-	protected CartData getSessionCart()
-	{
-		return cartFacade.getSessionCart();
-	}
-	
-	protected CommerceCheckoutService getCommerceCheckoutService()
-	{
-		return commerceCheckoutService;
-	}
+    protected CustomerAccountService getCustomerAccountService()
+    {
+        return customerAccountService;
+    }
 
-	@Required
-	public void setCommerceCheckoutService(final CommerceCheckoutService commerceCheckoutService)
-	{
-		this.commerceCheckoutService = commerceCheckoutService;
-	}
-	
-	public CartData loadCart(final String cartId) {
-		cartLoaderStrategy.loadCart(cartId);
-		final CartData cartData = getSessionCart();
-		return cartData;
-	}
-	
-	public AddressModel createBillingAddress(String addressId) {
-		
+    @Required
+    public void setCustomerAccountService(final CustomerAccountService customerAccountService)
+    {
+        this.customerAccountService = customerAccountService;
+    }
+
+    public boolean hasCheckoutCart()
+    {
+        return getCartFacade().hasSessionCart();
+    }
+
+    public CartModel getCart()
+    {
+        return hasCheckoutCart() ? getCartService().getSessionCart() : null;
+    }
+
+    protected CartFacade getCartFacade()
+    {
+        return cartFacade;
+    }
+
+    @Required
+    public void setCartFacade(final CartFacade cartFacade)
+    {
+        this.cartFacade = cartFacade;
+    }
+
+    protected CartData getSessionCart()
+    {
+        return cartFacade.getSessionCart();
+    }
+
+    protected CommerceCheckoutService getCommerceCheckoutService()
+    {
+        return commerceCheckoutService;
+    }
+
+    @Required
+    public void setCommerceCheckoutService(final CommerceCheckoutService commerceCheckoutService)
+    {
+        this.commerceCheckoutService = commerceCheckoutService;
+    }
+
+    public CartData loadCart(final String cartId) {
+        cartLoaderStrategy.loadCart(cartId);
+        final CartData cartData = getSessionCart();
+        return cartData;
+    }
+
+    public AddressModel createBillingAddress(String addressId) {
+
         final AddressModel billingAddress = getModelService().create(AddressModel.class);
         billingAddress.setFirstname("");
         billingAddress.setLastname("");
@@ -451,27 +465,45 @@ public class NovalnetOrderFacade {
 
         return billingAddress;
     }
-    
+
+    /**
+     * retrieve address data
+     *
+     * @param addressId id of the address
+     * @return addressData
+     */
     public AddressData getAddressData(final String addressId)
-	{
-		final AddressData addressData = getUserFacade().getAddressForCode(addressId);
-		if (addressData == null)
-		{
-			throw new RequestParameterException(String.format(ADDRESS_DOES_NOT_EXIST, sanitize(addressId)),
-					RequestParameterException.INVALID, OBJECT_NAME_ADDRESS_ID);
-		}
-		return addressData;
-	}
-	
-	protected UserFacade getUserFacade()
-	{
-		return userFacade;
-	}
-	
-	protected static String sanitize(final String input)
-	{
-		return YSanitizer.sanitize(input);
-	}
+    {
+        final AddressData addressData = getUserFacade().getAddressForCode(addressId);
+        if (addressData == null)
+        {
+            throw new RequestParameterException(String.format(ADDRESS_DOES_NOT_EXIST, sanitize(addressId)),
+                    RequestParameterException.INVALID, OBJECT_NAME_ADDRESS_ID);
+        }
+        return addressData;
+    }
+
+    /**
+     * retrieve user facade
+     *
+     * @param input string
+     * @return userFacade
+     */
+    protected UserFacade getUserFacade()
+    {
+        return userFacade;
+    }
+
+    /**
+     * sanitize strinf
+     *
+     * @param input string
+     * @return String
+     */
+    protected static String sanitize(final String input)
+    {
+        return YSanitizer.sanitize(input);
+    }
 
      /**
      * Update Order comments
@@ -598,39 +630,39 @@ public class NovalnetOrderFacade {
         // Update OrderHistoryEntries
         OrderModel orderModel = this.getModelService().get(orderInfoModel.get(0).getPk());
         PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(paymentMethod);
-        
-        if("novalnetInvoice".equals(paymentMethod)) 
+
+        if("novalnetInvoice".equals(paymentMethod))
         {
             final NovalnetInvoicePaymentModeModel novalnetPaymentMethod = (NovalnetInvoicePaymentModeModel) paymentModeModel;
             orderModel.setStatus(novalnetPaymentMethod.getNovalnetCallbackOrderStatus());
         }
-        else if("novalnetMultibanco".equals(paymentMethod)) 
+        else if("novalnetMultibanco".equals(paymentMethod))
         {
             final NovalnetMultibancoPaymentModeModel novalnetPaymentMethod = (NovalnetMultibancoPaymentModeModel) paymentModeModel;
             orderModel.setStatus(novalnetPaymentMethod.getNovalnetCallbackOrderStatus());
         }
-        else if("novalnetPrepayment".equals(paymentMethod)) 
+        else if("novalnetPrepayment".equals(paymentMethod))
         {
             final NovalnetPrepaymentPaymentModeModel novalnetPaymentMethod = (NovalnetPrepaymentPaymentModeModel) paymentModeModel;
             orderModel.setStatus(novalnetPaymentMethod.getNovalnetCallbackOrderStatus());
         }
-        else if("novalnetBarzahlen".equals(paymentMethod)) 
+        else if("novalnetBarzahlen".equals(paymentMethod))
         {
             final NovalnetBarzahlenPaymentModeModel novalnetPaymentMethod = (NovalnetBarzahlenPaymentModeModel) paymentModeModel;
             orderModel.setStatus(novalnetPaymentMethod.getNovalnetCallbackOrderStatus());
         }
-        else if("novalnetPayPal".equals(paymentMethod)) 
+        else if("novalnetPayPal".equals(paymentMethod))
         {
             final NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
             orderModel.setStatus(novalnetPaymentMethod.getNovalnetOrderSuccessStatus());
         }
-        else if("novalnetPrzelewy24".equals(paymentMethod)) 
+        else if("novalnetPrzelewy24".equals(paymentMethod))
         {
             final NovalnetPrzelewy24PaymentModeModel novalnetPaymentMethod = (NovalnetPrzelewy24PaymentModeModel) paymentModeModel;
             orderModel.setStatus(novalnetPaymentMethod.getNovalnetOrderSuccessStatus());
         }
-        
-        
+
+
         orderModel.setPaymentStatus(PaymentStatus.PAID);
 
         this.getModelService().save(orderModel);
@@ -659,8 +691,8 @@ public class NovalnetOrderFacade {
         OrderModel orderModel = this.getModelService().get(orderInfoModel.get(0).getPk());
         final BaseStoreModel baseStore = this.getBaseStoreModel();
         orderModel.setStatus(getOrderStatus(paymentInfoModel, baseStore));
-        
-        final String paymentMethod = paymentInfoModel.getPaymentProvider();        
+
+        final String paymentMethod = paymentInfoModel.getPaymentProvider();
         String[] bankPayments = {"novalnetInvoice", "novalnetPrepayment", "novalnetBarzahlen"};
         boolean isInvoicePrepayment = Arrays.asList(bankPayments).contains(paymentMethod);
         String[] pendingStatusCode = {"ON_HOLD","PENDING"};
@@ -675,7 +707,7 @@ public class NovalnetOrderFacade {
             // Update the payment status for completed payments
             orderModel.setPaymentStatus(PaymentStatus.PAID);
         }
-        
+
         this.getModelService().save(orderModel);
 
     }
@@ -704,7 +736,7 @@ public class NovalnetOrderFacade {
      * Update Payment info details in database
      *
      * @param orderReference order details
-     * @param tidStatus status of the transacction 
+     * @param tidStatus status of the transacction
      */
     public void updatePaymentInfo(List<NovalnetPaymentInfoModel> orderReference, String tidStatus) {
         NovalnetPaymentInfoModel paymentInfoModel = this.getModelService().get(orderReference.get(0).getPk());
@@ -726,7 +758,7 @@ public class NovalnetOrderFacade {
     public OrderStatus getOrderStatus(NovalnetPaymentInfoModel paymentInfoModel, BaseStoreModel baseStore) {
         final String paymentMethod = paymentInfoModel.getPaymentProvider();
         PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(paymentMethod);
-        
+
         if ("novalnetCreditCard".equals(paymentMethod)) {
             NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
             if ("ON_HOLD".equals(paymentInfoModel.getPaymentGatewayStatus())) {
@@ -824,6 +856,11 @@ public class NovalnetOrderFacade {
         return OrderStatus.COMPLETED;
     }
 
+    /**
+     * Check age requirement
+     *
+     * @param dateInString dob of the customer
+     */
     public static boolean hasAgeRequirement(String dateInString) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
@@ -868,7 +905,7 @@ public class NovalnetOrderFacade {
 
     /**
      * Returns the default billing address for the given customer.
-     * 
+     *
      * @param billingAddressPk
      *           the customer's unique ID
      * @return the default billing address of the user
@@ -916,7 +953,7 @@ public class NovalnetOrderFacade {
                 responeParameters.put("due_date", (novalnetPaymentMethod.getNovalnetDueDate() == null) ? "2" :novalnetPaymentMethod.getNovalnetDueDate().toString());
                 responeParameters.put("force_guarantee", novalnetPaymentMethod.getNovalnetForceGuarantee().toString());
                 responeParameters.put("guarantee_minimum_amount", novalnetPaymentMethod.getNovalnetMinimumGuaranteeAmount().toString());
-     
+
             } else if ("novalnetInvoice".equals(paymentMethod)) {
                 NovalnetInvoicePaymentModeModel novalnetPaymentMethod = (NovalnetInvoicePaymentModeModel) paymentModeModel;
 
@@ -927,7 +964,7 @@ public class NovalnetOrderFacade {
                 responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction().toString());
                 responeParameters.put("due_date", (novalnetPaymentMethod.getNovalnetDueDate() == null) ? "7" : novalnetPaymentMethod.getNovalnetDueDate().toString());
 
-     
+
             } else if ("novalnetGuaranteedInvoice".equals(paymentMethod)) {
                 NovalnetGuaranteedInvoicePaymentModeModel novalnetPaymentMethod = (NovalnetGuaranteedInvoicePaymentModeModel) paymentModeModel;
 
@@ -938,7 +975,7 @@ public class NovalnetOrderFacade {
                 responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction().toString());
                 responeParameters.put("force_guarantee", novalnetPaymentMethod.getNovalnetForceGuarantee().toString());
                 responeParameters.put("guarantee_minimum_amount", novalnetPaymentMethod.getNovalnetMinimumGuaranteeAmount().toString());
-     
+
             } else if ("novalnetPrepayment".equals(paymentMethod)) {
                 NovalnetPrepaymentPaymentModeModel novalnetPaymentMethod = (NovalnetPrepaymentPaymentModeModel) paymentModeModel;
 
@@ -947,14 +984,14 @@ public class NovalnetOrderFacade {
                 responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
                 responeParameters.put("due_date", (novalnetPaymentMethod.getNovalnetDueDate() == null) ? "7" : novalnetPaymentMethod.getNovalnetDueDate().toString());
-     
+
             } else if ("novalnetMultibanco".equals(paymentMethod)) {
                 NovalnetMultibancoPaymentModeModel novalnetPaymentMethod = (NovalnetMultibancoPaymentModeModel) paymentModeModel;
 
                 responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
                 responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
-     
+
             } else if ("novalnetBarzahlen".equals(paymentMethod)) {
                 NovalnetBarzahlenPaymentModeModel novalnetPaymentMethod = (NovalnetBarzahlenPaymentModeModel) paymentModeModel;
 
@@ -962,7 +999,7 @@ public class NovalnetOrderFacade {
                 responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
                 responeParameters.put("due_date", (novalnetPaymentMethod.getNovalnetBarzahlenslipExpiryDate() == null) ? "14" : novalnetPaymentMethod.getNovalnetBarzahlenslipExpiryDate().toString());
-     
+
             } else if ("novalnetPayPal".equals(paymentMethod)) {
                 NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
 
@@ -971,73 +1008,73 @@ public class NovalnetOrderFacade {
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
                 responeParameters.put("onhold_amount", (novalnetPaymentMethod.getNovalnetOnholdAmount() == null) ? "0" : novalnetPaymentMethod.getNovalnetOnholdAmount().toString());
                 responeParameters.put("onhold_action", novalnetPaymentMethod.getNovalnetOnholdAction().toString());
-     
+
             } else if ("novalnetInstantBankTransfer".equals(paymentMethod)) {
                 NovalnetInstantBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetInstantBankTransferPaymentModeModel) paymentModeModel;
 
                 responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
                 responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
-     
+
             } else if ("novalnetOnlineBankTransfer".equals(paymentMethod)) {
                 NovalnetOnlineBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetOnlineBankTransferPaymentModeModel) paymentModeModel;
 
                 responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
                 responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
-     
+
             }  else if ("novalnetBancontact".equals(paymentMethod)) {
                 NovalnetBancontactPaymentModeModel novalnetPaymentMethod = (NovalnetBancontactPaymentModeModel) paymentModeModel;
 
                 responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
                 responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
-     
+
             } else if ("novalnetPostFinanceCard".equals(paymentMethod)) {
                 NovalnetPostFinanceCardPaymentModeModel novalnetPaymentMethod = (NovalnetPostFinanceCardPaymentModeModel) paymentModeModel;
 
                 responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
                 responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
-     
+
             } else if ("novalnetPostFinance".equals(paymentMethod)) {
                 NovalnetPostFinancePaymentModeModel novalnetPaymentMethod = (NovalnetPostFinancePaymentModeModel) paymentModeModel;
 
                 responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
                 responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
-     
+
             } else if ("novalnetIdeal".equals(paymentMethod)) {
                 NovalnetIdealPaymentModeModel novalnetPaymentMethod = (NovalnetIdealPaymentModeModel) paymentModeModel;
 
                 responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
                 responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
-     
+
             } else if ("novalnetEps".equals(paymentMethod)) {
                 NovalnetEpsPaymentModeModel novalnetPaymentMethod = (NovalnetEpsPaymentModeModel) paymentModeModel;
 
                 responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
                 responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
-     
+
             } else if ("novalnetGiropay".equals(paymentMethod)) {
                 NovalnetGiropayPaymentModeModel novalnetPaymentMethod = (NovalnetGiropayPaymentModeModel) paymentModeModel;
 
                 responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
                 responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
-     
+
             } else if ("novalnetPrzelewy24".equals(paymentMethod)) {
                 NovalnetPrzelewy24PaymentModeModel novalnetPaymentMethod = (NovalnetPrzelewy24PaymentModeModel) paymentModeModel;
 
                 responeParameters.put("active", novalnetPaymentMethod.getActive().toString());
                 responeParameters.put("test_mode", novalnetPaymentMethod.getNovalnetTestMode().toString());
                 responeParameters.put("description", novalnetPaymentMethod.getDescription().toString());
-     
+
             }
 
-            
+
         } else {
             final BaseStoreModel baseStore = getBaseStoreModel();
             responeParameters.put("client_key", baseStore.getNovalnetClientKey());
@@ -1045,5 +1082,5 @@ public class NovalnetOrderFacade {
 
         return responeParameters;
     }
-    
+
 }

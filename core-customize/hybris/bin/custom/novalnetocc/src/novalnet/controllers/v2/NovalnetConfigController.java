@@ -89,8 +89,6 @@ import de.novalnet.beans.NnPrzelewy24Data;
 import de.novalnet.beans.NnPostFinanceCardData;
 import de.novalnet.beans.NnPostFinanceData;
 
-// import com.mirakl.hybris.fulfilmentprocess.actions.order.CreateMarketplaceOrderAction;
-
 @Controller
 @RequestMapping(value = "/{baseSiteId}/novalnet/config")
 @ApiVersion("v2")

@@ -1,13 +1,19 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "cli": {
+    "packageManager": "yarn"
+  },
   "newProjectRoot": "projects",
   "projects": {
-    "mystore1": {
+    "spartacusstore": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
         }
       },
       "root": "",
@@ -17,17 +23,16 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/mystore1",
+            "outputPath": "dist/spartacusstore/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "./node_modules/@spartacus/smartedit/assets",
@@ -37,19 +42,14 @@
             "styles": [
               "src/styles.scss",
               "src/styles/spartacus/user.scss",
-              "src/styles/spartacus/cart.scss",
-              "src/styles/spartacus/order.scss",
-              "src/styles/spartacus/checkout.scss",
               "src/styles/spartacus/storefinder.scss",
               "src/styles/spartacus/product.scss",
-              "src/styles/spartacus/asm.scss"
+              "src/styles/spartacus/checkout.scss",
+              "src/styles/spartacus/cart.scss"
             ],
             "scripts": [],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "node_modules/"
-              ]
-            }
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
             "production": {
@@ -63,6 +63,12 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
                   "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
               ],
               "outputHashing": "all"
@@ -82,10 +88,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "mystore1:build:production"
+              "browserTarget": "spartacusstore:build:production"
             },
             "development": {
-              "browserTarget": "mystore1:build:development"
+              "browserTarget": "spartacusstore:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -93,21 +99,21 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "mystore1:build"
+            "browserTarget": "spartacusstore:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "./node_modules/@spartacus/smartedit/assets",
@@ -117,25 +123,75 @@
             "styles": [
               "src/styles.scss",
               "src/styles/spartacus/user.scss",
-              "src/styles/spartacus/cart.scss",
-              "src/styles/spartacus/order.scss",
-              "src/styles/spartacus/checkout.scss",
               "src/styles/spartacus/storefinder.scss",
               "src/styles/spartacus/product.scss",
-              "src/styles/spartacus/asm.scss"
+              "src/styles/spartacus/checkout.scss",
+              "src/styles/spartacus/cart.scss"
             ],
-            "scripts": [],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "node_modules/"
-              ]
-            }
+            "scripts": []
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/spartacusstore/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json",
+            "inlineStyleLanguage": "scss"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "spartacusstore:build:development",
+              "serverTarget": "spartacusstore:server:development"
+            },
+            "production": {
+              "browserTarget": "spartacusstore:build:production",
+              "serverTarget": "spartacusstore:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "spartacusstore:build:production",
+              "serverTarget": "spartacusstore:server:production"
+            },
+            "development": {
+              "browserTarget": "spartacusstore:build:development",
+              "serverTarget": "spartacusstore:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
   },
-  "cli": {
-    "analytics": "331cdd5e-3eaa-4a0d-b1a9-f5afef4cb57b"
-  }
+  "defaultProject": "spartacusstore"
 }

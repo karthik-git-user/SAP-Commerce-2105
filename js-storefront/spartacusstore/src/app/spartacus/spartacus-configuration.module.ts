@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { translationChunksConfig, translations } from "@spartacus/assets";
 import { FeaturesConfig, I18nConfig, OccConfig, provideConfig, SiteContextConfig } from "@spartacus/core";
 import { defaultCmsContentProviders, layoutConfig, mediaConfig } from "@spartacus/storefront";
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [],
@@ -10,11 +11,17 @@ import { defaultCmsContentProviders, layoutConfig, mediaConfig } from "@spartacu
   providers: [provideConfig(layoutConfig), provideConfig(mediaConfig), ...defaultCmsContentProviders, provideConfig(<OccConfig>{
     backend: {
       occ: {
-        baseUrl: 'https://localhost:9002',
+        baseUrl: environment.occBaseUrl
       }
     },
   }), provideConfig(<SiteContextConfig>{
-    context: {},
+    context: {
+      // TODO: adjust parameters and site
+      urlParameters: ['baseSite', 'language', 'currency'],
+      baseSite: ['electronics-spa'],
+      currency: ['USD'],
+      language: ['en'],
+    },
   }), provideConfig(<I18nConfig>{
     i18n: {
       resources: translations,
@@ -23,7 +30,7 @@ import { defaultCmsContentProviders, layoutConfig, mediaConfig } from "@spartacu
     },
   }), provideConfig(<FeaturesConfig>{
     features: {
-      level: '5.0'
+      level: '4.1'
     }
   })]
 })
