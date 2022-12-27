@@ -120,6 +120,15 @@
                     <persistence type="property"/>
                     <modifiers encrypted="false" optional="true"/>
                 </attribute>
+                <attribute qualifier="novalnetOneClickShopping" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" initial="false" optional="false"/>
+                </attribute>
+                <attribute qualifier="novalnetZeroAmountBooking" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" initial="false" optional="false"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                </attribute>
             </attributes>
         </itemtype>
 
@@ -160,6 +169,11 @@
                     <persistence type="property"/>
                     <modifiers encrypted="false" optional="true"/>
                 </attribute>
+                <attribute qualifier="novalnetOneClickShopping" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" initial="false" optional="false"/>
+                    <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+                </attribute>
             </attributes>
         </itemtype>
 
@@ -185,6 +199,16 @@
                 <attribute qualifier="novalnetOnholdAmount" type="java.lang.Integer">
                     <persistence type="property"/>
                     <modifiers encrypted="false" optional="true"/>
+                </attribute>
+                <attribute qualifier="novalnetOneClickShopping" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" initial="false" optional="false"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                </attribute>
+                <attribute qualifier="novalnetZeroAmountBooking" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" initial="false" optional="false"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
                 </attribute>
             </attributes>
         </itemtype>
@@ -223,10 +247,15 @@
                     <modifiers encrypted="false" initial="false" optional="false"/>
                     <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
                 </attribute>
-                <attribute qualifier="novalnetEnforce3D" type="java.lang.Boolean">
+                <attribute qualifier="novalnetOneClickShopping" type="java.lang.Boolean">
                     <persistence type="property"/>
                     <modifiers encrypted="false" initial="false" optional="false"/>
                     <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+                </attribute>
+                <attribute qualifier="novalnetZeroAmountBooking" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" initial="false" optional="false"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
                 </attribute>
                 <attribute qualifier="novalnetStandardLabelCss" type="java.lang.String">
                     <persistence type="property">
@@ -374,13 +403,17 @@
                     <modifiers encrypted="false" initial="false" optional="false"/>
                     <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
                 </attribute>
-                <attribute qualifier="novalnetMinimumGuaranteeAmount" type="java.lang.Integer">
-                    <persistence type="property"/>
-                    <modifiers encrypted="false" optional="true"/>
-                </attribute>
                 <attribute autocreate="true" qualifier="novalnetOrderSuccessStatus" type="OrderStatus" generate="true">
                     <persistence type="property" qualifier="novalnetOrderSuccessStatusPK"/>
                     <modifiers encrypted="false" search="true" optional="true"/>
+                </attribute>
+                <attribute autocreate="true" qualifier="novalnetCallbackOrderStatus" type="OrderStatus" generate="true">
+                    <persistence type="property" qualifier="novalnetCallbackOrderStatusPK"/>
+                    <modifiers encrypted="false" search="true" optional="true"/>
+                </attribute>
+                <attribute qualifier="novalnetMinimumGuaranteeAmount" type="java.lang.Integer">
+                    <persistence type="property"/>
+                    <modifiers encrypted="false" optional="true"/>
                 </attribute>
             </attributes>
         </itemtype>

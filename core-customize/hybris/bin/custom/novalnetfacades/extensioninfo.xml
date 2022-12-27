@@ -13,7 +13,7 @@
       <requires-extension name="solrfacetsearchbackoffice"/>
 -->
 
-      <coremodule generated="true" manager="de.novalnet.jalo.NovalnetfacadesManager" packageroot="de.novalnet"/>
+      <coremodule generated="true" manager="de.novalnet.jalo.MiraklfacadesManager" packageroot="de.novalnet"/>
 
    </extension>
       

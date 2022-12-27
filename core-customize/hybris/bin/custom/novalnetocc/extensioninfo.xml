@@ -14,7 +14,8 @@
         <requires-extension name="acceleratorocc"/>
         <requires-extension name="acceleratorwebservicesaddon"/>
         <requires-extension name="commercefacades"/>
-        <requires-extension name="novalnetfacades"/>                		
+        <requires-extension name="novalnetfacades"/>
+                		
         
         <coremodule generated="true" manager="novalnet.jalo.NovalnetoccManager" packageroot="novalnet"/>
                 		
