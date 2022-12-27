@@ -70,9 +70,7 @@
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
                                           qualifier="novalnetInlineCC"/>
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetOneClickShopping"/>
-                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetZeroAmountBooking"/>
+                                          qualifier="novalnetEnforce3D"/>
                 </editorArea:section>
                 <editorArea:section name="sec.novalnetpaymentmodecreditcard.customcss">
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
@@ -102,10 +100,6 @@
                                           qualifier="novalnetOnholdAction"/>
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
                                           qualifier="novalnetOnholdAmount"/>
-                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetOneClickShopping"/>
-                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetZeroAmountBooking"/>
                 </editorArea:section>
             </editorArea:tab>
         </editorArea:editorArea>
@@ -131,8 +125,6 @@
                                           qualifier="novalnetOnholdAmount"/>
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
                                           qualifier="novalnetForceGuarantee"/>
-                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetOneClickShopping"/>
 
                 </editorArea:section>
             </editorArea:tab>
@@ -174,8 +166,6 @@
                                           qualifier="novalnetMinimumGuaranteeAmount"/>
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
                                           qualifier="novalnetOrderSuccessStatus"/>
-                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetCallbackOrderStatus"/>
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
                                           qualifier="novalnetOnholdAction"/>
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
@@ -346,10 +336,6 @@
                                           qualifier="novalnetOnholdAction"/>
                     <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
                                           qualifier="novalnetOnholdAmount"/>
-                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetOneClickShopping"/>
-                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea"
-                                          qualifier="novalnetZeroAmountBooking"/>
                 </editorArea:section>
             </editorArea:tab>
         </editorArea:editorArea>
