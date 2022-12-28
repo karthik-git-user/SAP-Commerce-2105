@@ -378,7 +378,6 @@ public class NovalnetOrdersController
         transactionParameters.put("amount", orderAmountCent);
         transactionParameters.put("system_name", "SAP Commerce Cloud");
         transactionParameters.put("system_version", "2211-NN1.0.0");
-        transactionParameters.put("hook_url", "https://api.czoc5dfcf0-novalneta2-d1-public.model-t.cc.commerce.ondemand.com/occ/v2/electronics/novalnet/callback");
 
         Map<String, String> responseDeatils = novalnetOrderFacade.getBackendConfiguration("payment", payment);
 
