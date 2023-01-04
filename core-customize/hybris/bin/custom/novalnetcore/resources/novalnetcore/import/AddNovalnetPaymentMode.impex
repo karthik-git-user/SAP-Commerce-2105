@@ -11,7 +11,7 @@ INSERT_UPDATE NovalnetInvoicePaymentMode;code[unique=true];name[lang=de];name[la
 ;novalnetInvoice;Kauf auf Rechnung;Invoice;Sie erhalten eine E-Mail mit den Bankdaten von Novalnet, um die Zahlung abzuschließen;You will receive an e-mail with the Novalnet account details to complete the payment;false;PaymentInfo;false;PAYMENT_NOT_AUTHORIZED;COMPLETED
 
 INSERT_UPDATE NovalnetGuaranteedInvoicePaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code);novalnetMinimumGuaranteeAmount
-;novalnetGuaranteedInvoice;Rechnung mit Zahlungsgarantie;Invoice;Sie erhalten eine E-Mail mit den Bankdaten von Novalnet, um die Zahlung abzuschließen; You will receive an e-mail with the Novalnet account details to complete the payment;false;PaymentInfo;false;PAYMENT_NOT_AUTHORIZED;999
+;novalnetGuaranteedInvoice;Rechnung mit Zahlungsgarantie;Invoice with payment guarantee;Sie erhalten eine E-Mail mit den Bankdaten von Novalnet, um die Zahlung abzuschließen; You will receive an e-mail with the Novalnet account details to complete the payment;false;PaymentInfo;false;PAYMENT_NOT_AUTHORIZED;999
 
 INSERT_UPDATE NovalnetPrepaymentPaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code);novalnetTestMode;novalnetOrderSuccessStatus(code);novalnetCallbackOrderStatus(code)
 ;novalnetPrepayment;Vorkasse;Prepayment;Sie erhalten eine E-Mail mit den Bankdaten von Novalnet, um die Zahlung abzuschließen;You will receive an e-mail with the Novalnet account details to complete the payment;false;PaymentInfo;false;PAYMENT_NOT_AUTHORIZED;COMPLETED
