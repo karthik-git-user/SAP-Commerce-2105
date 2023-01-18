@@ -7,7 +7,6 @@ import { StoreModule } from "@ngrx/store";
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NovalnetPaymentsModule } from "./novalnet-payments/novalnet-payments.module";
 import { SpartacusModule } from './spartacus/spartacus.module';
 
 @NgModule({
@@ -28,7 +27,6 @@ import { SpartacusModule } from './spartacus/spartacus.module';
       registrationStrategy: 'registerWhenStable:30000'
     }),
     BrowserTransferStateModule,
-    NovalnetPaymentsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
