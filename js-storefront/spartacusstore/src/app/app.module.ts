@@ -1,13 +1,14 @@
 import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { EffectsModule } from "@ngrx/effects";
 import { StoreModule } from "@ngrx/store";
+import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { NovalnetPaymentsModule } from "./novalnet-payments/novalnet-payments.module";
 import { SpartacusModule } from './spartacus/spartacus.module';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { environment } from '../environments/environment';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    BrowserTransferStateModule
+    BrowserTransferStateModule,
+    NovalnetPaymentsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
