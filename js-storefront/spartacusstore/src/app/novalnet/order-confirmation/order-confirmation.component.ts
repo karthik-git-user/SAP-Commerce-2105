@@ -74,7 +74,7 @@ export class OrderConfirmationComponent implements OnDestroy  {
 		  // new CartActions.ClearCartState();
 		  //~ this.clearCartDialogComponentService.deleteActiveCart();
 		  // this.activeCartService.reloadActiveCart();
-      this.eventService.dispatch({this.placedOrder}, OrderPlacedEvent);
+      //~ this.eventService.dispatch({this.placedOrder}, OrderPlacedEvent);
   }
   
   
