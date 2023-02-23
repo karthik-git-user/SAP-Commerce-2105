@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="beans.xsd">
 	
+	<bean class="de.novalnet.beans.NnPaymentResponseData">
+		<property name="paymentURL" type="String"/>
+		<property name="error" type="String"/>
+	</bean>
+	
 	<bean class="de.novalnet.beans.NnResponseData">
 		<property name="redirectURL" type="String"/>
 	</bean>
@@ -9,6 +14,67 @@
 		<property name="novalnetClienKey" type="String"/>
 		<property name="paymentinfo" type="de.novalnet.beans.NnPaymentData"/>
 	</bean>
+	
+	<bean class="de.novalnet.beans.NnPaymentRequestData">
+		<property name="cartId" type="String"/>
+           
+        <property name="returnUrl" type="String"/>
+            
+        <property name="paymentData" type="de.novalnet.beans.PaymentDetailsData"/>
+        
+        <property name="address" type="de.novalnet.beans.AddressDetailsData"/>
+            
+	</bean>
+	
+	<bean class="de.novalnet.beans.AddressDetailsData">
+		
+		<property name="sameAsdelivery" type="Boolean"/>
+		<property name="billingAddress" type="de.novalnet.beans.NnBillingData"/>
+		
+	</bean>
+		
+		
+	<bean class="de.novalnet.beans.PaymentDetailsData">
+		<property name="result" type="de.novalnet.beans.ResultData"/>
+            
+        <property name="payment_details" type="de.novalnet.beans.PayDetailsData"/>
+            
+        <property name="booking_details" type="de.novalnet.beans.BookingData"/>
+            
+	</bean>
+	
+	<bean class="de.novalnet.beans.PayDetailsData">
+		<property name="key"  type="String"/>
+        <property name="name"  type="String"/>
+        <property name="type" type="String"/>
+        <property name="process_mode" type="String"/>
+	</bean>
+	
+	<bean class="de.novalnet.beans.BookingData">
+		<property name="create_token"  type="String"/>
+        <property name="test_mode"  type="String"/>
+        <property name="payment_action" type="String"/>
+        <property name="do_redirect" type="String"/>
+        <property name="pan_hash" type="String"/>
+        <property name="unique_id" type="String"/>
+        <property name="iban" type="String"/>
+        <property name="account_holder" type="String"/>
+        <property name="force_non_gurantee" type="String"/>
+        <property name="birth_date" type="String"/>
+        <property name="min_amount" type="String"/>
+        <property name="wallet_token" type="String"/> 
+        <property name="due_date" type="String"/>
+	</bean>
+	
+	<bean class="de.novalnet.beans.ResultData">
+		<property name="status" type="String"/>
+        <property name="status_code" type="String"/>
+        <property name="message" type="String"/>
+            
+	</bean>
+	
+	
+	
 
 	<bean class="de.novalnet.beans.NnPaymentData">
 		<property name="novalnetCreditCard" type="de.novalnet.beans.NnCreditCardData"/>
@@ -36,9 +102,15 @@
 		<property name="action" type="String"/>
 		<property name="cartId" type="String"/>
 		<property name="tid" type="String"/>
+		<property name="sameAsdelivery" type="Boolean"/>
 		<property name="returnUrl" type="String"/>
 		<property name="billingAddress" type="de.novalnet.beans.NnBillingData"/>
+<!--
 		<property name="paymentData" type="de.novalnet.beans.NnPaymentsData"/>
+-->
+	<property name="paymentData" type="de.novalnet.beans.PaymentDetailsData"/>
+        
+        <property name="address" type="de.novalnet.beans.AddressDetailsData"/>
 	</bean>
 	
 	<bean class="de.novalnet.beans.NnCallbackRequestData">
@@ -290,6 +362,12 @@
 		<property name="uniqId" type="String"/>
 		<property name="iban" type="String"/>
 		<property name="bic" type="String"/>
+	</bean>
+	
+	<bean class="de.novalnet.beans.NnCartData">
+		<property name="paymentMethod" type="String"/>
+		<property name="cartId" type="String"/>
+		<property name="billingAddress" type="de.novalnet.beans.NnBillingData"/>
 	</bean>
 
 </beans>

@@ -23,9 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.http.HttpStatus;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
+//import io.swagger.v3.oas.annotations.Operation;
+//import io.swagger.v3.oas.annotations.Parameter;
+//import io.swagger.v3.oas.annotations.tags.Tag;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 import static de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper.DEFAULT_LEVEL;
 import de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper;
@@ -71,7 +75,7 @@ import java.security.NoSuchAlgorithmException;
 @Controller
 @RequestMapping(value = "/{baseSiteId}/novalnet")
 @ApiVersion("v2")
-@Tag(name = "Novalnet Callback")
+@Api(tags = "Novalnet Callback")
 public class NovalnetCallbackController
 {
     private final static Logger LOG = Logger.getLogger(NovalnetCallbackController.class);
@@ -124,10 +128,10 @@ public class NovalnetCallbackController
     @RequestMapping(value = "/callback", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    @Operation(operationId = "callback", summary = "handle callback request", description = "keeps the transactions in sync between novalnet and the sap commerce")
+    @ApiOperation(nickname = "callback", value = "handle callback request", notes = "keeps the transactions in sync between novalnet and the sap commerce")
     @ApiBaseSiteIdAndUserIdParam
     public NnCallbackResponseWsDTO handleCallback(
-            @Parameter(description =
+            @ApiParam(value =
     "Request body parameter that contains callback request", required = true) @RequestBody final NnCallbackRequestWsDTO callbackRequest,
             @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields, final HttpServletRequest request)
             throws UnknownHostException, NoSuchAlgorithmException
@@ -210,6 +214,7 @@ public class NovalnetCallbackController
         creditPayments.put("CREDIT_ENTRY_DE", "CREDIT_ENTRY_DE");
         creditPayments.put("CREDITCARD_REPRESENTMENT", "CREDITCARD_REPRESENTMENT");
         creditPayments.put("BANK_TRANSFER_BY_END_CUSTOMER", "BANK_TRANSFER_BY_END_CUSTOMER");
+        creditPayments.put("GOOGLEPAY_REPRESENTMENT", "GOOGLEPAY_REPRESENTMENT");
 
         initialPayments.put("CREDITCARD", "CREDITCARD");
         initialPayments.put("INVOICE_START", "INVOICE_START");
@@ -318,10 +323,10 @@ public class NovalnetCallbackController
 
 
         // Validate order's payment method with requested payment type
-        if (!Arrays.asList(suppotedCallbackPaymentTypes).contains(requestPaymentType)) {
-            callbackResponseData.setMessage("Novalnet webhook executed. Payment type mismatched");
-            return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
-        }
+        // if (!Arrays.asList(suppotedCallbackPaymentTypes).contains(requestPaymentType)) {
+        //     callbackResponseData.setMessage("Novalnet webhook executed. Payment type mismatched");
+        //     return dataMapper.map(callbackResponseData, NnCallbackResponseWsDTO.class, fields);
+        // }
 
         transactionStatus = transactionData.getStatus();
 
@@ -353,7 +358,7 @@ public class NovalnetCallbackController
     public String performTransacrionUpdate(NnCallbackRequestData callbackRequestData) {
 
         String[] pendingPaymentType = {"PAYPAL", "PRZELEWY24", "POSTFINANCE_CARD", "POSTFINANCE"};
-        String[] processPaymentType = {"DIRECT_DEBIT_SEPA", "INVOICE_START", "GUARANTEED_DIRECT_DEBIT_SEPA", "GUARANTEED_INVOICE", "CREDITCARD", "PAYPAL"};
+        String[] processPaymentType = {"DIRECT_DEBIT_SEPA", "INVOICE_START", "GUARANTEED_DIRECT_DEBIT_SEPA", "GUARANTEED_INVOICE", "CREDITCARD", "PAYPAL", "GOOGLEPAY", "APPLEPAY"};
 
         final List<NovalnetCallbackInfoModel> orderReference = novalnetOrderFacade.getCallbackInfo(transactionData.getTid().toString());
 
@@ -517,7 +522,7 @@ public class NovalnetCallbackController
 
         long callbackTid = Long.parseLong(transactionData.getTid().toString());
 
-        String[] creditPayment = {"CREDIT_ENTRY_CREDITCARD", "CREDIT_ENTRY_SEPA", "DEBT_COLLECTION_SEPA", "DEBT_COLLECTION_CREDITCARD", "CREDIT_ENTRY_DE", "DEBT_COLLECTION_DE", "CREDITCARD_REPRESENTMENT", "BANK_TRANSFER_BY_END_CUSTOMER"};
+        
         String[] creditPaymentType = {"INVOICE_CREDIT", "CASHPAYMENT_CREDIT", "MULTIBANCO_CREDIT"};
 
         LOG.info("payment type credit : " + transactionData.getPayment_type());
@@ -537,7 +542,7 @@ public class NovalnetCallbackController
                 // Full amount paid by the customer
                 if (totalAmount >= orderAmount) {
                     // Update Callback order status
-                    novalnetOrderFacade.updateCallbackOrderStatus(orderNo, paymentType);
+                    //~ novalnetOrderFacade.updateCallbackOrderStatus(orderNo, paymentType);
 
                     // Customer paid greater than the order amount
                     if (totalAmount > orderAmount) {
@@ -549,7 +554,7 @@ public class NovalnetCallbackController
                 novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
                 return callbackComments;
             }
-        } else if (Arrays.asList(creditPayment).contains(transactionData.getPayment_type())) {
+        } else {
             callbackComments = "Credit has been successfully received for the TID: " + eventData.getParent_tid().toString() + " with amount: " + formattedAmount + " " + transactionData.getCurrency().toString() + " on " + currentDate.toString() + ". Please refer PAID order details in our Novalnet Admin Portal for the TID:" + transactionData.getTid().toString() + ".";
             novalnetOrderFacade.updateCallbackInfo(callbackTid, orderReference, totalAmount);
             novalnetOrderFacade.updateCallbackComments(callbackComments, orderNo, transactionStatus);
@@ -570,7 +575,7 @@ public class NovalnetCallbackController
 
         if(refundPayments.containsValue(requestPaymentType) ||  chargebackPayments.containsValue(requestPaymentType)) {
 
-            String[] chargeBackPaymentType = {"CREDITCARD_CHARGEBACK", "PAYPAL_CHARGEBACK", "RETURN_DEBIT_SEPA", "REVERSAL"};
+            String[] chargeBackPaymentType = {"CREDITCARD_CHARGEBACK", "PAYPAL_CHARGEBACK", "RETURN_DEBIT_SEPA", "REVERSAL", "APPLEPAY_CHARGEBACK", "GOOGLEPAY_CHARGEBACK"};
             BigDecimal refundFormattedAmount = new BigDecimal(0);
 
             int amountInCents = Integer.parseInt(transactionData.getAmount().toString());

@@ -37,9 +37,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
+//import io.swagger.v3.oas.annotations.Operation;
+//import io.swagger.v3.oas.annotations.Parameter;
+//import io.swagger.v3.oas.annotations.tags.Tag;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 import static de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper.DEFAULT_LEVEL;
 import de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper;
@@ -61,27 +65,31 @@ import java.util.Date;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.*;
+import java.util.Iterator;
+
+import de.hybris.platform.util.localization.Localization;
 
 import de.hybris.novalnet.core.model.NovalnetPaymentInfoModel;
 
-import de.hybris.novalnet.core.model.NovalnetDirectDebitSepaPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetGuaranteedDirectDebitSepaPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetGuaranteedInvoicePaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetPayPalPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetCreditCardPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetInvoicePaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetPrepaymentPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetBarzahlenPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetInstantBankTransferPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetOnlineBankTransferPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetBancontactPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetMultibancoPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetIdealPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetEpsPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetGiropayPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetPrzelewy24PaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetPostFinanceCardPaymentModeModel;
-import de.hybris.novalnet.core.model.NovalnetPostFinancePaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetDirectDebitSepaPaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetGuaranteedDirectDebitSepaPaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetGuaranteedInvoicePaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetPayPalPaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetCreditCardPaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetInvoicePaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetPrepaymentPaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetBarzahlenPaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetInstantBankTransferPaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetOnlineBankTransferPaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetBancontactPaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetMultibancoPaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetIdealPaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetEpsPaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetGiropayPaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetPrzelewy24PaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetPostFinanceCardPaymentModeModel;
+// import de.hybris.novalnet.core.model.NovalnetPostFinancePaymentModeModel;
+import de.hybris.novalnet.core.model.NovalnetPaymentModeModel;
 
 import de.hybris.novalnet.core.model.NovalnetCallbackInfoModel;
 import de.hybris.platform.core.model.order.payment.PaymentModeModel;
@@ -105,6 +113,9 @@ import novalnet.dto.payment.NnResponseWsDTO;
 import de.novalnet.beans.NnPaymentDetailsData;
 import novalnet.dto.payment.NnPaymentDetailsWsDTO;
 import novalnet.dto.payment.NnRequestWsDTO;
+import novalnet.dto.payment.NnPaymentRequestWsDTO;
+import novalnet.dto.payment.PayDetailsWsDTO;
+import novalnet.dto.payment.NnPaymentsWsDTO;
 import de.novalnet.beans.NnCreditCardData;
 import de.novalnet.beans.NnDirectDebitSepaData;
 import de.novalnet.beans.NnPayPalData;
@@ -113,17 +124,25 @@ import de.novalnet.beans.NnBillingData;
 import de.novalnet.beans.NnCountryData;
 import de.novalnet.beans.NnRegionData;
 import de.novalnet.beans.NnPaymentData;
+import de.novalnet.beans.NnPaymentRequestData;
+import de.novalnet.beans.PaymentDetailsData;
+import de.novalnet.beans.AddressDetailsData;
+import de.novalnet.beans.ResultData;
+import de.novalnet.beans.PayDetailsData;
+import de.novalnet.beans.BookingData;
+import de.novalnet.beans.PayDetailsData;
 import de.novalnet.beans.NnPaymentsData;
 import de.novalnet.beans.NnConfigData;
 import novalnet.dto.payment.NnConfigWsDTO;
 import java.text.NumberFormat;
 import java.text.DecimalFormat;
 
+// import com.mirakl.hybris.fulfilmentprocess.actions.order.CreateMarketplaceOrderAction;
 
 @Controller
-@RequestMapping(value = "/{baseSiteId}/users/{userId}/novalnet/orders")
+@RequestMapping(value = "/{baseSiteId}/novalnet/orders")
 @ApiVersion("v2")
-@Tag(name = "Novalnet Orders")
+@Api(tags = "Novalnet Carts")
 public class NovalnetOrdersController 
 {
     private final static Logger LOG = Logger.getLogger(NovalnetOrdersController.class);
@@ -156,10 +175,10 @@ public class NovalnetOrdersController
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     @SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
-    @Operation(operationId = "placeOrder", summary = "Place a order.", description = "Authorizes the cart and places the order. The response contains the new order data.")
+    @ApiOperation(nickname = "placeOrder", value = "Place a order.", notes = "Authorizes the cart and places the order. The response contains the new order data.")
     @ApiBaseSiteIdAndUserIdParam
     public OrderWsDTO placeOrder(
-    @Parameter(description =
+   @ApiParam(value =
     "Request body parameter that contains details such as the name on the card (accountHolderName), the card number (cardNumber), the card type (cardType.code), "
             + "the month of the expiry date (expiryMonth), the year of the expiry date (expiryYear), whether the payment details should be saved (saved), whether the payment details "
             + "should be set as default (defaultPaymentInfo), and the billing address (billingAddress.firstName, billingAddress.lastName, billingAddress.titleCode, billingAddress.country.isocode, "
@@ -226,11 +245,21 @@ public class NovalnetOrdersController
 
             NnBillingData billingData =  requestData.getBillingAddress();
 
-            if(billingData != null && billingData.getAddressId() != null ) {
-                billingAddress = novalnetOrderFacade.getBillingAddress(billingData.getAddressId());
-            } else {
+            String street, town, zip, countryCode;
+            street = town = zip = countryCode = "";
+
+            JSONObject customJsonObject = tomJsonObject.getJSONObject("custom");
+            billingAddress = novalnetOrderFacade.getBillingAddress(customJsonObject.get("inputval1").toString());
+            
+
+            street = billingAddress.getLine1() + " " + ((billingAddress.getLine2() != null) ? billingAddress.getLine2() : "");
+            town         = billingAddress.getTown();
+            zip          = billingAddress.getPostalcode();
+            countryCode  = billingAddress.getCountry().getIsocode();
+
+            if(!street.equals(billingJsonObject.get("street").toString()) || !zip.equals(billingJsonObject.get("zip").toString()) || !countryCode.equals(billingJsonObject.get("country_code").toString())) {
+
                 billingAddress = novalnetOrderFacade.getModelService().create(AddressModel.class);
-                
                 billingAddress.setFirstname(customerJsonObject.get("first_name").toString());
                 billingAddress.setLastname(customerJsonObject.get("last_name").toString());
                 if (billingJsonObject.has("street")) {
@@ -240,16 +269,19 @@ public class NovalnetOrdersController
                 billingAddress.setTown(billingJsonObject.get("city").toString());
                 billingAddress.setPostalcode(billingJsonObject.get("zip").toString());
                 billingAddress.setCountry(novalnetOrderFacade.getCommonI18NService().getCountry(billingJsonObject.get("country_code").toString()));
-                billingAddress.setEmail(emailAddress);
             }
+                
+                
+            billingAddress.setEmail(emailAddress);
+            
 
             billingAddress.setOwner(cartModel);
 
-            String currentPayment = transactionJsonObject.get("payment_type").toString();
+            String payment = transactionJsonObject.get("payment_type").toString();
+            
+            String paymentname = customJsonObject.get("inputval2").toString();
 
-            String payment = currentPayment.equals("CREDITCARD") ? "novalnetCreditCard" :(currentPayment.equals("DIRECT_DEBIT_SEPA") ? "novalnetDirectDebitSepa" :(currentPayment.equals("PAYPAL") ? "novalnetPayPal": (currentPayment.equals("GUARANTEED_DIRECT_DEBIT_SEPA") ? "novalnetGuaranteedDirectDebitSepa" : (currentPayment.equals("INVOICE") ? "novalnetInvoice":(currentPayment.equals("GUARANTEED_INVOICE") ? "novalnetGuaranteedInvoice":(currentPayment.equals("PREPAYMENT") ? "novalnetPrepayment":(currentPayment.equals("MULTIBANCO") ? "novalnetMultibanco":(currentPayment.equals("CASHPAYMENT") ? "novalnetBarzahlen":(currentPayment.equals("ONLINE_BANK_TRANSFER") ? "novalnetOnlineBankTransfer":((currentPayment.equals("ONLINE_TRANSFER") ? "novalnetInstantBankTransfer":(currentPayment.equals("BANCONTACT") ? "novalnetBancontact":(currentPayment.equals("POSTFINANCE_CARD") ? "novalnetPostFinanceCard":(currentPayment.equals("POSTFINANCE") ? "novalnetPostFinance":(currentPayment.equals("IDEAL") ? "novalnetIdeal":(currentPayment.equals("EPS") ? "novalnetEps":(currentPayment.equals("GIROPAY") ? "novalnetGiropay":(currentPayment.equals("PRZELEWY24") ? "novalnetPrzelewy24":""))))))))))))))))));
-
-            OrderData orderData = createOrder(transactionJsonObject, payment, billingAddress, emailAddress, currentUser, orderAmountCent, currency, languageCode);
+            OrderData orderData = createOrder(transactionJsonObject, payment, billingAddress, emailAddress, currentUser, orderAmountCent, currency, languageCode, paymentname);
             return dataMapper.map(orderData, OrderWsDTO.class, fields);
         } else {
             final String statMessage = resultJsonObject.get("status_text").toString() != null ? resultJsonObject.get("status_text").toString() : resultJsonObject.get("status_desc").toString();
@@ -276,6 +308,9 @@ public class NovalnetOrdersController
     }
 
     public Map<String, Object> formPaymentRequest(NnRequestData requestData, String action, String emailAddress, Integer orderAmountCent, String currency, String languageCode) throws NovalnetPaymentException {
+        LOG.info("inside form request");
+
+        baseStore = novalnetOrderFacade.getBaseStoreModel();
 
         final Map<String, Object> transactionParameters = new HashMap<String, Object>();
         final Map<String, Object> merchantParameters    = new HashMap<String, Object>();
@@ -287,231 +322,117 @@ public class NovalnetOrdersController
         final Map<String, Object> dataParameters        = new HashMap<String, Object>();
         final Map<String, Object> responeParameters     = new HashMap<String, Object>();
 
-        final AddressModel deliveryAddress  = cartModel.getDeliveryAddress();
+        AddressDetailsData addressDeatails =  requestData.getAddress();
+        NnBillingData billingData =  addressDeatails.getBillingAddress();
+        
+        PaymentDetailsData paymentData =  requestData.getPaymentData();
+        PayDetailsData payment =  paymentData.getPayment_details();
+        BookingData bookingDetails =  paymentData.getBooking_details();
 
-        boolean verify_payment_data = false;
+        LOG.info("got request");
 
-        Integer testMode            = 0;
-        Integer onholdOrderAmount   = 0;
-        Integer sameAsBilling       = 0;
-        String customerNo           = JaloSession.getCurrentSession().getUser().getPK().toString();
-        String currentPayment       = requestData.getPaymentType();
 
-        String payment = currentPayment.equals("CREDITCARD") ? "novalnetCreditCard" :(currentPayment.equals("DIRECT_DEBIT_SEPA") ? "novalnetDirectDebitSepa" :(currentPayment.equals("PAYPAL") ? "novalnetPayPal": (currentPayment.equals("GUARANTEED_DIRECT_DEBIT_SEPA") ? "novalnetGuaranteedDirectDebitSepa" : (currentPayment.equals("INVOICE") ? "novalnetInvoice":(currentPayment.equals("GUARANTEED_INVOICE") ? "novalnetGuaranteedInvoice":(currentPayment.equals("PREPAYMENT") ? "novalnetPrepayment":(currentPayment.equals("MULTIBANCO") ? "novalnetMultibanco":(currentPayment.equals("CASHPAYMENT") ? "novalnetBarzahlen":(currentPayment.equals("ONLINE_BANK_TRANSFER") ? "novalnetOnlineBankTransfer":((currentPayment.equals("ONLINE_TRANSFER") ? "novalnetInstantBankTransfer":(currentPayment.equals("BANCONTACT") ? "novalnetBancontact":(currentPayment.equals("POSTFINANCE_CARD") ? "novalnetPostFinanceCard":(currentPayment.equals("POSTFINANCE") ? "novalnetPostFinance":(currentPayment.equals("IDEAL") ? "novalnetIdeal":(currentPayment.equals("EPS") ? "novalnetEps":(currentPayment.equals("GIROPAY") ? "novalnetGiropay":(currentPayment.equals("PRZELEWY24") ? "novalnetPrzelewy24":""))))))))))))))))));
+        Boolean sameAsDelivery = addressDeatails.getSameAsdelivery();
 
-        String[] supportedPaymentTypes = {"novalnetCreditCard", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice", "novalnetPrepayment", "novalnetMultibanco", "novalnetBarzahlen", "novalnetPayPal", "novalnetInstantBankTransfer", "novalnetOnlineBankTransfer", "novalnetBancontact", "novalnetPostFinanceCard", "novalnetPostFinance", "novalnetIdeal", "novalnetEps", "novalnetGiropay", "novalnetPrzelewy24"};
-
-        if("".equals(payment)) {
-            message = "Payment method is not valid";
-            throw new NovalnetPaymentException(message);
-        }
-
-        if (!Arrays.asList(supportedPaymentTypes).contains(payment)) {
-            message = "Currently the payment method is not supported";
-            throw new NovalnetPaymentException(message);
-        }
-
-        PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(payment);
-        NnBillingData billingData =  requestData.getBillingAddress();
         String firstName, lastName, street1, street2, town, zip, countryCode;
         firstName = lastName = street1 = street2 = town = zip = countryCode = "";
 
-        if(billingData.getAddressId() != null ) {
+		AddressModel billingAddress = novalnetOrderFacade.getBillingAddress(billingData.getAddressId());
 
-            AddressModel billingAddress = novalnetOrderFacade.getBillingAddress(billingData.getAddressId());
+		firstName    = billingAddress.getFirstname();
+		lastName     = billingAddress.getLastname();
+		street1      = billingAddress.getLine1();
+		street2      = (billingAddress.getLine2() != null) ? billingAddress.getLine2() : "";
+		town         = billingAddress.getTown();
+		zip          = billingAddress.getPostalcode();
+		countryCode  = billingAddress.getCountry().getIsocode();
 
-            firstName    = billingAddress.getFirstname();
-            lastName     = billingAddress.getLastname();
-            street1      = billingAddress.getLine1();
-            street2      = (billingAddress.getLine2() != null) ? billingAddress.getLine2() : "";
-            town         = billingAddress.getTown();
-            zip          = billingAddress.getPostalcode();
-            countryCode  = billingAddress.getCountry().getIsocode();
-        } else {
+		if(sameAsDelivery) {
+			customerParameters.put("first_name", firstName);
+        	customerParameters.put("last_name", lastName);
 
-            NnCountryData countryData =  billingData.getCountry();
-            NnRegionData regionData   =  billingData.getRegion();
+			billingParameters.put("street", street1 + " " + street2);
+			billingParameters.put("city", town);
+			billingParameters.put("zip", zip);
+			billingParameters.put("country_code", countryCode);
 
-            firstName    = billingData.getFirstName();
-            lastName     = billingData.getLastName();
-            street1      = billingData.getLine1();
-            street2      = (billingData.getLine2() != null) ? billingData.getLine2() : "";
-            town         = billingData.getTown();
-            zip          = billingData.getPostalCode();
-            countryCode  = countryData.getIsocode();
+			shippingParameters.put("same_as_billing", 1);
 
-        }
+		} else {
+
+			NnCountryData countryData =  billingData.getCountry();
+
+			customerParameters.put("first_name", billingData.getFirstName());
+        	customerParameters.put("last_name",  billingData.getLastName());
+
+			billingParameters.put("street", billingData.getLine1() + " " + ((billingData.getLine2() != null) ? billingData.getLine2() : ""));
+			billingParameters.put("city", billingData.getTown());
+			billingParameters.put("zip", billingData.getPostalCode());
+			billingParameters.put("country_code", countryData.getIsocode());
+
+			shippingParameters.put("first_name", firstName);
+        	shippingParameters.put("last_name", lastName);
+			shippingParameters.put("street", street1 + " " + street2);
+			shippingParameters.put("city", town);
+			shippingParameters.put("zip", zip);
+			shippingParameters.put("country_code", countryCode);
+		}
+
+        LOG.info("address obtained");
 
         Gson gson = new GsonBuilder().create();
 
         merchantParameters.put("signature", baseStore.getNovalnetAPIKey());
         merchantParameters.put("tariff", baseStore.getNovalnetTariffId());
-
-        customerParameters.put("first_name", firstName);
-        customerParameters.put("last_name", lastName);
-        customerParameters.put("email", emailAddress);
-        customerParameters.put("customer_no", customerNo);
-        customerParameters.put("gender", "u");
-
-        billingParameters.put("street", street1 + " " + street2);
-        billingParameters.put("city", town);
-        billingParameters.put("zip", zip);
-        billingParameters.put("country_code", countryCode);
-
-        if( deliveryAddress.getLine1().toString().toLowerCase().equals(street1.toLowerCase()) && ((deliveryAddress.getLine2() == null && street2.equals("")) || (deliveryAddress.getLine2() != null && (deliveryAddress.getLine2().toString().toLowerCase().equals(street2.toLowerCase())))) && deliveryAddress.getTown().toString().toLowerCase().equals(town.toLowerCase()) &&  deliveryAddress.getPostalcode().toString().equals(zip) && deliveryAddress.getCountry().getIsocode().toString().equals(countryCode)) {
-            sameAsBilling = 1;
-            shippingParameters.put("same_as_billing", 1);
-        } else {
-            shippingParameters.put("street", deliveryAddress.getLine1() + " " + deliveryAddress.getLine2());
-            shippingParameters.put("city", deliveryAddress.getTown());
-            shippingParameters.put("zip", deliveryAddress.getPostalcode());
-            shippingParameters.put("country_code", deliveryAddress.getCountry().getIsocode());
-            shippingParameters.put("first_name", deliveryAddress.getFirstname());
-            shippingParameters.put("last_name", deliveryAddress.getLastname());
-        }
         
         customParameters.put("lang", languageCode);
+        customParameters.put("input1", "addressId");
+        customParameters.put("inputval1", billingData.getAddressId());
+        customParameters.put("input2", "payment_name");
+        customParameters.put("inputval2", payment.getName());
 
-        transactionParameters.put("payment_type", currentPayment);
+        transactionParameters.put("payment_type", payment.getType());
         transactionParameters.put("currency", currency);
         transactionParameters.put("amount", orderAmountCent);
-        transactionParameters.put("system_name", "SAP Commerce Cloud");
+        transactionParameters.put("system_name", "SAP Commerce Cloud-OCC");
         transactionParameters.put("system_version", "2211-NN1.0.0");
+        transactionParameters.put("test_mode", bookingDetails.getTest_mode());
 
-        Map<String, String> responseDeatils = novalnetOrderFacade.getBackendConfiguration("payment", payment);
-
-        if (responseDeatils.get("active").equals("false")) {
-            message = "Payment method is not active";
-            throw new NovalnetPaymentException(message);
-        }
-
-        if (responseDeatils.get("test_mode").toString() == "true") {
-            testMode = 1;
-        }
-
-        transactionParameters.put("test_mode", testMode);
-
-        if ("novalnetGuaranteedDirectDebitSepa".equals(payment) || "novalnetGuaranteedInvoice".equals(payment)) {
-
-            
-            boolean isValidDob = false;
-
-            if(billingData.getDob() != null) {
-                isValidDob = novalnetOrderFacade.hasAgeRequirement(billingData.getDob());
-            }
-
-            String[] guaranteeRequiredCountry = {"CH", "AT", "DE"};
-            Integer minimumAmount = (responseDeatils.get("guarantee_minimum_amount") == null) ? 0 : Integer.parseInt(responseDeatils.get("guarantee_minimum_amount").toString());
-
-            if(sameAsBilling == 1 && (isValidDob || billingData.getCompany() != null) && Arrays.asList(guaranteeRequiredCountry).contains(countryCode) && orderAmountCent >= minimumAmount) {
-
-                if(billingData.getCompany() != null) {
-                    billingParameters.put("company", billingData.getCompany());
-                }
-
-                if(billingData.getDob() != null) {
-                    customerParameters.put("birth_date", billingData.getDob());
-                } 
-                
-            } else if (responseDeatils.get("force_guarantee").equals("true")) {
-                transactionParameters.put("payment_type", (currentPayment.equals("GUARANTEED_INVOICE") ? "INVOICE" : "DIRECT_DEBIT_SEPA"));
-                payment = payment.equals("novalnetGuaranteedInvoice") ? "novalnetInvoice" : "novalnetDirectDebitSepa";
-                responseDeatils = novalnetOrderFacade.getBackendConfiguration("payment", payment);
-            } else {
-                message = "Gaurantee payment conditions are not met";
-                throw new NovalnetPaymentException(message);
-            }
-        }
-
-        String[] onholdSupportedPaymentTypes = {"novalnetCreditCard", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetGuaranteedInvoice",  "novalnetPayPal"};
-
-         if (Arrays.asList(onholdSupportedPaymentTypes).contains(payment)) {
-            onholdOrderAmount = (responseDeatils.get("onhold_amount") == null) ? 0 : Integer.parseInt(responseDeatils.get("onhold_amount").toString());
-
-            if (PAYMENT_AUTHORIZE.equals(responseDeatils.get("onhold_action").toString()) && orderAmountCent >= onholdOrderAmount) {
-                 verify_payment_data = true;
-            }
-
-        }
-
-        String[] dueDatePaymentTypes = {"novalnetBarzahlen", "novalnetDirectDebitSepa", "novalnetGuaranteedDirectDebitSepa", "novalnetInvoice", "novalnetPrepayment"};
-
-        if (Arrays.asList(dueDatePaymentTypes).contains(payment)) {
-            Integer dueDate = Integer.parseInt(responseDeatils.get("due_date").toString());
-
-            Integer sendDueDate = 0;
-
-            if (payment.equals("novalnetInvoice") && dueDate != null && dueDate > 7) {
-                sendDueDate = 1;
-            } else if (payment.equals("novalnetPrepayment") && dueDate != null && dueDate > 7 && dueDate < 28) {
-                sendDueDate = 1;
-            } else if(payment.equals("novalnetBarzahlen") && dueDate != null ) {
-                sendDueDate = 1;
-            }  else if((payment.equals("novalnetDirectDebitSepa") || payment.equals("novalnetGuaranteedDirectDebitSepa"))  && dueDate != null  && dueDate > 2 && dueDate < 14) {
-                sendDueDate = 1;
-            }
-
-            if(sendDueDate == 1) {
-                transactionParameters.put("due_date", formatDate(dueDate));
-            }
-        }
         
-        if ("novalnetCreditCard".equals(payment)) {
-
-            NnPaymentsData paymentData  =  requestData.getPaymentData();
-
-            if(paymentData.getPanHash() != null && paymentData.getUniqId() != null) {
-                paymentParameters.put("pan_hash", paymentData.getPanHash());
-                paymentParameters.put("unique_id", paymentData.getUniqId());
-            } else {
-                message = "Panhash and UniqId is reuired to process payment" + payment;
-                LOG.info(message);
-                throw new NovalnetPaymentException(message);
-            }
-
-            if (responseDeatils.get("enforce_3d").toString() == "true") {
-                 transactionParameters.put("enforce_3d", 1);
-            }
-
-        } else if ("novalnetDirectDebitSepa".equals(payment) || "novalnetGuaranteedDirectDebitSepa".equals(payment)) {
-            NnPaymentsData paymentData  =  requestData.getPaymentData();
-
-            String accountHolder = billingData.getFirstName() + ' ' + billingData.getLastName();
-
-            if(paymentData.getIban() != null) {
-                paymentParameters.put("iban", paymentData.getIban());
-            } else {
-                message = "IBAN is required to process payment" + payment;
-                LOG.info(message);
-                throw new NovalnetPaymentException(message);
-            }
-
-            String ibanCountry = paymentData.getIban().substring(0,2);
-            String[] bicRequiredCountry = {"CH", "MC", "SM", "GB"};
-
-            if (Arrays.asList(bicRequiredCountry).contains(ibanCountry)) {
-                if(paymentData.getBic() != null) {
-                    paymentParameters.put("bic", paymentData.getBic());
-                } else {
-                    message = "BIC is required to process payment";
-                    throw new NovalnetPaymentException(message);
-                }
-            }
-
-            paymentParameters.put("bank_account_holder", accountHolder.replace("&", ""));
-
+        if(bookingDetails.getPan_hash() != null) {
+            paymentParameters.put("pan_hash", bookingDetails.getPan_hash());
+            paymentParameters.put("unique_id", bookingDetails.getUnique_id());
         }
 
-        if(action.equals("get_redirect_url")) {
-            if("".equals(requestData.getReturnUrl())) {
-                message = "returnUrl is empty. Please send the mandatorey params";
-                throw new NovalnetPaymentException(message);
-            }
-
-            transactionParameters.put("return_url", requestData.getReturnUrl());
-            transactionParameters.put("error_return_url", requestData.getReturnUrl());
+        if(bookingDetails.getWallet_token() != null) {
+            paymentParameters.put("wallet_token", bookingDetails.getWallet_token());
         }
 
+        if(bookingDetails.getCreate_token() != null) {
+            transactionParameters.put("create_token", bookingDetails.getCreate_token());
+        }
+
+        if(bookingDetails.getDue_date() != null) {
+            transactionParameters.put("due_date", bookingDetails.getDue_date());
+        }
+
+        if(bookingDetails.getIban() != null) {
+            paymentParameters.put("iban", bookingDetails.getIban());
+            paymentParameters.put("account_holder", bookingDetails.getAccount_holder());
+        }
+
+        if(bookingDetails.getBirth_date() != null) {
+            customerParameters.put("birth_date", bookingDetails.getBirth_date());
+        }
+
+
+        // transactionParameters.put("due_date", formatDate(dueDate));
+        if(requestData.getReturnUrl() != null) {
+			transactionParameters.put("return_url", requestData.getReturnUrl());
+			transactionParameters.put("error_return_url", requestData.getReturnUrl());
+		}
+        
+        customerParameters.put("email", emailAddress);
         customerParameters.put("billing", billingParameters);
         customerParameters.put("shipping", shippingParameters);
 
@@ -520,13 +441,16 @@ public class NovalnetOrdersController
         dataParameters.put("customer", customerParameters);
         dataParameters.put("transaction", transactionParameters);
         dataParameters.put("custom", customParameters);
+
+        LOG.info("request formed ");
         
         String jsonString = gson.toJson(dataParameters);
+        LOG.info(jsonString);
 
-        String url = "https://payport.novalnet.de/v2/payment";
-        if(verify_payment_data == true) {
-            url = "https://payport.novalnet.de/v2/authorize";
-        }
+        String url = (bookingDetails.getPayment_action() != null && bookingDetails.getPayment_action() == "capture") ? "https://payport.novalnet.de/v2/payment" : "https://payport.novalnet.de/v2/authorize";
+        // if(verify_payment_data == true) {
+        //     url = "https://payport.novalnet.de/v2/authorize";
+        // }
 
         responeParameters.put("jsonString", jsonString);
         responeParameters.put("paygateURL", url);
@@ -562,10 +486,49 @@ public class NovalnetOrdersController
     }
 
 
-    public OrderData createOrder(JSONObject transactionJsonObject, String payment, AddressModel billingAddress, String emailAddress, UserModel currentUser, Integer orderAmountCent, String currency, String languageCode)
+    public OrderData createOrder(JSONObject transactionJsonObject, String payment, AddressModel billingAddress, String emailAddress, UserModel currentUser, Integer orderAmountCent, String currency, String languageCode, String paymentname)
     throws InvalidCartException, NoCheckoutCartException {
 
-        PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode(payment);
+        PaymentModeModel paymentModeModel = paymentModeService.getPaymentModeForCode("novalnet");
+        String bankDetails = "";
+        String newLine = " <br/> ";
+        if(transactionJsonObject.has("bank_details")) {
+            bankDetails += "";
+            JSONObject bankdeatailsJsonObject = transactionJsonObject.getJSONObject("bank_details");
+            bankDetails += newLine + String.format(Localization.getLocalizedString("novalnet.bankDetailsComments1"), cartData.getTotalPriceWithTax().getFormattedValue());
+            if (transactionJsonObject.has("due_date")  && !"ON_HOLD".equals(transactionJsonObject.get("status").toString())) {
+                bankDetails += " " +  String.format(Localization.getLocalizedString("novalnet.bankDetailsComments2"), transactionJsonObject.get("due_date").toString());
+            }
+            bankDetails += newLine + Localization.getLocalizedString("novalnet.bankDetailsAccountHolder") + " " + bankdeatailsJsonObject.get("account_holder").toString();
+            bankDetails += newLine + Localization.getLocalizedString("novalnet.bankDetailsBank") + " " + bankdeatailsJsonObject.get("bank_name").toString()+ newLine;
+            bankDetails += Localization.getLocalizedString("novalnet.bankPlace") + " " + bankdeatailsJsonObject.get("bank_place").toString();
+            bankDetails += newLine + Localization.getLocalizedString("novalnet.bankDetailsIban") + " " + bankdeatailsJsonObject.get("iban").toString();
+            bankDetails += newLine + Localization.getLocalizedString("novalnet.bankDetailsBic") + " " + bankdeatailsJsonObject.get("bic").toString();
+            
+            bankDetails += newLine + Localization.getLocalizedString("novalnet.bankDetailspaymentRefernceMulti") + newLine + Localization.getLocalizedString("novalnet.bankDetailsPaymentReference") + " : " + transactionJsonObject.get("tid").toString() + newLine;
+        }
+
+        if(transactionJsonObject.has("nearest_stores")) {
+            JSONObject storeJsonObject = transactionJsonObject.getJSONObject("nearest_stores");
+                Iterator<String> keys = storeJsonObject.keys();
+                bankDetails += "<br><br>" + "Store(s) near you";
+                bankDetails += newLine + "Slip expiry date:" + " " + transactionJsonObject.get("due_date").toString();
+
+                while (keys.hasNext()) {
+
+                    String key = keys.next();
+                    if (storeJsonObject.get(key) instanceof JSONObject) {
+                        JSONObject nearestStoreJsonObject = storeJsonObject.getJSONObject(key);
+
+                        bankDetails += newLine + nearestStoreJsonObject.get("store_name");
+                        bankDetails += newLine + nearestStoreJsonObject.get("street");
+                        bankDetails += newLine + nearestStoreJsonObject.get("city");
+                        bankDetails += newLine + nearestStoreJsonObject.get("zip");
+                        bankDetails += newLine + nearestStoreJsonObject.get("country_code") + newLine;
+                    }
+                }
+        }
+
         
         NovalnetPaymentInfoModel paymentInfoModel = new NovalnetPaymentInfoModel();
         paymentInfoModel.setBillingAddress(billingAddress);
@@ -574,7 +537,7 @@ public class NovalnetOrdersController
         paymentInfoModel.setSaved(Boolean.TRUE);
         paymentInfoModel.setUser(currentUser);
         paymentInfoModel.setPaymentInfo(transactionJsonObject.get("tid").toString());
-        paymentInfoModel.setOrderHistoryNotes("Novalnet Transaction ID : "+ transactionJsonObject.get("tid").toString());
+        paymentInfoModel.setOrderHistoryNotes("Novalnet Transaction ID : "+ transactionJsonObject.get("tid").toString() + newLine + bankDetails);
         paymentInfoModel.setPaymentProvider(payment);
         paymentInfoModel.setPaymentGatewayStatus(transactionJsonObject.get("status").toString());
         cartModel.setPaymentInfo(paymentInfoModel);
@@ -605,65 +568,10 @@ public class NovalnetOrdersController
         paymentInfoModel.setCode(orderNumber);
         novalnetOrderFacade.getModelService().save(paymentInfoModel);
 
-        if ("novalnetCreditCard".equals(payment)) {
-            NovalnetCreditCardPaymentModeModel novalnetPaymentMethod = (NovalnetCreditCardPaymentModeModel) paymentModeModel;
+        NovalnetPaymentModeModel novalnetPaymentMethod = (NovalnetPaymentModeModel) paymentModeModel;
             orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetDirectDebitSepa".equals(payment)) {
 
-            NovalnetDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetDirectDebitSepaPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetGuaranteedInvoice".equals(payment)) {
-            NovalnetGuaranteedInvoicePaymentModeModel novalnetPaymentMethod = (NovalnetGuaranteedInvoicePaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetGuaranteedDirectDebitSepa".equals(payment)) {
-            NovalnetGuaranteedDirectDebitSepaPaymentModeModel novalnetPaymentMethod = (NovalnetGuaranteedDirectDebitSepaPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetPayPal".equals(payment)) {
-            NovalnetPayPalPaymentModeModel novalnetPaymentMethod = (NovalnetPayPalPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetInvoice".equals(payment)) {
-            NovalnetInvoicePaymentModeModel novalnetPaymentMethod = (NovalnetInvoicePaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetPrepayment".equals(payment)) {
-            NovalnetPrepaymentPaymentModeModel novalnetPaymentMethod = (NovalnetPrepaymentPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetBarzahlen".equals(payment)) {
-            NovalnetBarzahlenPaymentModeModel novalnetPaymentMethod = (NovalnetBarzahlenPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetInstantBankTransfer".equals(payment)) {
-            NovalnetInstantBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetInstantBankTransferPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetOnlineBankTransfer".equals(payment)) {
-            NovalnetOnlineBankTransferPaymentModeModel novalnetPaymentMethod = (NovalnetOnlineBankTransferPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetMultibanco".equals(payment)) {
-            NovalnetMultibancoPaymentModeModel novalnetPaymentMethod = (NovalnetMultibancoPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetBancontact".equals(payment)) {
-            NovalnetBancontactPaymentModeModel novalnetPaymentMethod = (NovalnetBancontactPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetPostFinanceCard".equals(payment)) {
-            NovalnetPostFinanceCardPaymentModeModel novalnetPaymentMethod = (NovalnetPostFinanceCardPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetPostFinance".equals(payment)) {
-            NovalnetPostFinancePaymentModeModel novalnetPaymentMethod = (NovalnetPostFinancePaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetIdeal".equals(payment)) {
-            NovalnetIdealPaymentModeModel novalnetPaymentMethod = (NovalnetIdealPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-            cartModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetEps".equals(payment)) {
-            NovalnetEpsPaymentModeModel novalnetPaymentMethod = (NovalnetEpsPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetGiropay".equals(payment)) {
-            NovalnetGiropayPaymentModeModel novalnetPaymentMethod = (NovalnetGiropayPaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        } else if ("novalnetPrzelewy24".equals(payment)) {
-            NovalnetPrzelewy24PaymentModeModel novalnetPaymentMethod = (NovalnetPrzelewy24PaymentModeModel) paymentModeModel;
-            orderModel.setPaymentMode(novalnetPaymentMethod);
-        }
-
-        orderModel.setStatusInfo("Novalnet Transaction ID : " + transactionJsonObject.get("tid").toString());
+        orderModel.setStatusInfo("Payment Type : "+paymentname+", Novalnet Transaction ID : " + transactionJsonObject.get("tid").toString());
         
         OrderHistoryEntryModel orderEntry = novalnetOrderFacade.getModelService().create(OrderHistoryEntryModel.class);
         orderEntry.setTimestamp(new Date());
@@ -676,13 +584,13 @@ public class NovalnetOrdersController
         
         long callbackInfoTid = Long.parseLong(transactionJsonObject.get("tid").toString());
         int orderPaidAmount = 0;
-        String[] bankPayments = {"novalnetInvoice", "novalnetPrepayment", "novalnetBarzahlen", "novalnetGuaranteedDirectDebitSepa", "novalnetGuaranteedInvoice"};
-        boolean isInvoicePrepayment = Arrays.asList(bankPayments).contains(payment);
+        // String[] bankPayments = {"novalnetInvoice", "novalnetPrepayment", "novalnetBarzahlen", "novalnetGuaranteedDirectDebitSepa", "novalnetGuaranteedInvoice"};
+        // boolean isInvoicePrepayment = Arrays.asList(bankPayments).contains(payment);
 
         String[] pendingStatusCode = {"PENDING"};
 
         // Check for payment pending payments
-        if (isInvoicePrepayment || Arrays.asList(pendingStatusCode).contains(transactionJsonObject.get("status").toString())) {
+        if (Arrays.asList(pendingStatusCode).contains(transactionJsonObject.get("status").toString())) {
             orderPaidAmount = 0;
         } else {
             orderPaidAmount = orderAmountCent;
@@ -780,10 +688,10 @@ public class NovalnetOrdersController
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     @SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
-    @Operation(operationId = "redirecturl", summary = "redirect url", description = "Get the third party url for customer to pay")
+    @ApiOperation(nickname = "redirecturl", value = "redirect url", notes = "Get the third party url for customer to pay")
     @ApiBaseSiteIdAndUserIdParam
     public NnResponseWsDTO getRedirectURL(
-            @Parameter(description =
+            @ApiParam(value =
             "Request body parameter that contains details such as the name on the card (accountHolderName), the card number (cardNumber), the card type (cardType.code), "
                     + "the month of the expiry date (expiryMonth), the year of the expiry date (expiryYear), whether the payment details should be saved (saved), whether the payment details "
                     + "should be set as default (defaultPaymentInfo), and the billing address (billingAddress.firstName, billingAddress.lastName, billingAddress.titleCode, billingAddress.country.isocode, "
@@ -817,11 +725,12 @@ public class NovalnetOrdersController
         try {
             requsetDeatils = formPaymentRequest(requestData, action, emailAddress, orderAmountCent, currency, languageCode);
         } catch(Exception ex) {
+            LOG.error("error " + ex);
             LOG.error("Novalnet Exception " + message);
             throw new NovalnetPaymentException(message);
         }
         
-        StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());
+         StringBuilder response = sendRequest(requsetDeatils.get("paygateURL").toString(), requsetDeatils.get("jsonString").toString());
         JSONObject tomJsonObject = new JSONObject(response.toString());
         JSONObject resultJsonObject = tomJsonObject.getJSONObject("result");
         JSONObject transactionJsonObject = tomJsonObject.getJSONObject("transaction");
@@ -842,10 +751,10 @@ public class NovalnetOrdersController
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     @SiteChannelRestriction(allowedSiteChannelsProperty = API_COMPATIBILITY_B2C_CHANNELS)
-    @Operation(operationId = "paymnetdeatils", summary = "Payment Details.", description = "Payment details for the order")
+    @ApiOperation(nickname = "paymnetdeatils", value = "Payment Details.", notes = "Payment details for the order")
     @ApiBaseSiteIdAndUserIdParam
     public NnPaymentDetailsWsDTO getPaymentDetails(
-            @Parameter(description = "order no", required = true) @RequestParam final String orderno,
+            @ApiParam(value = "order no", required = true) @RequestParam final String orderno,
             @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
             throws PaymentAuthorizationException, InvalidCartException, NoCheckoutCartException
     {
